@@ -1,4 +1,4 @@
-# 02，IAM Identity Center (AWS SSO) 學習摘要與考試重點
+# IAM Identity Center (AWS SSO) 學習摘要與考試重點
 
 2025-10-04
 

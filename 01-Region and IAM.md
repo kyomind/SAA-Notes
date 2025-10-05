@@ -1,4 +1,4 @@
-# 01，Region and IAM
+# Region and IAM
 
 2025-10-02
 
