@@ -89,4 +89,13 @@
 36. 直白說：這題在考你理解「**高可用架構 = 多 AZ + Auto Scaling + ELB**」的**標準組合**
     1. T3 burstable 只是讓你知道能應付短期流量尖峰。
     2. 110% 運算能力是「短期」的，credits 用完就回到 baseline
-
+37. In Auto Scaling, the following statements are correct regarding the **cooldown period**:
+    1. It ensures that the Auto Scaling group does not launch or terminate additional EC2 instances before the previous scaling activity **takes effect**.
+    2. Its **default** value is **300 seconds**.
+    3. It is a **configurable** setting for your Auto Scaling group.
+ 38. Dynamic scaling and predictive scaling can be used together to scale faster.
+ 39. Step Scaling Warm-up Period
+     1. 作用：新實例啟動後，不立即計入 metrics，避免誤判需求
+     2. Warm-up 防止因新實例尚未就緒而過度擴展
+     3. Step Scaling **專屬**設定 (Target Tracking 用 Default Cooldown)
+     4. 預設值是 0 秒，需要手動設定
