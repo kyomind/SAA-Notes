@@ -2,7 +2,9 @@
    1. 可以設定成單一 AZ，但省不了多少錢
    2. 數據傳輸：跨 AZ 有費用（約 $0.01/GB），但通常佔比很小
    3. 不能跨 region
-2. **ELB 也不能跨 region，只能跨 AZ**。所有跨跨 region 的答案都有問題
+2. **ELB 也不能跨 region，只能跨 AZ**
+   1. 所有跨 region 的答案都有問題
+   2. 跨 Region 需要用 Route 53 + 多個 Regional ELB
 3. A subnet is a range of IP addresses in your VPC.
 4. The AWS PrivateLink (which is also known as VPC Endpoint) **is just a highly available, scalable technology** that enables you to privately connect your VPC to the AWS services as if they were in your VPC.
 5. Public Subnet ≠ 自動有 Public IP，而是「有資格配置 Public IP + 有 IGW 路由」
@@ -16,7 +18,7 @@
 8. Install the Amazon **CloudWatch agent** to all the EC2 instances that gather the memory and disk utilization data.
    1. View the custom metrics in the CloudWatch console.
    2. 這些 metrics 會被收集到 CloudWatch Logs，而且邏輯要自己寫
-9. you need to prepare a custom metric using a Perl or other shell script, as there are **no** ready-to-use metrics for the following:
+9.  you need to prepare a custom metric using a Perl or other shell script, as there are **no** ready-to-use metrics for the following:
    1. **Memory utilization**
    2. Disk swap utilization
    3. Disk space utilization
@@ -84,7 +86,7 @@
     1. 你要明確定義每個區間要做什麼
     2. 可以立即回應多個告警（即使前一次擴展還在進行中）
     3. 適合流量變化劇烈的場景
-36. 直白說：這題在考你理解「高可用架構 = 多 AZ + Auto Scaling + ELB」的標準組合
+36. 直白說：這題在考你理解「**高可用架構 = 多 AZ + Auto Scaling + ELB**」的**標準組合**
     1. T3 burstable 只是讓你知道能應付短期流量尖峰。
     2. 110% 運算能力是「短期」的，credits 用完就回到 baseline
 
