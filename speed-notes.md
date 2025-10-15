@@ -8,15 +8,21 @@
    1. – The **Availability Zone** in which to reserve the capacity
    2. – The **number of instances** for which to reserve capacity
    3. – The **instance attributes**, including the instance type, tenancy, and platform/OS
-6. You are limited to running On-Demand Instances per your vCPU-based On-Demand Instance limit, purchasing 20 Reserved Instances, and requesting Spot Instances per your dynamic Spot limit per region.
-   1. New AWS accounts may start with limits that are lower than the limits described here.
+6. **You are limited to running On-Demand Instances per your vCPU-based On-Demand Instance limit**, purchasing 20 Reserved Instances, and requesting Spot Instances per your dynamic Spot limit **per region**.
+   1. New AWS accounts 可能更低，而不是上述的 20
+   2. **AWS 的 On-Demand Instance quota 是以 vCPU 為單位計算，而非實例數量**
 7. Install the Amazon **CloudWatch agent** to all the EC2 instances that gather the memory and disk utilization data.
    1. View the custom metrics in the CloudWatch console.
    2. 這些 metrics 會被收集到 CloudWatch Logs，而且邏輯要自己寫
 8. you need to prepare a custom metric using a Perl or other shell script, as there are **no** ready-to-use metrics for the following:
-   1. Memory utilization
+   1. **Memory utilization**
    2. Disk swap utilization
    3. Disk space utilization
    4. Page file utilization
    5. Log collection
-9.
+9. CloudWatch 預設可以看到以下這些 EC2 指標：
+   1. CPU Utilization
+   2. Disk Read activity
+   3. Network In/Out
+   4. Network packets In/Out
+10.
