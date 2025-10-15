@@ -9,14 +9,14 @@ description: 'Automatically generate correct filename for SAA study notes based 
 
 ## 執行步驟
 
-1. **自動查找檔案**：如果用戶沒有指定檔案，掃描專案根目錄找出需要重新命名的檔案
+1. **自動查找檔案**：如果用戶沒有指定檔案，掃描 `notes/` 目錄找出需要重新命名的檔案
 2. **分析檔案序號**：檢查現有檔案的序號，確定下一個序號（格式：`01-`、`02-` 等）
 3. **提取與清理標題資訊**：
    - 從檔案內容中找到第一個 `# 標題` 行
    - 清理標題格式（移除前綴詞和冗餘關鍵字）
    - 根據內容重點，重新命名標題
 4. **更新檔案**：
-   - 重新命名檔案：`{序號}-{新標題}.md`
+   - 重新命名檔案：`notes/{序號}-{新標題}.md`
    - 更新檔案內標題
    - 添加日期標記（如果沒有的話）
 
@@ -38,10 +38,11 @@ description: 'Automatically generate correct filename for SAA study notes based 
 ## 檔名與標題處理規則
 
 ### 檔名格式
+- 路徑：`notes/` 目錄內
 - 序號：兩位數字 + 連字號（如 `01-`、`18-`）
 - 標題：使用清理後的標題文字（中英文混合）
 - 副檔名：`.md`
-- 完整格式：`{序號}-{清理後標題}.md`
+- 完整格式：`notes/{序號}-{清理後標題}.md`
 
 ### 標題清理邏輯
 1. **前綴清理**：移除標題開頭的認證/學習相關詞彙
@@ -51,9 +52,9 @@ description: 'Automatically generate correct filename for SAA study notes based 
 
 ### 檔名範例
 ```
-18-Lambda 與 Serverless 架構.md
-19-VPC 網路架構與安全群組.md
-20-S3 儲存類別與生命週期.md
+notes/18-Lambda 與 Serverless 架構.md
+notes/19-VPC 網路架構與安全群組.md
+notes/20-S3 儲存類別與生命週期.md
 ```
 
 ## 處理邏輯
@@ -73,21 +74,22 @@ YYYY-MM-DD         <- 日期（第三行）
 - **已有日期**：保留不修改，日期格式錯誤則修正為 `YYYY-MM-DD`
 - **檔名衝突**：自動處理序號遞增
 - **找不到需要處理的檔案**：提示使用者檢查檔案內容
+- **目錄定位**：所有操作都在 `notes/` 目錄內進行
 
 ## 範例
 
 ### Before
 ```
-檔名: Untitled-1.md
+檔名: notes/Untitled-1.md
 標題: # AWS SAA 學習重點：Lambda 與 Serverless 架構
 ```
 
 ### After
 ```
-檔名: 18-Lambda 與 Serverless 架構.md
+檔名: notes/18-Lambda 與 Serverless 架構.md
 標題: # 18-Lambda 與 Serverless 架構
 
-2025-10-14
+2025-10-15
 ```
 
 ### 標題清理轉換
@@ -96,3 +98,14 @@ YYYY-MM-DD         <- 日期（第三行）
 | `# AWS SAA 考試摘要：VPC 網路架構` | `# 18-VPC 網路架構` | 移除「AWS SAA 考試摘要：」 |
 | `# S3 儲存服務學習重點` | `# 19-S3 儲存服務` | 移除「學習重點」 |
 | `# Solutions Architect Associate - RDS` | `# 20-RDS` | 移除完整認證名稱 |
+
+## 目錄說明
+
+此 prompt 專門處理 `notes/` 目錄下的 AI 問答筆記檔案。這些檔案是透過與 AI 助手的對話互動所產生的系統性學習材料，包含：
+
+- **完整的 AWS SAA 知識體系**
+- **AI 輔助的概念解釋**
+- **實務應用與考試重點**
+- **循序漸進的學習架構**
+
+處理範圍僅限於 `notes/` 目錄，不影響 `questions/` 和 `dojo/` 目錄的檔案組織。
