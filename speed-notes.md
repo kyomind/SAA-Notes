@@ -43,4 +43,5 @@
 15. DAX = DynamoDB 的 Redis
    - Redis 用來快取 API response
    - DAX 用來快取 DynamoDB 熱門資料
+   - 存取速度從毫秒降到微秒
 
