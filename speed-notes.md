@@ -66,4 +66,21 @@
 28. Amazon Cognito lets you add user sign-up, sign-in, and access control to your web and mobile apps quickly and easily.
     1. Amazon Cognito scales to millions of users
     2. Supports sign-in with social identity providers, such as Apple, Facebook, Google, and Amazon, and enterprise identity providers via **SAML 2.0 and OpenID Connect**.
-29. 
+29. A **launch template** is a template that an Auto Scaling group uses to launch EC2 instances.
+    1. When you create a launch template, you specify information for the instances
+    2. such as the ID of the **Amazon Machine Image (AMI)**, the instance type, a key pair, one or more security groups, and a block device mapping.
+30. You can specify your launch template with multiple Auto Scaling groups.
+    1. However, you can only specify **one** launch template for an Auto Scaling group at a time
+    2. and **you can’t modify a launch template after you’ve created it.**
+31. Therefore, if you want to change the launch template for an Auto Scaling group
+    1.  you must create a template
+    2.  and then update your Auto Scaling group with the new launch template.
+32. To improve the **scalability** of your distributed system, you can add an **Auto Scaling group** to your EC2 instances.
+33. 經典高可用架構:
+    1. Launch an **Auto-Scaling group of EC2 instances** to host your application services and an **SQS queue**.
+    2. Include an Auto Scaling trigger to **watch** the SQS queue size which will either scale in or scale out the number of EC2 instances **based on the queue**.
+34. Predictive Scaling 假設 Auto Scaling Group 內所有 EC2 實例能力相同，才能準確預測需要多少台機器。
+35. Step Scaling Policy：
+    1. 你要明確定義每個區間要做什麼
+    2. 可以立即回應多個告警（即使前一次擴展還在進行中）
+    3. 適合流量變化劇烈的場景
