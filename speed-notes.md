@@ -48,11 +48,11 @@
 17. DynamoDB Streams = 資料庫的變更日誌（Change Data Capture, CDC）
 18. 白話：每當 DynamoDB 有資料新增/修改/刪除，Streams 會即時記錄這個事件，**然後可以觸發 Lambda 做後續處理**
 19. An Edge-Optimized API Gateway is **best for geographically distributed clients.**
-    1.  API requests are routed to the nearest CloudFront Edge Location which improves latency.
-    2.  The API Gateway still lives in **one** AWS Region.
+    1. API requests are routed to the nearest CloudFront Edge Location which improves latency.
+    2. The API Gateway still lives in **one** AWS Region.
 20. 目的關鍵需求：在 CloudFront Edge Locations 執行認證
-    1.  不要打回 Origin
-    2.  降低延遲——**用戶在哪裡，認證就在哪裡執行**
+    1. 不要打回 Origin
+    2. 降低延遲——**用戶在哪裡，認證就在哪裡執行**
 21. Lambda@Edge 是什麼？白話：**在 CDN 節點上跑的 Lambda，讓你在離用戶最近的地方處理請求**
 22. **API Gateway 部署在單一 Region**，不在 Edge
     - 用戶還是要跨國打到你的 API Gateway，延遲沒改善
@@ -61,4 +61,4 @@
 24. The maximum size of **an item in a DynamoDB table** is **400 KB**.
 25. Which AWS service allows you to build Serverless workflows using AWS services (e.g., Lambda) and supports **human approval**?
     - Step Functions
-26. DynamoDB 原生支援「Export to S3」功能，幾個點擊就完成，零程式碼、零維護、最便宜。
+26. DynamoDB **原生支援「Export to S3」功能**，幾個點擊就完成，零程式碼、零維護、最便宜。
