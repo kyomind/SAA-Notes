@@ -32,3 +32,15 @@
     2. Step Scaling
     3. Simple Scaling
     4. Scheduled Scaling
+12. DynamoDB 的 RCU 和 WCU 是完全獨立的，可以各自調整，互不影響
+13. Hot Key 問題不是總容量不夠，而是**單一 partition 被打爆**
+    - 增加 RCU 只是增加總容量，但熱門商品還是集中在同一個 partition
+    - **花大錢解決不了問題**
+14. DAX 的缺點（考試也會考）
+    - 只支援 DynamoDB，不能用在 RDS、Aurora
+    - **最終一致性**（Eventually Consistent），快取可能有延遲
+    - **成本**：DAX 節點要另外收費（但比暴力增加 RCU 便宜）
+15. DAX = DynamoDB 的 Redis
+   - Redis 用來快取 API response
+   - DAX 用來快取 DynamoDB 熱門資料
+
