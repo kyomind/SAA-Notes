@@ -20,9 +20,13 @@
    3. Disk space utilization
    4. Page file utilization
    5. Log collection
-9. CloudWatch 預設可以看到以下這些 EC2 指標：
+9.  CloudWatch 預設可以看到以下這些 EC2 指標：
    1. CPU Utilization
    2. Disk Read activity
    3. Network In/Out
    4. Network packets In/Out
-10.
+10. Auto Scaling group 的 scaling policy 有四種，都要了解具體內涵：
+    1. Target Tracking Scaling
+    2. Step Scaling
+    3. Simple Scaling
+    4. Scheduled Scaling
