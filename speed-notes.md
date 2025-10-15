@@ -61,4 +61,9 @@
 24. The maximum size of **an item in a DynamoDB table** is **400 KB**.
 25. Which AWS service allows you to build Serverless workflows using AWS services (e.g., Lambda) and supports **human approval**?
     - Step Functions
-26. DynamoDB **原生支援「Export to S3」功能**，幾個點擊就完成，零程式碼、零維護、最便宜。
+26. DynamoDB **原生支援「Export to S3」功能**，幾個點擊就完成，零程式碼、零維護、最便宜
+27. DynamoDB + TTL (Time To Live) = 完美的 Session 管理方案
+28. Amazon Cognito lets you add user sign-up, sign-in, and access control to your web and mobile apps quickly and easily.
+    1. Amazon Cognito scales to millions of users
+    2. Supports sign-in with social identity providers, such as Apple, Facebook, Google, and Amazon, and enterprise identity providers via **SAML 2.0 and OpenID Connect**.
+29. 
