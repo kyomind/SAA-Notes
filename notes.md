@@ -136,4 +136,13 @@
     1. **分散機制**：DynamoDB 會根據 partition key 把資料分散儲存到不同的物理分區，每個分區分到的 I/O 容量是平均的
     2. **問題成因**：如果 partition key 設計不好，導致某些分區被大量存取，其他分區閒置
 50. DynamoDB throughput 問題 → DynamoDB Auto Scaling。不是其它有的沒有的解決方案
-
+51. DynamoDB On-Demand 計費模式
+    1. **特點**：按實際請求數付費，無需預先設定容量
+    2. **缺點**：成本較高
+52. DynamoDB Provisioned 計費模式
+    1. **特點**：預先設定 Read/Write Capacity Units (RCU/WCU)
+    2. **限制**：超過容量就會被 throttle
+53. DynamoDB Global Secondary Index (GSI) 的 Auto Scaling
+    1. **獨立容量**：GSI 有自己的 RCU/WCU，獨立於 base table
+    2. **場景示例**：Base table: 100 RCU/WCU、GSI-1: 50 RCU/WCU、GSI-2: 200 RCU/WCU ← 各自可單獨設定 Auto Scaling
+    3. **優勢**：查詢集中在某個 GSI 時，不會影響其他 index 或 base table 的容量
