@@ -25,6 +25,12 @@ description: 'Extract and organize tables from images or text, then add them to 
 - 列寬合理，內容精簡（每個單元格建議一行以內）
 - 與 tables.md 現有格式一致
 
+### 3.5 表格外的文字處理
+本檔案 (`tables.md`) 只限表格內容，表格外的其他文字應：
+- **優先選項**：化為表格（新增 row 或 column）
+- **次要選項**：如無法整理為表格，則刪除
+- **重點**：維持表格的一體性，不能硬套文字進表格，破壞表格邏輯和可讀性
+
 ### 4. 插入到 tables.md
 - 只要從檔案尾部新增內容即可
 - 新表格直接追加到末尾
