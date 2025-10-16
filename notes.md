@@ -132,3 +132,9 @@
     1. **標準套路**：AWS 處理敏感資料的推薦架構
     2. **運作流程**：Kinesis 負責接收串流資料 → Lambda 在資料「transit（傳輸中）」時就進行轉換/匿名化 → 確保資料在落地 DynamoDB 前就已經處理好
     3. **串流 + 即時處理 = Kinesis + Lambda**
+49. DynamoDB Hot Partition 問題的核心原理
+    1. **分散機制**：DynamoDB 會根據 partition key 把資料分散儲存到不同的物理分區，每個分區分到的 I/O 容量是平均的
+    2. **問題成因**：如果 partition key 設計不好，導致某些分區被大量存取，其他分區閒置
+50. DynamoDB Primary Key 的兩種類型
+    1. **Simple Primary Key**：只有 Partition Key（例：Users table 用 `user_id` 當唯一識別）
+    2. **Composite Primary Key**：Partition Key + Sort Key（允許相同 partition key 但不同 sort key 的多筆資料）
