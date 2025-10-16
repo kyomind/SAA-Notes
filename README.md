@@ -37,7 +37,8 @@ SAA-Notes/
         ├── notes.prompt.md         # AI 問答筆記管理
         ├── question.prompt.md      # Udemy 題解管理
         ├── dojo.prompt.md          # Dojo 模擬考管理
-        └── cspell.prompt.md        # 拼字檢查管理
+        ├── cspell.prompt.md        # 拼字檢查管理
+        └── tidy.prompt.md          # 內容整理管理
 ```
 
 ## 🎯 目錄說明
@@ -49,22 +50,19 @@ SAA-Notes/
 - **images.md**：圖片資源整理，收集重要的架構圖和示意圖
 - **tables.md**：重要比較表格，系統性整理不同服務的差異對比
 
-### 子目錄 (學習素材)
-以下子目錄內容為學習過程中的**素材整理**：
-
-**📖 Notes**：AI 問答筆記，18 個章節的系統性學習材料
-**🔍 Questions**：Udemy 題解，一題一篇的概念澄清
-**🥋 Dojo**：模擬考練習，實戰導向的綜合分析
+### 📂 子目錄 (學習素材)
+**📖 Notes**：AI 問答筆記  **🔍 Questions**：Udemy 題解  **🥋 Dojo**：模擬考練習
 
 ## 🛠️ 專用工具
 
 ### Prompts 系統
-專案包含四個專用的 prompt 檔案，用於不同類型內容的標準化管理：
+專案包含五個專用的 prompt 檔案，用於不同類型內容的標準化管理：
 
 - **notes.prompt.md**：AI 問答筆記的檔名和標題管理
 - **question.prompt.md**：Udemy 題解的格式標準化
 - **dojo.prompt.md**：Dojo 模擬考題解的內容管理
 - **cspell.prompt.md**：拼字檢查錯誤的批量處理
+- **tidy.prompt.md**：內容整理管理
 
 ## 📝 內容特色
 
@@ -80,13 +78,4 @@ SAA-Notes/
 2. **概念驗證**：使用 `questions/` 目錄的題解加強理解
 3. **實戰練習**：透過 `dojo/` 目錄進行模擬考試練習
 4. **工具輔助**：使用對應的 prompt 檔案進行內容管理和格式標準化
-
-## 📊 學習進度
-
-- ✅ **Notes**: 18/18 章節完成
-- 🔄 **Questions**: 持續新增題目解析
-- 🔄 **Dojo**: 持續新增模擬考練習
-
----
-
-*本專案致力於提供完整且系統性的 AWS SAA 考試準備材料，透過多元化的學習方式幫助考生建立紮實的 AWS 知識基礎。*
+5. **定期複習**：重點關注根目錄的 `notes.md`、`images.md` 和 `tables.md`⭐️⭐️⭐️
