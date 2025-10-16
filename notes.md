@@ -162,3 +162,12 @@
 58. RDS Snapshot 的考試重點
     1. **長期保存場景**：題目提到「長期保存」、「超過 35 天」、「合規要求」→ 選 Snapshot
     2. **Snapshot 的持久性**：RDS 刪除時自動備份會一起消失，但手動快照會保留
+59. S3 **不適合**大量小檔案的原因
+    1. **成本問題**：每個物件都有固定成本，儲存 1 個 1GB 檔案 vs 1000 個 1MB 檔案價格相同，但小檔案有 1000 次 API 請求成本
+    2. **API 計費**：PUT/GET 請求按次數收費，1 萬個 10KB 小檔案 = 1 萬次請求，API 費用可能比儲存費用還貴
+60. DocumentDB 的限制分析
+    1. **功能限制**：DocumentDB 是 AWS 的 MongoDB 相容服務，但沒有 Serverless 模式（只有 cluster 模式，需要自己管理節點數量）、也不支援 Global Database（只能單區域，頂多跨 AZ）
+    2. **考試關鍵**：即使 DocumentDB 相容 MongoDB，但在「Serverless + Global Database」的硬需求下不符合
+61. MongoDB 遷移的選型標準
+    1. **正確答案是 DynamoDB**：題目說「migrate MongoDB」但沒說要「完全相容」，Serverless + Global Database 才是硬需求
+    2. **實務取捨**：DynamoDB 是唯一同時滿足這兩點的選項，實務上雖需改寫程式，但這是唯一可行方案
