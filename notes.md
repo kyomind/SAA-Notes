@@ -154,3 +154,8 @@
     2. **運作流程**：CloudFront 在全球 **Edge Location** 快取 S3 檔案，用戶從最近的節點下載，大幅降低延遲
 56. 創建 Global Table 的**前置條件**是啟用 DynamoDB Streams
     1. **Global Table 需要透過 Streams 來捕捉資料變更，並複製到其他 region。**
+57. Kinesis Data Streams 的選擇優勢
+    1. **天生為串流設計**：資料持續流入，多個應用程式可同時消費
+    2. **Replay 功能**：保留資料 24 小時到 365 天，可重新讀取
+    3. **高吞吐量**：每秒處理 GB 級別資料沒問題
+    4. **多消費者**：不同應用可各自處理同一份資料流
