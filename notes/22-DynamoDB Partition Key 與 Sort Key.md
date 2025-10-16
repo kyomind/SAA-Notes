@@ -63,6 +63,36 @@
 
 ---
 
+## 🏗️ Composite Primary Key 的效能優勢
+
+這段在強調 **Composite Primary Key 的好處**。
+
+### 核心觀念
+
+Composite Primary Key（partition key + sort key）能提升效能，**不該避免使用**。
+
+原因：
+- 更多 partition key 值的組合 = 資料分散更均勻
+- 避免 hot partition
+- 提升 throughput 利用率
+
+### 實例對比
+
+**Simple：** partition key = `user_id`
+- 每個 user 只能有一筆資料
+
+**Composite：** partition key = `user_id` + sort key = `timestamp`
+- 每個 user 可以有多筆資料（按時間排序）
+- 同樣的 partition key 值，但資料量分散更好
+
+### 考試陷阱
+
+題目說「為了避免 hot partition，不要用 composite key」→ **錯誤選項**
+
+正確做法是：**用 composite key + 選對 high-cardinality 的 partition key**
+
+---
+
 ## ⚡ 補充重點
 
 1. **Hot partition 問題**：當流量集中在單一或少數 partition key，會導致 throughput 限制 → throttling。
