@@ -146,5 +146,9 @@
     1. **獨立容量**：GSI 有自己的 RCU/WCU，獨立於 base table
     2. **場景示例**：Base table: 100 RCU/WCU、GSI-1: 50 RCU/WCU、GSI-2: 200 RCU/WCU ← 各自可單獨設定 Auto Scaling
     3. **優勢**：查詢集中在某個 GSI 時，不會影響其他 index 或 base table 的容量
-54. Lambda 是唯一「沒有內建 caching 功能」的服務。
-55. 
+54. Lambda 是唯一「**沒有內建 caching 功能**」的服務
+    1. 題目若問「需要 caching 來降低延遲」，Lambda 通常不是答案，除非明確說「搭配 ElastiCache 使用」
+    2. 記憶點：**Lambda = 無狀態 = 無內建 cache**
+55. CloudFront + S3 分發靜態檔案的典型用法
+    1. **題目關鍵詞**："distribute globally" + "static files" → CDN 的標準應用
+    2. **運作流程**：CloudFront 在全球 **Edge Location** 快取 S3 檔案，用戶從最近的節點下載，大幅降低延遲
