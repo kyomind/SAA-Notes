@@ -123,3 +123,12 @@
 45. Gateway Endpoint vs Interface Endpoint 比較
     1. **Gateway Endpoint**：路由層級，**改 route table，免費**
     2. **Interface Endpoint**：網路層級，加 ENI，要錢
+46. DynamoDB Streams 處理敏感資料的考試判斷標準
+    1. **適合用途**：複製、備份、ETL、通知 ✅
+    2. **不適合用途**：資料驗證、匿名化 ❌（太晚了）
+    3. **記憶點**：Streams = after write，敏感資料要 before write 處理
+ 47. 錯誤原因：題目要求 NoSQL database，**Redshift 是 relational database（data warehouse）**
+48. Kinesis Data Streams + Lambda 做即時資料脫敏
+    1. **標準套路**：AWS 處理敏感資料的推薦架構
+    2. **運作流程**：Kinesis 負責接收串流資料 → Lambda 在資料「transit（傳輸中）」時就進行轉換/匿名化 → 確保資料在落地 DynamoDB 前就已經處理好
+    3. 「串流 + 即時處理 = Kinesis + Lambda」
