@@ -171,3 +171,15 @@
 61. MongoDB 遷移的選型標準
     1. **正確答案是 DynamoDB**：題目說「migrate MongoDB」但沒說要「完全相容」，Serverless + Global Database 才是硬需求
     2. **實務取捨**：DynamoDB 是唯一同時滿足這兩點的選項，實務上雖需改寫程式，但這是唯一可行方案
+62. EBS 加密預設開啟的機制
+    1. **帳號層級設定**：AWS 帳號層級可以強制開啟 EBS 加密
+    2. **自動應用範圍**：新建的 EBS volume 自動加密、從未加密 snapshot 複製時新 snapshot 會被加密、Launch instance 時掛載的 EBS 也會加密
+63. EBS 加密的考試常考點
+    1. **考題情景**：如何確保組織內所有 EBS volume 都被加密？
+    2. **標準答案**：在帳號層級啟用「**EBS encryption by default**」
+64. 既有 EBS volume **無法直接加密**
+    1. **限制**：舊 volume 無法直接加密
+    2. **唯一作法**：建立 snapshot → 複製 snapshot（選擇加密）→ 從加密 snapshot 建立新 volume
+65. EBS 只支援**對稱加密 key**（symmetric key）
+    1. **非對稱 key 用途**：非對稱 key (asymmetric) 用於簽章、驗證，不能加密 EBS
+66. 記憶點：「EBS 只吃對稱 key；要自動就開預設」
