@@ -214,3 +214,8 @@
     1. **共同點**：兩種 key 都可以用於 EBS 加密
     2. **AWS-managed 特點**：自動管理、免維護
     3. **Customer-managed 特點**：可控 rotation、權限、audit log
+75. 記憶點：「自動 snapshot 生命週期 = DLM」
+76. 自動化 EBS snapshot 管理：Amazon Data Lifecycle Manager (DLM)
+    1. **自動建立 snapshot**：定期備份
+    2. **自動刪除過期 snapshot**：省成本
+    3. **設定保留政策**：合規需求
