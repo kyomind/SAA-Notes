@@ -120,3 +120,6 @@
 44. VPC 內的應用如何安全存取 DynamoDB（避免走公網）
     1. **解決方案：Gateway Endpoint**
     2. 運作流程：EC2 (private subnet) → VPC route table (自動更新 DynamoDB CIDR) → Gateway Endpoint → DynamoDB (走 AWS 內網)
+45. Gateway Endpoint vs Interface Endpoint 比較
+    1. **Gateway Endpoint**：路由層級，**改 route table，免費**
+    2. **Interface Endpoint**：網路層級，加 ENI，要錢
