@@ -183,3 +183,13 @@
 65. EBS 只支援**對稱加密 key**（symmetric key）
     1. **非對稱 key 用途**：非對稱 key (asymmetric) 用於簽章、驗證，不能加密 EBS
 66. 記憶點：「EBS 只吃對稱 key；要自動就開預設」
+67. EBS volume 的可用性與複製特性
+    1. **可用性**：自動在同一 AZ 內複製（防單點故障）
+    2. **掛載限制**：只能掛載到**同 AZ** 的 EC2
+68. EBS Multi-Attach 限制
+    1. **支援 volume type**：僅限 **io1/io2 (Provisioned IOPS SSD)**
+    2. **實例要求**：必須**同 AZ** + Nitro-based instance
+    3. **其他限制**：其他 volume type 不支援 Multi-Attach
+69. EBS volume 的彈性調整
+    1. **可調整項目**：Volume type、大小、IOPS 可線上修改
+    2. **停機需求**：無需停機
