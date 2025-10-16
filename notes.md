@@ -206,3 +206,11 @@
     2. **正確答案**：Amazon S3 ✅
     3. **核心概念**：EBS snapshot 自動存到 S3（跨 AZ 冗餘），不是儲存在資料庫
     4. **記憶點**：「Snapshot 去 S3，不是資料庫」
+73. EBS 加密金鑰來源
+    1. **支援的 key 類型**：AWS-managed keys (AWS 代管) ✅ 、Customer-managed keys (你在 KMS 建立) ✅
+    2. **加密位置**：EC2 host
+    3. **傳輸保護**：EC2 ↔ EBS 傳輸時也加密（Data at rest 加密）
+74. EBS 加密金鑰選擇的考試要點
+    1. **共同點**：兩種 key 都可以用於 EBS 加密
+    2. **AWS-managed 特點**：自動管理、免維護
+    3. **Customer-managed 特點**：可控 rotation、權限、audit log
