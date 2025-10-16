@@ -146,3 +146,5 @@
     1. **獨立容量**：GSI 有自己的 RCU/WCU，獨立於 base table
     2. **場景示例**：Base table: 100 RCU/WCU、GSI-1: 50 RCU/WCU、GSI-2: 200 RCU/WCU ← 各自可單獨設定 Auto Scaling
     3. **優勢**：查詢集中在某個 GSI 時，不會影響其他 index 或 base table 的容量
+54. Lambda 是唯一「沒有內建 caching 功能」的服務。
+55. 
