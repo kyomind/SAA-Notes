@@ -201,3 +201,8 @@
     1. **錯誤關鍵詞**：看到「separate region」→ 錯誤
     2. **正確關鍵詞**：看到「within that zone」→ 正確
     3. **跨 region 備份**：需手動建立 Snapshot → 複製到其他 region
+72. EBS Snapshot 存放位置的考試陷阱
+    1. **錯誤選項**：Amazon RDS ❌
+    2. **正確答案**：Amazon S3 ✅
+    3. **核心概念**：EBS snapshot 自動存到 S3（跨 AZ 冗餘），不是儲存在資料庫
+    4. **記憶點**：「Snapshot 去 S3，不是資料庫」
