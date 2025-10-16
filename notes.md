@@ -118,5 +118,5 @@
     3. GSI（Global Secondary Index）：如果 primary key 無法改，可用 GSI 換個 partition key
 43. 直白講：partition key 就是決定「資料放哪一櫃」的依據，櫃子越多、分得越均勻，系統跑越快。選高基數欄位 = 讓 DynamoDB 自動幫你 load balance。
 44. VPC 內的應用如何安全存取 DynamoDB（避免走公網）
-    1. **解決方案**：Gateway Endpoint
+    1. **解決方案：Gateway Endpoint**
     2. **運作流程**：EC2 (private subnet) → VPC route table (自動更新 DynamoDB CIDR) → Gateway Endpoint → DynamoDB (走 AWS 內網)
