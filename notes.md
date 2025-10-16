@@ -152,3 +152,5 @@
 55. CloudFront + S3 分發靜態檔案的典型用法
     1. **題目關鍵詞**："distribute globally" + "static files" → CDN 的標準應用
     2. **運作流程**：CloudFront 在全球 **Edge Location** 快取 S3 檔案，用戶從最近的節點下載，大幅降低延遲
+56. 創建 Global Table 的**前置條件**是啟用 DynamoDB Streams
+    1. **Global Table 需要透過 Streams 來捕捉資料變更，並複製到其他 region。**
