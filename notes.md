@@ -193,3 +193,11 @@
 69. EBS volume 的彈性調整
     1. **可調整項目**：Volume type、大小、IOPS 可線上修改
     2. **停機需求**：無需停機
+70. EBS 複製範圍的考試陷阱
+    1. **錯誤觀念**：跨 region 複製 ❌
+    2. **正確觀念**：同 AZ 內複製 ✅
+    3. **核心概念**：EBS 只在單一 AZ 內**自動複製**，不會跨 region
+71. EBS 考試判斷標準
+    1. **錯誤關鍵詞**：看到「separate region」→ 錯誤
+    2. **正確關鍵詞**：看到「within that zone」→ 正確
+    3. **跨 region 備份**：需手動建立 Snapshot → 複製到其他 region
