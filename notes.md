@@ -18,7 +18,7 @@
 8. Install the Amazon **CloudWatch agent** to all the EC2 instances that gather the memory and disk utilization data.
    1. View the custom metrics in the CloudWatch console.
    2. 這些 metrics 會被收集到 CloudWatch Logs，而且邏輯要自己寫
-9.  you need to prepare a custom metric using a Perl or other shell script, as there are **no** ready-to-use metrics for the following:
+9. You need to prepare a custom metric using a Perl or other shell script, as there are **no** ready-to-use metrics for the following:
    1. **Memory utilization**
    2. Disk swap utilization
    3. Disk space utilization
