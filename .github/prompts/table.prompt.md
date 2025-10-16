@@ -26,8 +26,8 @@ description: 'Extract and organize tables from images or text, then add them to 
 - 與 tables.md 現有格式一致
 
 ### 4. 插入到 tables.md
-- 查看已有表格主題，找出最相關的位置或新增在末尾
-- 相同主題的表格放在一起
+- 只要從檔案尾部新增內容即可，無需查找插入位置
+- 新表格直接追加到末尾
 - 確保 Markdown 語法正確、列分隔符對齊
 
 ### 5. 術語標準化
