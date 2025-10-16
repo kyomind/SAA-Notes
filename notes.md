@@ -131,4 +131,4 @@
 48. Kinesis Data Streams + Lambda 做即時資料脫敏
     1. **標準套路**：AWS 處理敏感資料的推薦架構
     2. **運作流程**：Kinesis 負責接收串流資料 → Lambda 在資料「transit（傳輸中）」時就進行轉換/匿名化 → 確保資料在落地 DynamoDB 前就已經處理好
-    3. 「串流 + 即時處理 = Kinesis + Lambda」
+    3. **串流 + 即時處理 = Kinesis + Lambda**
