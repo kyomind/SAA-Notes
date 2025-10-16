@@ -99,3 +99,21 @@
      2. Warm-up 防止因新實例尚未就緒而過度擴展
      3. Step Scaling **專屬**設定 (Target Tracking 用 Default Cooldown)
      4. 預設值是 0 秒，需要手動設定
+38. DynamoDB 的 throughput（吞吐量）是**平均分配到各個 physical partition**
+    1. 如果 partition key 設計不當會發生什麼？
+39. ❌ 壞例子：用 country 當 partition key（台灣用戶佔 80%）
+    - **80% 請求打到同一個 partition → 只能用 250 RCU**
+    - 其他 partition 閒置 → 浪費 750 RCU
+    - 結果：throttling（被限流）
+40.  ✅ 好例子：用 userId 當 partition key（**high-cardinality**）
+    - 請求平均分散到 4 個 partition
+    - 每個 partition 都在工作 → 完整利用 1000 RCU
+41. High-cardinality attributes（高基數屬性）：
+    1. 意思：有很多不同值的欄位
+    2. 例子：userId、orderId、timestamp+randomId
+    3. 反例：status（只有 active/inactive）、gender、country
+42. 延伸知識（考試會考）
+    1. Composite key：partition key + sort key 組合可以增加靈活性
+    2. Write sharding：在 partition key 加隨機 suffix（例如 userId#random(1-10)）進一步分散流量
+    3. GSI（Global Secondary Index）：如果 primary key 無法改，可用 GSI 換個 partition key
+43. 直白講：partition key 就是決定「資料放哪一櫃」的依據，櫃子越多、分得越均勻，系統跑越快。選高基數欄位 = 讓 DynamoDB 自動幫你 load balance。
