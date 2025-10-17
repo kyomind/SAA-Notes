@@ -322,3 +322,11 @@
     2. **Columnar Storage**：讀取特定欄位時效率極高，無需掃描整個 row
     3. **數據規模**：能處理 PB 級資料
     4. **BI 工具相容**：原生支援 QuickSight、Tableau 等可直接連接
+110. 高可用 (HA - High Availability) 的特性
+    1. **範圍**：同一 Region
+    2. **切換方式**：自動切換
+    3. **架構**：多個可用區域 (Multi-AZ)
+111. 災難恢復 (DR - Disaster Recovery) 的特性
+    1. **範圍**：跨 Region
+    2. **復原方式**：手動或自動復原
+    3. **備份工具**：快照 (Snapshot) / 備份 (Backup)
