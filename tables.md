@@ -46,3 +46,12 @@
 | EBS  | 單 EC2 獨佔 | 1 個 instance 的本地高效存儲   | Block storage、低延遲                     |
 | EFS  | 多 EC2 共享 | 1000+ instances 共用同份數據   | POSIX filesystem、concurrently accessible |
 | S3   | 應用層連接  | 物件存儲、web accessible、歸檔 | Eventually consistent、web-based          |
+
+## EBS Multi-Attach 與標準 EBS 比較
+
+| 特性       | 標準 EBS | EBS Multi-Attach           |
+| ---------- | -------- | -------------------------- |
+| 附加實例數 | 1 個     | 最多 16 個                 |
+| 可用區域   | 單一 AZ  | 同一個 AZ                  |
+| 適用場景   | 普通應用 | 高可用叢集 (如 Oracle RAC) |
+| 考試出現率 | 常見     | 罕見                       |
