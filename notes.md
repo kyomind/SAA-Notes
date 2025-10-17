@@ -254,3 +254,24 @@
 87. WAF **Regular Rule** 的封鎖機制
     1. **作用原理**：符合條件就阻擋
     2. **常見封鎖目標**：特定 IP、地區、User-Agent
+88. CloudWatch Application Insights 的核心功能
+    1. **主要用途**：為**應用程式**和底層 AWS 資源提供**可觀測性** (observability)
+    2. **自動化能力**：自動設定最佳監控器，持續分析資料以偵測應用程式問題
+89. ELB Access Logs + Application Insights 組合技的考試情境
+    1. **考試場景**：需要分析 ALB 流量模式並快速排查問題
+    2. **解題思路**：先取得原始資料，再自動化分析與問題偵測
+90. ALB Access Logs 的資料收集機制
+    1. **啟用方式**：Enable access logs on ALB
+    2. **記錄內容**：來源 IP、請求路徑、回應時間、狀態碼等
+    3. **儲存位置**：資料會自動存到 S3（壓縮格式）
+91. Application Insights 整合 ALB logs 的自動化分析
+    1. **核心功能**：自動分析這些 log，找出異常流量模式
+    2. **視覺化呈現**：產生視覺化 dashboard
+    3. **效率提升**：減少手動翻 S3 log 的時間
+92. CloudTrail 的監控範圍與定位
+    1. **監控對象**：記錄「誰對 AWS 做了什麼操作」，不是「應用程式的流量」
+    2. **核心功能**：AWS API 呼叫的稽核追蹤 (audit trail)
+93. CloudTrail 記錄的具體操作類型
+    1. **資源管理操作**：誰 (IAM user/role) 建立了 EC2、誰刪除了 S3 bucket
+    2. **安全設定變更**：誰修改了 Security Group 規則
+    3. **資料庫操作**：誰啟動了 RDS snapshot
