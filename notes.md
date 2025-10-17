@@ -330,3 +330,7 @@
     1. **範圍**：跨 Region
     2. **復原方式**：手動或自動復原
     3. **備份工具**：快照 (Snapshot) / 備份 (Backup)
+112. Multi-AZ 解決的是高可用性（High Availability），不是災難恢復（Disaster Recovery）
+113. 災難恢復的核心思維：資料要能在另一個 Region 復原
+
+
