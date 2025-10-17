@@ -233,4 +233,12 @@
     1. **連接能力**：可以連接到多個 EC2 實例
     2. **作業系統限制**：僅限於 Windows OS，不支援 Linux servers
     3. **考試陷阱**：題目明確提到是 Linux servers，不是 Windows machines
-
+81. EFS 大量並發存取的正確配置
+    1. **正確答案**：EFS + Provisioned Throughput + Max I/O
+    2. **考試重點**：當有大量並發存取需求時，如何正確配置 EFS
+82. EFS Throughput Mode 選擇標準
+    1. **Provisioned**：高頻存取，資料量小
+    2. **Bursting**：資料量大，偶爾存取
+83. EFS Performance Mode 選擇標準
+    1. **Max I/O**：數百個以上連線
+    2. **General Purpose**：一般應用

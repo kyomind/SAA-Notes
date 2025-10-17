@@ -6,3 +6,6 @@
 
 ## DynamoDB Streams 觸發 Lambda 與 SNS 通知流程
 ![圖 1](https://img.kyomind.tw/img-20251016-115523.png)
+
+## EFS Performance Mode and Throughput Mode
+![圖 2](https://img.kyomind.tw/img-20251017-100010.png)
