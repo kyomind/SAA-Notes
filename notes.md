@@ -309,3 +309,12 @@
 104. AWS Firewall Manager 的定位與功能
      1. **服務定位**：中央管理工具，用來在多個帳號/多個資源上統一部署和管理 WAF/Shield 規則
      2. **開發者類比**：WAF 是你寫的 middleware 防護邏輯，Firewall Manager 是 Infrastructure as Code 工具（像 Terraform），讓你一次把這個 middleware 部署到 100 台機器上
+105. Amazon Aurora 的核心特性
+    1. **資料庫相容性**：MySQL 和 PostgreSQL-compatible 關聯式資料庫
+    2. **儲存系統**：分散式、容錯、自我修復的儲存系統，自動擴展至 128TB
+    3. **高可用架構**：最多 15 個低延遲讀副本、支援 3 個 AZ 複製
+    4. **備份與復原**：可用時間點復原、持續備份到 S3
+106. Amazon Neptune 是一個快速、可靠、完全管理的**圖形資料庫服務**，適合打造社交網路、推薦引擎和詐欺偵測應用程式。
+107. Amazon DocumentDB 是一個完全管理的**文件資料庫服務**，與 MongoDB 相容，適合用於內容管理、目錄和即時分析等應用場景。
+108. Amazon S3 is indeed a key-value store! (where the key is the full path of the object in the bucket)
+109. 
