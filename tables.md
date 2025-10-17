@@ -76,3 +76,13 @@
 | ALB      | HTTP、HTTPS      | Layer 7 (應用層) |
 | NLB      | TCP、HTTP、HTTPS | Layer 4 (傳輸層) |
 | CLB      | TCP、HTTP、HTTPS | Layer 4 + 7      |
+
+## 考試判斷公式：題目關鍵字對應解答
+
+| 關鍵字                    | 正確答案                |
+| :------------------------ | :---------------------- |
+| 限制請求頻率 / Rate limit | **WAF Rate-Based Rule** |
+| 封鎖特定 IP/地區          | WAF Regular Rule        |
+| Layer 4 DDoS 防護         | **AWS Shield**          |
+| 整合 ALB                  | 用 WAF（可直接關聯）    |
+| 整合 CloudFront           | 用 WAF（可直接關聯）    |

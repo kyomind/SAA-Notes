@@ -245,4 +245,12 @@
 84. ELB Target Unhealthy 問題的判斷標準
     1. **常見原因**：Health check path 不存在、Health check port 錯誤、Timeout/Interval 設定不合理
     2. **解題原則**：直接了當，這種題別想太複雜
-85. Application Load Balancer 只支援 HTTP/HTTPS 健康檢查，不支援 TCP 層級檢查。
+85. ALB 健康檢查支援範圍
+    1. 只支援 HTTP/HTTPS 健康檢查
+    2. 不支援 TCP 層級檢查
+86. WAF **Rate-Based Rule** 的用途與場景
+    1. 場景：單一 IP 在短時間內發送大量請求（DDoS、爬蟲、暴力破解）
+    2. 解法：使用 AWS WAF 的 Rate-Based Rule 限制請求頻率
+87. WAF **Regular Rule** 的封鎖機制
+    1. **作用原理**：符合條件就阻擋
+    2. **常見封鎖目標**：特定 IP、地區、User-Agent
