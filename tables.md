@@ -38,3 +38,11 @@
 | -------- | ---------- | -------------------------------- |
 | 自動備份 | 最多 35 天 | 短期恢復、Point-in-Time Recovery |
 | 手動快照 | 無限期保留 | 長期保存、合規需求、重大版本備份 |
+
+## 儲存服務對比 (EBS、EFS、S3)
+
+| 服務 | 連接方式    | 適用場景                       | 考試重點                                  |
+| ---- | ----------- | ------------------------------ | ----------------------------------------- |
+| EBS  | 單 EC2 獨佔 | 1 個 instance 的本地高效存儲   | Block storage、低延遲                     |
+| EFS  | 多 EC2 共享 | 1000+ instances 共用同份數據   | POSIX filesystem、concurrently accessible |
+| S3   | 應用層連接  | 物件存儲、web accessible、歸檔 | Eventually consistent、web-based          |
