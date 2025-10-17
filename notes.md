@@ -275,3 +275,19 @@
     1. **資源管理操作**：誰 (IAM user/role) 建立了 EC2、誰刪除了 S3 bucket
     2. **安全設定變更**：誰修改了 Security Group 規則
     3. **資料庫操作**：誰啟動了 RDS snapshot
+94. EventBridge 的定位與核心概念
+    1. **服務定位**：Event Bus (事件匯流排)
+    2. **技術類比**：等同於 message queue / event broker (類似 RabbitMQ、Kafka)
+    3. **核心用途**：用來「當某件事發生時，觸發其他動作」
+95. EventBridge 的典型應用場景
+    1. **EC2 狀態監控**：當 EC2 instance 狀態改變 → 發送通知
+    2. **S3 檔案處理**：當 S3 有新檔案上傳 → 觸發 Lambda
+    3. **負載均衡監控**：當 ALB target 變成 unhealthy → 執行某個動作
+96. ALB 的 Layer 7 路由能力（考試必考）
+    1. **與 NLB 最大區別**：ALB 具備 Layer 7 路由能力
+    2. **路由判斷依據**：可根據多種 HTTP 層級條件進行智慧路由
+97. ALB Layer 7 路由的具體條件
+    1. **域名路由**：Host header (api.example.com vs admin.example.com)
+    2. **路徑路由**：Path (/users/* vs /orders/*)
+    3. **方法與參數路由**：HTTP method (GET vs POST)、Query string (?version=v2)
+    4. **進階路由**：Source IP (特定 IP 走特定 target)、HTTP headers (自定義 header)

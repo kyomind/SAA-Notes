@@ -86,3 +86,21 @@
 | Layer 4 DDoS 防護         | **AWS Shield**          |
 | 整合 ALB                  | 用 WAF（可直接關聯）    |
 | 整合 CloudFront           | 用 WAF（可直接關聯）    |
+
+## 考試陷阱題:ALB vs NLB vs CLB
+
+| 特性        | ALB          | NLB            | CLB (舊版)     |
+| ----------- | ------------ | -------------- | -------------- |
+| OSI Layer   | Layer 7      | Layer 4        | Layer 4/7      |
+| 適用協定    | HTTP/HTTPS   | TCP/UDP/TLS    | HTTP/HTTPS/TCP |
+| 路由能力    | **內容路由** | 無 (只看 port) | 基本           |
+| 效能        | 高           | **極高**       | 中             |
+| 靜態 IP     | ❌            | ✅              | ❌              |
+| WebSocket   | ✅            | ✅              | ✅              |
+| Lambda 支援 | ✅            | ❌              | ❌              |
+| 價格        | 中           | 低             | 低             |
+
+**判斷標準**:
+- 題目提到「**根據 URL path 路由**」→ ALB
+- 題目提到「**需要靜態 IP**」或「**極致效能**」→ NLB
+- 題目提到「**WebSocket**」→ ALB 或 NLB 都可以,但通常選 ALB
