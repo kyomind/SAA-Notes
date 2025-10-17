@@ -68,3 +68,11 @@
 **記憶口訣**：
 - 題目出現「hundreds of tasks」→ Max I/O
 - 題目強調「low latency」→ General Purpose
+
+## 三種 ELB 健康檢查對比
+
+| ELB 類型 | 支援的健康檢查   | 使用層級         |
+| :------- | :--------------- | :--------------- |
+| ALB      | HTTP、HTTPS      | Layer 7 (應用層) |
+| NLB      | TCP、HTTP、HTTPS | Layer 4 (傳輸層) |
+| CLB      | TCP、HTTP、HTTPS | Layer 4 + 7      |

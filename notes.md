@@ -242,3 +242,7 @@
 83. EFS Performance Mode 選擇標準
     1. **Max I/O**：數百個以上連線
     2. **General Purpose**：一般應用
+84. ELB Target Unhealthy 問題的判斷標準
+    1. **常見原因**：Health check path 不存在、Health check port 錯誤、Timeout/Interval 設定不合理
+    2. **解題原則**：直接了當，這種題別想太複雜
+85. Application Load Balancer 只支援 HTTP/HTTPS 健康檢查，不支援 TCP 層級檢查。

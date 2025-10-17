@@ -9,3 +9,6 @@
 
 ## EFS Performance Mode and Throughput Mode
 ![圖 2](https://img.kyomind.tw/img-20251017-100010.png)
+
+## AWS ELB Health Check 設定
+![圖 3](https://img.kyomind.tw/img-20251017-165046.png)
