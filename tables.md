@@ -104,3 +104,41 @@
 - 題目提到「**根據 URL path 路由**」→ ALB
 - 題目提到「**需要靜態 IP**」或「**極致效能**」→ NLB
 - 題目提到「**WebSocket**」→ ALB 或 NLB 都可以,但通常選 ALB
+
+## WAF 支援的服務
+
+| 服務            | 用途       | 典型場景                   |
+| --------------- | ---------- | -------------------------- |
+| **CloudFront**  | CDN        | 保護靜態網站、全球分發內容 |
+| **ALB**         | 負載均衡器 | 保護後端 API/應用程式      |
+| **API Gateway** | API 管理   | 保護 RESTful/WebSocket API |
+
+## WAF 規則類型與用途
+
+| 規則類型               | 範例                   | 實務用途     |
+| :--------------------- | :--------------------- | :----------- |
+| **IP 白/黑名單**       | 阻擋來自中國的 IP      | 地理封鎖     |
+| **Query String**       | `?admin=true`          | 防止參數注入 |
+| **HTTP Header**        | `User-Agent: BadBot`   | 阻擋爬蟲     |
+| **Request Body**       | 包含 `<script>`        | 防 XSS 攻擊  |
+| **Rate Limiting**      | 單 IP 每分鐘 > 1000 次 | 防 DDoS      |
+| **SQL Injection 規則** | 自動偵測 SQL 注入模式  | 防資料庫攻擊 |
+
+## 安全服務防護層級對比
+
+| 服務               | 防護層級         | 用途                   | 能否阻擋 HTTP 內容？       |
+| :----------------- | :--------------- | :--------------------- | :------------------------- |
+| **Security Group** | Layer 4 (傳輸層) | 控制 EC2 的進出流量    | ❌ 只能看 IP + Port         |
+| **NACL**           | Layer 4 (傳輸層) | 控制 Subnet 的進出流量 | ❌ 只能看 IP + Port         |
+| **AWS WAF**        | Layer 7 (應用層) | 檢查 HTTP/HTTPS 內容   | ✅ 可以看 URL、Header、Body |
+| **AWS Shield**     | Layer 3/4        | 自動防 DDoS            | ❌ 不看內容，只擋大流量     |
+
+## WAF 題目關鍵字對應
+
+| 關鍵字                 | 答案                                      |
+| :--------------------- | :---------------------------------------- |
+| 「阻擋特定國家」       | ✅ WAF Geo Match                           |
+| 「防止 SQL Injection」 | ✅ WAF Managed Rules                       |
+| 「限制請求頻率」       | ✅ WAF Rate Limiting                       |
+| 「只允許公司 IP 存取」 | ❌ Security Group (不用 WAF)               |
+| 「防 DDoS 攻擊」       | 看情況：Layer 7 → WAF，Layer 3/4 → Shield |
