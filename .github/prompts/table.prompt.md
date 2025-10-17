@@ -23,6 +23,7 @@ description: 'Extract and organize tables from images or text, then add them to 
 轉換為 Markdown 表格格式，確保：
 - 對齊方式正確（文字左對齊、數值右對齊）
 - 列寬合理，內容精簡（每個單元格建議一行以內）
+- **重點內容強調**：對於重要的概念、關鍵差異或考試重點，使用 **粗體** 標示
 - 與 tables.md 現有格式一致
 
 ### 3.5 表格外的文字處理
