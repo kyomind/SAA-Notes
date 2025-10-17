@@ -300,12 +300,12 @@
     2. **啟用 Cross-Zone**：每個 load balancer node 會將流量分散到**所有啟用 AZ** 中的已註冊 targets
     3. **停用 Cross-Zone**：每個 load balancer node 只會將流量分散到**同一 AZ** 內的已註冊 targets
 100. Cross-Zone Load Balancing 的啟用時機判斷
-    1. **核心影響**：「跨 AZ 負載均衡」開或關，會導致完全不同的流量分配結果
-    2. **適合啟用場景**：各 AZ 的 EC2 數量差異很大（如 2 vs 8 的分布）、需要確保所有機器負載一致、使用 ALB（免費）
-    3. **考試重點**：理解不同 AZ 間實例數量不均時的流量分配策略
+     1. **核心影響**：「跨 AZ 負載均衡」開或關，會導致完全不同的流量分配結果
+     2. **適合啟用場景**：各 AZ 的 EC2 數量差異很大（如 2 vs 8 的分布）、需要確保所有機器負載一致、使用 ALB（免費）
+     3. **考試重點**：理解不同 AZ 間實例數量不均時的流量分配策略
 101. WAF (Web Application Firewall) 的核心功能
-    1. **防護層級**：專門保護應用層（Layer 7）流量，阻擋惡意 HTTP/HTTPS 請求
-    2. **開發者類比**：就像在 API 前面加一層 middleware，根據規則決定請求能否進入
+     1. **防護層級**：專門保護應用層（Layer 7）流量，阻擋惡意 HTTP/HTTPS 請求
+     2. **開發者類比**：就像在 API 前面加一層 middleware，根據規則決定請求能否進入
 102. AWS Firewall Manager 的定位與功能
-    1. **服務定位**：中央管理工具，用來在多個帳號/多個資源上統一部署和管理 WAF/Shield 規則
-    2. **開發者類比**：WAF 是你寫的 middleware 防護邏輯，Firewall Manager 是 Infrastructure as Code 工具（像 Terraform），讓你一次把這個 middleware 部署到 100 台機器上
+     1. **服務定位**：中央管理工具，用來在多個帳號/多個資源上統一部署和管理 WAF/Shield 規則
+     2. **開發者類比**：WAF 是你寫的 middleware 防護邏輯，Firewall Manager 是 Infrastructure as Code 工具（像 Terraform），讓你一次把這個 middleware 部署到 100 台機器上
