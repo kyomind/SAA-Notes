@@ -3,10 +3,10 @@
    2. 數據傳輸：跨 AZ 有費用（約 $0.01/GB），但通常佔比很小
    3. 不能跨 region
 2. **ELB 也不能跨 region，只能跨 AZ**
-   1. 所有跨 region 的答案都有問題
+   1. 可以回想一下 cross-zone balancing 的概念
    2. 跨 Region 需要用 Route 53 + 多個 Regional ELB
-3. A subnet is a range of IP addresses in your VPC.
-4. The AWS PrivateLink (which is also known as VPC Endpoint) **is just a highly available, scalable technology** that enables you to privately connect your VPC to the AWS services as if they were in your VPC.
+3. A subnet is a **range** of IP addresses in your VPC.
+4. The AWS PrivateLink (which is also known as **VPC Endpoint**) **is just a highly available, scalable technology** that enables you to privately connect your VPC to the AWS services as if they were in your VPC.
 5. Public Subnet ≠ 自動有 Public IP，而是「有資格配置 Public IP + 有 IGW 路由」
 6. When you create a EC2 Capacity Reservation, you specify:
    1. – The **Availability Zone** in which to reserve the capacity
@@ -18,7 +18,7 @@
 8. Install the Amazon **CloudWatch agent** to all the EC2 instances that gather the memory and disk utilization data.
    1. View the custom metrics in the CloudWatch console.
    2. 這些 metrics 會被收集到 CloudWatch Logs，而且邏輯要自己寫
-9. You need to prepare a custom metric using a Perl or other shell script, as there are **no** ready-to-use metrics for the following:
+9.  You need to prepare a custom metric using a Perl or other shell script, as there are **no** ready-to-use metrics for the following:
    1. **Memory utilization**
    2. Disk swap utilization
    3. Disk space utilization
@@ -74,60 +74,60 @@
 30. You can specify your launch template with multiple Auto Scaling groups.
     1. However, you can only specify **one** launch template for an Auto Scaling group at a time
     2. and **you can’t modify a launch template after you’ve created it.**
-31. Therefore, if you want to change the launch template for an Auto Scaling group
+32. Therefore, if you want to change the launch template for an Auto Scaling group
     1.  you must create a template
     2.  and then update your Auto Scaling group with the new launch template.
-32. To improve the **scalability** of your distributed system, you can add an **Auto Scaling group** to your EC2 instances.
-33. 經典高可用架構:
+33. To improve the **scalability** of your distributed system, you can add an **Auto Scaling group** to your EC2 instances.
+34. 經典高可用架構:
     1. Launch an **Auto-Scaling group of EC2 instances** to host your application services and an **SQS queue**.
     2. Include an Auto Scaling trigger to **watch** the SQS queue size which will either scale in or scale out the number of EC2 instances **based on the queue**.
-34. Predictive Scaling 假設 Auto Scaling Group 內所有 EC2 實例能力相同，才能準確預測需要多少台機器。
-35. Step Scaling Policy：
+35. Predictive Scaling 假設 Auto Scaling Group 內所有 EC2 實例能力相同，才能準確預測需要多少台機器。
+36. Step Scaling Policy：
     1. 你要明確定義每個區間要做什麼
     2. 可以立即回應多個告警（即使前一次擴展還在進行中）
     3. 適合流量變化劇烈的場景
-36. 直白說：這題在考你理解「**高可用架構 = 多 AZ + Auto Scaling + ELB**」的**標準組合**
+37. 直白說：這題在考你理解「**高可用架構 = 多 AZ + Auto Scaling + ELB**」的**標準組合**
     1. T3 burstable 只是讓你知道能應付短期流量尖峰。
     2. 110% 運算能力是「短期」的，credits 用完就回到 baseline
-37. In Auto Scaling, the following statements are correct regarding the **cooldown period**:
+38. In Auto Scaling, the following statements are correct regarding the **cooldown period**:
     1. It ensures that the Auto Scaling group does not launch or terminate additional EC2 instances before the previous scaling activity **takes effect**.
     2. Its **default** value is **300 seconds**.
     3. It is a **configurable** setting for your Auto Scaling group.
- 38. Dynamic scaling and predictive scaling can be used together to scale faster.
- 39. Step Scaling Warm-up Period
+ 39. Dynamic scaling and predictive scaling can be used together to scale faster.
+ 40. Step Scaling Warm-up Period
      1. 作用：新實例啟動後，不立即計入 metrics，避免誤判需求
      2. Warm-up 防止因新實例尚未就緒而過度擴展
      3. Step Scaling **專屬**設定 (Target Tracking 用 Default Cooldown)
      4. 預設值是 0 秒，需要手動設定
-38. DynamoDB 的 throughput（吞吐量）是**平均分配到各個 physical partition**
+39. DynamoDB 的 throughput（吞吐量）是**平均分配到各個 physical partition**
     1. 如果 partition key 設計不當會發生什麼？
-39. ❌ 壞例子：用 country 當 partition key（台灣用戶佔 80%）
+40. ❌ 壞例子：用 country 當 partition key（台灣用戶佔 80%）
     - **80% 請求打到同一個 partition → 只能用 250 RCU**
     - 其他 partition 閒置 → 浪費 750 RCU
     - 結果：throttling（被限流）
-40.  ✅ 好例子：用 userId 當 partition key（**high-cardinality**）
+41.  ✅ 好例子：用 userId 當 partition key（**high-cardinality**）
     - 請求平均分散到 4 個 partition
     - 每個 partition 都在工作 → 完整利用 1000 RCU
-41. High-cardinality attributes（高基數屬性）：
+42. High-cardinality attributes（高基數屬性）：
     1. 意思：有很多不同值的欄位
     2. 例子：userId、orderId、timestamp+randomId
     3. 反例：status（只有 active/inactive）、gender、country
-42. 延伸知識（考試會考）
+43. 延伸知識（考試會考）
     1. Composite key：partition key + sort key 組合可以增加靈活性
     2. Write sharding：在 partition key 加隨機 suffix（例如 userId#random(1-10)）進一步分散流量
     3. GSI（Global Secondary Index）：如果 primary key 無法改，可用 GSI 換個 partition key
-43. 直白講：partition key 就是決定「資料放哪一櫃」的依據，櫃子越多、分得越均勻，系統跑越快。選高基數欄位 = 讓 DynamoDB 自動幫你 load balance。
-44. VPC 內的應用如何安全存取 DynamoDB（避免走公網）
+44. 直白講：partition key 就是決定「資料放哪一櫃」的依據，櫃子越多、分得越均勻，系統跑越快。選高基數欄位 = 讓 DynamoDB 自動幫你 load balance。
+45. VPC 內的應用如何安全存取 DynamoDB（避免走公網）
     1. **解決方案：Gateway Endpoint**
     2. 運作流程：EC2 (private subnet) → VPC route table (自動更新 DynamoDB CIDR) → Gateway Endpoint → DynamoDB (走 AWS 內網)
-45. Gateway Endpoint vs Interface Endpoint 比較
+46. Gateway Endpoint vs Interface Endpoint 比較
     1. **Gateway Endpoint**：路由層級，**改 route table，免費**
     2. **Interface Endpoint**：網路層級，加 ENI，要錢
-46. DynamoDB Streams 處理敏感資料的考試判斷標準
+47. DynamoDB Streams 處理敏感資料的考試判斷標準
     1. **適合用途**：複製、備份、ETL、通知 ✅
     2. **不適合用途**：資料驗證、匿名化 ❌（太晚了）
     3. **記憶點**：Streams = after write，敏感資料要 before write 處理
- 47. 錯誤原因：題目要求 NoSQL database，**Redshift 是 relational database（data warehouse）**
+ 48. 錯誤原因：題目要求 NoSQL database，**Redshift 是 relational database（data warehouse）**
 48. Kinesis Data Streams + Lambda 做即時資料脫敏
     1. **標準套路**：AWS 處理敏感資料的推薦架構
     2. **運作流程**：Kinesis 負責接收串流資料 → Lambda 在資料「transit（傳輸中）」時就進行轉換/匿名化 → 確保資料在落地 DynamoDB 前就已經處理好
