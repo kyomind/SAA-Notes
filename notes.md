@@ -317,4 +317,8 @@
 106. Amazon Neptune 是一個快速、可靠、完全管理的**圖形資料庫服務**，適合打造社交網路、推薦引擎和詐欺偵測應用程式。
 107. Amazon DocumentDB 是一個完全管理的**文件資料庫服務**，與 MongoDB 相容，適合用於內容管理、目錄和即時分析等應用場景。
 108. Amazon S3 is indeed a key-value store! (where the key is the full path of the object in the bucket)
-109. 
+109. Amazon Redshift 的核心特性與應用場景
+    1. **服務定位**：AWS 的資料倉儲服務，專門為 OLAP (分析型查詢) 設計
+    2. **Columnar Storage**：讀取特定欄位時效率極高，無需掃描整個 row
+    3. **數據規模**：能處理 PB 級資料
+    4. **BI 工具相容**：原生支援 QuickSight、Tableau 等可直接連接
