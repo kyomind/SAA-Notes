@@ -127,39 +127,39 @@
     1. **適合用途**：複製、備份、ETL、通知 ✅
     2. **不適合用途**：資料驗證、匿名化 ❌（太晚了）
     3. **記憶點**：Streams = after write，敏感資料要 before write 處理
- 48. 錯誤原因：題目要求 NoSQL database，**Redshift 是 relational database（data warehouse）**
-48. Kinesis Data Streams + Lambda 做即時資料脫敏
+48. 錯誤原因：題目要求 NoSQL database，**Redshift 是 relational database（data warehouse）**
+49. Kinesis Data Streams + Lambda 做即時資料脫敏
     1. **標準套路**：AWS 處理敏感資料的推薦架構
     2. **運作流程**：Kinesis 負責接收串流資料 → Lambda 在資料「transit（傳輸中）」時就進行轉換/匿名化 → 確保資料在落地 DynamoDB 前就已經處理好
     3. **串流 + 即時處理 = Kinesis + Lambda**
-49. DynamoDB Hot Partition 問題的核心原理
+50. DynamoDB Hot Partition 問題的核心原理
     1. **分散機制**：DynamoDB 會根據 partition key 把資料分散儲存到不同的物理分區，每個分區分到的 I/O 容量是平均的
     2. **問題成因**：如果 partition key 設計不好，導致某些分區被大量存取，其他分區閒置
-50. DynamoDB throughput 問題 → DynamoDB Auto Scaling。不是其它有的沒有的解決方案
-51. DynamoDB On-Demand 計費模式
+51. DynamoDB throughput 問題 → DynamoDB Auto Scaling。不是其它有的沒有的解決方案
+52. DynamoDB On-Demand 計費模式
     1. **特點**：按實際請求數付費，無需預先設定容量
     2. **缺點**：成本較高
-52. DynamoDB Provisioned 計費模式
+53. DynamoDB Provisioned 計費模式
     1. **特點**：預先設定 Read/Write Capacity Units (RCU/WCU)
     2. **限制**：超過容量就會被 throttle
-53. DynamoDB Global Secondary Index (GSI) 的 Auto Scaling
+54. DynamoDB Global Secondary Index (GSI) 的 Auto Scaling
     1. **獨立容量**：GSI 有自己的 RCU/WCU，獨立於 base table
     2. **場景示例**：Base table: 100 RCU/WCU、GSI-1: 50 RCU/WCU、GSI-2: 200 RCU/WCU ← 各自可單獨設定 Auto Scaling
     3. **優勢**：查詢集中在某個 GSI 時，不會影響其他 index 或 base table 的容量
-54. Lambda 是唯一「**沒有內建 caching 功能**」的服務
+55. Lambda 是唯一「**沒有內建 caching 功能**」的服務
     1. 題目若問「需要 caching 來降低延遲」，Lambda 通常不是答案，除非明確說「搭配 ElastiCache 使用」
     2. 記憶點：**Lambda = 無狀態 = 無內建 cache**
-55. CloudFront + S3 分發靜態檔案的典型用法
+56. CloudFront + S3 分發靜態檔案的典型用法
     1. **題目關鍵詞**："distribute globally" + "static files" → CDN 的標準應用
     2. **運作流程**：CloudFront 在全球 **Edge Location** 快取 S3 檔案，用戶從最近的節點下載，大幅降低延遲
-56. 創建 Global Table 的**前置條件**是啟用 DynamoDB Streams
+57. 創建 Global Table 的**前置條件**是啟用 DynamoDB Streams
     1. **Global Table 需要透過 Streams 來捕捉資料變更，並複製到其他 region。**
-57. Kinesis Data Streams 的選擇優勢
+58. Kinesis Data Streams 的選擇優勢
     1. **天生為串流設計**：資料持續流入，多個應用程式可同時消費
     2. **Replay 功能**：保留資料 24 小時到 365 天，可重新讀取
     3. **高吞吐量**：每秒處理 GB 級別資料沒問題
     4. **多消費者**：不同應用可各自處理同一份資料流
-58. RDS Snapshot 的考試重點
+59. RDS Snapshot 的考試重點
     1. **長期保存場景**：題目提到「長期保存」、「超過 35 天」、「合規要求」→ 選 Snapshot
     2. **Snapshot 的持久性**：RDS 刪除時自動備份會一起消失，但手動快照會保留
 59. S3 **不適合**大量小檔案的原因
