@@ -93,8 +93,8 @@
     1. It ensures that the Auto Scaling group does not launch or terminate additional EC2 instances before the previous scaling activity **takes effect**.
     2. Its **default** value is **300 seconds**.
     3. It is a **configurable** setting for your Auto Scaling group.
- 39. Dynamic scaling and predictive scaling can be used together to scale faster.
- 40. Step Scaling Warm-up Period
+39. Dynamic scaling and predictive scaling can be used together to scale faster.
+40. Step Scaling Warm-up Period
      1. 作用：新實例啟動後，不立即計入 metrics，避免誤判需求
      2. Warm-up 防止因新實例尚未就緒而過度擴展
      3. Step Scaling **專屬**設定 (Target Tracking 用 Default Cooldown)
@@ -105,7 +105,7 @@
     - **80% 請求打到同一個 partition → 只能用 250 RCU**
     - 其他 partition 閒置 → 浪費 750 RCU
     - 結果：throttling（被限流）
-41.  ✅ 好例子：用 userId 當 partition key（**high-cardinality**）
+41. ✅ 好例子：用 userId 當 partition key（**high-cardinality**）
     - 請求平均分散到 4 個 partition
     - 每個 partition 都在工作 → 完整利用 1000 RCU
 42. High-cardinality attributes（高基數屬性）：
