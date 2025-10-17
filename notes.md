@@ -286,8 +286,20 @@
 96. ALB 的 Layer 7 路由能力（考試必考）
     1. **與 NLB 最大區別**：ALB 具備 Layer 7 路由能力
     2. **路由判斷依據**：可根據多種 HTTP 層級條件進行智慧路由
-97. ALB Layer 7 路由的具體條件
+97. ALB Layer 7 路由的具體條件⭐️
     1. **域名路由**：Host header (api.example.com vs admin.example.com)
     2. **路徑路由**：Path (/users/* vs /orders/*)
     3. **方法與參數路由**：HTTP method (GET vs POST)、Query string (?version=v2)
     4. **進階路由**：Source IP (特定 IP 走特定 target)、HTTP headers (自定義 header)
+98. ALB vs NLB 的 gRPC 支援差異（考試陷阱題）
+    1. **ALB 支援 gRPC**：可以處理 gRPC 協定的應用程式
+    2. **NLB 不支援 gRPC**：只能處理純 TCP/UDP 流量
+    3. **考試陷阱**：題目會用「UDP」、「TCP」、「Layer 4」等字眼誘導你選 NLB，但若涉及 gRPC 必須選 ALB
+99. ELB Cross-Zone Load Balancing 的運作機制
+    1. **基本概念**：Load balancer nodes 負責將客戶端請求分發到已註冊的 targets
+    2. **啟用 Cross-Zone**：每個 load balancer node 會將流量分散到**所有啟用 AZ** 中的已註冊 targets
+    3. **停用 Cross-Zone**：每個 load balancer node 只會將流量分散到**同一 AZ** 內的已註冊 targets
+100. Cross-Zone Load Balancing 的啟用時機判斷
+    1. **核心影響**：「跨 AZ 負載均衡」開或關，會導致完全不同的流量分配結果
+    2. **適合啟用場景**：各 AZ 的 EC2 數量差異很大（如 2 vs 8 的分布）、需要確保所有機器負載一致、使用 ALB（免費）
+    3. **考試重點**：理解不同 AZ 間實例數量不均時的流量分配策略
