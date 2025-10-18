@@ -460,3 +460,6 @@
     1. **選題關鍵詞**：「不同 AWS 帳號」、「帳號 A 存取帳號 B」
     2. **解決方案一**：STS + AssumeRole（跨帳號臨時存取）
     3. **解決方案二**：Resource-based Policy（例如 S3 Bucket Policy 直接開放給另一個帳號）
+151. AssumeRole 的定義與考試判斷
+    1. **選題關鍵詞**：看到 AssumeRole → 答案 99% 是 STS
+    2. **白話定義**：一個 API 動作，讓你「扮演」另一個 IAM Role，取得該 Role 的權限
