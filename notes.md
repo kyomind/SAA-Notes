@@ -408,3 +408,35 @@
     1. **可修改項目**：Volume size（只能增加）、Volume type、IOPS / throughput
     2. **修改特性**：無需停機，修改後需等 6 小時才能再次修改
     3. **考試重點**：EBS 支援熱修改，不用停機
+136. EBS SSD 系列（注重 IOPS）
+    1. **gp3/gp2 (General Purpose)**：通用型，CP 值最高，預設選項
+    2. **io2/io1 (Provisioned IOPS)**：需要穩定高 IOPS 的場景（**資料庫**）
+137. EBS HDD 系列（注重 Throughput）
+    1. **st1 (Throughput Optimized)**：大量順序讀寫（Big Data、Log）
+    2. **sc1 (Cold HDD)**：最便宜，不常存取的冷資料
+138. EBS 已淘汰的類型
+    - Magnetic volumes（上一代產品，考試可能還會出現但不要選）
+139. Custom Identity Broker 的運作與應用
+    1. **完整流程**：員工 → 企業認證系統 (LDAP/AD) → Identity Broker (驗證身份 + 呼叫 STS AssumeRole + 返回憑證) → 臨時憑證 → 存取 AWS
+    2. **適用情況**：企業用 LDAP/AD 等非 SAML 2.0 系統、題目說「existing corporate identity system」、需要「programmatic access」給內部員工
+140. IAM 認証整合方案的選擇指南
+    1. **SAML 2.0 相容**：直接用 IAM Identity Provider（不需要自己寫 broker）
+    2. **外部用戶登入**：用 Cognito
+    3. **企業舊系統**：Custom Identity Broker（過渡方案，優先考慮升級到 SAML 2.0 或 OIDC）
+141. IAM User 建立後的預設狀態
+    1. **有身份**：可以被識別 ✅
+    2. **沒有權限**：不能做任何事 ❌
+    3. **沒有憑證**：無法驗證身份 ❌
+142. 透過 CLI/API 呼叫 AWS 的兩個必要步驟
+    1. **Access Key**：讓程式能用這組 Key 證明「我是這個 User」（身份驗證）
+    2. **IAM Policy**：賦予權限，允許存取 S3、DynamoDB、Lambda 等服務（授權）
+143. S3 存取控制方案的選擇建議
+    1. **不推薦**：ACL（太細碎難管理）
+    2. **推薦方案一**：Bucket Policy（大部分情況）
+    3. **推薦方案二**：IAM Role（需要 Console 或臨時憑證時）
+144. IAM Role vs Bucket Policy 的關鍵差異
+    - **只有 IAM Role 能讓跨帳號用戶用 Console 登入查看 S3**（Bucket Policy 只支援程式存取）
+145. AWS 存取方式的定義與區別
+    1. **Console（AWS Management Console）**：用瀏覽器登入 https://console.aws.amazon.com 看到的圖形化介面
+    2. **Programmatic access**：用 CLI、SDK、API 呼叫 AWS（需要 Access Key）
+    3. **Console access**：人類用瀏覽器點點點操作 AWS（需要登入帳號）
