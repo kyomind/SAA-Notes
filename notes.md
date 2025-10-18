@@ -332,5 +332,38 @@
     3. **備份工具**：快照 (Snapshot) / 備份 (Backup)
 112. Multi-AZ 解決的是高可用性（High Availability），不是災難恢復（Disaster Recovery）
 113. 災難恢復的核心思維：資料要能在另一個 Region 復原
-
-
+114. Redshift Enhanced VPC Routing 與 Spectrum 的區別
+    1. **題目關鍵詞**：「forces traffic through your VPCs」
+    2. **Enhanced VPC Routing**：強制所有 COPY/UNLOAD 流量走 VPC（可控管路由、監控）
+    3. **Redshift Spectrum**：只是查詢 S3 資料的功能，不涉及「強制走 VPC」
+115. AWS Glue 的核心功能
+    1. **定位**：完全管理的 ETL (Extract, Transform, Load) 服務
+    2. **主要特性**：可在幾次點擊內建立、執行和監控 ETL 工作，無需自行維護伺服器
+116. Amazon EMR (Elastic MapReduce) 的核心特性
+    1. **原生支援框架**：Spark、Hive、Presto、Hadoop
+    2. **服務特點**：Managed Service，AWS 幫你管底層叢集
+    3. **成本效益**：用完即關，成本可控
+    4. **易用性**：資料工程師熟悉的工具，直接上手
+117. Amazon QuickSight 的核心特性
+    1. **服務定位**：AWS 的 BI (Business Intelligence) 工具
+    2. **主要功能**：專門做 dashboard 和報表
+    3. **原生整合**：原生連接 Redshift（一鍵設定）
+    4. **架構優勢**：Serverless，DevOps 不用管基礎設施
+118. Glue Job Bookmarks 用來追蹤 ETL job 已經處理過的資料，避免重複處理。
+119. Kinesis Data Analytics 可以直接讀取 Kinesis Data Streams 的資料，進行即時分析和處理。
+120. AWS Machine Learning 服務列表
+    - **Rekognition**：人臉偵測、物體標籤識別、名人辨識
+    - **Transcribe**：音訊轉文字（例如字幕生成）
+    - **Polly**：文字轉語音
+    - **Translate**：多語言翻譯
+    - **Lex**：建構對話式機器人（Chatbots）
+    - **Connect**：雲端聯絡中心
+    - **Comprehend**：自然語言處理 (NLP)
+    - **SageMaker**：適合每位開發者和資料科學家的機器學習平台
+    - **Kendra**：ML 驅動的搜尋引擎
+    - **Personalize**：實時個性化推薦
+    - **Textract**：文件中的文字和資料偵測
+121. Amazon Lex 整合 ASR (語音轉文字) 和 NLU (**意圖辨識**) 於一個服務，適合建構對話機器人
+122. Amazon Polly 的進階語音控制功能
+    1. **Pronunciation Lexicons (發音字典)**：自訂特定詞彙發音（例：EC2 → 讀成 Elastic Compute Cloud）
+    2. **SSML (Speech Synthesis Markup Language)**：控制語音表達方式（強調、停頓、呼吸聲、耳語）
