@@ -440,3 +440,23 @@
     1. **Console（AWS Management Console）**：用瀏覽器登入 https://console.aws.amazon.com 看到的圖形化介面
     2. **Programmatic access**：用 CLI、SDK、API 呼叫 AWS（需要 Access Key）
     3. **Console access**：人類用瀏覽器點點點操作 AWS（需要登入帳號）
+146. GuardDuty 威脅偵測與判斷標準
+    1. **選題關鍵詞**：出現「malicious」、「suspicious」、「threat」→ 選 GuardDuty
+    2. **服務定位**：S3 威脅偵測服務
+    3. **偵測能力**：已知惡意 IP 存取 S3、Bucket Policy/ACL 被改成公開、異常 API 呼叫模式（如暴力掃描權限設定）
+147. CloudTrail 與 GuardDuty 的核心差異
+    1. **CloudTrail 的用途**：記錄 API 呼叫（稽核、合規、事後調查）
+    2. **GuardDuty 的用途**：分析行為模式進行即時威脅偵測
+    3. **定位區別**：CloudTrail 只是「錄影機」，記錄誰做了什麼，但不會主動告訴你「這是惡意行為」
+    4. **聯動關係**：GuardDuty 會分析 CloudTrail 的日誌，自動標記可疑活動
+148. AWS Security Token Service (STS) 的核心功能
+    1. **服務定位**：發「**臨時通行證**」的服務，讓你可以跨 AWS 帳號存取資源，或給外部使用者臨時權限
+    2. **選題關鍵詞**：跨帳號存取（Cross-account access）、臨時權限（Temporary credentials）、AssumeRole、第三方存取 AWS 資源（例如：外部廠商需要臨時存取你的 S3）
+149. 跨帳號存取的定義與實務場景
+    1. **白話定義**：讓 A 帳號的使用者，可以操作 B 帳號的 AWS 資源
+    2. **典型組織架構**：母公司帳號 (Prod) → 子公司 A 帳號 (Dev) / 子公司 B 帳號 (Test)
+    3. **應用場景**：Dev 帳號的工程師需要部署到 Prod 帳號 → 跨帳號存取
+150. 跨帳號存取的考試判斷標準
+    1. **選題關鍵詞**：「不同 AWS 帳號」、「帳號 A 存取帳號 B」
+    2. **解決方案一**：STS + AssumeRole（跨帳號臨時存取）
+    3. **解決方案二**：Resource-based Policy（例如 S3 Bucket Policy 直接開放給另一個帳號）
