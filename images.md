@@ -12,3 +12,6 @@
 
 ## AWS ELB Health Check 設定
 ![圖 3](https://img.kyomind.tw/img-20251017-165046.png)
+
+## S3 Lifecycle configuration and Storage Class
+![圖 0](https://img.kyomind.tw/img-20251018-143843.png)

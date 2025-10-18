@@ -185,7 +185,7 @@
 68. 記憶點：「EBS 只吃對稱 key；要自動就開預設」
 69. EBS volume 的可用性與複製特性
     1. **可用性**：自動在同一 AZ 內複製（防單點故障）
-    2. **掛載限制**：只能掛載到**同 AZ** 的 EC2
+    2. **掛載限制**：只能掛載到**同 AZ** 的 EC2⭐️
 70. EBS Multi-Attach 限制
     1. **支援 volume type**：僅限 **io1/io2 (Provisioned IOPS SSD)**
     2. **實例要求**：必須**同 AZ** + Nitro-based instance
@@ -367,3 +367,44 @@
 122. Amazon Polly 的進階語音控制功能
     1. **Pronunciation Lexicons (發音字典)**：自訂特定詞彙發音（例：EC2 → 讀成 Elastic Compute Cloud）
     2. **SSML (Speech Synthesis Markup Language)**：控制語音表達方式（強調、停頓、呼吸聲、耳語）
+123. Amazon Comprehend Medical 的核心功能
+    1. **用途**：AWS 專門處理醫療文字的 NLP 服務，為非結構化醫療文檔設計
+    2. **功能特性**：自動識別醫療實體（藥物、疾病、劑量、症狀）、自動偵測 PHI（姓名、日期、地址等敏感資訊）
+    3. **合規性**：HIPAA eligible（符合醫療合規）
+124. Infrequent Access 儲存類別的考試陷阱
+    1. **IA 的定位**：Infrequent Access（不常存取）= 不常用但隨時要拿
+    2. **S3 One Zone-IA 的分類**：是 Infrequent Access 儲存類別，不是 Archive（封存）類別
+125. Glacier 封存類別的選用原則
+    1. **Glacier 的用途**：Glacier（封存）= 封存不急著用
+    2. **選題標準**：題目若要求 backup/archive，應選 Glacier 系列，不是 IA 系列
+126. Amazon Data Lifecycle Manager (DLM) 的核心功能
+    1. **用途**：自動化管理 EBS snapshots 的生命週期，無需手動建立或寫 Lambda 排程
+    2. **自動建立**：定期自動快照
+127. DLM 的保留與刪除管理
+    1. **保留政策**：依政策保存（如：保留 7 天、30 天）
+    2. **自動刪除**：過期快照自動清除，省成本
+128. AWS Backup 與 DLM 的定位區別
+    1. **AWS Backup 的特性**：多服務集中備份平台（EBS、RDS、DynamoDB、EFS 等）
+    2. **應用場景**：適合跨服務統一備份策略
+129. Instance Store-backed AMI 的特性
+    1. **Root device**：Instance Store（臨時儲存）
+    2. **資料生命週期**：資料只存在於 instance 生命週期內，instance 終止 → 資料自動刪除
+130. EBS-backed AMI 的特性
+    1. **Root device**：EBS volume
+    2. **資料持久性**：Instance 終止後，EBS 可保留（看設定），資料持久性高
+131. AMI 儲存類型的白話理解
+    1. **類比概念**：AMI 就像安裝光碟，EBS-backed 裝到「外接硬碟」（可拆卸）、Instance Store-backed 裝到「內建暫存」（不可拆）
+    2. **現狀**：現在 99% 都用 EBS-backed，Instance Store-backed 幾乎淘汰
+132. EBS Snapshot 儲存位置的常見誤解
+    1. **錯誤說法**：EBS snapshot 不會寫入 Amazon RDS
+    2. **正確位置**：EBS snapshot 儲存在 Amazon S3（不是 RDS）
+133. EBS 複製範圍的常見誤解
+    1. **錯誤觀念**：EBS 會跨 region 複製 ❌
+    2. **正確觀念**：EBS volume 只在單一 AZ 內自動複製多份 ✅
+134. EBS 可用性與複製特性總結
+    1. **基本綁定**：EBS 綁定單一 AZ，不跨 AZ、不跨 region
+    2. **跨域保護**：要跨 AZ/region 保護資料 → 需手動建 snapshot 並複製
+135. EBS 線上修改支援與限制
+    1. **可修改項目**：Volume size（只能增加）、Volume type、IOPS / throughput
+    2. **修改特性**：無需停機，修改後需等 6 小時才能再次修改
+    3. **考試重點**：EBS 支援熱修改，不用停機
