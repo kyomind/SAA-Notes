@@ -294,13 +294,13 @@
     3. **方法與參數路由**：HTTP method (GET vs POST)、Query string (?version=v2)
     4. **進階路由**：Source IP (特定 IP 走特定 target)、HTTP headers (自定義 header)
 100. ALB vs NLB 的 gRPC 支援差異（考試陷阱題）
-    1. **ALB 支援 gRPC**：可以處理 gRPC 協定的應用程式
-    2. **NLB 不支援 gRPC**：只能處理純 TCP/UDP 流量
-    3. **考試陷阱**：題目會用「UDP」、「TCP」、「Layer 4」等字眼誘導你選 NLB，但若涉及 gRPC 必須選 ALB
+     1. **ALB 支援 gRPC**：可以處理 gRPC 協定的應用程式
+     2. **NLB 不支援 gRPC**：只能處理純 TCP/UDP 流量
+     3. **考試陷阱**：題目會用「UDP」、「TCP」、「Layer 4」等字眼誘導你選 NLB，但若涉及 gRPC 必須選 ALB
 101. ELB Cross-Zone Load Balancing 的運作機制
-    1. **基本概念**：Load balancer nodes 負責將客戶端請求分發到已註冊的 targets
-    2. **啟用 Cross-Zone**：每個 load balancer node 會將流量分散到**所有啟用 AZ** 中的已註冊 targets
-    3. **停用 Cross-Zone**：每個 load balancer node 只會將流量分散到**同一 AZ** 內的已註冊 targets
+     1. **基本概念**：Load balancer nodes 負責將客戶端請求分發到已註冊的 targets
+     2. **啟用 Cross-Zone**：每個 load balancer node 會將流量分散到**所有啟用 AZ** 中的已註冊 targets
+     3. **停用 Cross-Zone**：每個 load balancer node 只會將流量分散到**同一 AZ** 內的已註冊 targets
 102. Cross-Zone Load Balancing 的啟用時機判斷
      1. **核心影響**：「跨 AZ 負載均衡」開或關，會導致完全不同的流量分配結果
      2. **適合啟用場景**：各 AZ 的 EC2 數量差異很大（如 2 vs 8 的分布）、需要確保所有機器負載一致、使用 ALB（免費）
@@ -312,49 +312,49 @@
      1. **服務定位**：中央管理工具，用來在多個帳號/多個資源上統一部署和管理 WAF/Shield 規則
      2. **開發者類比**：WAF 是你寫的 middleware 防護邏輯，Firewall Manager 是 Infrastructure as Code 工具（像 Terraform），讓你一次把這個 middleware 部署到 100 台機器上
 105. Amazon Aurora 的核心特性
-    1. **資料庫相容性**：MySQL 和 PostgreSQL-compatible 關聯式資料庫
-    2. **儲存系統**：分散式、容錯、自我修復的儲存系統，自動擴展至 128TB
-    3. **高可用架構**：最多 15 個低延遲讀副本、支援 3 個 AZ 複製
-    4. **備份與復原**：可用時間點復原、持續備份到 S3
+     1. **資料庫相容性**：MySQL 和 PostgreSQL-compatible 關聯式資料庫
+     2. **儲存系統**：分散式、容錯、自我修復的儲存系統，自動擴展至 128TB
+     3. **高可用架構**：最多 15 個低延遲讀副本、支援 3 個 AZ 複製
+     4. **備份與復原**：可用時間點復原、持續備份到 S3
 106. Amazon Neptune 是一個快速、可靠、完全管理的**圖形資料庫服務**，適合打造社交網路、推薦引擎和詐欺偵測應用程式。
 107. Amazon DocumentDB 是一個完全管理的**文件資料庫服務**，與 MongoDB 相容，適合用於內容管理、目錄和即時分析等應用場景。
 108. Amazon S3 is indeed a key-value store! (where the key is the full path of the object in the bucket)
 109. Amazon Redshift 的核心特性與應用場景
-    1. **服務定位**：AWS 的資料倉儲服務，專門為 OLAP (分析型查詢) 設計
-    2. **Columnar Storage**：讀取特定欄位時效率極高，無需掃描整個 row
-    3. **數據規模**：能處理 PB 級資料
-    4. **BI 工具相容**：原生支援 QuickSight、Tableau 等可直接連接
+     1. **服務定位**：AWS 的資料倉儲服務，專門為 OLAP (分析型查詢) 設計
+     2. **Columnar Storage**：讀取特定欄位時效率極高，無需掃描整個 row
+     3. **數據規模**：能處理 PB 級資料
+     4. **BI 工具相容**：原生支援 QuickSight、Tableau 等可直接連接
 110. 高可用 (HA - High Availability) 的特性
-    1. **範圍**：同一 Region
-    2. **切換方式**：自動切換
-    3. **架構**：多個可用區域 (Multi-AZ)
+     1. **範圍**：同一 Region
+     2. **切換方式**：自動切換
+     3. **架構**：多個可用區域 (Multi-AZ)
 111. 災難恢復 (DR - Disaster Recovery) 的特性
-    1. **範圍**：跨 Region
-    2. **復原方式**：手動或自動復原
-    3. **備份工具**：快照 (Snapshot) / 備份 (Backup)
+     1. **範圍**：跨 Region
+     2. **復原方式**：手動或自動復原
+     3. **備份工具**：快照 (Snapshot) / 備份 (Backup)
 112. Multi-AZ 解決的是高可用性（High Availability），不是災難恢復（Disaster Recovery）
 113. 災難恢復的核心思維：資料要能在另一個 Region 復原
 114. Redshift Enhanced VPC Routing 與 Spectrum 的區別
-    1. **題目關鍵詞**：「forces traffic through your VPCs」
-    2. **Enhanced VPC Routing**：強制所有 COPY/UNLOAD 流量走 VPC（可控管路由、監控）
-    3. **Redshift Spectrum**：只是查詢 S3 資料的功能，不涉及「強制走 VPC」
+     1. **題目關鍵詞**：「forces traffic through your VPCs」
+     2. **Enhanced VPC Routing**：強制所有 COPY/UNLOAD 流量走 VPC（可控管路由、監控）
+     3. **Redshift Spectrum**：只是查詢 S3 資料的功能，不涉及「強制走 VPC」
 115. AWS Glue 的核心功能
-    1. **定位**：完全管理的 ETL (Extract, Transform, Load) 服務
-    2. **主要特性**：可在幾次點擊內建立、執行和監控 ETL 工作，無需自行維護伺服器
+     1. **定位**：完全管理的 ETL (Extract, Transform, Load) 服務
+     2. **主要特性**：可在幾次點擊內建立、執行和監控 ETL 工作，無需自行維護伺服器
 116. Amazon EMR (Elastic MapReduce) 的核心特性
-    1. **原生支援框架**：Spark、Hive、Presto、Hadoop
-    2. **服務特點**：Managed Service，AWS 幫你管底層叢集
-    3. **成本效益**：用完即關，成本可控
-    4. **易用性**：資料工程師熟悉的工具，直接上手
+     1. **原生支援框架**：Spark、Hive、Presto、Hadoop
+     2. **服務特點**：Managed Service，AWS 幫你管底層叢集
+     3. **成本效益**：用完即關，成本可控
+     4. **易用性**：資料工程師熟悉的工具，直接上手
 117. Amazon QuickSight 的核心特性
-    1. **服務定位**：AWS 的 BI (Business Intelligence) 工具
-    2. **主要功能**：專門做 dashboard 和報表
-    3. **原生整合**：原生連接 Redshift（一鍵設定）
-    4. **架構優勢**：Serverless，DevOps 不用管基礎設施
+     1. **服務定位**：AWS 的 BI (Business Intelligence) 工具
+     2. **主要功能**：專門做 dashboard 和報表
+     3. **原生整合**：原生連接 Redshift（一鍵設定）
+     4. **架構優勢**：Serverless，DevOps 不用管基礎設施
 118. Glue Job Bookmarks 用來追蹤 ETL job 已經處理過的資料，避免重複處理。
 119. Kinesis Data Analytics 可以直接讀取 Kinesis Data Streams 的資料，進行即時分析和處理。
 120. AWS Machine Learning 服務列表
-    - **Rekognition**：人臉偵測、物體標籤識別、名人辨識
+     - **Rekognition**：人臉偵測、物體標籤識別、名人辨識
     - **Transcribe**：音訊轉文字（例如字幕生成）
     - **Polly**：文字轉語音
     - **Translate**：多語言翻譯
