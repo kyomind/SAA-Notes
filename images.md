@@ -23,3 +23,7 @@
 ## S3 Lifecycle configuration and Storage Class
 
 ![06](https://img.kyomind.tw/img-20251018-143843.png)
+
+## Kinesis Data Streams + Lambda 的非同步處理架構
+
+![圖 1](https://img.kyomind.tw/img-20251019-120246.png)

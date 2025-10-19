@@ -482,3 +482,21 @@
      1. **已有 AD 基礎**：公司用 Microsoft AD 管理員工帳號
      2. **SSO 需求**：員工想用「同一組」公司帳號登入 AWS，不想再記一組 IAM 帳密
      3. **集中管理**：IT 部門只要在 AD 管理員工權限，AWS 會信任 AD 的認證結果
+157. Lambda 適合的場景分析
+     1. **間歇性、事件驅動的工作負載**：流量不可預測、想省錢且流量不高
+     2. **執行時間限制**：執行時間短（< 15 分鐘）
+158. Lambda 不適合的場景分析
+     1. **需要持續運行**：改用 EC2/ECS
+     2. **執行時間超過 15 分鐘**：改用 Step Functions + Lambda 或 ECS
+     3. **需要固定 IP**：改用 VPC + NAT Gateway，但複雜且貴
+159. S3 Event 觸發 Lambda 的應用場景
+     1. **情境**：穿戴裝置健康數據 → S3 → 處理分析
+     2. **為什麼選 Lambda + Python**：事件驅動（新數據上傳自動觸發）、無需管理伺服器、Python 生態系豐富（pandas、numpy）、按需付費
+160. S3 Event → Lambda 的考試重點
+     1. **推送模式**：S3 主動呼叫 Lambda，不是拉取模式
+     2. **檔案過濾**：支援 prefix/suffix 過濾特定檔案
+     3. **Event 物件內容**：包含 bucket name、object key、檔案大小等完整資訊
+161. Kinesis Data Streams + Lambda 非同步處理架構
+     1. **問題場景**：使用者上傳檔案，但處理耗時，不想讓使用者等待
+     2. **核心解決方案**：請求立即寫入 Kinesis Data Streams → 回傳成功訊息給使用者（不等處理）
+     3. **非同步流程**：Lambda 非同步從 Streams 讀取資料並處理 → 完成後寫入 S3 儲存

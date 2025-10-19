@@ -156,3 +156,12 @@
 | **Notifications** | 發送通知                       | ❌ 只通知，不修復  |
 
 **題目關鍵字**：「automatically re-configure」= 自動修復 = **Remediations**
+
+## IAM 身份驗證方案常見混淆
+
+| 方案                              | 使用時機                            |
+| --------------------------------- | ----------------------------------- |
+| **SAML Federation**               | 公司已有 AD/IdP，要 SSO             |
+| **IAM Users**                     | 直接在 AWS 建立帳號（小型團隊）     |
+| **AWS SSO (IAM Identity Center)** | 管理多個 AWS 帳號的 SSO（現代作法） |
+| **Cognito**                       | 給「終端使用者」用的（app、網站）   |
