@@ -286,7 +286,7 @@
 98. ALB 的 Layer 7 路由能力（考試必考）
     1. **與 NLB 最大區別**：ALB 具備 Layer 7 路由能力
     2. **路由判斷依據**：可根據多種 HTTP 層級條件進行智慧路由
-99.  ALB Layer 7 路由的具體條件⭐️
+99. ALB Layer 7 路由的具體條件
     1. **域名路由**：Host header (api.example.com vs admin.example.com)
     2. **路徑路由**：Path (/users/* vs /orders/*)
     3. **方法與參數路由**：HTTP method (GET vs POST)、Query string (?version=v2)
