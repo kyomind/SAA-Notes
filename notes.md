@@ -14,7 +14,7 @@
    1. – The **Availability Zone** in which to reserve the capacity
    2. – The **number of instances** for which to reserve capacity
    3. – The **instance attributes**, including the instance type, tenancy, and platform/OS
-7. ★ **You are limited to running On-Demand Instances per your vCPU-based On-Demand Instance limit**, purchasing 20 Reserved Instances, and requesting Spot Instances per your dynamic Spot limit **per region**.
+7. ★★ **You are limited to running On-Demand Instances per your vCPU-based On-Demand Instance limit**, purchasing 20 Reserved Instances, and requesting Spot Instances per your dynamic Spot limit **per region**.
    1. New AWS accounts 可能更低，而不是上述的 20
    2. **AWS 的 On-Demand Instance quota 是以 vCPU 為單位計算，而非實例數量**
 8. ★★ Install the Amazon **CloudWatch agent** to all the EC2 instances that gather the memory and disk utilization data.
@@ -48,7 +48,8 @@
     - Redis 用來快取 API response
     - DAX 用來快取 DynamoDB 熱門資料
     - 存取速度從毫秒降到微秒
-16. ★ DynamoDB Accelerator (DAX) is a fully managed, highly available, **in-memory cache for DynamoDB** that delivers up to 10x performance improvement.
+16. DAX 是一個完全管理、高可用、**針對 DynamoDB 的記憶體快取**，可提升高達 10 倍的效能
+    1. 相比詳細的技術細節，題目更常問「什麼時候用 DAX」而非「DAX 的技術規格」
 17. ★★ DynamoDB Streams = 資料庫的變更日誌（Change Data Capture, CDC）
 18. ★★ 白話：每當 DynamoDB 有資料新增/修改/刪除，Streams 會即時記錄這個事件，**然後可以觸發 Lambda 做後續處理**
 19. ★ An Edge-Optimized API Gateway is **best for geographically distributed clients.**
@@ -65,7 +66,7 @@
 24. ★ The maximum size of **an item in a DynamoDB table** is **400 KB**.
 25. ★ Which AWS service allows you to build Serverless workflows using AWS services (e.g., Lambda) and supports **human approval**?
     - Step Functions
-26. ★ DynamoDB **原生支援「Export to S3」功能**，幾個點擊就完成，零程式碼、零維護、最便宜
+26. DynamoDB **原生支援「Export to S3」功能**，幾個點擊就完成，零程式碼、零維護、最便宜
 27. ★★ DynamoDB + TTL (Time To Live) = 完美的 Session 管理方案
 28. ★★ Amazon Cognito lets you add user sign-up, sign-in, and access control to your web and mobile apps quickly and easily.
     1. Amazon Cognito scales to millions of users
@@ -73,17 +74,18 @@
 29. ★★ A **launch template** is a template that an Auto Scaling group uses to launch EC2 instances.
     1. When you create a launch template, you specify information for the instances
     2. such as the ID of the **Amazon Machine Image (AMI)**, the instance type, a key pair, one or more security groups, and a block device mapping.
-30. ★ You can specify your launch template with multiple Auto Scaling groups.
+30. You can specify your launch template with multiple Auto Scaling groups.
     1. However, you can only specify **one** launch template for an Auto Scaling group at a time
-    2. and **you can’t modify a launch template after you’ve created it.**
-31. ★ Therefore, if you want to change the launch template for an Auto Scaling group
+    2. and **you can't modify a launch template after you've created it.**
+31. Therefore, if you want to change the launch template for an Auto Scaling group
     1. you must create a template
     2. and then update your Auto Scaling group with the new launch template.
-32. To improve the **scalability** of your distributed system, you can add an **Auto Scaling group** to your EC2 instances.
+32. ★ To improve the **scalability** of your distributed system, you can add an **Auto Scaling group** to your EC2 instances.
 33. ★★ 經典高可用架構:
     1. Launch an **Auto-Scaling group of EC2 instances** to host your application services and an **SQS queue**.
     2. Include an Auto Scaling trigger to **watch** the SQS queue size which will either scale in or scale out the number of EC2 instances **based on the queue**.
-34. Predictive Scaling 假設 Auto Scaling Group 內所有 EC2 實例能力相同，才能準確預測需要多少台機器。
+34. ❌ Predictive Scaling 假設 Auto Scaling Group 內所有 EC2 實例能力相同，才能準確預測需要多少台機器。
+    1. 這是一個邊界知識，考試優先度不高
 35. ★ Step Scaling Policy：
     1. 你要明確定義每個區間要做什麼
     2. 可以立即回應多個告警（即使前一次擴展還在進行中）
@@ -134,34 +136,34 @@
     1. **標準套路**：AWS 處理敏感資料的推薦架構
     2. **運作流程**：Kinesis 負責接收串流資料 → Lambda 在資料「transit（傳輸中）」時就進行轉換/匿名化 → 確保資料在落地 DynamoDB 前就已經處理好
     3. **串流 + 即時處理 = Kinesis + Lambda**
-51. DynamoDB Hot Partition 問題的核心原理
+51. ★ DynamoDB Hot Partition 問題的核心原理
     1. **分散機制**：DynamoDB 會根據 partition key 把資料分散儲存到不同的物理分區，每個分區分到的 I/O 容量是平均的
     2. **問題成因**：如果 partition key 設計不好，導致某些分區被大量存取，其他分區閒置
-52. DynamoDB throughput 問題 → DynamoDB Auto Scaling。不是其它有的沒有的解決方案
+52. ★ DynamoDB throughput 問題 → DynamoDB Auto Scaling。不是其它有的沒有的解決方案
 53. DynamoDB On-Demand 計費模式
     1. **特點**：按實際請求數付費，無需預先設定容量
     2. **缺點**：成本較高
 54. DynamoDB Provisioned 計費模式
     1. **特點**：預先設定 Read/Write Capacity Units (RCU/WCU)
     2. **限制**：超過容量就會被 throttle
-55. DynamoDB Global Secondary Index (GSI) 的 Auto Scaling
+55. ★ DynamoDB Global Secondary Index (GSI) 的 Auto Scaling
     1. **獨立容量**：GSI 有自己的 RCU/WCU，獨立於 base table
     2. **場景示例**：Base table: 100 RCU/WCU、GSI-1: 50 RCU/WCU、GSI-2: 200 RCU/WCU ← 各自可單獨設定 Auto Scaling
     3. **優勢**：查詢集中在某個 GSI 時，不會影響其他 index 或 base table 的容量
-56. Lambda 是唯一「**沒有內建 caching 功能**」的服務
+56. ★ Lambda 是唯一「**沒有內建 caching 功能**」的服務
     1. 題目若問「需要 caching 來降低延遲」，Lambda 通常不是答案，除非明確說「搭配 ElastiCache 使用」
     2. 記憶點：**Lambda = 無狀態 = 無內建 cache**
-57. CloudFront + S3 分發靜態檔案的典型用法
+57. ★★ CloudFront + S3 分發靜態檔案的典型用法
     1. **題目關鍵詞**："distribute globally" + "static files" → CDN 的標準應用
     2. **運作流程**：CloudFront 在全球 **Edge Location** 快取 S3 檔案，用戶從最近的節點下載，大幅降低延遲
-58. 創建 Global Table 的**前置條件**是啟用 DynamoDB Streams
+58. ★★ 創建 Global Table 的**前置條件**是啟用 DynamoDB Streams
     1. **Global Table 需要透過 Streams 來捕捉資料變更，並複製到其他 region。**
-59. Kinesis Data Streams 的選擇優勢
+59. ★ Kinesis Data Streams 的選擇優勢
     1. **天生為串流設計**：資料持續流入，多個應用程式可同時消費
     2. **Replay 功能**：保留資料 24 小時到 365 天，可重新讀取
     3. **高吞吐量**：每秒處理 GB 級別資料沒問題
     4. **多消費者**：不同應用可各自處理同一份資料流
-60. RDS Snapshot 的考試重點
+60. ★ RDS Snapshot 的考試重點
     1. **長期保存場景**：題目提到「長期保存」、「超過 35 天」、「合規要求」→ 選 Snapshot
     2. **Snapshot 的持久性**：RDS 刪除時自動備份會一起消失，但手動快照會保留
 61. S3 **不適合**大量小檔案的原因
@@ -170,40 +172,40 @@
 62. DocumentDB 的限制分析
     1. **功能限制**：DocumentDB 是 AWS 的 MongoDB 相容服務，但沒有 Serverless 模式（只有 cluster 模式，需要自己管理節點數量）、也不支援 Global Database（只能單區域，頂多跨 AZ）
     2. **考試關鍵**：即使 DocumentDB 相容 MongoDB，但在「Serverless + Global Database」的硬需求下不符合
-63. MongoDB 遷移的選型標準
+63. DocumentDB vs 其他選項的選型標準
     1. **正確答案是 DynamoDB**：題目說「migrate MongoDB」但沒說要「完全相容」，Serverless + Global Database 才是硬需求
     2. **實務取捨**：DynamoDB 是唯一同時滿足這兩點的選項，實務上雖需改寫程式，但這是唯一可行方案
-64. EBS 加密預設開啟的機制
+64. ★ EBS 加密預設開啟的機制
     1. **帳號層級設定**：AWS 帳號層級可以強制開啟 EBS 加密
     2. **自動應用範圍**：新建的 EBS volume 自動加密、從未加密 snapshot 複製時新 snapshot 會被加密、Launch instance 時掛載的 EBS 也會加密
-65. EBS 加密的考試常考點
+65. ★ EBS 加密的考試常考點
     1. **考題情景**：如何確保組織內所有 EBS volume 都被加密？
     2. **標準答案**：在帳號層級啟用「**EBS encryption by default**」
-66. 既有 EBS volume **無法直接加密**
+66. ★ 既有 EBS volume **無法直接加密**
     1. **限制**：舊 volume 無法直接加密
     2. **唯一作法**：建立 snapshot → 複製 snapshot（選擇加密）→ 從加密 snapshot 建立新 volume
 67. EBS 只支援**對稱加密 key**（symmetric key）
     1. **非對稱 key 用途**：非對稱 key (asymmetric) 用於簽章、驗證，不能加密 EBS
-68. 記憶點：「EBS 只吃對稱 key；要自動就開預設」
-69. EBS volume 的可用性與複製特性
+68. ★ 記憶點：「EBS 只吃對稱 key；要自動就開預設」
+69. ★ EBS volume 的可用性與複製特性
     1. **可用性**：自動在同一 AZ 內複製（防單點故障）
     2. **掛載限制**：只能掛載到**同 AZ** 的 EC2⭐️
-70. EBS Multi-Attach 限制
+70. ★ EBS Multi-Attach 限制
     1. **支援 volume type**：僅限 **io1/io2 (Provisioned IOPS SSD)**
     2. **實例要求**：必須**同 AZ** + Nitro-based instance
     3. **其他限制**：其他 volume type 不支援 Multi-Attach
 71. EBS volume 的彈性調整
     1. **可調整項目**：Volume type、大小、IOPS 可線上修改
     2. **停機需求**：無需停機
-72. EBS 複製範圍的考試陷阱
+72. ★ EBS 複製範圍的考試陷阱
     1. **錯誤觀念**：跨 region 複製 ❌
     2. **正確觀念**：同 AZ 內複製 ✅
     3. **核心概念**：EBS 只在單一 AZ 內**自動複製**，不會跨 region
-73. EBS 考試判斷標準
+73. ★ EBS 考試判斷標準
     1. **錯誤關鍵詞**：看到「separate region」→ 錯誤
     2. **正確關鍵詞**：看到「within that zone」→ 正確
     3. **跨 region 備份**：需手動建立 Snapshot → 複製到其他 region
-74. EBS Snapshot 存放位置的考試陷阱
+74. ★ EBS Snapshot 存放位置的考試陷阱
     1. **錯誤選項**：Amazon RDS ❌
     2. **正確答案**：Amazon S3 ✅
     3. **核心概念**：EBS snapshot 自動存到 S3（跨 AZ 冗餘），不是儲存在資料庫
@@ -216,8 +218,8 @@
     1. **共同點**：兩種 key 都可以用於 EBS 加密
     2. **AWS-managed 特點**：自動管理、免維護
     3. **Customer-managed 特點**：可控 rotation、權限、audit log
-77. 記憶點：「自動 snapshot 生命週期 = DLM」
-78. 自動化 EBS snapshot 管理：Amazon Data Lifecycle Manager (DLM)
+77. ★ 記憶點：「自動 snapshot 生命週期 = DLM」
+78. ★ 自動化 EBS snapshot 管理：Amazon Data Lifecycle Manager (DLM)
     1. **自動建立 snapshot**：定期備份
     2. **自動刪除過期 snapshot**：省成本
     3. **設定保留政策**：合規需求
@@ -225,7 +227,7 @@
     1. **功能相同**：都能做到全球資料的複製和同步
     2. **基礎限制**：本身都是**以 Region 為基礎**，只是有全球同步的選項
     3. **應用場景**：考試遇到需要全球資料同步的需求，可考慮這兩個服務
-80. 大量 Linux servers 共享檔案存取需求分析
+80. ★ 大量 Linux servers 共享檔案存取需求分析
     1. **題目關鍵字**：「1000 Linux servers」+「rapidly changing data」
     2. **核心需求判斷**：多台機器同時讀寫同份數據（EFS 可以，EBS 不行）、需要 POSIX 文件系統語義（EFS 提供，S3 不提供）、頻繁變更（適合 EFS，不適合 S3 歸檔）
 81. S3 不適合快速變更資料的原因分析
@@ -235,7 +237,7 @@
     1. **連接能力**：可以連接到多個 EC2 實例
     2. **作業系統限制**：僅限於 Windows OS，不支援 Linux servers
     3. **考試陷阱**：題目明確提到是 Linux servers，不是 Windows machines
-83. EFS 大量並發存取的正確配置
+83. ★ EFS 大量並發存取的正確配置
     1. **正確答案**：EFS + Provisioned Throughput + Max I/O
     2. **考試重點**：當有大量並發存取需求時，如何正確配置 EFS
 84. EFS Throughput Mode 選擇標準
@@ -250,16 +252,16 @@
 87. ALB 健康檢查支援範圍
     1. 只支援 HTTP/HTTPS 健康檢查
     2. 不支援 TCP 層級檢查
-88. WAF **Rate-Based Rule** 的用途與場景
+88. ★ WAF **Rate-Based Rule** 的用途與場景
     1. 場景：單一 IP 在短時間內發送大量請求（DDoS、爬蟲、暴力破解）
     2. 解法：使用 AWS WAF 的 Rate-Based Rule 限制請求頻率
 89. WAF **Regular Rule** 的封鎖機制
     1. **作用原理**：符合條件就阻擋
     2. **常見封鎖目標**：特定 IP、地區、User-Agent
-90. CloudWatch Application Insights 的核心功能
+90. ★ CloudWatch Application Insights 的核心功能
     1. **主要用途**：為**應用程式**和底層 AWS 資源提供**可觀測性** (observability)
     2. **自動化能力**：自動設定最佳監控器，持續分析資料以偵測應用程式問題
-91. ELB Access Logs + Application Insights 組合技的考試情境
+91. Application Insights 的考試情境
     1. **考試場景**：需要分析 ALB 流量模式並快速排查問題
     2. **解題思路**：先取得原始資料，再自動化分析與問題偵測
 92. ALB Access Logs 的資料收集機制
@@ -270,30 +272,30 @@
     1. **核心功能**：自動分析這些 log，找出異常流量模式
     2. **視覺化呈現**：產生視覺化 dashboard
     3. **效率提升**：減少手動翻 S3 log 的時間
-94. CloudTrail 的監控範圍與定位
+94. ★ CloudTrail 的監控範圍與定位
     1. **監控對象**：記錄「誰對 AWS 做了什麼操作」，不是「應用程式的流量」
     2. **核心功能**：AWS API 呼叫的稽核追蹤 (audit trail)
 95. CloudTrail 記錄的具體操作類型
     1. **資源管理操作**：誰 (IAM user/role) 建立了 EC2、誰刪除了 S3 bucket
     2. **安全設定變更**：誰修改了 Security Group 規則
     3. **資料庫操作**：誰啟動了 RDS snapshot
-96. EventBridge 的定位與核心概念
+96. ★ EventBridge 的定位與核心概念
     1. **服務定位**：Event Bus (事件匯流排)
     2. **技術類比**：等同於 message queue / event broker (類似 RabbitMQ、Kafka)
     3. **核心用途**：用來「當某件事發生時，觸發其他動作」
-97. EventBridge 的典型應用場景
+97. ★ EventBridge 的典型應用場景
     1. **EC2 狀態監控**：當 EC2 instance 狀態改變 → 發送通知
     2. **S3 檔案處理**：當 S3 有新檔案上傳 → 觸發 Lambda
     3. **負載均衡監控**：當 ALB target 變成 unhealthy → 執行某個動作
-98. ALB 的 Layer 7 路由能力（考試必考）
+98. ★★ ALB 的 Layer 7 路由能力（考試必考）
     1. **與 NLB 最大區別**：ALB 具備 Layer 7 路由能力
     2. **路由判斷依據**：可根據多種 HTTP 層級條件進行智慧路由
-99. ALB Layer 7 路由的具體條件
+99. ★ ALB Layer 7 路由的具體條件
     1. **域名路由**：Host header (api.example.com vs admin.example.com)
     2. **路徑路由**：Path (/users/*vs /orders/*)
     3. **方法與參數路由**：HTTP method (GET vs POST)、Query string (?version=v2)
     4. **進階路由**：Source IP (特定 IP 走特定 target)、HTTP headers (自定義 header)
-100. ALB vs NLB 的 gRPC 支援差異（考試陷阱題）
+100. ★★ ALB vs NLB 的 gRPC 支援差異（考試陷阱題）
      1. **ALB 支援 gRPC**：可以處理 gRPC 協定的應用程式
      2. **NLB 不支援 gRPC**：只能處理純 TCP/UDP 流量
      3. **考試陷阱**：題目會用「UDP」、「TCP」、「Layer 4」等字眼誘導你選 NLB，但若涉及 gRPC 必須選 ALB
