@@ -1,26 +1,26 @@
 # Speed Notes for SAA
 
-1. EC2 Auto Scaling 的伸縮範圍**預設是整個 region，也就是可以跨 AZ**
+1. ★★ EC2 Auto Scaling 的伸縮範圍**預設是整個 region，也就是可以跨 AZ**
    1. 可以設定成單一 AZ，但省不了多少錢
    2. 數據傳輸：跨 AZ 有費用（約 $0.01/GB），但通常佔比很小
    3. 不能跨 region
-2. **ELB 也不能跨 region，只能跨 AZ**
+2. ★★ **ELB 也不能跨 region，只能跨 AZ**
    1. 可以回想一下 cross-zone balancing 的概念
    2. 跨 Region 需要用 Route 53 + 多個 Regional ELB
-3. A subnet is a **range** of IP addresses in your VPC.
-4. The AWS PrivateLink (which is also known as **VPC Endpoint**) **is just a highly available, scalable technology** that enables you to privately connect your VPC to the AWS services as if they were in your VPC.
-5. Public Subnet ≠ 自動有 Public IP，而是「有資格配置 Public IP + 有 IGW 路由」
+3. ★ A subnet is a **range** of IP addresses in your VPC.
+4. ★★ The AWS PrivateLink (which is also known as **VPC Endpoint**) **is just a highly available, scalable technology** that enables you to privately connect your VPC to the AWS services as if they were in your VPC.
+5. ★ Public Subnet ≠ 自動有 Public IP，而是「有資格配置 Public IP + 有 IGW 路由」
 6. When you create a EC2 Capacity Reservation, you specify:
    1. – The **Availability Zone** in which to reserve the capacity
    2. – The **number of instances** for which to reserve capacity
    3. – The **instance attributes**, including the instance type, tenancy, and platform/OS
-7. **You are limited to running On-Demand Instances per your vCPU-based On-Demand Instance limit**, purchasing 20 Reserved Instances, and requesting Spot Instances per your dynamic Spot limit **per region**.
+7. ★ **You are limited to running On-Demand Instances per your vCPU-based On-Demand Instance limit**, purchasing 20 Reserved Instances, and requesting Spot Instances per your dynamic Spot limit **per region**.
    1. New AWS accounts 可能更低，而不是上述的 20
    2. **AWS 的 On-Demand Instance quota 是以 vCPU 為單位計算，而非實例數量**
-8. Install the Amazon **CloudWatch agent** to all the EC2 instances that gather the memory and disk utilization data.
+8. ★ Install the Amazon **CloudWatch agent** to all the EC2 instances that gather the memory and disk utilization data.
    1. View the custom metrics in the CloudWatch console.
    2. 這些 metrics 會被收集到 CloudWatch Logs，而且邏輯要自己寫
-9. You need to prepare a custom metric using a Perl or other shell script, as there are **no** ready-to-use metrics for the following:
+9. CloudWatch 自訂 metrics：You need to prepare a custom metric using a Perl or other shell script, as there are **no** ready-to-use metrics for the following:
    1. **Memory utilization**
    2. Disk swap utilization
    3. Disk space utilization
