@@ -472,10 +472,13 @@
 153. CloudWatch Contributor Insights 的核心功能
      1. **用途**：找出「Top-N 貢獻者」問題，分析「誰貢獻最多流量/請求」
      2. **應用場景**：題目要找「top IP addresses」，這是典型的應用
-154. CloudWatch Contributor Insights 的運作方式
-     1. **步驟一**：自動分析 log 資料
-     2. **步驟二**：找出「誰貢獻最多流量/請求」
-     3. **步驟三**：排序顯示 Top-N（如 Top 10 IP）
-155. EventBridge Archive and Replay
-     1. **Archive**：**自動**把 events 存到 S3（AWS 管理），長期保存事件
+154. EventBridge Archive and Replay
+     1. **Archive**：自動把 events 存到 S3（AWS 管理），長期保存事件
      2. **Replay**：需要時重新發送歷史 events 到 dev 環境進行測試
+155. SAML 2.0-Based Federation 的應用場景
+     1. **問題情境**：公司已有 Microsoft Active Directory (AD)，員工想用公司帳號登入 AWS
+     2. **解決方案**：SAML 2.0-Based Federation
+156. 選擇 SAML Federation 的三大原因
+     1. **已有 AD 基礎**：公司用 Microsoft AD 管理員工帳號
+     2. **SSO 需求**：員工想用「同一組」公司帳號登入 AWS，不想再記一組 IAM 帳密
+     3. **集中管理**：IT 部門只要在 AD 管理員工權限，AWS 會信任 AD 的認證結果
