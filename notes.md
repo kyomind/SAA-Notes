@@ -119,11 +119,11 @@
     1. Composite key：partition key + sort key 組合可以增加靈活性
     2. Write sharding：在 partition key 加隨機 suffix（例如 `userId#random(1-10)`）進一步分散流量
     3. GSI（**Global Secondary Index**）：如果 primary key 無法改，可用 GSI 換個 partition key
-45. ★ 直白講：partition key 就是決定「資料放哪一櫃」的依據，櫃子越多、分得越均勻，系統跑越快。選高基數欄位 = 讓 DynamoDB 自動幫你 load balance。
+45. ★ 直白講：partition key 就是決定「資料放哪一櫃」的依據，櫃子越多、分得越均勻，系統跑越快。**選高基數欄位 = 讓 DynamoDB 自動幫你 load balance**。
 46. ★★ VPC 內的應用如何安全存取 DynamoDB（避免走公網）
     1. **解決方案：Gateway Endpoint**
-    2. 運作流程：EC2 (private subnet) → VPC route table (自動更新 DynamoDB CIDR) → Gateway Endpoint → DynamoDB (走 AWS 內網)
-47. ★★ Gateway Endpoint vs Interface Endpoint 比較
+    2. 運作流程：EC2 (private subnet) → VPC route table (自動更新 DynamoDB CIDR) → Gateway Endpoint → DynamoDB (走 AWS 內網)⭐️
+47. ★★ Gateway Endpoint vs Interface Endpoint 比較⭐️
     1. **Gateway Endpoint**：路由層級，**改 route table，免費**
     2. **Interface Endpoint**：網路層級，加 ENI，要錢
 48. ★ DynamoDB Streams 處理敏感資料的考試判斷標準
@@ -134,24 +134,23 @@
 50. ★★ Kinesis Data Streams + Lambda 做即時資料脫敏
     1. **標準套路**：AWS 處理敏感資料的推薦架構
     2. **運作流程**：Kinesis 負責接收串流資料 → Lambda 在資料「transit（傳輸中）」時就進行轉換/匿名化 → 確保資料在落地 DynamoDB 前就已經處理好
-    3. **串流 + 即時處理 = Kinesis + Lambda**
+    3. **串流 + 即時處理 = Kinesis + Lambda**⭐️
 51. ★ DynamoDB Hot Partition 問題的核心原理
-    1. **分散機制**：DynamoDB 會根據 partition key 把資料分散儲存到不同的物理分區，每個分區分到的 I/O 容量是平均的
+    1. **分散機制**：DynamoDB 會**根據 partition key 把資料分散儲存到不同的物理分區**，每個分區分到的 I/O 容量是平均的
     2. **問題成因**：如果 partition key 設計不好，導致某些分區被大量存取，其他分區閒置
-52. ★ DynamoDB throughput 問題 → DynamoDB Auto Scaling。不是其它有的沒有的解決方案
+52. DynamoDB throughput(吞吐量)問題 → 請認明 **DynamoDB Auto Scaling**
 53. DynamoDB On-Demand 計費模式
     1. **特點**：按實際請求數付費，無需預先設定容量
-    2. **缺點**：成本較高
+    2. **缺點**：成本較高(是 provisioned 的 2-3 倍)
 54. DynamoDB Provisioned 計費模式
     1. **特點**：預先設定 Read/Write Capacity Units (RCU/WCU)
-    2. **限制**：超過容量就會被 throttle
-55. ★ DynamoDB Global Secondary Index (GSI) 的 Auto Scaling
-    1. **獨立容量**：GSI 有自己的 RCU/WCU，獨立於 base table
+    2. **限制**：超過容量就會被 **throttle**
+55. ★ DynamoDB Global Secondary Index (GSI) 的 Auto Scaling⭐️
+    1. **獨立容量**：GSI 有自己的 RCU/WCU，**獨立**於 base table
     2. **場景示例**：Base table: 100 RCU/WCU、GSI-1: 50 RCU/WCU、GSI-2: 200 RCU/WCU ← 各自可單獨設定 Auto Scaling
     3. **優勢**：查詢集中在某個 GSI 時，不會影響其他 index 或 base table 的容量
-56. ★ Lambda 是唯一「**沒有內建 caching 功能**」的服務
-    1. 題目若問「需要 caching 來降低延遲」，Lambda 通常不是答案，除非明確說「搭配 ElastiCache 使用」
-    2. 記憶點：**Lambda = 無狀態 = 無內建 cache**
+56. ★ Lambda 是唯一「**沒有內建 caching 功能**」的服務⭐️
+    1. 記憶點：**Lambda = 無狀態 = 無內建 cache**
 57. ★★ CloudFront + S3 分發靜態檔案的典型用法
     1. **題目關鍵詞**："distribute globally" + "static files" → CDN 的標準應用
     2. **運作流程**：CloudFront 在全球 **Edge Location** 快取 S3 檔案，用戶從最近的節點下載，大幅降低延遲
