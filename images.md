@@ -27,3 +27,11 @@
 ## Kinesis Data Streams + Lambda 的非同步處理架構
 
 ![圖 1](https://img.kyomind.tw/img-20251019-120246.png)
+
+## Using Lambda@Edge and Kinesis together
+
+![圖 2](https://img.kyomind.tw/img-20251019-170114.png)
+
+## API Gateway + Lambda = Scalable Serverless API
+
+![圖 3](https://img.kyomind.tw/img-20251019-170542.png)

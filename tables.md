@@ -165,3 +165,41 @@
 | **IAM Users**                     | 直接在 AWS 建立帳號（小型團隊）     |
 | **AWS SSO (IAM Identity Center)** | 管理多個 AWS 帳號的 SSO（現代作法） |
 | **Cognito**                       | 給「終端使用者」用的（app、網站）   |
+
+## Internet Gateway vs NAT Gateway
+
+|              | Internet Gateway          | NAT Gateway               |
+| ------------ | ------------------------- | ------------------------- |
+| **用途**     | Public subnet 雙向連外網  | Private subnet 單向連外網 |
+| **流量方向** | 雙向（進+出）             | 只能出，不能進            |
+| **使用場景** | Web server、Load Balancer | Database、後端服務        |
+| **安全性**   | 直接暴露在網路上          | 隱藏 private IP           |
+| **成本**     | 免費                      | 按小時+流量收費           |
+
+**記憶點**：
+
+- IGW = 大門（可進可出）
+- NAT = 單向閥門（只能出去下載更新、呼叫 API）
+
+---
+
+## Security Group vs NACL
+
+|              | Security Group          | NACL                       |
+| ------------ | ----------------------- | -------------------------- |
+| **層級**     | Instance（EC2、RDS 等） | Subnet                     |
+| **Stateful** | 是（回程自動放行）      | 否（必須明確設定進出規則） |
+| **規則**     | 只有 Allow              | Allow + Deny               |
+| **預設**     | 全關閉                  | 全開放                     |
+| **評估順序** | 全部規則都看            | 依編號順序，碰到就停       |
+
+**記憶點**：
+
+- SG = 保鑣（認得你，回來自動放行，stateful）
+- NACL = 閘門（進出都要驗證，stateless）
+
+**考試陷阱**：
+
+- 看到「需要 deny 特定 IP」→ NACL（SG 沒有 deny）
+- 看到「stateless」→ NACL
+- 大部分情況用 SG 就夠了，NACL 是額外防護層
