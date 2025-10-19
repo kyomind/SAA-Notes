@@ -8,9 +8,9 @@
 2. ★★ **ELB 也不能跨 region，只能跨 AZ**
    1. 可以回想一下 **cross-zone balancing** 的概念
    2. 跨 Region 需要用 Route 53 + 多個 Regional ELB
-3. A subnet is a **range** of IP addresses in your VPC.
+3. 👀 A subnet is a **range** of IP addresses in your VPC.
 4. ★ The AWS PrivateLink (which is also known as **VPC Endpoint**) **is just a highly available, scalable technology** that enables you to privately connect your VPC to the AWS services as if they were in your VPC.
-5. Public Subnet ≠ 自動有 Public IP，而是「**有資格配置** Public IP + 有 IGW 路由」
+5. ★ Public Subnet ≠ 自動有 Public IP，而是「**有資格配置** Public IP + 有 IGW 路由」
 6. ❌ When you create a EC2 Capacity Reservation, you specify（綁定了）:
    1. – The **Availability Zone** in which to reserve the capacity
    2. – The **number of instances** for which to reserve capacity
@@ -26,7 +26,7 @@
    3. Disk space utilization
    4. Page file utilization
    5. Log collection
-10. CloudWatch 預設可以看到以下這些 EC2 指標：
+10. 👀 CloudWatch 預設可以看到以下這些 EC2 指標：
     1. **CPU Utilization**
     2. Disk Read activity
     3. Network In/Out
@@ -44,11 +44,11 @@
     - **只支援 DynamoDB**，不能用在 RDS、Aurora
     - **最終一致性**（Eventually Consistent），快取可能有**延遲**
     - **成本**：DAX 節點要另外收費（但比暴力增加 RCU 便宜）
-15. DAX = DynamoDB 的 Redis
+15. 👀 DAX = DynamoDB 的 Redis
     - Redis 用來快取 API response
     - DAX 用來快取 DynamoDB 熱門資料
     - 存取速度從毫秒降到微秒
-16. DAX 是一個完全管理、高可用、**針對 DynamoDB 的記憶體快取**，可提升高達 10 倍的效能
+16. 👀 DAX 是一個完全管理、高可用、**針對 DynamoDB 的記憶體快取**，可提升高達 10 倍的效能
     1. 相比詳細的技術細節，題目更常問「什麼時候用 DAX」而非「DAX 的技術規格」
 17. ★ DynamoDB Streams = 資料庫的變更日誌（Change Data Capture, CDC）
 18. ★★ 白話：每當 DynamoDB 有資料新增/修改/刪除，Streams 會即時記錄這個事件
@@ -60,32 +60,32 @@
     1. 不要打回 Origin
     2. 降低延遲——**用戶在哪裡，認證就在哪裡執行**
 21. ★★ Lambda@Edge 是什麼？白話：**在 CDN 節點上跑的 Lambda，讓你在離用戶最近的地方處理請求**
-22. ★ **API Gateway 都是部署在單一 Region**，不在 Edge
+22. 👀 **API Gateway 都是部署在單一 Region**，不在 Edge
     - 用戶還是要跨國打到你的 API Gateway，延遲沒改善
     - CloudFront 前面再放 API Gateway 是畫蛇添足
-23. ★ Lambda@Edge 可以在 **CloudFront Edge Location** 執行程式碼
-24. The maximum size of **an item in a DynamoDB table** is **400 KB**.
+23. 👀 Lambda@Edge 可以在 **CloudFront Edge Location** 執行程式碼
+24. 👀 The maximum size of **an item in a DynamoDB table** is **400 KB**.
 25. ★ Which AWS service allows you to build Serverless workflows using AWS services (e.g., Lambda) and supports **human approval**?
     - Step Functions
-26. DynamoDB **原生支援「Export to S3」功能**，幾個點擊就完成，零程式碼、零維護、最便宜
+26. 👀 DynamoDB **原生支援「Export to S3」功能**，幾個點擊就完成，零程式碼、零維護、最便宜
 27. ★ DynamoDB + TTL (Time To Live) = 完美的 Session 管理方案
 28. ★ Amazon Cognito lets you add user sign-up, sign-in, and access control to your web and mobile apps quickly and easily.
     1. Scales to millions of users
     2. Supports sign-in with **social** identity providers, and enterprise identity providers via **SAML 2.0 and OpenID Connect**.
-29. ★ A **launch template** is a template that an Auto Scaling group uses to launch EC2 instances.
+29. 👀 A **launch template** is a template that an Auto Scaling group uses to launch EC2 instances.
     1. When you create a launch template, you specify information for the instances
     2. such as the ID of the **Amazon Machine Image (AMI)**, the instance type, a key pair, one or more security groups, and a block device mapping.
-30. You can specify your launch template with multiple Auto Scaling groups.
+30. 👀 You can specify your launch template with multiple Auto Scaling groups.
     1. However, you can only specify **one** launch template for an Auto Scaling group at a time
     2. and **you can't modify a launch template after you've created it.**
-31. Therefore, if you want to change the launch template for an Auto Scaling group
+31. 👀 Therefore, if you want to change the launch template for an Auto Scaling group
     1. you must create a template
     2. and then **update** your Auto Scaling group with the new launch template.
 32. ★ To improve the **scalability** of your distributed system, you can add an **Auto Scaling group** to your EC2 instances.
 33. ★★ 經典高可用架構（Task Queue Pattern）:
     1. **EC2 instances** = 消費者，從 SQS 取出訊息並處理
     2. **Auto Scaling 觸發**：監控 SQS queue size，隊列長 → scale out、隊列短 → scale in
-34. ❌ Predictive Scaling 假設 Auto Scaling Group 內所有 EC2 實例能力相同，才能準確預測需要多少台機器。
+34. 👀 Predictive Scaling 假設 Auto Scaling Group 內所有 EC2 實例能力相同，才能準確預測需要多少台機器。
     1. 這是一個邊界知識，考試優先度不高
 35. ★ Step Scaling Policy：
     1. 你要明確定義每個區間要做什麼
@@ -130,7 +130,7 @@
     1. **適合用途**：複製、備份、ETL、通知 ✅
     2. **不適合用途**：資料驗證、匿名化 ❌（太晚了）
     3. **記憶點**：Streams = after write，敏感資料要 before write 處理
-49. ❌ 錯誤原因：題目要求 NoSQL database，**Redshift 是 relational database（data warehouse）**
+49. 👀 ❌ 錯誤原因：題目要求 NoSQL database，**Redshift 是 relational database（data warehouse）**
 50. ★★ Kinesis Data Streams + Lambda 做即時資料脫敏
     1. **標準套路**：AWS 處理敏感資料的推薦架構
     2. **運作流程**：Kinesis 負責接收串流資料 → Lambda 在資料「transit（傳輸中）」時就進行轉換/匿名化 → 確保資料在落地 DynamoDB 前就已經處理好
