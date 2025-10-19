@@ -11,7 +11,7 @@
 3. 👀 A subnet is a **range** of IP addresses in your VPC.
 4. ★ The AWS PrivateLink (which is also known as **VPC Endpoint**) **is just a highly available, scalable technology** that enables you to privately connect your VPC to the AWS services as if they were in your VPC.
 5. ★ Public Subnet ≠ 自動有 Public IP，而是「**有資格配置** Public IP + 有 IGW 路由」
-6. ❌ When you create a EC2 Capacity Reservation, you specify（綁定了）:
+6. When you create a EC2 Capacity Reservation, you specify（綁定了）:
    1. – The **Availability Zone** in which to reserve the capacity
    2. – The **number of instances** for which to reserve capacity
    3. – The **instance attributes**, including the instance type, tenancy, and platform/OS
@@ -53,7 +53,7 @@
 17. ★ DynamoDB Streams = 資料庫的變更日誌（Change Data Capture, CDC）
 18. ★★ 白話：每當 DynamoDB 有資料新增/修改/刪除，Streams 會即時記錄這個事件
     1. **然後可以觸發 Lambda 做後續處理**
-19. ★ An **Edge-Optimized API Gateway** is **best for geographically distributed clients.**
+19. ★★ An **Edge-Optimized API Gateway** is **best for geographically distributed clients.**
     1. API requests are routed to the **nearest CloudFront Edge Location** which improves latency.
     2. The API Gateway still lives in **one** AWS Region.
 20. ★ 目的關鍵需求：在 CloudFront Edge Locations 執行認證
