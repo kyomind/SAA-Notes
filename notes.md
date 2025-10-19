@@ -135,21 +135,21 @@
     1. **標準套路**：AWS 處理敏感資料的推薦架構
     2. **運作流程**：Kinesis 負責接收串流資料 → Lambda 在資料「transit（傳輸中）」時就進行轉換/匿名化 → 確保資料在落地 DynamoDB 前就已經處理好
     3. **串流 + 即時處理 = Kinesis + Lambda**⭐️
-51. ★ DynamoDB Hot Partition 問題的核心原理
+51. ★★ DynamoDB Hot Partition 問題的核心原理
     1. **分散機制**：DynamoDB 會**根據 partition key 把資料分散儲存到不同的物理分區**，每個分區分到的 I/O 容量是平均的
     2. **問題成因**：如果 partition key 設計不好，導致某些分區被大量存取，其他分區閒置
-52. DynamoDB throughput(吞吐量)問題 → 請認明 **DynamoDB Auto Scaling**
-53. DynamoDB On-Demand 計費模式
+52. ★ DynamoDB throughput(吞吐量)問題 → 請認明 **DynamoDB Auto Scaling**
+53. 😇 DynamoDB On-Demand 計費模式
     1. **特點**：按實際請求數付費，無需預先設定容量
     2. **缺點**：成本較高(是 provisioned 的 2-3 倍)
-54. DynamoDB Provisioned 計費模式
+54. 😇 DynamoDB Provisioned 計費模式
     1. **特點**：預先設定 Read/Write Capacity Units (RCU/WCU)
     2. **限制**：超過容量就會被 **throttle**
 55. ★ DynamoDB Global Secondary Index (GSI) 的 Auto Scaling⭐️
     1. **獨立容量**：GSI 有自己的 RCU/WCU，**獨立**於 base table
     2. **場景示例**：Base table: 100 RCU/WCU、GSI-1: 50 RCU/WCU、GSI-2: 200 RCU/WCU ← 各自可單獨設定 Auto Scaling
     3. **優勢**：查詢集中在某個 GSI 時，不會影響其他 index 或 base table 的容量
-56. ★ Lambda 是唯一「**沒有內建 caching 功能**」的服務⭐️
+56. 👀 Lambda 是唯一「**沒有內建 caching 功能**」的服務⭐️
     1. 記憶點：**Lambda = 無狀態 = 無內建 cache**
 57. ★★ CloudFront + S3 分發靜態檔案的典型用法
     1. **題目關鍵詞**："distribute globally" + "static files" → CDN 的標準應用
@@ -164,13 +164,13 @@
 60. ★ RDS Snapshot 的考試重點
     1. **長期保存場景**：題目提到「長期保存」、「超過 35 天」、「合規要求」→ 選 Snapshot
     2. **Snapshot 的持久性**：RDS 刪除時自動備份會一起消失，但手動快照會保留
-61. S3 **不適合**大量小檔案的原因
+61. 😇 S3 **不適合**大量小檔案的原因
     1. **成本問題**：每個物件都有固定成本，儲存 1 個 1GB 檔案 vs 1000 個 1MB 檔案價格相同，但小檔案有 1000 次 API 請求成本
     2. **API 計費**：PUT/GET 請求按次數收費，1 萬個 10KB 小檔案 = 1 萬次請求，API 費用可能比儲存費用還貴
-62. DocumentDB 的限制分析
+62. 👀 DocumentDB 的限制分析
     1. **功能限制**：DocumentDB 是 AWS 的 MongoDB 相容服務，但沒有 Serverless 模式（只有 cluster 模式，需要自己管理節點數量）、也不支援 Global Database（只能單區域，頂多跨 AZ）
     2. **考試關鍵**：即使 DocumentDB 相容 MongoDB，但在「Serverless + Global Database」的硬需求下不符合
-63. DocumentDB vs 其他選項的選型標準
+63. 👀 DocumentDB vs 其他選項的選型標準
     1. **正確答案是 DynamoDB**：題目說「migrate MongoDB」但沒說要「完全相容」，Serverless + Global Database 才是硬需求
     2. **實務取捨**：DynamoDB 是唯一同時滿足這兩點的選項，實務上雖需改寫程式，但這是唯一可行方案
 64. ★ EBS 加密預設開啟的機制
@@ -182,17 +182,17 @@
 66. ★ 既有 EBS volume **無法直接加密**
     1. **限制**：舊 volume 無法直接加密
     2. **唯一作法**：建立 snapshot → 複製 snapshot（選擇加密）→ 從加密 snapshot 建立新 volume
-67. EBS 只支援**對稱加密 key**（symmetric key）
+67. 👀 EBS 只支援**對稱加密 key**（symmetric key）
     1. **非對稱 key 用途**：非對稱 key (asymmetric) 用於簽章、驗證，不能加密 EBS
-68. ★ 記憶點：「EBS 只吃對稱 key；要自動就開預設」
-69. ★ EBS volume 的可用性與複製特性
+68. 😇 記憶點：「EBS 只吃對稱 key；要自動就開預設」
+69. ★★ EBS volume 的可用性與複製特性
     1. **可用性**：自動在同一 AZ 內複製（防單點故障）
     2. **掛載限制**：只能掛載到**同 AZ** 的 EC2⭐️
 70. ★ EBS Multi-Attach 限制
     1. **支援 volume type**：僅限 **io1/io2 (Provisioned IOPS SSD)**
     2. **實例要求**：必須**同 AZ** + Nitro-based instance
     3. **其他限制**：其他 volume type 不支援 Multi-Attach
-71. EBS volume 的彈性調整
+71. 👀 EBS volume 的彈性調整
     1. **可調整項目**：Volume type、大小、IOPS 可線上修改
     2. **停機需求**：無需停機
 72. ★ EBS 複製範圍的考試陷阱
@@ -203,16 +203,16 @@
     1. **錯誤關鍵詞**：看到「separate region」→ 錯誤
     2. **正確關鍵詞**：看到「within that zone」→ 正確
     3. **跨 region 備份**：需手動建立 Snapshot → 複製到其他 region
-74. ★ EBS Snapshot 存放位置的考試陷阱
+74. ★★ EBS Snapshot 存放位置的考試陷阱
     1. **錯誤選項**：Amazon RDS ❌
     2. **正確答案**：Amazon S3 ✅
     3. **核心概念**：EBS snapshot 自動存到 S3（跨 AZ 冗餘），不是儲存在資料庫
     4. **記憶點**：「Snapshot 去 S3，不是資料庫」
-75. EBS 加密金鑰來源
+75. 😇 EBS 加密金鑰來源
     1. **支援的 key 類型**：AWS-managed keys (AWS 代管) ✅ 、Customer-managed keys (你在 KMS 建立) ✅
     2. **加密位置**：EC2 host
     3. **傳輸保護**：EC2 ↔ EBS 傳輸時也加密（Data at rest 加密）
-76. EBS 加密金鑰選擇的考試要點
+76. 👀 EBS 加密金鑰選擇的考試要點
     1. **共同點**：兩種 key 都可以用於 EBS 加密
     2. **AWS-managed 特點**：自動管理、免維護
     3. **Customer-managed 特點**：可控 rotation、權限、audit log
@@ -221,59 +221,59 @@
     1. **自動建立 snapshot**：定期備份
     2. **自動刪除過期 snapshot**：省成本
     3. **設定保留政策**：合規需求
-79. Aurora Global Database 與 DynamoDB Global Tables 的全球複製方案
+79. 😇 Aurora Global Database 與 DynamoDB Global Tables 的全球複製方案
     1. **功能相同**：都能做到全球資料的複製和同步
     2. **基礎限制**：本身都是**以 Region 為基礎**，只是有全球同步的選項
     3. **應用場景**：考試遇到需要全球資料同步的需求，可考慮這兩個服務
 80. ★ 大量 Linux servers 共享檔案存取需求分析
     1. **題目關鍵字**：「1000 Linux servers」+「rapidly changing data」
     2. **核心需求判斷**：多台機器同時讀寫同份數據（EFS 可以，EBS 不行）、需要 POSIX 文件系統語義（EFS 提供，S3 不提供）、頻繁變更（適合 EFS，不適合 S3 歸檔）
-81. S3 不適合快速變更資料的原因分析
+81. 😇 S3 不適合快速變更資料的原因分析
     1. **表面特性**：S3 提供與 EFS 相同等級的高可用性和高擴展性
     2. **核心限制**：不適合儲存快速變更的資料，主要用於歸檔和靜態內容
-82. FSx for Windows File Server 的作業系統限制
+82. 👀 FSx for Windows File Server 的作業系統限制
     1. **連接能力**：可以連接到多個 EC2 實例
     2. **作業系統限制**：僅限於 Windows OS，不支援 Linux servers
     3. **考試陷阱**：題目明確提到是 Linux servers，不是 Windows machines
 83. ★ EFS 大量並發存取的正確配置
     1. **正確答案**：EFS + Provisioned Throughput + Max I/O
     2. **考試重點**：當有大量並發存取需求時，如何正確配置 EFS
-84. EFS Throughput Mode 選擇標準
+84. 😇 EFS Throughput Mode 選擇標準
     1. **Provisioned**：高頻存取，資料量小
     2. **Bursting**：資料量大，偶爾存取
-85. EFS Performance Mode 選擇標準
+85. 😇 EFS Performance Mode 選擇標準
     1. **Max I/O**：數百個以上連線
     2. **General Purpose**：一般應用
-86. ELB Target Unhealthy 問題的判斷標準
+86. 😇 ELB Target Unhealthy 問題的判斷標準
     1. **常見原因**：Health check path 不存在、Health check port 錯誤、Timeout/Interval 設定不合理
     2. **解題原則**：直接了當，這種題別想太複雜
-87. ALB 健康檢查支援範圍
+87. 👀 ALB 健康檢查支援範圍
     1. 只支援 HTTP/HTTPS 健康檢查
     2. 不支援 TCP 層級檢查
 88. ★ WAF **Rate-Based Rule** 的用途與場景
     1. 場景：單一 IP 在短時間內發送大量請求（DDoS、爬蟲、暴力破解）
     2. 解法：使用 AWS WAF 的 Rate-Based Rule 限制請求頻率
-89. WAF **Regular Rule** 的封鎖機制
+89. 😇 WAF **Regular Rule** 的封鎖機制
     1. **作用原理**：符合條件就阻擋
     2. **常見封鎖目標**：特定 IP、地區、User-Agent
 90. ★ CloudWatch Application Insights 的核心功能
     1. **主要用途**：為**應用程式**和底層 AWS 資源提供**可觀測性** (observability)
     2. **自動化能力**：自動設定最佳監控器，持續分析資料以偵測應用程式問題
-91. Application Insights 的考試情境
+91. 😇 Application Insights 的考試情境
     1. **考試場景**：需要分析 ALB 流量模式並快速排查問題
     2. **解題思路**：先取得原始資料，再自動化分析與問題偵測
-92. ALB Access Logs 的資料收集機制
+92. 😇 ALB Access Logs 的資料收集機制
     1. **啟用方式**：Enable access logs on ALB
     2. **記錄內容**：來源 IP、請求路徑、回應時間、狀態碼等
     3. **儲存位置**：資料會自動存到 S3（壓縮格式）
-93. Application Insights 整合 ALB logs 的自動化分析
+93. 😇 Application Insights 整合 ALB logs 的自動化分析
     1. **核心功能**：自動分析這些 log，找出異常流量模式
     2. **視覺化呈現**：產生視覺化 dashboard
     3. **效率提升**：減少手動翻 S3 log 的時間
-94. ★ CloudTrail 的監控範圍與定位
+94. ★★ CloudTrail 的監控範圍與定位
     1. **監控對象**：記錄「誰對 AWS 做了什麼操作」，不是「應用程式的流量」
     2. **核心功能**：AWS API 呼叫的稽核追蹤 (audit trail)
-95. CloudTrail 記錄的具體操作類型
+95. ★ CloudTrail 記錄的具體操作類型
     1. **資源管理操作**：誰 (IAM user/role) 建立了 EC2、誰刪除了 S3 bucket
     2. **安全設定變更**：誰修改了 Security Group 規則
     3. **資料庫操作**：誰啟動了 RDS snapshot
