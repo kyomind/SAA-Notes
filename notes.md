@@ -465,3 +465,17 @@
 151. AssumeRole 的定義與考試判斷
      1. **選題關鍵詞**：看到 AssumeRole → 答案 99% 是 STS
      2. **白話定義**：一個 API 動作，讓你「扮演」另一個 IAM Role，取得該 Role 的權限
+152. CloudWatch Metric Stream 的三大特徵（SAA 必考）
+     1. **特徵一**：Near real-time（不是批次，是串流）
+     2. **特徵二**：必須經過 Kinesis Firehose（直接連線標配）
+     3. **特徵三**：可直接送到 3rd party（Datadog、Splunk、New Relic）
+153. CloudWatch Contributor Insights 的核心功能
+     1. **用途**：找出「Top-N 貢獻者」問題，分析「誰貢獻最多流量/請求」
+     2. **應用場景**：題目要找「top IP addresses」，這是典型的應用
+154. CloudWatch Contributor Insights 的運作方式
+     1. **步驟一**：自動分析 log 資料
+     2. **步驟二**：找出「誰貢獻最多流量/請求」
+     3. **步驟三**：排序顯示 Top-N（如 Top 10 IP）
+155. EventBridge Archive and Replay
+     1. **Archive**：**自動**把 events 存到 S3（AWS 管理），長期保存事件
+     2. **Replay**：需要時重新發送歷史 events 到 dev 環境進行測試

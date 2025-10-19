@@ -146,3 +146,13 @@
 | 「限制請求頻率」       | ✅ WAF Rate Limiting                       |
 | 「只允許公司 IP 存取」 | ❌ Security Group (不用 WAF)               |
 | 「防 DDoS 攻擊」       | 看情況：Layer 7 → WAF，Layer 3/4 → Shield |
+
+## AWS Config 三大功能對比
+
+| 功能              | 用途                           | 對應題目需求      |
+| ----------------- | ------------------------------ | ----------------- |
+| **Config Rules**  | 偵測達規（檢查 SG 是否開 SSH） | ✅ 偵測問題        |
+| **Remediations**  | 自動修復達規組態               | ✅ 自動重新組態 SG |
+| **Notifications** | 發送通知                       | ❌ 只通知，不修復  |
+
+**題目關鍵字**：「automatically re-configure」= 自動修復 = **Remediations**
