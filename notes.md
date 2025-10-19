@@ -75,8 +75,8 @@
     1. However, you can only specify **one** launch template for an Auto Scaling group at a time
     2. and **you can’t modify a launch template after you’ve created it.**
 31. Therefore, if you want to change the launch template for an Auto Scaling group
-    1.  you must create a template
-    2.  and then update your Auto Scaling group with the new launch template.
+    1. you must create a template
+    2. and then update your Auto Scaling group with the new launch template.
 32. To improve the **scalability** of your distributed system, you can add an **Auto Scaling group** to your EC2 instances.
 33. 經典高可用架構:
     1. Launch an **Auto-Scaling group of EC2 instances** to host your application services and an **SQS queue**.
@@ -100,7 +100,7 @@
      3. Step Scaling **專屬**設定 (Target Tracking 用 Default Cooldown)
      4. 預設值是 0 秒，需要手動設定
 40. DynamoDB 的 throughput（吞吐量）是**平均分配到各個 physical partition**
-    1.  如果 partition key 設計不當會發生什麼？
+    1. 如果 partition key 設計不當會發生什麼？
 41. ❌ 壞例子：用 country 當 partition key（台灣用戶佔 80%）
     - **80% 請求打到同一個 partition → 只能用 250 RCU**
     - 其他 partition 閒置 → 浪費 750 RCU
@@ -288,7 +288,7 @@
     2. **路由判斷依據**：可根據多種 HTTP 層級條件進行智慧路由
 99. ALB Layer 7 路由的具體條件
     1. **域名路由**：Host header (api.example.com vs admin.example.com)
-    2. **路徑路由**：Path (/users/* vs /orders/*)
+    2. **路徑路由**：Path (/users/*vs /orders/*)
     3. **方法與參數路由**：HTTP method (GET vs POST)、Query string (?version=v2)
     4. **進階路由**：Source IP (特定 IP 走特定 target)、HTTP headers (自定義 header)
 100. ALB vs NLB 的 gRPC 支援差異（考試陷阱題）
@@ -437,7 +437,7 @@
 144. IAM Role vs Bucket Policy 的關鍵差異
     - **只有 IAM Role 能讓跨帳號用戶用 Console 登入查看 S3**（Bucket Policy 只支援程式存取）
 145. AWS 存取方式的定義與區別
-    1. **Console（AWS Management Console）**：用瀏覽器登入 https://console.aws.amazon.com 看到的圖形化介面
+    1. **Console（AWS Management Console）**：用瀏覽器登入 <https://console.aws.amazon.com> 看到的圖形化介面
     2. **Programmatic access**：用 CLI、SDK、API 呼叫 AWS（需要 Access Key）
     3. **Console access**：人類用瀏覽器點點點操作 AWS（需要登入帳號）
 146. GuardDuty 威脅偵測與判斷標準
