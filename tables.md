@@ -1,3 +1,5 @@
+# Table Summary Notes
+
 ## AWS 服務的 Caching 機制
 
 | 服務        | Caching 機制                                                |
@@ -66,6 +68,7 @@
 | **判斷關鍵** | 少量 tasks      | **數百個 tasks 同時存取** |
 
 **記憶口訣**：
+
 - 題目出現「hundreds of tasks」→ Max I/O
 - 題目強調「low latency」→ General Purpose
 
@@ -101,6 +104,7 @@
 | 價格        | 中           | 低             | 低             |
 
 **判斷標準**:
+
 - 題目提到「**根據 URL path 路由**」→ ALB
 - 題目提到「**需要靜態 IP**」或「**極致效能**」→ NLB
 - 題目提到「**WebSocket**」→ ALB 或 NLB 都可以,但通常選 ALB
