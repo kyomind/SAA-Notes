@@ -1,3 +1,5 @@
+# Speed Notes for SAA
+
 1. EC2 Auto Scaling 的伸縮範圍**預設是整個 region，也就是可以跨 AZ**
    1. 可以設定成單一 AZ，但省不了多少錢
    2. 數據傳輸：跨 AZ 有費用（約 $0.01/GB），但通常佔比很小
