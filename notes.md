@@ -70,9 +70,9 @@
 26. DynamoDB **原生支援「Export to S3」功能**，幾個點擊就完成，零程式碼、零維護、最便宜
 27. ★ DynamoDB + TTL (Time To Live) = 完美的 Session 管理方案
 28. ★ Amazon Cognito lets you add user sign-up, sign-in, and access control to your web and mobile apps quickly and easily.
-    1. Amazon Cognito scales to millions of users
-    2. Supports sign-in with social identity providers, such as Apple, Facebook, Google, and Amazon, and enterprise identity providers via **SAML 2.0 and OpenID Connect**.
-29. ★★ A **launch template** is a template that an Auto Scaling group uses to launch EC2 instances.
+    1. Scales to millions of users
+    2. Supports sign-in with **social** identity providers, and enterprise identity providers via **SAML 2.0 and OpenID Connect**.
+29. ★ A **launch template** is a template that an Auto Scaling group uses to launch EC2 instances.
     1. When you create a launch template, you specify information for the instances
     2. such as the ID of the **Amazon Machine Image (AMI)**, the instance type, a key pair, one or more security groups, and a block device mapping.
 30. You can specify your launch template with multiple Auto Scaling groups.
@@ -80,47 +80,45 @@
     2. and **you can't modify a launch template after you've created it.**
 31. Therefore, if you want to change the launch template for an Auto Scaling group
     1. you must create a template
-    2. and then update your Auto Scaling group with the new launch template.
+    2. and then **update** your Auto Scaling group with the new launch template.
 32. ★ To improve the **scalability** of your distributed system, you can add an **Auto Scaling group** to your EC2 instances.
-33. ★★ 經典高可用架構:
-    1. Launch an **Auto-Scaling group of EC2 instances** to host your application services and an **SQS queue**.
-    2. Include an Auto Scaling trigger to **watch** the SQS queue size which will either scale in or scale out the number of EC2 instances **based on the queue**.
+33. ★★ 經典高可用架構（Task Queue Pattern）:
+    1. **EC2 instances** = 消費者，從 SQS 取出訊息並處理
+    2. **Auto Scaling 觸發**：監控 SQS queue size，隊列長 → scale out、隊列短 → scale in
 34. ❌ Predictive Scaling 假設 Auto Scaling Group 內所有 EC2 實例能力相同，才能準確預測需要多少台機器。
     1. 這是一個邊界知識，考試優先度不高
 35. ★ Step Scaling Policy：
     1. 你要明確定義每個區間要做什麼
     2. 可以立即回應多個告警（即使前一次擴展還在進行中）
-    3. 適合流量變化劇烈的場景
+    3. 適合流量**變化劇烈**的場景
 36. ★ 直白說：這題在考你理解「**高可用架構 = 多 AZ + Auto Scaling + ELB**」的**標準組合**
-    1. T3 burstable 只是讓你知道能應付短期流量尖峰。
-    2. 110% 運算能力是「短期」的，credits 用完就回到 baseline
 37. ★★ In Auto Scaling, the following statements are correct regarding the **cooldown period**:
     1. It ensures that the Auto Scaling group does not launch or terminate additional EC2 instances before the previous scaling activity **takes effect**.
     2. Its **default** value is **300 seconds**.
     3. It is a **configurable** setting for your Auto Scaling group.
-38. Dynamic scaling and predictive scaling can be used together to scale faster.
+38. (已移除)
 39. ★ Step Scaling Warm-up Period
-     1. 作用：新實例啟動後，不立即計入 metrics，避免誤判需求
+     1. 作用：新實例啟動後，**不立即計入** metrics，避免誤判需求
      2. Warm-up 防止因新實例尚未就緒而過度擴展
      3. Step Scaling **專屬**設定 (Target Tracking 用 Default Cooldown)
-     4. 預設值是 0 秒，需要手動設定
-40. ★★ DynamoDB 的 throughput（吞吐量）是**平均分配到各個 physical partition**
+     4. 預設值是 0 秒（無 Warm-up），需要手動設定
+40. ★ DynamoDB 的 throughput（吞吐量）是**平均分配到各個 physical partition**
     1. 如果 partition key 設計不當會發生什麼？
-41. ★★ ❌ 壞例子：用 country 當 partition key（台灣用戶佔 80%）
+41. ★★ 壞例子：用 country 當 partition key（台灣用戶佔 80%）
     - **80% 請求打到同一個 partition → 只能用 250 RCU**
     - 其他 partition 閒置 → 浪費 750 RCU
     - 結果：throttling（被限流）
-42. ★★ ✅ 好例子：用 userId 當 partition key（**high-cardinality**）
+42. ★★ 好例子：用 userId 當 partition key（**high-cardinality**）
     - 請求平均分散到 4 個 partition
     - 每個 partition 都在工作 → 完整利用 1000 RCU
-43. ★★ High-cardinality attributes（高基數屬性）：
+43. ★★ **High-cardinality** attributes（高基數屬性）：
     1. 意思：有很多不同值的欄位
-    2. 例子：userId、orderId、timestamp+randomId
+    2. 例子：userId、orderId、timestamp + randomId
     3. 反例：status（只有 active/inactive）、gender、country
 44. ★ 延伸知識（考試會考）
     1. Composite key：partition key + sort key 組合可以增加靈活性
-    2. Write sharding：在 partition key 加隨機 suffix（例如 userId#random(1-10)）進一步分散流量
-    3. GSI（Global Secondary Index）：如果 primary key 無法改，可用 GSI 換個 partition key
+    2. Write sharding：在 partition key 加隨機 suffix（例如 `userId#random(1-10)`）進一步分散流量
+    3. GSI（**Global Secondary Index**）：如果 primary key 無法改，可用 GSI 換個 partition key
 45. ★ 直白講：partition key 就是決定「資料放哪一櫃」的依據，櫃子越多、分得越均勻，系統跑越快。選高基數欄位 = 讓 DynamoDB 自動幫你 load balance。
 46. ★★ VPC 內的應用如何安全存取 DynamoDB（避免走公網）
     1. **解決方案：Gateway Endpoint**
