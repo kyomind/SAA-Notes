@@ -361,7 +361,7 @@
      - **Kendra**：ML 驅動的搜尋引擎
      - **Personalize**：實時個性化推薦
      - **Textract**：文件中的文字和資料偵測
-121. 😇 Amazon Lex 整合 ASR (語音轉文字) 和 NLU (**意圖辨識**) 於一個服務，適合建構對話機器人
+121. 😇 Amazon Lex 整合 ASR (語音轉文字) 和 NLU (**意圖辨識**) 於一個服務，適合建構對話機器人○
 122. 👀 Amazon Polly 的進階語音控制功能
      1. **Pronunciation Lexicons (發音字典)**：自訂特定詞彙發音（例：EC2 → 讀成 Elastic Compute Cloud）
      2. **SSML (Speech Synthesis Markup Language)**：控制語音表達方式（強調、停頓、呼吸聲、耳語）
