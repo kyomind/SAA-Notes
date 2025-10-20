@@ -252,24 +252,24 @@
     2. 解法：使用 AWS WAF 的 Rate-Based Rule 限制請求頻率
 89. 😇 WAF **Regular Rule** 的用途與場景
     1. **作用原理**：符合條件就阻擋
-    2. **常見封鎖目標**：特定 IP、地區、User-Agent
+    2. **常見封鎖目標**：特定 IP、地區、**User-Agent**
 90. ★ CloudWatch Application Insights 的核心功能
     1. **主要用途**：為**應用程式**和底層 AWS 資源提供**可觀測性** (observability)
     2. **自動化能力**：自動設定最佳監控器，持續分析資料以偵測應用程式問題
-91. 😇 Application Insights 的考試情境
+91. 😇 CloudWatch Application Insights 的考試情境
     1. **考試場景**：需要分析 ALB 流量模式並快速排查問題
     2. **解題思路**：先取得原始資料，再自動化分析與問題偵測
 92. 😇 ALB Access Logs 的資料收集機制
     1. **啟用方式**：Enable access logs on ALB
     2. **記錄內容**：來源 IP、請求路徑、回應時間、狀態碼等
     3. **儲存位置**：資料會自動存到 S3（壓縮格式）
-93. 😇 Application Insights 整合 ALB logs 的自動化分析
+93. 😇 CloudWatch Application Insights 整合 ALB logs 的自動化分析
     1. **核心功能**：自動分析這些 log，找出異常流量模式
     2. **視覺化呈現**：產生視覺化 dashboard
     3. **效率提升**：減少手動翻 S3 log 的時間
-94. ★★ CloudTrail 的監控範圍與定位
-    1. **監控對象**：記錄「誰對 AWS 做了什麼操作」，不是「應用程式的流量」
-    2. **核心功能**：AWS API 呼叫的稽核追蹤 (audit trail)
+94. ★ CloudTrail 的監控範圍與定位
+    1. **監控對象**：記錄「**誰對 AWS 做了什麼操作**」，不是「應用程式的流量」
+    2. **核心功能**：AWS **API 呼叫**的稽核追蹤 (audit trail)
 95. ★ CloudTrail 記錄的具體操作類型
     1. **資源管理操作**：誰 (IAM user/role) 建立了 EC2、誰刪除了 S3 bucket
     2. **安全設定變更**：誰修改了 Security Group 規則
@@ -277,23 +277,23 @@
 96. ★ EventBridge 的定位與核心概念
     1. **服務定位**：Event Bus (事件匯流排)
     2. **技術類比**：等同於 message queue / event broker (類似 RabbitMQ、Kafka)
-    3. **核心用途**：用來「當某件事發生時，觸發其他動作」
-97. ★ EventBridge 的典型應用場景
+    3. **核心用途**：用來「**當某件事發生時，觸發其他動作**」⭐️
+97. ★ EventBridge 的典型應用場景⭐️
     1. **EC2 狀態監控**：當 EC2 instance 狀態改變 → 發送通知
     2. **S3 檔案處理**：當 S3 有新檔案上傳 → 觸發 Lambda
     3. **負載均衡監控**：當 ALB target 變成 unhealthy → 執行某個動作
 98. ★★ ALB 的 Layer 7 路由能力（考試必考）
-    1. **與 NLB 最大區別**：ALB 具備 Layer 7 路由能力
+    1. **與 NLB 最大區別**：ALB 具備 **Layer 7 路由能力**
     2. **路由判斷依據**：可根據多種 HTTP 層級條件進行智慧路由
-99. ★ ALB Layer 7 路由的具體條件
-    1. **域名路由**：Host header (api.example.com vs admin.example.com)
-    2. **路徑路由**：Path (/users/*vs /orders/*)
-    3. **方法與參數路由**：HTTP method (GET vs POST)、Query string (?version=v2)
+99. ★ ALB Layer 7 路由的具體條件⭐️
+    1. **域名路由**：Host header (api.example.com、admin.example.com)
+    2. **路徑路由**：Path (`/users/*`、`/orders/*`)
+    3. **方法與參數路由**：HTTP method (GET、POST)、Query string (?version=v2)
     4. **進階路由**：Source IP (特定 IP 走特定 target)、HTTP headers (自定義 header)
-100. ★★ ALB vs NLB 的 gRPC 支援差異（考試陷阱題）
+100. ★ ALB vs NLB 的 gRPC 支援差異（考試陷阱題）
      1. **ALB 支援 gRPC**：可以處理 gRPC 協定的應用程式
      2. **NLB 不支援 gRPC**：只能處理純 TCP/UDP 流量
-     3. **考試陷阱**：題目會用「UDP」、「TCP」、「Layer 4」等字眼誘導你選 NLB，但若涉及 gRPC 必須選 ALB
+     3. **考試陷阱**：題目會用「UDP」、「TCP」、「Layer 4」等字眼誘導你選 NLB，但**若涉及 gRPC 必須選 ALB**
 101. ELB Cross-Zone Load Balancing 的運作機制
      1. **基本概念**：Load balancer nodes 負責將客戶端請求分發到已註冊的 targets
      2. **啟用 Cross-Zone**：每個 load balancer node 會將流量分散到**所有啟用 AZ** 中的已註冊 targets
