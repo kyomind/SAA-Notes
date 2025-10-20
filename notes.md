@@ -574,3 +574,11 @@
 182. 記憶點：Athena vs Kinesis 的核心概念
      1. **Athena**：事後諸葛（查過去的資料）
      2. **Kinesis**：當下反應（處理現在的資料流）
+183. Multi-AZ failover = CNAME 切換，不碰 IP
+184. ★ Multi-AZ Failover 核心機制
+     1. **實作方式**：CNAME 切換才是 failover 的方式
+     2. **故障轉移流程**：故障前（your-db.xxx.rds.amazonaws.com → Primary DB (AZ-A)）→ 故障後（your-db.xxx.rds.amazonaws.com → Standby DB (AZ-B，升級為新 Primary)）
+185. Multi-AZ Failover 的優勢
+     1. **應用層無感知**：connection string 不變，無需修改程式
+     2. **自動 Promote**：Standby 被 promote 成新 Primary
+     3. **容錯轉移時間**：通常 60-120 秒

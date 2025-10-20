@@ -203,3 +203,26 @@
 - 看到「需要 deny 特定 IP」→ NACL（SG 沒有 deny）
 - 看到「stateless」→ NACL
 - 大部分情況用 SG 就夠了，NACL 是額外防護層
+
+## RDS Multi-AZ 核心重點解析
+
+| 特性             | 說明                                                  | 考試常見陷阱                         |
+| ---------------- | ----------------------------------------------------- | ------------------------------------ |
+| **同步複製**     | Primary → Standby 是 synchronous replication          | 不是 async，這保證資料零遺失         |
+| **自動容錯轉移** | Primary 掛了，RDS 自動切換到 Standby（通常 1-2 分鐘） | Standby 平常**不能讀不能寫**，純備援 |
+| **跨 AZ 部署**   | Primary 和 Standby 在不同 AZ                          | 單一 AZ 掛掉不影響服務               |
+
+## 實務理解
+
+把 Multi-AZ 想成你部署後端服務時的 **Active-Passive HA 架構**：
+
+- Primary DB = Active node（處理所有請求）
+- Standby DB = Passive node（隨時準備接手，但平常不工作）
+- 當 Primary 掛了，DNS endpoint 自動指向 Standby
+
+## 考試必考場景
+
+**Q: 如何同時達成高可用性 + 讀取效能提升？**
+**A: Multi-AZ (HA) + Read Replicas (效能)**
+
+Multi-AZ 解決的是「服務不中斷」，想分散讀取流量要用 Read Replicas。
