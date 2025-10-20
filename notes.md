@@ -221,35 +221,36 @@
     1. **功能相同**：都能做到全球資料的複製和同步
     2. **基礎限制**：本身都是**以 Region 為基礎**，只是有全球同步的選項
     3. **應用場景**：考試遇到需要全球資料同步的需求，可考慮這兩個服務
-80. ★ 大量 Linux servers 共享檔案存取需求分析
-    1. **題目關鍵字**：「1000 Linux servers」+「rapidly changing data」
-    2. **核心需求判斷**：多台機器同時讀寫同份數據（EFS 可以，EBS 不行）、需要 POSIX 文件系統語義（EFS 提供，S3 不提供）、頻繁變更（適合 EFS，不適合 S3 歸檔）
+80. ★ 大量 Linux servers 共享檔案存取需求分析：EFS
+    1. **題目關鍵字**：「1000 Linux servers」+「rapidly changing data」= EFS
+    2. **多台機器同時讀寫**：EFS 可以，EBS 不行
+    3. **POSIX 文件系統語義**：EFS 提供，S3 不提供
+    4. **頻繁變更需求**：適合 EFS，不適合 S3 歸檔
 81. 😇 S3 不適合快速變更資料的原因分析
     1. **表面特性**：S3 提供與 EFS 相同等級的高可用性和高擴展性
     2. **核心限制**：不適合儲存快速變更的資料，主要用於歸檔和靜態內容
-82. 👀 FSx for Windows File Server 的作業系統限制
+82. 👀 FSx for Windows File Server
     1. **連接能力**：可以連接到多個 EC2 實例
-    2. **作業系統限制**：僅限於 Windows OS，不支援 Linux servers
-    3. **考試陷阱**：題目明確提到是 Linux servers，不是 Windows machines
-83. ★ EFS 大量並發存取的正確配置
+    2. **作業系統限制**：僅限於 Windows OS
+83. ★ **考試重點**：當有大量並發存取需求時，如何正確配置 EFS
     1. **正確答案**：EFS + Provisioned Throughput + Max I/O
-    2. **考試重點**：當有大量並發存取需求時，如何正確配置 EFS
+    2. **錯誤選項**：EFS + Bursting Throughput + General Purpose
 84. 😇 EFS Throughput Mode 選擇標準
-    1. **Provisioned**：高頻存取，資料量小
-    2. **Bursting**：資料量大，偶爾存取
+    1. **Provisioned**：**高頻**存取，資料量小
+    2. **Bursting**：資料量大，**偶爾**存取
 85. 😇 EFS Performance Mode 選擇標準
-    1. **Max I/O**：數百個以上連線
+    1. **Max I/O**：數百個以上連線(高並發)
     2. **General Purpose**：一般應用
 86. 😇 ELB Target Unhealthy 問題的判斷標準
     1. **常見原因**：Health check path 不存在、Health check port 錯誤、Timeout/Interval 設定不合理
     2. **解題原則**：直接了當，這種題別想太複雜
-87. 👀 ALB 健康檢查支援範圍
+87. 👀 ALB **健康檢查**支援範圍
     1. 只支援 HTTP/HTTPS 健康檢查
-    2. 不支援 TCP 層級檢查
+    2. **不支援** TCP 層級檢查
 88. ★ WAF **Rate-Based Rule** 的用途與場景
     1. 場景：單一 IP 在短時間內發送大量請求（DDoS、爬蟲、暴力破解）
     2. 解法：使用 AWS WAF 的 Rate-Based Rule 限制請求頻率
-89. 😇 WAF **Regular Rule** 的封鎖機制
+89. 😇 WAF **Regular Rule** 的用途與場景
     1. **作用原理**：符合條件就阻擋
     2. **常見封鎖目標**：特定 IP、地區、User-Agent
 90. ★ CloudWatch Application Insights 的核心功能
