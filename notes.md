@@ -188,28 +188,22 @@
     2. 不能加密 EBS
 68. (刪除)
 69. ★★ EBS volume 的可用性與複製特性
-    1. **可用性**：自動在同一 AZ 內複製（防單點故障）
+    1. **可用性：自動在同一 AZ 內複製**（防單點故障）⭐️
     2. **掛載限制**：只能掛載到**同 AZ** 的 EC2⭐️
 70. ★ EBS Multi-Attach 限制
     1. **支援 volume type**：僅限 **io1/io2 (Provisioned IOPS SSD)**
     2. **實例要求**：必須**同 AZ** + Nitro-based instance
-    3. **其他限制**：其他 volume type 不支援 Multi-Attach
+    3. **其他限制**：其他 volume type **不支援** Multi-Attach
 71. 👀 EBS volume 的彈性調整
     1. **可調整項目**：Volume type、大小、IOPS 可線上修改
     2. **停機需求**：無需停機
-72. ★ EBS 複製範圍的考試陷阱
-    1. **錯誤觀念**：跨 region 複製 ❌
-    2. **正確觀念**：同 AZ 內複製 ✅
-    3. **核心概念**：EBS 只在單一 AZ 內**自動複製**，不會跨 region
-73. ★ EBS 考試判斷標準
-    1. **錯誤關鍵詞**：看到「separate region」→ 錯誤
-    2. **正確關鍵詞**：看到「within that zone」→ 正確
-    3. **跨 region 備份**：需手動建立 Snapshot → 複製到其他 region
+72. (刪除)
+73. ★ EBS Snapshot 的跨 region 備份方案
+    1. **跨 region 備份**：需手動建立 Snapshot → 複製到其他 region
 74. ★★ EBS Snapshot 存放位置的考試陷阱
     1. **錯誤選項**：Amazon RDS ❌
     2. **正確答案**：Amazon S3 ✅
-    3. **核心概念**：EBS snapshot 自動存到 S3（跨 AZ 冗餘），不是儲存在資料庫
-    4. **記憶點**：「Snapshot 去 S3，不是資料庫」
+    3. **核心概念**：EBS snapshot **自動存到 S3**（跨 AZ 冗餘），不是儲存在資料庫
 75. 😇 EBS 加密金鑰來源
     1. **支援的 key 類型**：AWS-managed keys (AWS 代管) ✅ 、Customer-managed keys (你在 KMS 建立) ✅
     2. **加密位置**：EC2 host
@@ -218,7 +212,7 @@
     1. **共同點**：兩種 key 都可以用於 EBS 加密
     2. **AWS-managed 特點**：自動管理、免維護
     3. **Customer-managed 特點**：可控 rotation、權限、audit log
-77. ★ 記憶點：「自動 snapshot 生命週期 = DLM」
+77. (刪除)
 78. ★ 自動化 EBS snapshot 管理：Amazon Data Lifecycle Manager (DLM)
     1. **自動建立 snapshot**：定期備份
     2. **自動刪除過期 snapshot**：省成本
