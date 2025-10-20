@@ -226,3 +226,21 @@
 **A: Multi-AZ (HA) + Read Replicas (效能)**
 
 Multi-AZ 解決的是「服務不中斷」，想分散讀取流量要用 Read Replicas。
+
+![圖 0](https://img.kyomind.tw/img-20251020-114730.png)
+
+## Multi-AZ vs Read Replicas 複製機制
+
+| 項目               | Multi-AZ          | Read Replicas    |
+| ------------------ | ----------------- | ---------------- |
+| **複製方式**       | Synchronous       | Asynchronous     |
+| **用途**           | High Availability | Read scalability |
+| **Failover**       | 自動容錯轉移      | 需手動 promote   |
+| **Standby 可讀嗎** | ❌ 不能讀寫        | ✅ 可讀取         |
+
+## 考試記憶點
+
+**Synchronous = Multi-AZ = HA**
+**Asynchronous = Read Replicas = 效能**
+
+Read Replicas 有 replication lag（**複製延遲**），不適合做 HA，適合分散讀取流量。

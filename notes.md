@@ -582,3 +582,18 @@
      1. **應用層無感知**：connection string 不變，無需修改程式
      2. **自動 Promote**：Standby 被 promote 成新 Primary
      3. **容錯轉移時間**：通常 60-120 秒
+186. ★★ Multi-AZ Failover 為什麼用 **DNS 切換**而不是 IP 切換（VPC 基礎架構理解）
+    1. **技術限制**：IP 地址綁定 subnet，**subnet 無法跨 AZ**（AZ-A: subnet-1 → 10.0.1.0/24、AZ-B: subnet-2 → 10.0.2.0/24）
+    2. **核心原理**：Primary 和 Standby 在**不同 subnet**，IP 不可能互換 → 只能用 DNS/CNAME 切換
+187. 👀 RDS 不支援 RMAN（Oracle 恢復管理工具）的原因
+    1. **管理方式**：RDS 是託管服務，**AWS 控制底層 OS 和備份機制**
+    2. **RMAN 限制**：需要 OS level 存取權限、直接操作檔案系統、自行管理備份儲存
+    3. **替代方案**：只能透過 RDS 提供的 **automated backup 和 snapshot**
+188. 👀 Global Accelerator 在 RDS 題目中出現的考試陷阱
+    1. **服務定位**：Global Accelerator 是**網路服務**，用於將使用者流量導向最近的 endpoint，降低延遲
+    2. **與 RDS 無關**：完全不涉及資料庫性能提升
+    3. **考題關鍵**：看到 Global Accelerator 出現在 RDS 題目 → **直接排除**（誘導選項）
+189. ★ Read Replicas 的真實作用與常見誤解
+    1. **核心功能**：Read Replicas **不會提升 Primary DB 的效能**
+    2. **正確理解**：只是讓應用程式從 replica 讀取資料、分散讀取流量、降低 Primary 的負載
+    3. **效能限制**：**Primary 的 IOPS、運算能力不變**（不是性能提升，是讀取分流）
