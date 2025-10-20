@@ -154,8 +154,9 @@
 57. ★★ CloudFront + S3 分發靜態檔案的典型用法
     1. **題目關鍵詞**："distribute globally" + "static files" → CDN 的標準應用
     2. **運作流程**：CloudFront 在全球 **Edge Location** 快取 S3 檔案，用戶從最近的節點下載，大幅降低延遲
-58. ★★ 創建 Global Table 的**前置條件**是啟用 DynamoDB Streams
-    1. **Global Table 需要透過 Streams 來捕捉資料變更，並複製到其他 region。**
+58. ★★ 創建 Global Table 的**前置條件**：啟用 DynamoDB Streams
+    1. 必須開啟 **Streams** 功能才能建立 Global Table
+    2. **Global Table 需要透過 Streams 來捕捉資料變更，並複製到其他 region。**
 59. ★ Kinesis Data Streams 的選擇優勢
     1. **天生為串流設計**：資料持續流入，多個應用程式可同時消費
     2. **Replay 功能**：保留資料 24 小時到 365 天，可重新讀取
@@ -175,16 +176,17 @@
     2. **實務取捨**：DynamoDB 是唯一同時滿足這兩點的選項，實務上雖需改寫程式，但這是唯一可行方案
 64. ★ EBS 加密預設開啟的機制
     1. **帳號層級設定**：AWS 帳號層級可以強制開啟 EBS 加密
-    2. **自動應用範圍**：新建的 EBS volume 自動加密、從未加密 snapshot 複製時新 snapshot 會被加密、Launch instance 時掛載的 EBS 也會加密
-65. ★ EBS 加密的考試常考點
-    1. **考題情景**：如何確保組織內所有 EBS volume 都被加密？
-    2. **標準答案**：在帳號層級啟用「**EBS encryption by default**」
+65. ★ EBS 加密的自動應用範圍
+    1. **新建 EBS volume**：自動加密
+    2. **Snapshot 複製**：從未加密 snapshot 複製時新 snapshot 會被加密
+    3. **Launch instance**：掛載的 EBS 也會自動加密
 66. ★ 既有 EBS volume **無法直接加密**
     1. **限制**：舊 volume 無法直接加密
     2. **唯一作法**：建立 snapshot → 複製 snapshot（選擇加密）→ 從加密 snapshot 建立新 volume
 67. 👀 EBS 只支援**對稱加密 key**（symmetric key）
-    1. **非對稱 key 用途**：非對稱 key (asymmetric) 用於簽章、驗證，不能加密 EBS
-68. 😇 記憶點：「EBS 只吃對稱 key；要自動就開預設」
+    1. 非對稱 key (asymmetric) 用於簽章、驗證
+    2. 不能加密 EBS
+68. (刪除)
 69. ★★ EBS volume 的可用性與複製特性
     1. **可用性**：自動在同一 AZ 內複製（防單點故障）
     2. **掛載限制**：只能掛載到**同 AZ** 的 EC2⭐️
