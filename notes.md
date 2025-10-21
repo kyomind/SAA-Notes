@@ -728,3 +728,46 @@
      1. **同步呼叫**：API Gateway → Lambda（等待結果回傳）
      2. **非同步呼叫**：API Gateway → SQS → Lambda（解耦，適合長時間處理）
      3. **考試判斷**：需要即時回應用同步，需要排隊處理用非同步
+226. ★★ Server-Side Encryption (SSE) 的核心概念
+     1. **加密時機**：資料寫入 AWS 服務（S3/EBS/RDS 等）時，AWS 在**伺服器端自動加密**
+     2. **解密時機**：讀取資料時，AWS 在**伺服器端自動解密**後才回傳給你
+     3. **使用者角色**：只負責指定加密金鑰，不用自己寫加解密程式
+227. ★★ AWS KMS 的兩種金鑰類型
+     1. **AWS Managed Keys**：AWS 自動產生，名稱固定（如 aws/s3、aws/rds），無法手動建立，適合基礎加密需求
+     2. **Customer Managed Keys (CMK)**：需要手動建立，當需要控制權限、輪替政策、刪除時機時使用
+228. 😇 KMS 金鑰自動輪換
+     1. **啟用方式**：在 CMK 設定中啟用自動輪換功能
+     2. **只有** Customer Managed Keys (CMK) 支援自動輪換，AWS Managed Keys 不支援
+     3. **輪換週期**：後端金鑰每 **365 天**自動輪換一次
+229. ★★ 跨帳號分享加密資源的兩個必要步驟
+     1. **分享資源本身**：分享 AMI/Snapshot 等資源給目標帳號
+     2. **分享 KMS Key 權限**：務必同時分享相應的 KMS 金鑰權限（常被忽略）
+     3. **關鍵提醒**：沒有 Key 權限 = 資源看得到但用不了
+230. 😇 KMS Key Rotation 的兩種方式
+     1. **Automatic Rotation**：固定每年輪換一次，頻率**不可調整**
+     2. **Manual Rotation**：頻率**可自訂**，需要時隨時手動進行輪換
+231. ★★ KMS Key Policy 的角色
+     1. **定義**：控制 KMS **CMK** 存取權限的**主要機制**，類似 S3 Bucket Policy
+     2. **核心作用**：直接定義誰能使用這把金鑰
+     3. **適用場景**：跨帳號授權、Root 權限控制
+232. ★★ KMS 存取控制的三層機制
+     1. **KMS Key Policy**：直接定義誰能使用此 CMK，是**必要條件**
+     2. **IAM Policy**：定義使用者能做什麼操作，需搭配 Key Policy 才有效
+     3. **Grants**：程式化臨時授權方式，適合動態權限和自動化場景
+233. ★★ KMS 存取權限的判斷邏輯
+     1. **完整判斷**：能否使用 KMS CMK = (KMS Key Policy 允許) **AND** (IAM Policy 允許)
+     2. **關鍵點**：Key Policy 是**必要條件**，IAM Policy 單獨存在無效
+     3. **考試記憶**：題目問「control access to KMS CMK」→ 答 **Key Policy**
+234. 😇 KMS Key Policy 與 IAM Policy 的比喻
+     1. **Key Policy**：「門鎖」（直接控制存取權）
+     2. **IAM Policy**：「鑰匙」（使用者能否持有權限）
+235. 😇 AWS Managed Keys vs CMK 的 Key Policy 管理差異
+     1. **AWS Managed Keys**：無法修改 Key Policy
+     2. **Customer Managed Keys (CMK)**：可以自由修改 Key Policy
+236. ★ AWS Systems Manager (SSM) Parameter Store 的用途
+     1. **核心功能**：儲存密碼和機密資訊
+     2. **版本管理**：追蹤值隨時間的變化歷史
+237. ★ AWS Shield Advanced 的關鍵特性
+     1. **24/7 支援**：需要 DDoS Response Team (DRT) 的專業協助
+     2. **成本保護**：提供 AWS 帳單報銷保障，降低 DDoS 攻擊成本
+     3. 一個月要價 3,000 美元
