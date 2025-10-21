@@ -597,3 +597,44 @@
     1. **核心功能**：Read Replicas **不會提升 Primary DB 的效能**
     2. **正確理解**：只是讓應用程式從 replica 讀取資料、分散讀取流量、降低 Primary 的負載
     3. **效能限制**：**Primary 的 IOPS、運算能力不變**（不是性能提升，是讀取分流）
+190. ★★ Multi-AZ 同步複製的核心特性
+    1. **同步複製本質**：Multi-AZ 使用 **synchronous（同步）** 複製，每次寫入都要等 standby 確認
+    2. **實務意義**：寫入延遲較高（通常幾毫秒）、資料零遺失（主節點掛掉時 standby 100% 有最新資料）、自動容錯移轉（DNS 自動指向 standby）
+191. ★★ RDS **IAM Database Authentication** 的三層雙向設定（缺一不可）
+    1. **EC2 IAM Role**：允許呼叫 **rds-db:connect** 權限
+    2. **RDS 啟用 IAM Auth**：開啟 IAM Database Authentication 功能
+    3. **DB 建立 IAM User**：資料庫層級建立對應的 IAM 使用者帳號
+192. ★★ RDS Microsoft SQL Server 連線加密的完整實現（兩步驟缺一不可）
+    1. **伺服器端設定**：設定 **rds.force_ssl = true** + **重開 DB**（static parameter）
+    2. **用戶端設定**：下載 **Amazon RDS Root CA 憑證** → 匯入伺服器 → 應用程式使用 **SSL 連線**
+193. 😇 RDS 各引擎都支援 SSL/TLS 加密連線
+    1. **支援的引擎**：**MySQL**、**PostgreSQL**、**MariaDB**、**Oracle**、**SQL Server**、**Aurora (MySQL/PostgreSQL)**
+194. 😇 RDS 各引擎的 SSL/TLS 設定方式差異
+    1. **MySQL/PostgreSQL**：使用 **require_secure_transport** parameter 進行設定
+    2. **SQL Server**：使用 **rds.force_ssl** parameter 進行設定
+    3. **Oracle**：透過 **option group** 進行設定
+195. ★★ S3 Transfer Acceleration + Multipart Upload
+    1. **Transfer Acceleration**：全球邊緣節點加速跨地區傳輸，速度提升 50-500%
+    2. **Multipart Upload**：大檔案平行上傳，失敗可單獨重傳部分
+    3. **組合應用**：跨區域 + 大量資料上傳時同時使用
+196. ★★ S3 防誤刪：Versioning + MFA Delete
+    1. **Versioning**：保留歷史版本、刪除只標記 delete marker、可復原
+    2. **MFA Delete**：需 MFA 才能改變 versioning 狀態和永久刪除版本
+    3. **組合用途**：基本防護用 Versioning，強化防護加上 MFA Delete
+197. 😇 S3 One Zone-IA 的選擇邏輯
+    1. **特性**：**可快速存取**（毫秒級同 S3 Standard）、**檔案可重建**（easily reproducible，單 AZ 掛無妨）、**成本降 80%**（vs Standard）
+    2. **判斷標準**：檔案「可重建 + 需要快速存取」→ One Zone-IA 最佳解
+198. 👀 S3 儲存類別選型的常見誤區
+    1. **誤選情境**：很多人會選 **S3-IA (Intelligent-Tiering)** 或 **S3 Standard-IA**
+    2. **錯誤原因**：Standard-IA 跨 3 個 AZ 成本較高（若檔案可重建則浪費）；Intelligent-Tiering 自動移動檔案但無法針對特定 prefix 處理
+199. 👀 S3 儲存類別選型的 3 個關鍵問題
+    1. **能重建嗎**：檔案遺失能復原 → 考慮 One Zone-IA（單 AZ）
+    2. **多快要拿**：毫秒級 → IA；數分鐘 → Glacier；數小時 → Glacier Deep Archive
+    3. **需差異化嗎**：不同檔案不同保留策略 → 用 Lifecycle Policy + prefix filter
+200. ★ S3 儲存類別選型的考試判斷邏輯
+    1. **選 Intelligent-Tiering**：存取模式「不可預測/不斷變化」、題目關鍵字 `unpredictable access patterns`、`unknown usage`
+    2. **選 Lifecycle Policy**：存取模式「已知」、需要「針對不同檔案做不同處理」、題目明確說明時間點或分類邏輯
+    3. **記憶點**：Intelligent-Tiering = **自動但無法客製**；Lifecycle = **手動但精準控制**
+201. ★★ Lifecycle Policy 的核心功能：自動化資料生命週期管理
+    1. **定義**：Lifecycle Policy = **規則引擎**，用於設定「條件」+「動作」
+    2. **運作模式**：S3 自動執行，無需人工介入
