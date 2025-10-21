@@ -702,3 +702,17 @@
      1. **發布訊息時**：帶上 attributes（如 `type: "insurance"`, `amount: 50000`）
      2. **訂閱時設定 filter**：定義要接收的條件（如 `{"type": ["insurance"]}`）
      3. **SNS 自動分流**：根據 filter policy 決定推送給哪些訂閱者
+219. ★ SNS Message Filtering 的實踐判斷
+     1. **正確做法**：**Filter in SNS subscription**（訂閱層級過濾）✅
+     2. **錯誤做法**：**Filter in SQS queue**（隊列層級過濾）❌ 太晚過濾，已經浪費資源
+220. ★★ SQS Short Polling（預設模式）
+     1. **ReceiveMessageWaitTimeSeconds**：0（預設）
+     2. **行為**：只查詢部分 server，**立即回應**（無等待）
+     3. **適用場景**：高吞吐量需求
+     4. **缺點**：容易產生**空請求**（訊息未到時仍回傳），浪費成本
+221. ★★ SQS Long Polling（成本優化模式）
+     1. **ReceiveMessageWaitTimeSeconds**：> 0（最高 20 秒）
+     2. **運作方式**：**等待訊息到達才回應**，如期間沒訊息就 hold 著
+     3. **適用場景**：降低成本、減少空請求
+     4. **優勢**：**減少 API 呼叫**，伺服器負擔更輕
+222. **ReceiveMessageWaitTimeSeconds** 這個參數就是 Long vs Short Polling 的唯一差異。
