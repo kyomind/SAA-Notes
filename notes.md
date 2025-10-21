@@ -154,8 +154,9 @@
 57. ★★ CloudFront + S3 分發靜態檔案的典型用法
     1. **題目關鍵詞**："distribute globally" + "static files" → CDN 的標準應用
     2. **運作流程**：CloudFront 在全球 **Edge Location** 快取 S3 檔案，用戶從最近的節點下載，大幅降低延遲
-58. ★★ 創建 Global Table 的**前置條件**是啟用 DynamoDB Streams
-    1. **Global Table 需要透過 Streams 來捕捉資料變更，並複製到其他 region。**
+58. ★★ 創建 Global Table 的**前置條件**：啟用 DynamoDB Streams
+    1. 必須開啟 **Streams** 功能才能建立 Global Table
+    2. **Global Table 需要透過 Streams 來捕捉資料變更，並複製到其他 region。**
 59. ★ Kinesis Data Streams 的選擇優勢
     1. **天生為串流設計**：資料持續流入，多個應用程式可同時消費
     2. **Replay 功能**：保留資料 24 小時到 365 天，可重新讀取
@@ -175,39 +176,34 @@
     2. **實務取捨**：DynamoDB 是唯一同時滿足這兩點的選項，實務上雖需改寫程式，但這是唯一可行方案
 64. ★ EBS 加密預設開啟的機制
     1. **帳號層級設定**：AWS 帳號層級可以強制開啟 EBS 加密
-    2. **自動應用範圍**：新建的 EBS volume 自動加密、從未加密 snapshot 複製時新 snapshot 會被加密、Launch instance 時掛載的 EBS 也會加密
-65. ★ EBS 加密的考試常考點
-    1. **考題情景**：如何確保組織內所有 EBS volume 都被加密？
-    2. **標準答案**：在帳號層級啟用「**EBS encryption by default**」
+65. ★ EBS 加密的自動應用範圍
+    1. **新建 EBS volume**：自動加密
+    2. **Snapshot 複製**：從未加密 snapshot 複製時新 snapshot 會被加密
+    3. **Launch instance**：掛載的 EBS 也會自動加密
 66. ★ 既有 EBS volume **無法直接加密**
     1. **限制**：舊 volume 無法直接加密
     2. **唯一作法**：建立 snapshot → 複製 snapshot（選擇加密）→ 從加密 snapshot 建立新 volume
 67. 👀 EBS 只支援**對稱加密 key**（symmetric key）
-    1. **非對稱 key 用途**：非對稱 key (asymmetric) 用於簽章、驗證，不能加密 EBS
-68. 😇 記憶點：「EBS 只吃對稱 key；要自動就開預設」
+    1. 非對稱 key (asymmetric) 用於簽章、驗證
+    2. 不能加密 EBS
+68. (刪除)
 69. ★★ EBS volume 的可用性與複製特性
-    1. **可用性**：自動在同一 AZ 內複製（防單點故障）
+    1. **可用性：自動在同一 AZ 內複製**（防單點故障）⭐️
     2. **掛載限制**：只能掛載到**同 AZ** 的 EC2⭐️
 70. ★ EBS Multi-Attach 限制
     1. **支援 volume type**：僅限 **io1/io2 (Provisioned IOPS SSD)**
     2. **實例要求**：必須**同 AZ** + Nitro-based instance
-    3. **其他限制**：其他 volume type 不支援 Multi-Attach
+    3. **其他限制**：其他 volume type **不支援** Multi-Attach
 71. 👀 EBS volume 的彈性調整
     1. **可調整項目**：Volume type、大小、IOPS 可線上修改
     2. **停機需求**：無需停機
-72. ★ EBS 複製範圍的考試陷阱
-    1. **錯誤觀念**：跨 region 複製 ❌
-    2. **正確觀念**：同 AZ 內複製 ✅
-    3. **核心概念**：EBS 只在單一 AZ 內**自動複製**，不會跨 region
-73. ★ EBS 考試判斷標準
-    1. **錯誤關鍵詞**：看到「separate region」→ 錯誤
-    2. **正確關鍵詞**：看到「within that zone」→ 正確
-    3. **跨 region 備份**：需手動建立 Snapshot → 複製到其他 region
+72. (刪除)
+73. ★ EBS Snapshot 的跨 region 備份方案
+    1. **跨 region 備份**：需手動建立 Snapshot → 複製到其他 region
 74. ★★ EBS Snapshot 存放位置的考試陷阱
     1. **錯誤選項**：Amazon RDS ❌
     2. **正確答案**：Amazon S3 ✅
-    3. **核心概念**：EBS snapshot 自動存到 S3（跨 AZ 冗餘），不是儲存在資料庫
-    4. **記憶點**：「Snapshot 去 S3，不是資料庫」
+    3. **核心概念**：EBS snapshot **自動存到 S3**（跨 AZ 冗餘），不是儲存在資料庫
 75. 😇 EBS 加密金鑰來源
     1. **支援的 key 類型**：AWS-managed keys (AWS 代管) ✅ 、Customer-managed keys (你在 KMS 建立) ✅
     2. **加密位置**：EC2 host
@@ -216,7 +212,7 @@
     1. **共同點**：兩種 key 都可以用於 EBS 加密
     2. **AWS-managed 特點**：自動管理、免維護
     3. **Customer-managed 特點**：可控 rotation、權限、audit log
-77. ★ 記憶點：「自動 snapshot 生命週期 = DLM」
+77. (刪除)
 78. ★ 自動化 EBS snapshot 管理：Amazon Data Lifecycle Manager (DLM)
     1. **自動建立 snapshot**：定期備份
     2. **自動刪除過期 snapshot**：省成本
@@ -225,54 +221,55 @@
     1. **功能相同**：都能做到全球資料的複製和同步
     2. **基礎限制**：本身都是**以 Region 為基礎**，只是有全球同步的選項
     3. **應用場景**：考試遇到需要全球資料同步的需求，可考慮這兩個服務
-80. ★ 大量 Linux servers 共享檔案存取需求分析
-    1. **題目關鍵字**：「1000 Linux servers」+「rapidly changing data」
-    2. **核心需求判斷**：多台機器同時讀寫同份數據（EFS 可以，EBS 不行）、需要 POSIX 文件系統語義（EFS 提供，S3 不提供）、頻繁變更（適合 EFS，不適合 S3 歸檔）
+80. ★ 大量 Linux servers 共享檔案存取需求分析：EFS
+    1. **題目關鍵字**：「1000 Linux servers」+「rapidly changing data」= EFS
+    2. **多台機器同時讀寫**：EFS 可以，EBS 不行
+    3. **POSIX 文件系統語義**：EFS 提供，S3 不提供
+    4. **頻繁變更需求**：適合 EFS，不適合 S3 歸檔
 81. 😇 S3 不適合快速變更資料的原因分析
     1. **表面特性**：S3 提供與 EFS 相同等級的高可用性和高擴展性
     2. **核心限制**：不適合儲存快速變更的資料，主要用於歸檔和靜態內容
-82. 👀 FSx for Windows File Server 的作業系統限制
+82. 👀 FSx for Windows File Server
     1. **連接能力**：可以連接到多個 EC2 實例
-    2. **作業系統限制**：僅限於 Windows OS，不支援 Linux servers
-    3. **考試陷阱**：題目明確提到是 Linux servers，不是 Windows machines
-83. ★ EFS 大量並發存取的正確配置
+    2. **作業系統限制**：僅限於 Windows OS
+83. ★ **考試重點**：當有大量並發存取需求時，如何正確配置 EFS
     1. **正確答案**：EFS + Provisioned Throughput + Max I/O
-    2. **考試重點**：當有大量並發存取需求時，如何正確配置 EFS
+    2. **錯誤選項**：EFS + Bursting Throughput + General Purpose
 84. 😇 EFS Throughput Mode 選擇標準
-    1. **Provisioned**：高頻存取，資料量小
-    2. **Bursting**：資料量大，偶爾存取
+    1. **Provisioned**：**高頻**存取，資料量小
+    2. **Bursting**：資料量大，**偶爾**存取
 85. 😇 EFS Performance Mode 選擇標準
-    1. **Max I/O**：數百個以上連線
+    1. **Max I/O**：數百個以上連線(高並發)
     2. **General Purpose**：一般應用
 86. 😇 ELB Target Unhealthy 問題的判斷標準
     1. **常見原因**：Health check path 不存在、Health check port 錯誤、Timeout/Interval 設定不合理
     2. **解題原則**：直接了當，這種題別想太複雜
-87. 👀 ALB 健康檢查支援範圍
+87. 👀 ALB **健康檢查**支援範圍
     1. 只支援 HTTP/HTTPS 健康檢查
-    2. 不支援 TCP 層級檢查
+    2. **不支援** TCP 層級檢查
 88. ★ WAF **Rate-Based Rule** 的用途與場景
     1. 場景：單一 IP 在短時間內發送大量請求（DDoS、爬蟲、暴力破解）
     2. 解法：使用 AWS WAF 的 Rate-Based Rule 限制請求頻率
-89. 😇 WAF **Regular Rule** 的封鎖機制
+89. 😇 WAF **Regular Rule** 的用途與場景
     1. **作用原理**：符合條件就阻擋
-    2. **常見封鎖目標**：特定 IP、地區、User-Agent
+    2. **常見封鎖目標**：特定 IP、地區、**User-Agent**
 90. ★ CloudWatch Application Insights 的核心功能
     1. **主要用途**：為**應用程式**和底層 AWS 資源提供**可觀測性** (observability)
     2. **自動化能力**：自動設定最佳監控器，持續分析資料以偵測應用程式問題
-91. 😇 Application Insights 的考試情境
+91. 😇 CloudWatch Application Insights 的考試情境
     1. **考試場景**：需要分析 ALB 流量模式並快速排查問題
     2. **解題思路**：先取得原始資料，再自動化分析與問題偵測
 92. 😇 ALB Access Logs 的資料收集機制
     1. **啟用方式**：Enable access logs on ALB
     2. **記錄內容**：來源 IP、請求路徑、回應時間、狀態碼等
     3. **儲存位置**：資料會自動存到 S3（壓縮格式）
-93. 😇 Application Insights 整合 ALB logs 的自動化分析
+93. 😇 CloudWatch Application Insights 整合 ALB logs 的自動化分析
     1. **核心功能**：自動分析這些 log，找出異常流量模式
     2. **視覺化呈現**：產生視覺化 dashboard
     3. **效率提升**：減少手動翻 S3 log 的時間
-94. ★★ CloudTrail 的監控範圍與定位
-    1. **監控對象**：記錄「誰對 AWS 做了什麼操作」，不是「應用程式的流量」
-    2. **核心功能**：AWS API 呼叫的稽核追蹤 (audit trail)
+94. ★ CloudTrail 的監控範圍與定位
+    1. **監控對象**：記錄「**誰對 AWS 做了什麼操作**」，不是「應用程式的流量」
+    2. **核心功能**：AWS **API 呼叫**的稽核追蹤 (audit trail)
 95. ★ CloudTrail 記錄的具體操作類型
     1. **資源管理操作**：誰 (IAM user/role) 建立了 EC2、誰刪除了 S3 bucket
     2. **安全設定變更**：誰修改了 Security Group 規則
@@ -280,80 +277,79 @@
 96. ★ EventBridge 的定位與核心概念
     1. **服務定位**：Event Bus (事件匯流排)
     2. **技術類比**：等同於 message queue / event broker (類似 RabbitMQ、Kafka)
-    3. **核心用途**：用來「當某件事發生時，觸發其他動作」
-97. ★ EventBridge 的典型應用場景
+    3. **核心用途**：用來「**當某件事發生時，觸發其他動作**」⭐️
+97. ★ EventBridge 的典型應用場景⭐️
     1. **EC2 狀態監控**：當 EC2 instance 狀態改變 → 發送通知
     2. **S3 檔案處理**：當 S3 有新檔案上傳 → 觸發 Lambda
     3. **負載均衡監控**：當 ALB target 變成 unhealthy → 執行某個動作
 98. ★★ ALB 的 Layer 7 路由能力（考試必考）
-    1. **與 NLB 最大區別**：ALB 具備 Layer 7 路由能力
+    1. **與 NLB 最大區別**：ALB 具備 **Layer 7 路由能力**
     2. **路由判斷依據**：可根據多種 HTTP 層級條件進行智慧路由
-99. ★ ALB Layer 7 路由的具體條件
-    1. **域名路由**：Host header (api.example.com vs admin.example.com)
-    2. **路徑路由**：Path (/users/*vs /orders/*)
-    3. **方法與參數路由**：HTTP method (GET vs POST)、Query string (?version=v2)
+99. ★ ALB Layer 7 路由的具體條件⭐️
+    1. **域名路由**：Host header (api.example.com、admin.example.com)
+    2. **路徑路由**：Path (`/users/*`、`/orders/*`)
+    3. **方法與參數路由**：HTTP method (GET、POST)、Query string (?version=v2)
     4. **進階路由**：Source IP (特定 IP 走特定 target)、HTTP headers (自定義 header)
-100. ★★ ALB vs NLB 的 gRPC 支援差異（考試陷阱題）
+100. ★ ALB vs NLB 的 gRPC 支援差異（考試陷阱題）
      1. **ALB 支援 gRPC**：可以處理 gRPC 協定的應用程式
      2. **NLB 不支援 gRPC**：只能處理純 TCP/UDP 流量
-     3. **考試陷阱**：題目會用「UDP」、「TCP」、「Layer 4」等字眼誘導你選 NLB，但若涉及 gRPC 必須選 ALB
-101. ELB Cross-Zone Load Balancing 的運作機制
+     3. **考試陷阱**：題目會用「UDP」、「TCP」、「Layer 4」等字眼誘導你選 NLB，但**若涉及 gRPC 必須選 ALB**
+101. ★★ ELB Cross-Zone Load Balancing 的運作機制
      1. **基本概念**：Load balancer nodes 負責將客戶端請求分發到已註冊的 targets
      2. **啟用 Cross-Zone**：每個 load balancer node 會將流量分散到**所有啟用 AZ** 中的已註冊 targets
      3. **停用 Cross-Zone**：每個 load balancer node 只會將流量分散到**同一 AZ** 內的已註冊 targets
-102. Cross-Zone Load Balancing 的啟用時機判斷
-     1. **核心影響**：「跨 AZ 負載均衡」開或關，會導致完全不同的流量分配結果
-     2. **適合啟用場景**：各 AZ 的 EC2 數量差異很大（如 2 vs 8 的分布）、需要確保所有機器負載一致、使用 ALB（免費）
-     3. **考試重點**：理解不同 AZ 間實例數量不均時的流量分配策略
-103. WAF (Web Application Firewall) 的核心功能
-     1. **防護層級**：專門保護應用層（Layer 7）流量，阻擋惡意 HTTP/HTTPS 請求
+102. ★★ Cross-Zone Load Balancing 的啟用時機判斷
+     1. **適合啟用場景**：各 AZ 的 EC2 數量差異很大（如 2 vs 8 的分布）、需要確保所有機器負載一致、使用 ALB（免費）
+     2. **考試重點**：理解不同 AZ 間實例數量不均時的流量分配策略
+103. ★ WAF (Web Application Firewall) 的核心功能
+     1. **防護層級**：專門**保護應用層**（Layer 7）流量，阻擋惡意 HTTP/HTTPS 請求
      2. **開發者類比**：就像在 API 前面加一層 middleware，根據規則決定請求能否進入
-104. AWS Firewall Manager 的定位與功能
+104. 😇 AWS Firewall Manager 的定位與功能
      1. **服務定位**：中央管理工具，用來在多個帳號/多個資源上統一部署和管理 WAF/Shield 規則
      2. **開發者類比**：WAF 是你寫的 middleware 防護邏輯，Firewall Manager 是 Infrastructure as Code 工具（像 Terraform），讓你一次把這個 middleware 部署到 100 台機器上
-105. Amazon Aurora 的核心特性
-     1. **資料庫相容性**：MySQL 和 PostgreSQL-compatible 關聯式資料庫
+105. ★ Amazon Aurora 的核心特性
+     1. **資料庫相容性**：相容 MySQL 和 PostgreSQL
      2. **儲存系統**：分散式、容錯、自我修復的儲存系統，自動擴展至 128TB
      3. **高可用架構**：最多 15 個低延遲讀副本、支援 3 個 AZ 複製
-     4. **備份與復原**：可用時間點復原、持續備份到 S3
-106. Amazon Neptune 是一個快速、可靠、完全管理的**圖形資料庫服務**，適合打造社交網路、推薦引擎和詐欺偵測應用程式。
-107. Amazon DocumentDB 是一個完全管理的**文件資料庫服務**，與 MongoDB 相容，適合用於內容管理、目錄和即時分析等應用場景。
-108. Amazon S3 is indeed a key-value store! (where the key is the full path of the object in the bucket)
-109. Amazon Redshift 的核心特性與應用場景
-     1. **服務定位**：AWS 的資料倉儲服務，專門為 OLAP (分析型查詢) 設計
+     4. **備份與復原**：可用時間點復原、**持續備份到 S3**
+106. 😇 Amazon Neptune 是一個快速、可靠、完全管理的**圖形資料庫服務**，適合打造**社交網路、推薦引擎和詐欺偵測**應用程式。
+107. 😇 Amazon DocumentDB 是一個完全管理的**文件資料庫服務**，與 MongoDB 相容，適合用於內容管理、目錄和即時分析等應用場景。
+108. 👀 Amazon S3 is indeed a key-value store! (where the key is the full path of the object in the bucket)
+109. ★ Amazon Redshift 的核心特性與應用場景
+     1. **服務定位**：AWS 的資料倉儲服務，專門為 **OLAP** (分析型查詢) 設計
      2. **Columnar Storage**：讀取特定欄位時效率極高，無需掃描整個 row
      3. **數據規模**：能處理 PB 級資料
      4. **BI 工具相容**：原生支援 QuickSight、Tableau 等可直接連接
-110. 高可用 (HA - High Availability) 的特性
+110. ★★ 高可用 (HA - High Availability) 的特性⭐️
      1. **範圍**：同一 Region
      2. **切換方式**：自動切換
      3. **架構**：多個可用區域 (Multi-AZ)
-111. 災難恢復 (DR - Disaster Recovery) 的特性
+111. ★★ 災難恢復 (DR - Disaster Recovery) 的特性
      1. **範圍**：跨 Region
      2. **復原方式**：手動或自動復原
      3. **備份工具**：快照 (Snapshot) / 備份 (Backup)
-112. Multi-AZ 解決的是高可用性（High Availability），不是災難恢復（Disaster Recovery）
-113. 災難恢復的核心思維：資料要能在另一個 Region 復原
-114. Redshift Enhanced VPC Routing 與 Spectrum 的區別
+112. ★★ Multi-AZ 解決的是高可用性（High Availability），不是災難恢復（Disaster Recovery）
+113. ★★ 災難恢復的核心思維：資料要能在另一個 Region 復原
+114. 👀 Redshift 的兩個功能
      1. **題目關鍵詞**：「forces traffic through your VPCs」
      2. **Enhanced VPC Routing**：強制所有 COPY/UNLOAD 流量走 VPC（可控管路由、監控）
      3. **Redshift Spectrum**：只是查詢 S3 資料的功能，不涉及「強制走 VPC」
-115. AWS Glue 的核心功能
+115. ★ AWS Glue 的核心功能
      1. **定位**：完全管理的 ETL (Extract, Transform, Load) 服務
      2. **主要特性**：可在幾次點擊內建立、執行和監控 ETL 工作，無需自行維護伺服器
-116. Amazon EMR (Elastic MapReduce) 的核心特性
+116. ★ Amazon EMR (Elastic MapReduce) 的核心特性
      1. **原生支援框架**：Spark、Hive、Presto、Hadoop
      2. **服務特點**：Managed Service，AWS 幫你管底層叢集
      3. **成本效益**：用完即關，成本可控
      4. **易用性**：資料工程師熟悉的工具，直接上手
-117. Amazon QuickSight 的核心特性
-     1. **服務定位**：AWS 的 BI (Business Intelligence) 工具
-     2. **主要功能**：專門做 dashboard 和報表
+117. ★ Amazon QuickSight 的核心特性
+     1. **服務定位**：AWS 的 **BI 工具**
+     2. **主要功能**：專門做 **dashboard** 和報表
      3. **原生整合**：原生連接 Redshift（一鍵設定）
      4. **架構優勢**：Serverless，DevOps 不用管基礎設施
-118. Glue Job Bookmarks 用來追蹤 ETL job 已經處理過的資料，避免重複處理。
-119. Kinesis Data Analytics 可以直接讀取 Kinesis Data Streams 的資料，進行即時分析和處理。
-120. AWS Machine Learning 服務列表
+118. 👀 Glue Job Bookmarks 用來追蹤 ETL job 已經處理過的資料，避免重複處理。
+119. 😇 Kinesis Data Analytics 可以直接讀取 Kinesis Data Streams 的資料，進行即時分析和處理。
+120. ★ AWS Machine Learning 服務列表
      - **Rekognition**：人臉偵測、物體標籤識別、名人辨識
      - **Transcribe**：音訊轉文字（例如字幕生成）
      - **Polly**：文字轉語音
@@ -365,100 +361,100 @@
      - **Kendra**：ML 驅動的搜尋引擎
      - **Personalize**：實時個性化推薦
      - **Textract**：文件中的文字和資料偵測
-121. Amazon Lex 整合 ASR (語音轉文字) 和 NLU (**意圖辨識**) 於一個服務，適合建構對話機器人
-122. Amazon Polly 的進階語音控制功能
+121. 😇 Amazon Lex 整合 ASR (語音轉文字) 和 NLU (**意圖辨識**) 於一個服務，適合建構對話機器人○
+122. 👀 Amazon Polly 的進階語音控制功能
      1. **Pronunciation Lexicons (發音字典)**：自訂特定詞彙發音（例：EC2 → 讀成 Elastic Compute Cloud）
      2. **SSML (Speech Synthesis Markup Language)**：控制語音表達方式（強調、停頓、呼吸聲、耳語）
-123. Amazon Comprehend Medical 的核心功能
+123. 👀 Amazon Comprehend Medical 的核心功能
      1. **用途**：AWS 專門處理醫療文字的 NLP 服務，為非結構化醫療文檔設計
      2. **功能特性**：自動識別醫療實體（藥物、疾病、劑量、症狀）、自動偵測 PHI（姓名、日期、地址等敏感資訊）
      3. **合規性**：HIPAA eligible（符合醫療合規）
-124. Infrequent Access 儲存類別的考試陷阱
+124. ★★ Infrequent Access 儲存類別的考試陷阱
      1. **IA 的定位**：Infrequent Access（不常存取）= 不常用但隨時要拿
      2. **S3 One Zone-IA 的分類**：是 Infrequent Access 儲存類別，不是 Archive（封存）類別
-125. Glacier 封存類別的選用原則
+125. ★★ Glacier 封存類別的選用原則
      1. **Glacier 的用途**：Glacier（封存）= 封存不急著用
      2. **選題標準**：題目若要求 backup/archive，應選 Glacier 系列，不是 IA 系列
-126. Amazon Data Lifecycle Manager (DLM) 的核心功能
+126. ★ Amazon Data Lifecycle Manager (DLM) 的核心功能
      1. **用途**：自動化管理 EBS snapshots 的生命週期，無需手動建立或寫 Lambda 排程
      2. **自動建立**：定期自動快照
-127. DLM 的保留與刪除管理
+127. 😇 DLM 的保留與刪除管理
      1. **保留政策**：依政策保存（如：保留 7 天、30 天）
      2. **自動刪除**：過期快照自動清除，省成本
-128. AWS Backup 與 DLM 的定位區別
+128. 😇 AWS Backup 與 DLM 的定位區別
      1. **AWS Backup 的特性**：多服務集中備份平台（EBS、RDS、DynamoDB、EFS 等）
      2. **應用場景**：適合跨服務統一備份策略
-129. Instance Store-backed AMI 的特性
+129. ★ Instance Store-backed AMI 的特性
      1. **Root device**：Instance Store（臨時儲存）
      2. **資料生命週期**：資料只存在於 instance 生命週期內，instance 終止 → 資料自動刪除
-130. EBS-backed AMI 的特性
+130. ★ EBS-backed AMI 的特性
      1. **Root device**：EBS volume
      2. **資料持久性**：Instance 終止後，EBS 可保留（看設定），資料持久性高
-131. AMI 儲存類型的白話理解
+131. 😇 AMI 儲存類型的白話理解
      1. **類比概念**：AMI 就像安裝光碟，EBS-backed 裝到「外接硬碟」（可拆卸）、Instance Store-backed 裝到「內建暫存」（不可拆）
      2. **現狀**：現在 99% 都用 EBS-backed，Instance Store-backed 幾乎淘汰
-132. EBS Snapshot 儲存位置的常見誤解
+132. ★ EBS Snapshot 儲存位置的常見誤解
      1. **錯誤說法**：EBS snapshot 不會寫入 Amazon RDS
      2. **正確位置**：EBS snapshot 儲存在 Amazon S3（不是 RDS）
-133. EBS 複製範圍的常見誤解
+133. ★ EBS 複製範圍的常見誤解
      1. **錯誤觀念**：EBS 會跨 region 複製 ❌
      2. **正確觀念**：EBS volume 只在單一 AZ 內自動複製多份 ✅
-134. EBS 可用性與複製特性總結
+134. ★★ EBS 可用性與複製特性總結
      1. **基本綁定**：EBS 綁定單一 AZ，不跨 AZ、不跨 region
      2. **跨域保護**：要跨 AZ/region 保護資料 → 需手動建 snapshot 並複製
-135. EBS 線上修改支援與限制
+135. ★ EBS 線上修改支援與限制
      1. **可修改項目**：Volume size（只能增加）、Volume type、IOPS / throughput
      2. **修改特性**：無需停機，修改後需等 6 小時才能再次修改
      3. **考試重點**：EBS 支援熱修改，不用停機
-136. EBS SSD 系列（注重 IOPS）
+136. ★★ EBS SSD 系列（注重 IOPS）
      1. **gp3/gp2 (General Purpose)**：通用型，CP 值最高，預設選項
      2. **io2/io1 (Provisioned IOPS)**：需要穩定高 IOPS 的場景（**資料庫**）
-137. EBS HDD 系列（注重 Throughput）
+137. ★ EBS HDD 系列（注重 Throughput）
      1. **st1 (Throughput Optimized)**：大量順序讀寫（Big Data、Log）
      2. **sc1 (Cold HDD)**：最便宜，不常存取的冷資料
-138. EBS 已淘汰的類型
+138. 👀 EBS 已淘汰的類型
     - Magnetic volumes（上一代產品，考試可能還會出現但不要選）
-139. Custom Identity Broker 的運作與應用
+139. ★ Custom Identity Broker 的運作與應用
      1. **完整流程**：員工 → 企業認證系統 (LDAP/AD) → Identity Broker (驗證身份 + 呼叫 STS AssumeRole + 返回憑證) → 臨時憑證 → 存取 AWS
      2. **適用情況**：企業用 LDAP/AD 等非 SAML 2.0 系統、題目說「existing corporate identity system」、需要「programmatic access」給內部員工
-140. IAM 認証整合方案的選擇指南
+140. ★ IAM 認証整合方案的選擇指南
      1. **SAML 2.0 相容**：直接用 IAM Identity Provider（不需要自己寫 broker）
      2. **外部用戶登入**：用 Cognito
      3. **企業舊系統**：Custom Identity Broker（過渡方案，優先考慮升級到 SAML 2.0 或 OIDC）
-141. IAM User 建立後的預設狀態
+141. ★★ IAM User 建立後的預設狀態
      1. **有身份**：可以被識別 ✅
      2. **沒有權限**：不能做任何事 ❌
      3. **沒有憑證**：無法驗證身份 ❌
-142. 透過 CLI/API 呼叫 AWS 的兩個必要步驟
+142. ★★ 透過 CLI/API 呼叫 AWS 的兩個必要步驟
      1. **Access Key**：讓程式能用這組 Key 證明「我是這個 User」（身份驗證）
      2. **IAM Policy**：賦予權限，允許存取 S3、DynamoDB、Lambda 等服務（授權）
-143. S3 存取控制方案的選擇建議
+143. ★ S3 存取控制方案的選擇建議
      1. **不推薦**：ACL（太細碎難管理）
      2. **推薦方案一**：Bucket Policy（大部分情況）
      3. **推薦方案二**：IAM Role（需要 Console 或臨時憑證時）
-144. IAM Role vs Bucket Policy 的關鍵差異
+144. ★ IAM Role vs Bucket Policy 的關鍵差異
     - **只有 IAM Role 能讓跨帳號用戶用 Console 登入查看 S3**（Bucket Policy 只支援程式存取）
-145. AWS 存取方式的定義與區別
+145. ★ AWS 存取方式的定義與區別
      1. **Console（AWS Management Console）**：用瀏覽器登入 <https://console.aws.amazon.com> 看到的圖形化介面
      2. **Programmatic access**：用 CLI、SDK、API 呼叫 AWS（需要 Access Key）
      3. **Console access**：人類用瀏覽器點點點操作 AWS（需要登入帳號）
-146. GuardDuty 威脅偵測與判斷標準
+146. ★ GuardDuty 威脅偵測與判斷標準
      1. **選題關鍵詞**：出現「malicious」、「suspicious」、「threat」→ 選 GuardDuty
      2. **服務定位**：S3 威脅偵測服務
      3. **偵測能力**：已知惡意 IP 存取 S3、Bucket Policy/ACL 被改成公開、異常 API 呼叫模式（如暴力掃描權限設定）
-147. CloudTrail 與 GuardDuty 的核心差異
+147. ★ CloudTrail 與 GuardDuty 的核心差異
      1. **CloudTrail 的用途**：記錄 API 呼叫（稽核、合規、事後調查）
      2. **GuardDuty 的用途**：分析行為模式進行即時威脅偵測
      3. **定位區別**：CloudTrail 只是「錄影機」，記錄誰做了什麼，但不會主動告訴你「這是惡意行為」
      4. **聯動關係**：GuardDuty 會分析 CloudTrail 的日誌，自動標記可疑活動
-148. AWS Security Token Service (STS) 的核心功能
+148. ★★ AWS Security Token Service (STS) 的核心功能
      1. **服務定位**：發「**臨時通行證**」的服務，讓你可以跨 AWS 帳號存取資源，或給外部使用者臨時權限
      2. **選題關鍵詞**：跨帳號存取（Cross-account access）、臨時權限（Temporary credentials）、AssumeRole、第三方存取 AWS 資源（例如：外部廠商需要臨時存取你的 S3）
-149. 跨帳號存取的定義與實務場景
+149. ★★ 跨帳號存取的定義與實務場景
      1. **白話定義**：讓 A 帳號的使用者，可以操作 B 帳號的 AWS 資源
      2. **典型組織架構**：母公司帳號 (Prod) → 子公司 A 帳號 (Dev) / 子公司 B 帳號 (Test)
      3. **應用場景**：Dev 帳號的工程師需要部署到 Prod 帳號 → 跨帳號存取
-150. 跨帳號存取的考試判斷標準
+150. ★★ 跨帳號存取的考試判斷標準
      1. **選題關鍵詞**：「不同 AWS 帳號」、「帳號 A 存取帳號 B」
      2. **解決方案一**：STS + AssumeRole（跨帳號臨時存取）
      3. **解決方案二**：Resource-based Policy（例如 S3 Bucket Policy 直接開放給另一個帳號）
