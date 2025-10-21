@@ -56,6 +56,7 @@
 19. ★★ An **Edge-Optimized API Gateway** is **best for geographically distributed clients.**
     1. API requests are routed to the **nearest CloudFront Edge Location** which improves latency.
     2. The API Gateway still lives in **one** AWS Region.
+    3. 這是預設選項，而且自動整合 CloudFront⭐️
 20. ★ 目的關鍵需求：在 CloudFront Edge Locations 執行認證
     1. 不要打回 Origin
     2. 降低延遲——**用戶在哪裡，認證就在哪裡執行**
@@ -715,4 +716,15 @@
      2. **運作方式**：**等待訊息到達才回應**，如期間沒訊息就 hold 著
      3. **適用場景**：降低成本、減少空請求
      4. **優勢**：**減少 API 呼叫**，伺服器負擔更輕
-222. **ReceiveMessageWaitTimeSeconds** 這個參數就是 Long vs Short Polling 的唯一差異。
+222. `ReceiveMessageWaitTimeSeconds` 這個參數就是 Long vs Short Polling 的唯一差異。
+223. Encryption in transit vs Encryption at rest
+     1. **Encryption in transit(in-flight)**：資料在傳輸過程中加密（SSL/TLS）
+     2. **Encryption at rest**：資料靜止存放時加密（AES-256、KMS）
+224. API Gateway 有三種 Endpoint 類型
+     1. **Regional endpoint**：部署在特定區域，適合內部或區域性應用
+     2. **Edge-optimized endpoint**：使用 CloudFront 全球加速，適合公開 API
+     3. **Private endpoint**：只能在 VPC 內存取，適合內部服務
+225. ★ API Gateway + Lambda 的整合模式
+     1. **同步呼叫**：API Gateway → Lambda（等待結果回傳）
+     2. **非同步呼叫**：API Gateway → SQS → Lambda（解耦，適合長時間處理）
+     3. **考試判斷**：需要即時回應用同步，需要排隊處理用非同步
