@@ -458,123 +458,123 @@
      1. **選題關鍵詞**：「不同 AWS 帳號」、「帳號 A 存取帳號 B」
      2. **解決方案一**：STS + AssumeRole（跨帳號臨時存取）
      3. **解決方案二**：Resource-based Policy（例如 S3 Bucket Policy 直接開放給另一個帳號）
-151. AssumeRole 的定義與考試判斷
+151. ★ AssumeRole 的定義與考試判斷
      1. **選題關鍵詞**：看到 AssumeRole → 答案 99% 是 STS
      2. **白話定義**：一個 API 動作，讓你「扮演」另一個 IAM Role，取得該 Role 的權限
-152. CloudWatch Metric Stream 的三大特徵（SAA 必考）
+152. ★★ CloudWatch Metric Stream 的三大特徵（SAA 必考）
      1. **特徵一**：Near real-time（不是批次，是串流）
      2. **特徵二**：必須經過 Kinesis Firehose（直接連線標配）
      3. **特徵三**：可直接送到 3rd party（Datadog、Splunk、New Relic）
-153. CloudWatch Contributor Insights 的核心功能
+153. ★ CloudWatch Contributor Insights 的核心功能
      1. **用途**：找出「Top-N 貢獻者」問題，分析「誰貢獻最多流量/請求」
      2. **應用場景**：題目要找「top IP addresses」，這是典型的應用
-154. EventBridge Archive and Replay
+154. 😇 EventBridge Archive and Replay
      1. **Archive**：自動把 events 存到 S3（AWS 管理），長期保存事件
      2. **Replay**：需要時重新發送歷史 events 到 dev 環境進行測試
-155. SAML 2.0-Based Federation 的應用場景
+155. ★★ SAML 2.0-Based Federation 的應用場景
      1. **問題情境**：公司已有 Microsoft Active Directory (AD)，員工想用公司帳號登入 AWS
      2. **解決方案**：SAML 2.0-Based Federation
-156. 選擇 SAML Federation 的三大原因
+156. ★ 選擇 SAML Federation 的三大原因
      1. **已有 AD 基礎**：公司用 Microsoft AD 管理員工帳號
      2. **SSO 需求**：員工想用「同一組」公司帳號登入 AWS，不想再記一組 IAM 帳密
      3. **集中管理**：IT 部門只要在 AD 管理員工權限，AWS 會信任 AD 的認證結果
-157. Lambda 適合的場景分析
+157. ★★ Lambda 適合的場景分析
      1. **間歇性、事件驅動的工作負載**：流量不可預測、想省錢且流量不高
      2. **執行時間限制**：執行時間短（< 15 分鐘）
-158. Lambda 不適合的場景分析
+158. ★ Lambda 不適合的場景分析
      1. **需要持續運行**：改用 EC2/ECS
      2. **執行時間超過 15 分鐘**：改用 Step Functions + Lambda 或 ECS
      3. **需要固定 IP**：改用 VPC + NAT Gateway，但複雜且貴
-159. S3 Event 觸發 Lambda 的應用場景
+159. ★ S3 Event 觸發 Lambda 的應用場景
      1. **情境**：穿戴裝置健康數據 → S3 → 處理分析
      2. **為什麼選 Lambda + Python**：事件驅動（新數據上傳自動觸發）、無需管理伺服器、Python 生態系豐富（pandas、numpy）、按需付費
-160. S3 Event → Lambda 的考試重點
+160. ★ S3 Event → Lambda 的考試重點
      1. **推送模式**：S3 主動呼叫 Lambda，不是拉取模式
      2. **檔案過濾**：支援 prefix/suffix 過濾特定檔案
      3. **Event 物件內容**：包含 bucket name、object key、檔案大小等完整資訊
-161. Kinesis Data Streams + Lambda 非同步處理架構
+161. ★ Kinesis Data Streams + Lambda 非同步處理架構
      1. **問題場景**：使用者上傳檔案，但處理耗時，不想讓使用者等待
      2. **核心解決方案**：請求立即寫入 Kinesis Data Streams → 回傳成功訊息給使用者（不等處理）
      3. **非同步流程**：Lambda 非同步從 Streams 讀取資料並處理 → 完成後寫入 S3 儲存
-162. Lambda **呼叫類型**（Invocation Type）的兩種方式
+162. ★★ Lambda **呼叫類型**（Invocation Type）的兩種方式
      1. **同步（Synchronous）**：呼叫者等待結果，例如 API Gateway → Lambda
      2. **非同步（Asynchronous）**：呼叫後不等結果，例如 S3 事件 → Lambda
      3. **重點**：呼叫類型由事件源決定，無法人為改變
-163. Kinesis Data Streams 與 Lambda 的特殊運作機制
+163. ★★ Kinesis Data Streams 與 Lambda 的特殊運作機制
      1. **運作方式**：使用 Event Source Mapping，Lambda **主動 poll（輪詢）** Kinesis stream
      2. **自動功能**：批次處理記錄、管理 checkpoint（進度追蹤）、自動處理 retry
-164. Stream-based 服務的 Lambda 整合模式
+164. ★★ Stream-based 服務的 Lambda 整合模式
      1. **常見服務**：DynamoDB Streams、SQS、Kinesis Data Streams
      2. **核心特點**：都是 Lambda 主動 poll，而非被動接收
      3. **考試陷阱**：很多人誤以為 Kinesis 是「推送」給 Lambda，實際上是 Lambda 去「拉取」
-165. Lambda 事件源的判斷標準
+165. ★★ Lambda 事件源的判斷標準
      1. **Stream-based 服務**：= Lambda poll（主動拉取）
      2. **Event-based 服務**：= 推送給 Lambda（S3、SNS）
      3. **應用影響**：會直接影響架構設計中的權限配置和錯誤處理策略
-166. Lambda@Edge = **在 CloudFront 的 edge location 執行 Lambda**
+166. ★★ Lambda@Edge = **在 CloudFront 的 edge location 執行 Lambda**
      1. **核心優勢**：在離用戶最近的地方處理請求，大幅降低延遲
-167. Lambda@Edge 的 4 個請求/回應介入時間點
+167. ★ Lambda@Edge 的 4 個請求/回應介入時間點
      1. **Viewer Request**：使用者 → CloudFront
      2. **Origin Request**：CloudFront → Origin
      3. **Origin Response**：Origin → CloudFront
      4. **Viewer Response**：CloudFront → 使用者
-168. Lambda@Edge 的實務應用範例：動態圖片格式轉換
+168. ★ Lambda@Edge 的實務應用範例：動態圖片格式轉換
      1. **需求**：根據 User-Agent header 判斷裝置類型，回傳不同圖片格式
      2. **實現步驟**：CloudFront 收到請求 → Lambda@Edge 讀取 User-Agent → 修改 response header 或直接生成不同格式 → 回傳給使用者
      3. **格式差異**：手機 → WebP（小檔案）；桌面 → PNG/JPEG（原始格式）
-169. Lambda@Edge 的適用場景分析
+169. ★ Lambda@Edge 的適用場景分析
      1. **適用**：需要在「邊緣」處理邏輯（降低延遲）、A/B testing、個人化內容、安全驗證（檢查 header、token）、URL 重寫、重導向
      2. **不適用**：需要長時間運算（Lambda@Edge 有執行時間限制）
-170. 記憶點：Lambda@Edge 的核心概念
+170. ★ 記憶點：Lambda@Edge 的核心概念
      1. **類比**：想像在 CDN 的每個節點都放了一個小腦袋，可以做簡單判斷和修改，而不用每次都回 Origin
-171. VPC 的定義與核心特性
+171. ★★ VPC 的定義與核心特性
      1. **定義**：VPC = 你在 AWS 上的私有網路區域
      2. **邏輯隔離**：你的網路與其他 AWS 用戶完全分開
      3. **完全控制**：IP 範圍（CIDR）、subnet、route table、gateway 都你說了算
      4. **混合雲支援**：可透過 VPN/Direct Connect 連回地端機房
-172. VPC 的必懂核心元件
+172. ★★ VPC 的必懂核心元件
      1. **Subnet**：public（可上網）vs private（不可上網）
      2. **Internet Gateway**：讓 public subnet 連外網
      3. **NAT Gateway**：讓 private subnet 單向連外網（安全）
      4. **Route Table**：決定流量往哪走
      5. **Security Group**：instance 層級防火牆（stateful）
      6. **NACL**：subnet 層級防火牆（stateless）
-173. VPC 應用場景的判斷標準
+173. ★ VPC 應用場景的判斷標準
      1. **需要隔離 + 安全**：用 VPC ✅
      2. **需要自訂網路**：用 VPC ✅
      3. **AWS 預設配置**：AWS 預設就給你一個 default VPC
-174. VPC 考試高頻考點
+174. 😇 VPC 考試高頻考點
      1. **常考連接方案**：VPC peering、Transit Gateway、PrivateLink
      2. **基礎地位**：VPC 是 AWS 網路的基礎，幾乎所有服務都跑在 VPC 裡
-175. ENI（Elastic Network Interface）的定義與作用
+175. ★ ENI（Elastic Network Interface）的定義與作用
      1. **定義**：ENI = 虛擬網卡
      2. **Lambda 在 VPC 內的運作機制**：AWS 自動建立 ENI 連接 VPC
      3. **資源消耗**：每個 subnet/security group 組合需要 ENI，ENI 消耗 subnet 的 IP
-176. EC2ThrottledException 的發生原因與解決方案
+176. ★ EC2ThrottledException 的發生原因與解決方案
      1. **發生原因**：Subnet IP 不足、ENI 配額達上限、Lambda 快速 scale 時建立 ENI 太慢
      2. **解決方案**：確保 subnet 有足夠 IP（至少保留幾十個）、用 `/24` 或更大的 CIDR、Lambda 會重用 ENI，不是每次執行都建新的
-177. Lambda + VPC 的核心記憶點
+177. ★ Lambda + VPC 的核心記憶點
      1. **簡潔定義**：Lambda 要進 VPC = 需要網卡（ENI）= 需要 IP
      2. **常考場景**：Lambda 連 RDS、EFS、內部 API 都需要在 VPC 內
-178. Lambda 在 VPC 內 scale 失敗的第一大原因：ENI 配額達上限
+178. ★ Lambda 在 VPC 內 scale 失敗的第一大原因：ENI 配額達上限
      1. **原因分析**：VPC 有 ENI 數量限制，Lambda scale 時需要更多 ENI
      2. **考試重點**：當 Lambda 快速擴展時，可能因為 ENI 配額已滿而無法建立新 instance
-179. Lambda 在 VPC 內 scale 失敗的第二大原因：Subnet IP 不足
+179. ★ Lambda 在 VPC 內 scale 失敗的第二大原因：Subnet IP 不足
      1. **原因分析**：ENI 需要消耗 IP，Subnet CIDR 太小（如 /28 只有 16 個 IP）導致 IP 枯竭
      2. **考試重點**：小型 subnet 無法支撐 Lambda 的大規模 scale，造成限流
-180. Lambda@Edge 是 Amazon CloudFront 的一個功能，讓您可以在應用程式的使用者附近運行代碼，從而提高性能並降低延遲。
-181. Athena vs Kinesis 的核心定位區別
+180. 👀 Lambda@Edge 是 Amazon CloudFront 的一個功能，讓您可以在應用程式的使用者附近運行代碼，從而提高性能並降低延遲。
+181. ★ Athena vs Kinesis 的核心定位區別
      1. **Athena**：對 S3 上的**靜態資料**做 SQL 查詢 → batch processing / 事後查詢
      2. **Kinesis**：處理**即時串流資料** → 即時 real-time 應用（Data Streams/Analytics/Firehose）
      3. **考試判斷**：歷史資料/S3 分析 = Athena；real-time 流量 = Kinesis
-182. 記憶點：Athena vs Kinesis 的核心概念
+182. ★ 記憶點：Athena vs Kinesis 的核心概念
      1. **Athena**：事後諸葛（查過去的資料）
      2. **Kinesis**：當下反應（處理現在的資料流）
-183. Multi-AZ failover = CNAME 切換，不碰 IP
+183. 😇 Multi-AZ failover = CNAME 切換，不碰 IP
 184. ★ Multi-AZ Failover 核心機制
      1. **實作方式**：CNAME 切換才是 failover 的方式
      2. **故障轉移流程**：故障前（your-db.xxx.rds.amazonaws.com → Primary DB (AZ-A)）→ 故障後（your-db.xxx.rds.amazonaws.com → Standby DB (AZ-B，升級為新 Primary)）
-185. Multi-AZ Failover 的優勢
+185. ★ Multi-AZ Failover 的優勢
      1. **應用層無感知**：connection string 不變，無需修改程式
      2. **自動 Promote**：Standby 被 promote 成新 Primary
      3. **容錯轉移時間**：通常 60-120 秒
