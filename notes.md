@@ -665,6 +665,40 @@
 209. 👀 S3 Client-Side Encryption 的核心概念
      1. **加密時機**：加密動作發生在**資料傳到 S3 之前**（端對端加密）
      2. **應用場景**：需要完全控制加密金鑰、確保 AWS 無法存取原始資料時使用
-210. To enable client-side encryption, you have the following options:
-     – Use an AWS KMS key.
-     – Use a client-side master key.
+210. ★★ To enable client-side encryption, you have the following options:
+     - Use an AWS KMS key.
+     - Use a client-side master key.
+211. ★★ 記住：S3 Server-Side Encryption 只支援 AES-256，沒有 AES-128 選項。
+212. ★★ S3 Server-Side Encryption (SSE) 加密方案對比
+     1. **SSE-S3**：**AES-256** 加密，**AWS 管理金鑰**
+     2. **SSE-KMS**：**AES-256** 加密，**KMS 管理金鑰**
+     3. **SSE-C**：**AES-256** 加密，**你提供金鑰**
+213. 😇 S3 + CloudFront 靜態內容分發架構
+     1. **核心概念**：S3 + CloudFront 是 AWS 標準的靜態內容分發方案
+     2. **運作流程**：CloudFront 在全球 Edge Location 快取 S3 檔案，用戶從最近節點下載
+214. ★★ SNS 常見考試組合
+     1. **SNS + SQS (Fan-out pattern)**：一個訊息廣播給多個 queue，各自獨立處理
+     2. **SNS + Lambda**：事件驅動架構，自動觸發多個 Lambda
+     3. **CloudWatch Alarm → SNS → Email/SMS**：監控告警通知
+215. ★★ SNS Fan-out Pattern（重要考點）
+     1. **定義**：SNS Topic 發布 1 則訊息 → **複製並推送給多個端點**
+     2. **典型架構**：
+        - SQS Queue 1（訂單處理）
+        - SQS Queue 2（庫存更新）
+        - Lambda（發送 Email）
+        - HTTP endpoint（第三方 webhook）
+216. ★★ SNS Message Filtering（重要考點）
+     1. **功能**：訂閱者可設定 **filter policy**，**只接收符合條件的訊息**
+     2. **典型架構**：
+        - SNS Topic（Quote Requests）
+        - SQS Queue 1（filter: type="insurance"）
+        - SQS Queue 2（filter: type="loan"）
+        - SQS Queue 3（filter: type="mortgage"）
+217. ★ SNS Message Filtering 的考試判斷標準
+     1. **情境**：多個下游系統，但各自**只需要特定類型的訊息**
+     2. **錯誤做法**：多個 SNS Topic（管理複雜）；所有訊息發給所有 SQS 再用 Lambda 過濾（浪費資源）
+     3. **正確做法**：**1 個 SNS Topic + 多個 SQS + Filter Policy**
+218. 😇 SNS Filter Policy 的實現細節
+     1. **發布訊息時**：帶上 attributes（如 `type: "insurance"`, `amount: 50000`）
+     2. **訂閱時設定 filter**：定義要接收的條件（如 `{"type": ["insurance"]}`）
+     3. **SNS 自動分流**：根據 filter policy 決定推送給哪些訂閱者
