@@ -35,3 +35,7 @@
 ## API Gateway + Lambda = Scalable Serverless API
 
 ![圖 3](https://img.kyomind.tw/img-20251019-170542.png)
+
+## S3 加密
+
+![圖 4](https://img.kyomind.tw/img-20251021-170229.png)
