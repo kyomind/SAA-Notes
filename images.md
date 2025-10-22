@@ -40,6 +40,6 @@
 
 ![圖 4](https://img.kyomind.tw/img-20251021-170229.png)
 
-## S3 事件通知架構
+## S3 + SNS + SQS + 處理邏輯
 
 ![圖 5](https://img.kyomind.tw/img-20251022-172146.png)
