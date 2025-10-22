@@ -830,3 +830,27 @@
      1. **定義**：**Origin** = CloudFront 後面接的來源服務
      2. **支援服務**：只能接 **HTTP/HTTPS 相關服務**（ALB、S3、custom HTTP server）
      3. **考試陷阱**：❌ 不能接 **NLB**（NLB 是 Layer 4，不是 HTTP/HTTPS）
+255. ★★ SSM Parameter Store 的組態管理應用
+     1. **核心用途**：支援 **externally maintain**（外部維護）、**version history**（版本歷史）、**configuration values**（組態值）管理
+     2. **特性**：專門處理應用組態的中央存儲和版本控制
+256. ★ GuardDuty 的威脅偵測資料來源分析
+     1. **掃描的資料來源**：
+        1. **VPC Flow Logs** - 網路流量分析
+        2. **CloudTrail Logs** - API 操作記錄監控
+        3. **DNS Logs** - DNS 查詢記錄分析
+     2. **不掃描的資料源**：**CloudWatch Logs**（內容過於雜亂，應用程式 logs 難以標準化分析）
+257. ★★ Amazon Inspector 用於 EC2 主機漏洞掃描
+     1. **核心用途**：檢測 **OS vulnerabilities**（作業系統漏洞）**within EC2 instances**（EC2 內部）
+     2. **特性**：支援 **定期掃描**（weekly）、提供 **concrete recommendations**（具體建議）
+258. ★ AWS 安全服務的角色分工
+     1. **Inspector**：掃「漏洞」（系統有什麼弱點）
+     2. **GuardDuty**：抓「入侵」（有人在搞鬼嗎）
+     3. **Shield**：擋 DDoS 攻擊
+259. ★★ Secrets Manager vs SSM Parameter Store 密碼存儲對比
+     1. **SSM Parameter Store**：便宜甚至免費，但 **密碼輪換需自己實作**（要寫 Lambda）
+     2. **Secrets Manager**：費用較高，但 **原生支援自動輪換**（automatic rotation）
+     3. **KMS**：加密金鑰管理服務，**不適合存密碼**
+260. ★★ Secrets Manager 自動輪換機制
+     1. **核心功能**：支援 **automatic rotation**（自動輪換密碼）
+     2. **內建整合**：原生支援 RDS、Aurora、DocumentDB 等資料庫
+     3. **輪換流程**：自動產生新密碼 → 更新資料庫 → 更新 secret 值（**零停機時間**）
