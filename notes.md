@@ -771,3 +771,35 @@
      1. **24/7 支援**：需要 DDoS Response Team (DRT) 的專業協助
      2. **成本保護**：提供 AWS 帳單報銷保障，降低 DDoS 攻擊成本
      3. 一個月要價 3,000 美元
+238. ★★ SQS Visibility Timeout 的運作機制
+     1. **定義**：訊息的「**處理鎖定期**」，控制訊息可見性
+     2. **核心行為**：Consumer 收到訊息後，其他 consumer 在此期間暫時看不到這則訊息；時間到還未刪除，訊息會自動重新出現在 queue 中
+     3. **時間設定**：預設 30 秒，最長 12 小時
+239. ★★ SQS 優先權處理的正確姿勢
+     1. **核心觀念**：SQS 沒有原生的訊息優先權機制 ❌
+     2. **正確做法**：使用**多個 queue 分流**，並控制 consumer 的**輪詢順序** ✅
+     3. **記憶點**：想要優先權 = 用多個 queue 分流
+     4. **EC2 Consumer 行為**：持續檢查 Premium Queue → 有就處理；Premium 空了 → 才檢查 Free Queue
+240. 👀 AWS 中負責不同任務協調的服務比較
+     - SQS = 訊息佇列,解耦元件
+     - SWF = 工作流程協調
+241. SWF 現在較少出現在考試，AWS 主推 Step Functions 取代 SWF。遇到工作流程題目，Step Functions 是更新的答案
+242. S3 Event 可發送到：
+     - SNS Topic
+     - SQS Queue
+     - Lambda
+243. ★★ S3 → SNS 實現 Fanout Pattern 的關鍵設計
+     1. **問題**：S3 event notification 只能設一個目標，無法同時通知多個團隊 ❌
+     2. **解決方案**：使用 **SNS fanout pattern**：S3 → SNS Topic → 多個 endpoint（可同時通知多個接收者） ✅
+     3. **對比**：直接用 SQS 只能一對一，無法 fanout
+     4. **考試記憶**：需要多個接收者 = SNS fanout pattern
+244. 😇 S3 Event 通知多方的考試技巧
+     1. **題目特徵**：看到「S3 event 要通知多方」
+     2. **答案必有**：SNS
+245. ★★ SNS 與 SQS 的訂閱關係是 Push Model
+     1. **核心概念**：SQS 訂閱 SNS，**不是 poll SNS**
+     2. **運作方式**：**SNS 是 push model**⭐️，主動推送訊息到訂閱的 SQS queue
+     3. **訂閱流程**：SQS queue 訂閱 SNS topic → SNS 主動推送訊息到 queue
+246. ★★ SQS 訊息保留期**預設 4 天，最長 14 天**
+     1. 若 batch job 每週才處理
+     2. 需調整 `SetQueueAttributes` 將訊息保留期設為 7 天以上
