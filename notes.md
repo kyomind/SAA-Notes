@@ -803,3 +803,13 @@
 246. ★★ SQS 訊息保留期**預設 4 天，最長 14 天**
      1. 若 batch job 每週才處理
      2. 需調整 `SetQueueAttributes` 將訊息保留期設為 7 天以上
+247. ★★ SQS 送訊息到 DLQ 的觸發條件
+     1. **唯一觸發條件**：超過 **maxReceiveCount**
+     2. **判斷邏輯**：當一則訊息被 receive 但沒被刪除的次數 > 設定的閾值，就會被移到 DLQ
+248. ★ SQS 訊息重複接收的常見原因
+     1. **處理失敗**：Lambda 處理訊息時 throw exception，訊息回到 queue
+     2. **Visibility timeout 太短**：處理還沒完成，訊息就又變 visible，被重複接收
+     3. **程式 bug**：處理完但忘記呼叫 DeleteMessage
+249. ★ SQS DLQ 設定範例與最佳實踐
+     1. **典型設定**：maxReceiveCount = 3-5 次
+     2. **觸發機制**：訊息被 receive 3 次後仍未刪除 → 送到 DLQ
