@@ -813,3 +813,20 @@
 249. ★ SQS DLQ 設定範例與最佳實踐
      1. **典型設定**：maxReceiveCount = 3-5 次
      2. **觸發機制**：訊息被 receive 3 次後仍未刪除 → 送到 DLQ
+250. ★★ AWS WAF 核心功能與部署位置
+     1. **功能**：**Web 應用防火牆**，擋常見攻擊（**SQL injection**、**XSS** 等）
+     2. **可部署位置**：CloudFront（CDN）、ALB（Application Load Balancer）、API Gateway
+251. ★★ AWS WAF 部署位置的考試陷阱
+     1. **限制**：❌ 不能放在 NLB（Network Load Balancer）、❌ 不能直接保護 EC2（要透過 ALB）
+     2. **核心原理**：WAF 只保護 **Layer 7**（HTTP/HTTPS），所以只能接在處理 HTTP 的服務上
+252. ★★ AWS WAF 保護場景的判斷
+     1. **題目特徵**：提到「防止 **SQL injection** / **XSS**」或「**rate limiting** / **IP blocking**」
+     2. **答案**：選 **WAF**
+253. 👀 GuardDuty 與 AWS WAF 的功能差異
+     1. **GuardDuty 定位**：威脅「**偵測**」服務，只負責發現可疑活動（monitoring）
+     2. **核心限制**：**不會主動阻擋流量**（no blocking），只產出 findings 供你分析
+     3. **應用場景**：需要主動阻擋攻擊時 → 選 **WAF**；只需要威脅監控時 → 選 **GuardDuty**
+254. ★ CloudFront Origin 來源服務的支援限制
+     1. **定義**：**Origin** = CloudFront 後面接的來源服務
+     2. **支援服務**：只能接 **HTTP/HTTPS 相關服務**（ALB、S3、custom HTTP server）
+     3. **考試陷阱**：❌ 不能接 **NLB**（NLB 是 Layer 4，不是 HTTP/HTTPS）

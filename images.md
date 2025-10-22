@@ -43,3 +43,11 @@
 ## S3 + SNS + SQS + 處理邏輯
 
 ![圖 5](https://img.kyomind.tw/img-20251022-172146.png)
+
+## AWS WAF 運作機制
+
+![圖 6](https://img.kyomind.tw/img-20251022-175903.png)
+
+## 用 S3 靜態網站托管 + CloudFront + Route 53 架構
+
+![圖 7](https://img.kyomind.tw/img-20251022-180659.png)
