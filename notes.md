@@ -854,3 +854,47 @@
      1. **核心功能**：支援 **automatic rotation**（自動輪換密碼）
      2. **內建整合**：原生支援 RDS、Aurora、DocumentDB 等資料庫
      3. **輪換流程**：自動產生新密碼 → 更新資料庫 → 更新 secret 值（**零停機時間**）
+261. 😇 Parameter Store 與 Secrets Manager 的取捨
+     1. **Parameter Store**：便宜甚至免費，但 **密碼輪換需自己實作**（要寫 Lambda）
+     2. **Secrets Manager**：費用較高，但 **省事**（原生支援自動輪換）
+262. ★★ Amazon Macie 敏感資料偵測服務
+     1. **核心功能**：使用 ML **自動發現敏感資料**（PII、財務資料等）
+     2. **典型應用**：掃描 S3 bucket 安全性問題、提供 bucket 清單（未加密、公開、跨帳號共享）
+263. ★ Macie 與 GuardDuty 的功能定位
+     1. **Macie**：專注 **S3 資料內容安全**（敏感資料偵測）
+     2. **GuardDuty**：偵測 **整體威脅行為**（網路/API 層級威脅監控）
+264. 😇 Macie 考試判斷標準
+     1. 看到「S3 + 敏感資料偵測」→ **Macie**
+     2. 看到「PII 掃描」→ **Macie**
+     3. 看到「找出公開的 S3 bucket」→ **Macie**
+265. ★★ 客戶端加密（Client-side Encryption）應用場景
+     1. **判斷標準**：題目提到「**even company admins can't see**」→ 直接選 **Client-side Encryption**
+     2. **運作原理**：在應用程式層面加密資料 → 寫入資料庫（密文形式）→ 資料庫無法看到明文 → 只有持有解密金鑰的客戶端能解密
+266. ★★ KMS Multi-region Keys 跨域加密解決方案
+     1. **問題場景**：Aurora Global Database 跨多區域，單區域 KMS key 無法在其他區域解密
+     2. **解決方案**：使用 **Multi-region Keys**，每個區域都有對應的 key replica，能解密同一份資料
+267. ★ Aurora Client-side Encryption + KMS Multi-region Keys 組合方案
+     1. **應用場景**：資料庫跨域部署 + 需要強加密（連管理員都無法看到）
+     2. **實作組合**：Client-side Encryption（應用層加密） + Multi-region Keys（跨域密鑰管理） = **唯一解**
+268. S3 跨 KMS Key Replication = 解密 + 加密
+     1. Source Key → `kms:Decrypt`（解開舊的）
+     2. Target Key → `kms:Encrypt`（用新的加密）
+     3. 授權對象 → S3 Replication Service Role
+     4. 你只要記得：換 Key 複製 = 要給兩把 Key 的權限。
+269. S3 Replication 在跨 KMS Key 複製時的流程：
+     1. 從 Source Bucket 讀取加密物件 → 需要用 Source KMS Key 解密
+     2. 用 Target KMS Key 加密
+     3. 寫入 Target Bucket
+270. 👀 S3 Replication Service 的權限需求
+     1. 角色身份：**AWS 服務角色**（非 IAM User），需要明確授權
+     2. 必要權限：Source Key 的 `kms:Decrypt` + Target Key 的 `kms:Encrypt`
+271. ★★ ACM 證書到期通知方案（EventBridge + SNS）
+     1. **完整流程**：ACM 發出證書到期事件 → EventBridge 設定規則 → 觸發 SNS → Email 通知
+     2. **核心優勢**：ACM 原生支援 EventBridge（含 **DaysToExpiry** 事件）、支援「每天檢查」、能提前 30 天通知
+272. 😇 ACM 與 EventBridge 整合的考試判斷
+     1. 看到「證書到期提醒」+ 「email 通知」→ **EventBridge + SNS**
+     2. 記住：EventBridge 可設定「每日檢查」規則，實現精確的提前通知
+273. ★★ Edge-Optimized API Gateway 的 ACM 證書位置限制
+     1. **必要條件**：Edge-Optimized API Gateway 的 ACM 證書 **必須在 us-east-1**
+     2. **原因**：API Gateway 背後使用 CloudFront，而 CloudFront 的證書 **只能來自 us-east-1**（AWS 硬性規定）
+     3. **核心記憶**：**CloudFront 或 Edge-Optimized 服務 → ACM 證書必須在 us-east-1**（與 API Gateway 所在 region 無關）
