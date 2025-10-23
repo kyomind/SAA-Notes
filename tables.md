@@ -272,3 +272,21 @@ Read Replicas 有 replication lag（**複製延遲**），不適合做 HA，適�
 | **Signed URLs/Cookies**         | 控制內容存取權限                       | **付費內容、時效性限制首選**            |
 | **OAC (Origin Access Control)** | 強制用戶只能透過 CloudFront 存取 S3    | **防止繞過 CloudFront 直接打 S3 URL**   |
 | **Pre-signed URLs**             | 讓用戶上傳檔案到 S3，但不需要 AWS 憑證 | **注意：這是 S3 功能，不是 CloudFront** |
+
+## VPC Endpoint 完整對比 (Interface vs Gateway)
+
+| 特性         | Interface Endpoint | Gateway Endpoint     |
+| ------------ | ------------------ | -------------------- |
+| **支援服務** | 幾乎所有服務       | **僅 S3 + DynamoDB** |
+| **成本**     | 收費               | **免費**             |
+| **組態位置** | Subnet 層級        | **Route Table 層級** |
+| **安全組**   | 需要               | **不需要**           |
+| **跨 VPC**   | 可透過 PrivateLink | **僅限同 VPC**       |
+
+## 記憶技巧：VPC Endpoint 的考試秘訣
+
+| 記憶方式           | 內容                                                                  |
+| ------------------ | --------------------------------------------------------------------- |
+| **Gateway 簡記**   | **「S3 & DynamoDB = 免費」** ← 考試看到 S3 或 DynamoDB 優先選 Gateway |
+| **Interface 簡記** | **「其他服務 = 要錢但更靈活」** ← 需要其他服務時自動選 Interface      |
+| **成本優化秘訣**   | 看到「cost-effective」+ 「S3/DynamoDB」→ **直接選 Gateway**           |

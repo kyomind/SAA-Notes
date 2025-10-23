@@ -1015,3 +1015,16 @@
      2. **Bastion Host 用途**：給 **人** 使用的 **SSH/RDP 跳板**
      3. **NAT Instance 用途**：給 **機器** 使用的 **私網流量轉發器**
      4. **快速區分**：NAT Instance 是「出口代辦」，Bastion Host 是「入口守門」
+
+309. ★★ Interface Endpoint （介面端點）
+     1. **本質**：在 VPC 裡創建一個 **ENI (網卡)**，配上私有 IP
+     2. **運作**：流量透過 ENI 走 **AWS PrivateLink** 到服務
+     3. **支援服務**：大多數 AWS 服務（S3、DynamoDB、SNS、SQS 等）
+     4. **計費**：按小時收費 + 數據傳輸費
+     5. **DNS**：提供私有 DNS 名稱
+310. ★★ Gateway Endpoint （閘道端點）— 只有 S3 和 DynamoDB
+     1. **本質**：在 **Route Table** 加一條路由規則
+     2. **運作**：修改路由表，讓流量直接導向 AWS 服務
+     3. **支援服務**：**只有 S3 和 DynamoDB**（考試必考！）
+     4. **計費**：**完全免費**
+     5. **DNS**：使用服務的公開 DNS 名稱
