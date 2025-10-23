@@ -59,3 +59,7 @@
 ## CloudFront Signed URLs and Signed Cookies
 
 ![圖 9](https://img.kyomind.tw/img-20251023-135019.png)
+
+## CloudFront Origin Access Control (OAC)
+
+![圖 10](https://img.kyomind.tw/img-20251023-154415.png)

@@ -926,3 +926,17 @@
 282. 😇 Signed URLs 和 Signed Cookies 的功能對比
      1. **基本功能相同**：都允許你控制誰可以存取你的內容
      2. **主要差異**：Signed URLs 用於單一檔案限期授權，Signed Cookies 用於多檔案/整站授權
+283. ★★ 題目提到「不想改現有 URL 結構」時，使用 **Signed Cookies**
+284. ★★ Pre-signed URLs vs Signed URLs 的核心區別
+     1. **Pre-signed URLs**：**S3 原生功能**，用於上傳或下載檔案，**不走 CloudFront**
+     2. **Signed URLs**：**CloudFront 功能**，用於分發內容，**必須走 CloudFront**
+285. ★★ 為什麼要用 Origin Access Identity (OAI)？
+     1. **沒設定 OAI**：用戶拿到 S3 原始 URL 就能繞過 CloudFront（**安全缺陷**）
+     2. **有設定 OAI**：**S3 只允許 CloudFront 存取**，所有流量必須經過 CloudFront
+286. ★★ 實務判斷規則
+     1. **識別題型**：題目出現「付費內容」、「限時存取」、「地理限制」→ 想到 **CloudFront Signed URLs/Cookies**
+     2. **防直接存取**：題目要求「防止直接存取 S3」→ **必須搭配 OAI/OAC**
+287. ★ S3 Pre-signed URLs 的問題：
+     1. **繞過 CloudFront**：直接從 S3 讀取
+     2. **失去優勢**：失去 CDN 加速、快取、地理分佈等優勢
+     3. **不符合要求**：題目要求「透過 CloudFront 分發」就直接不符合
