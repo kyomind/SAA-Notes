@@ -1006,3 +1006,6 @@
      1. **本質**：**不是** AWS 服務，而是 AWS 提供的 **CloudFormation template**（IaC 模板）
      2. **部署後自動建立**：**Lambda functions**（執行開關邏輯）、**DynamoDB table**（存排程設定）、**CloudWatch Events**（觸發排程）
      3. **正確實現步驟**：Deploy CloudFormation template of Instance Scheduler → 設定 start/stop schedules
+307. ★★ Lambda SnapStart 解決冷啟動問題
+     1. **適用場景**：**Java Lambda + cold start 問題** → **低延遲啟動** → **減少初始化時間**
+     2. **支援範圍**：**僅限 Java 11、17 以上**（考試陷阱：Python、Node.js 不支援）
