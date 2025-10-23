@@ -830,71 +830,82 @@
      1. **定義**：**Origin** = CloudFront 後面接的來源服務
      2. **支援服務**：只能接 **HTTP/HTTPS 相關服務**（ALB、S3、custom HTTP server）
      3. **考試陷阱**：❌ 不能接 **NLB**（NLB 是 Layer 4，不是 HTTP/HTTPS）
-255. ★★ SSM Parameter Store 的組態管理應用
+255. 😇 S3 + CloudFront 靜態網站的標準架構
+     1. **S3 角色**：存放**靜態檔案**（HTML/CSS/JS/圖片），開啟 website hosting 功能
+     2. **CloudFront 角色**：**CDN 服務**，快取內容到全球邊緣節點，加速訪問
+256. 👀 CloudFront + S3 靜態網站架構的考試陷阱
+     1. **錯誤做法**：CloudFront 直接指向 S3 website endpoint ❌（無法使用 OAI，安全性差）
+     2. **正確做法**：CloudFront 指向 S3 REST endpoint + 使用 OAI ✅（安全且標準）
+257. ★ CloudFront Origin Group 的 Failover 機制
+     1. **定義**：**Origin Group** = 1 個 primary origin + 1 個 secondary origin
+     2. **用途**：**高可用性設計**，不是負載分散
+     3. **觸發條件**：當 primary 失敗（**5xx 錯誤**）時，自動切換到 secondary
+258. S3 預設全私有 - 只有 owner 能存取
+259. ★★ SSM Parameter Store 的組態管理應用
      1. **核心用途**：支援 **externally maintain**（外部維護）、**version history**（版本歷史）、**configuration values**（組態值）管理
      2. **特性**：專門處理應用組態的中央存儲和版本控制
-256. ★ GuardDuty 的威脅偵測資料來源分析
+260. ★ GuardDuty 的威脅偵測資料來源分析
      1. **掃描的資料來源**：
         1. **VPC Flow Logs** - 網路流量分析
         2. **CloudTrail Logs** - API 操作記錄監控
         3. **DNS Logs** - DNS 查詢記錄分析
      2. **不掃描的資料源**：**CloudWatch Logs**（內容過於雜亂，應用程式 logs 難以標準化分析）
-257. ★★ Amazon Inspector 用於 EC2 主機漏洞掃描
+258. ★★ Amazon Inspector 用於 EC2 主機漏洞掃描
      1. **核心用途**：檢測 **OS vulnerabilities**（作業系統漏洞）**within EC2 instances**（EC2 內部）
      2. **特性**：支援 **定期掃描**（weekly）、提供 **concrete recommendations**（具體建議）
-258. ★ AWS 安全服務的角色分工
+259. ★ AWS 安全服務的角色分工
      1. **Inspector**：掃「漏洞」（系統有什麼弱點）
      2. **GuardDuty**：抓「入侵」（有人在搞鬼嗎）
      3. **Shield**：擋 DDoS 攻擊
-259. ★★ Secrets Manager vs SSM Parameter Store 密碼存儲對比
+260. ★★ Secrets Manager vs SSM Parameter Store 密碼存儲對比
      1. **SSM Parameter Store**：便宜甚至免費，但 **密碼輪換需自己實作**（要寫 Lambda）
      2. **Secrets Manager**：費用較高，但 **原生支援自動輪換**（automatic rotation）
      3. **KMS**：加密金鑰管理服務，**不適合存密碼**
-260. ★★ Secrets Manager 自動輪換機制
+261. ★★ Secrets Manager 自動輪換機制
      1. **核心功能**：支援 **automatic rotation**（自動輪換密碼）
      2. **內建整合**：原生支援 RDS、Aurora、DocumentDB 等資料庫
      3. **輪換流程**：自動產生新密碼 → 更新資料庫 → 更新 secret 值（**零停機時間**）
-261. 😇 Parameter Store 與 Secrets Manager 的取捨
+262. 😇 Parameter Store 與 Secrets Manager 的取捨
      1. **Parameter Store**：便宜甚至免費，但 **密碼輪換需自己實作**（要寫 Lambda）
      2. **Secrets Manager**：費用較高，但 **省事**（原生支援自動輪換）
-262. ★★ Amazon Macie 敏感資料偵測服務
+263. ★★ Amazon Macie 敏感資料偵測服務
      1. **核心功能**：使用 ML **自動發現敏感資料**（PII、財務資料等）
      2. **典型應用**：掃描 S3 bucket 安全性問題、提供 bucket 清單（未加密、公開、跨帳號共享）
-263. ★ Macie 與 GuardDuty 的功能定位
+264. ★ Macie 與 GuardDuty 的功能定位
      1. **Macie**：專注 **S3 資料內容安全**（敏感資料偵測）
      2. **GuardDuty**：偵測 **整體威脅行為**（網路/API 層級威脅監控）
-264. 😇 Macie 考試判斷標準
+265. 😇 Macie 考試判斷標準
      1. 看到「S3 + 敏感資料偵測」→ **Macie**
      2. 看到「PII 掃描」→ **Macie**
      3. 看到「找出公開的 S3 bucket」→ **Macie**
-265. ★★ 客戶端加密（Client-side Encryption）應用場景
+266. ★★ 客戶端加密（Client-side Encryption）應用場景
      1. **判斷標準**：題目提到「**even company admins can't see**」→ 直接選 **Client-side Encryption**
      2. **運作原理**：在應用程式層面加密資料 → 寫入資料庫（密文形式）→ 資料庫無法看到明文 → 只有持有解密金鑰的客戶端能解密
-266. ★★ KMS Multi-region Keys 跨域加密解決方案
+267. ★★ KMS Multi-region Keys 跨域加密解決方案
      1. **問題場景**：Aurora Global Database 跨多區域，單區域 KMS key 無法在其他區域解密
      2. **解決方案**：使用 **Multi-region Keys**，每個區域都有對應的 key replica，能解密同一份資料
-267. ★ Aurora Client-side Encryption + KMS Multi-region Keys 組合方案
+268. ★ Aurora Client-side Encryption + KMS Multi-region Keys 組合方案
      1. **應用場景**：資料庫跨域部署 + 需要強加密（連管理員都無法看到）
      2. **實作組合**：Client-side Encryption（應用層加密） + Multi-region Keys（跨域密鑰管理） = **唯一解**
-268. S3 跨 KMS Key Replication = 解密 + 加密
+269. S3 跨 KMS Key Replication = 解密 + 加密
      1. Source Key → `kms:Decrypt`（解開舊的）
      2. Target Key → `kms:Encrypt`（用新的加密）
      3. 授權對象 → S3 Replication Service Role
      4. 你只要記得：換 Key 複製 = 要給兩把 Key 的權限。
-269. S3 Replication 在跨 KMS Key 複製時的流程：
+270. S3 Replication 在跨 KMS Key 複製時的流程：
      1. 從 Source Bucket 讀取加密物件 → 需要用 Source KMS Key 解密
      2. 用 Target KMS Key 加密
      3. 寫入 Target Bucket
-270. 👀 S3 Replication Service 的權限需求
+271. 👀 S3 Replication Service 的權限需求
      1. 角色身份：**AWS 服務角色**（非 IAM User），需要明確授權
      2. 必要權限：Source Key 的 `kms:Decrypt` + Target Key 的 `kms:Encrypt`
-271. ★★ ACM 證書到期通知方案（EventBridge + SNS）
+272. ★★ ACM 證書到期通知方案（EventBridge + SNS）
      1. **完整流程**：ACM 發出證書到期事件 → EventBridge 設定規則 → 觸發 SNS → Email 通知
      2. **核心優勢**：ACM 原生支援 EventBridge（含 **DaysToExpiry** 事件）、支援「每天檢查」、能提前 30 天通知
-272. 😇 ACM 與 EventBridge 整合的考試判斷
+273. 😇 ACM 與 EventBridge 整合的考試判斷
      1. 看到「證書到期提醒」+ 「email 通知」→ **EventBridge + SNS**
      2. 記住：EventBridge 可設定「每日檢查」規則，實現精確的提前通知
-273. ★★ Edge-Optimized API Gateway 的 ACM 證書位置限制
+274. ★★ Edge-Optimized API Gateway 的 ACM 證書位置限制
      1. **必要條件**：Edge-Optimized API Gateway 的 ACM 證書 **必須在 us-east-1**
      2. **原因**：API Gateway 背後使用 CloudFront，而 CloudFront 的證書 **只能來自 us-east-1**（AWS 硬性規定）
      3. **核心記憶**：**CloudFront 或 Edge-Optimized 服務 → ACM 證書必須在 us-east-1**（與 API Gateway 所在 region 無關）
