@@ -951,3 +951,58 @@
      2. **Global Accelerator**：**協定不限** - TCP/UDP 都行，關鍵是**固定 IP + 快速切換**
 291. ★ CloudFront vs Global Accelerator 實戰判斷
      1. **快速決策**：題目同時提到**「需要固定 IP」或「非 HTTP 協定」** → **直接選 Global Accelerator**，別被 CloudFront 的萬能感騙了
+292. 😇 AWS Cost Anomaly Detection 異常支出偵測服務
+     1. **服務定位**：AWS 成本管理功能
+     2. **核心功能**：使用 ML 模型**偵測異常支出模式**（Anomalous spend patterns）
+     3. **應用場景**：自動告警異常支出，幫助控制成本
+293. 👀 AWS 成本管理工具的考試陷阱與比較
+     1. **CloudWatch Billing Alarm**：只能監控總花費超過閾值，無法做根因分析 ❌ 異常偵測
+     2. **AWS Budgets**：適合預算控管，但不是「異常偵測」的最佳解 ❌
+     3. **Cost Explorer**：適合事後分析，不是主動告警 ❌
+294. ★ EKS 對外暴露服務的標準架構：Ingress + ALB
+     1. **典型方案**：安裝 **AWS Load Balancer Controller** → 建立 Ingress 資源 → **自動建立 ALB**
+     2. **流量路徑**：Internet → ALB → Kubernetes Service → Pod
+295. ★ AWS Load Balancer Controller 的核心功能
+     1. **資源監聽**：監聽 Kubernetes 的 **Ingress/Service** 資源
+     2. **自動配置**：在 AWS 自動建立對應的 **ALB/NLB**
+     3. **管理職責**：負責 Target Group、健康檢查等設定
+296. ★★ AWS Control Tower 管理多帳號架構
+     1. **適用場景**：大規模 AWS 帳號治理，需要統一基準線和自動化控制
+     2. **核心價值**：
+        1. **一鍵建立 Landing Zone**：自動設定 OU 結構、帳號基準線
+        2. **內建 Drift Detection**：自動監控帳號是否偏離最佳實踐
+        3. **整合式管理**：串接 Organizations、Service Catalog、IAM Identity Center
+297. ★ AWS Control Tower Drift 偵測範圍
+     1. **OU 結構變更**：帳號移入/移出
+     2. **Guardrails 違規**：SCP、Config Rules 不合規
+     3. **基準設定變更**：CloudTrail、Config 配置偏離
+298. 😇 AWS Config 的定位與限制
+     1. **適用場景**：評估資源配置是否符合規範（例如：S3 bucket 是否加密、EC2 是否有正確 tag）、跨帳號聚合資源合規狀態
+     2. **不適合多帳號治理的原因**：監控對象錯誤（Config 看的是資源而非帳號結構變更）、需要額外設定（要寫 custom rule 才能監控 OU 變更）、不是設計用途（帳號治理不是 AWS Config 的主要場景）
+299. 記憶技巧：
+     1. **Control Tower** = 帳號治理層級
+     2. **Config** = 資源合規層級
+300. ★ Aurora Serverless V2 的彈性混搭架構
+     1. **核心優勢**：在同一個 cluster 中**混用 provisioned 和 serverless 實例**，靈活應對多變工作負載
+     2. **典型組合**：穩定讀取流量用 **provisioned reader** + 不規則寫入用 **serverless writer**
+301. 😇 Aurora Serverless V2 應用場景分析
+     1. **讀取流量**：穩定、可預測 → 用 provisioned reader（成本穩定）
+     2. **寫入流量**：不規則、難預測 → 用 serverless writer（自動應對高峰）
+302. ★ ACU (Aurora Capacity Unit) 容量單位定義
+     1. **基本定義**：**1 ACU = 2 GiB RAM** + 對應的 CPU 和網路資源
+     2. **設定方式**：使用**容量範圍**而非固定值（min 1 ACU / max 8 ACU = 記憶體 2-16 GiB）
+303. 😇 Aurora Serverless V2 容量規劃的最佳實踐
+     1. **未知負載時**：設定 **ACU 容量範圍**，讓 Aurora 根據實際負載自動調整
+     2. **正確做法**：題目若說「只知道記憶體消耗範圍」→ 配置 **ACU 範圍**（系統自己調整）
+304. 在同一個 Aurora cluster 裡，你可以自由組合四種實例類型：
+     1. Provisioned Writer（固定規格的寫入節點）
+     2. Provisioned Reader（固定規格的讀取節點）
+     3. Serverless Writer（自動擴展的寫入節點）
+     4. Serverless Reader（自動擴展的讀取節點）
+305. 😇 成本優化：使用模式決定省錢方案
+     1. **Reserved Instances / Savings Plans**：適合 24/7 持續運行
+     2. **Instance Scheduler**：適合間歇性使用（例如只在上班時間）
+306. ★ Instance Scheduler 架構和實現方式
+     1. **本質**：**不是** AWS 服務，而是 AWS 提供的 **CloudFormation template**（IaC 模板）
+     2. **部署後自動建立**：**Lambda functions**（執行開關邏輯）、**DynamoDB table**（存排程設定）、**CloudWatch Events**（觸發排程）
+     3. **正確實現步驟**：Deploy CloudFormation template of Instance Scheduler → 設定 start/stop schedules

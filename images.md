@@ -63,3 +63,11 @@
 ## CloudFront Origin Access Control (OAC)
 
 ![圖 10](https://img.kyomind.tw/img-20251023-154415.png)
+
+## AWS Control Tower
+
+![圖 11](https://img.kyomind.tw/img-20251023-175137.png)
+
+## Amazon Aurora Serverless v2 database
+
+![圖 12](https://img.kyomind.tw/img-20251023-175922.png)
