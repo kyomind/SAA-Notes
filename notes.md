@@ -940,3 +940,14 @@
      1. **繞過 CloudFront**：直接從 S3 讀取
      2. **失去優勢**：失去 CDN 加速、快取、地理分佈等優勢
      3. **不符合要求**：題目要求「透過 CloudFront 分發」就直接不符合
+288. ★★ 效能優化的層次與考試判斷
+     1. **層次架構**：CloudFront（**CDN 加速**靜態內容）、ElastiCache（**動態資料快取**）、Multi-region（**只在 DR/合規需求**時）
+     2. **考試判斷**：題目只提「improve performance」無「disaster recovery/compliance」→ **CloudFront + ElastiCache 就夠**；看到 multi-region 選項 → 問自己：**真的需要還是只為效能？**
+289. ★★ CloudFront vs Global Accelerator 選擇決策
+     1. **CloudFront 應用場景**：網站、圖片、影片、API、cache；關鍵需求為**降低延遲、減少源站負載**
+     2. **Global Accelerator 應用場景**：遊戲、IoT、VoIP、UDP、TCP（非 HTTP）；關鍵需求為**靜態 IP、快速區域容錯、固定入口點**
+290. 😇 CloudFront vs Global Accelerator 記憶技巧
+     1. **CloudFront**：**內容為王** - 什麼內容都能加速，但就是 HTTP(S)
+     2. **Global Accelerator**：**協定不限** - TCP/UDP 都行，關鍵是**固定 IP + 快速切換**
+291. ★ CloudFront vs Global Accelerator 實戰判斷
+     1. **快速決策**：題目同時提到**「需要固定 IP」或「非 HTTP 協定」** → **直接選 Global Accelerator**，別被 CloudFront 的萬能感騙了
