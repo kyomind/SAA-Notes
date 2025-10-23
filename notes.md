@@ -1009,3 +1009,9 @@
 307. ★★ Lambda SnapStart 解決冷啟動問題
      1. **適用場景**：**Java Lambda + cold start 問題** → **低延遲啟動** → **減少初始化時間**
      2. **支援範圍**：**僅限 Java 11、17 以上**（考試陷阱：Python、Node.js 不支援）
+
+308. ★★ Bastion Host vs NAT Instance 區別
+     1. **共同點**：都是一台在公有子網的 EC2 執行個體
+     2. **Bastion Host 用途**：給 **人** 使用的 **SSH/RDP 跳板**
+     3. **NAT Instance 用途**：給 **機器** 使用的 **私網流量轉發器**
+     4. **快速區分**：NAT Instance 是「出口代辦」，Bastion Host 是「入口守門」
