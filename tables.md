@@ -255,3 +255,12 @@ Read Replicas 有 replication lag（**複製延遲**），不適合做 HA，適�
 | **Email/Email-JSON** | 通知管理員或發送報表           |
 | **SMS**              | 手機簡訊告警                   |
 | **Mobile Push**      | App 推播通知                   |
+
+## CloudFront Signed URLs vs Signed Cookies
+
+| 特性     | **Signed URLs** | **Signed Cookies** |
+| -------- | --------------- | ------------------ |
+| 使用場景 | 單一檔案存取    | 多個檔案存取       |
+| 典型案例 | 下載付費電子書  | 訂閱制影片平台     |
+| 實作方式 | URL 帶參數      | Cookie 存權限      |
+| 用戶體驗 | 每次要新 URL    | 一次驗證，多次使用 |

@@ -55,3 +55,7 @@
 ## CloudFront Cache 行為
 
 ![圖 8](https://img.kyomind.tw/img-20251022-181233.png)
+
+## CloudFront Signed URLs and Signed Cookies
+
+![圖 9](https://img.kyomind.tw/img-20251023-135019.png)

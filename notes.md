@@ -909,3 +909,20 @@
      1. **必要條件**：Edge-Optimized API Gateway 的 ACM 證書 **必須在 us-east-1**
      2. **原因**：API Gateway 背後使用 CloudFront，而 CloudFront 的證書 **只能來自 us-east-1**（AWS 硬性規定）
      3. **核心記憶**：**CloudFront 或 Edge-Optimized 服務 → ACM 證書必須在 us-east-1**（與 API Gateway 所在 region 無關）
+278. ★★ CloudFront Signed URLs/Cookies 付費內容授權方案
+     1. **題目判斷**：看到「付費內容」、「限制存取」、「授權用戶」→ **Signed URLs/Cookies**
+     2. **單一檔案下載**：使用 **Signed URLs**
+     3. **整個網站會員區**：使用 **Signed Cookies**
+279. ★ CloudFront 授權方案的常見陷阱
+     1. ❌ **S3 Pre-signed URLs**：這是 S3 直連，不走 CloudFront（不符合要求）
+     2. ❌ **WAF**：那是擋攻擊的，不是做授權（功能混淆）
+     3. ✅ **CloudFront Signed URLs/Cookies**：正確方案
+280. ★★ 強制透過 CloudFront 的核心原因
+     1. **安全隱患**：若不強制，用戶可能直接訪問 S3 URL 繞過你的付費機制
+     2. **解決方案**：設定 **S3 Bucket Policy 僅允許 CloudFront Origin Access Identity (OAI) 存取**，禁止直接公網存取
+281. ★★ CloudFront 安全提供私密內容的兩大要求
+     1. **要求 1：使用簽名授權**：要求用戶使用 **CloudFront Signed URLs 或 Signed Cookies** 存取私密內容（不是直接 S3 URL）
+     2. **要求 2：禁止直接來源伺服器存取**：禁止用戶直接存取來源伺服器上的內容（例如 Amazon S3 或私有 HTTP 伺服器），改由 CloudFront URLs 提供
+282. 😇 Signed URLs 和 Signed Cookies 的功能對比
+     1. **基本功能相同**：都允許你控制誰可以存取你的內容
+     2. **主要差異**：Signed URLs 用於單一檔案限期授權，Signed Cookies 用於多檔案/整站授權
