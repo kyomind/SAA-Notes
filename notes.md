@@ -1126,3 +1126,17 @@
 336. ★★ IAM DB Authentication 考試判斷
     1. **選擇**：題目強調「不要在 DB 存密碼」或「集中管理 DB 存取」
     2. **不適用**：長時間連線（token 過期）、非 AWS 環境、不支援的 DB 引擎
+337. ★★ AWS Direct Connect（DX）
+    1. **功能**：**專線** 直接連接到 AWS，**繞過公網**
+    2. **效能**：穩定、低延遲（< 10ms）、1/10/100 Gbps 選項
+    3. **安全**：流量不走公網、可搭配 VPN 加密
+338. ★ AWS Direct Connect 的成本與應用
+    1. **計費**：按小時 + 傳輸量，月傳 10TB+ 較划算
+    2. **缺點**：**建置時間長**（幾週到幾個月）
+    3. **適合**：大量穩定資料傳輸、敏感資料、低延遲需求
+339. ★ AWS Direct Connect Gateway (DXGW)
+    1. **功能**：單一 DX 連接**多個 VPC 和帳號**，跨區域、跨帳號連接
+    2. **限制**：VPC 間**不互通**（只是集線器）、最多 10 個 VGW、需互通用 Transit Gateway
+340. 😇 DXGW vs Transit Gateway
+    1. **DXGW**：連接 DX 與多 VPC，**不做 VPC 路由**
+    2. **Transit Gateway**：VPC 間路由、跨帳號、支援多種連接方式
