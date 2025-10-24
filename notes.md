@@ -1120,18 +1120,9 @@
 334. 😇 FSx 服務選擇口訣
     1. 「**Windows + AD + SMB = FSx for Windows**」
     2. 題目看到這三個關鍵字其中兩個，**90% 就是選它**
-335. ★★ IAM Database Authentication 核心機制
-    1. **運作原理**：用 **IAM token** 取代傳統帳號密碼
-    2. **Token 生成**：透過 **AWS Signature V4** 產生，**15 分鐘有效**
-    3. **核心優勢**：無需在 DB 存密碼、IAM 集中管理、Token 自動輪替、可與傳統認證並存
-336. ★★ IAM DB Authentication 的四大關鍵優勢
-    1. **不存密碼**：無需在 DB 存 credentials（安全性題必考）
-    2. **IAM 集中管理**：統一權限控管（符合企業安全政策）
-    3. **自動輪替**：Token 15 分鐘過期（降低憑證外洩風險）
-    4. **可混用**：可與傳統認證並存（漸進式導入）
-337. ★★ IAM DB Authentication 的考試判斷標準
-    1. **選擇情境**：題目強調「不要在 DB 存密碼」、需要「集中管理資料庫存取權限」、提到「IAM policy 控管 DB 存取」、安全性要求高
-    2. **不適用情況**：需要長時間連線（token 15 分鐘會過期）、非 AWS 環境、不支援的 DB 引擎
-338. 👀 IAM DB Authentication 的記憶要點
-    1. **核心公式**：**用 IAM 取代 DB 密碼 + 15 分鐘 token**
-    2. **快速判斷**：看到「避免在資料庫存密碼」→ 直接選 **IAM DB Authentication**
+335. ★★ IAM DB Authentication 核心特性
+    1. **運作**：用 **IAM token** 取代密碼，**15 分鐘有效**（AWS Signature V4）
+    2. **優勢**：無需存密碼、IAM 集中管理、自動輪替、可混用傳統認證
+336. ★★ IAM DB Authentication 考試判斷
+    1. **選擇**：題目強調「不要在 DB 存密碼」或「集中管理 DB 存取」
+    2. **不適用**：長時間連線（token 過期）、非 AWS 環境、不支援的 DB 引擎
