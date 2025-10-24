@@ -1140,3 +1140,16 @@
 340. 😇 DXGW vs Transit Gateway
     1. **DXGW**：連接 DX 與多 VPC，**不做 VPC 路由**
     2. **Transit Gateway**：VPC 間路由、跨帳號、支援多種連接方式
+341. ★★ AWS Transit Gateway (TGW) 核心定義
+    1. **定義**：雲端路由器，讓多個 VPC、VPN、DX 專線**互連**
+    2. **優勢場景**：多個 VPC 互連時，使用星狀拓撲而非全 mesh Peering
+342. 😇 Transit Gateway vs 傳統 VPC Peering
+    1. **傳統做法**：5 個 VPC 互連 = 需要 10 條 VPC Peering（n(n-1)/2）、加上 DX、VPN = 每個都要連、架構複雜
+    2. **Transit Gateway**：所有 VPC、VPN、DX 都連到 TGW、TGW 統一管理路由、星狀拓撲簡單清晰
+343. 😇 AWS Egress-only Internet Gateway 核心定義
+    1. **定義**：只出不進的 IGW，專為 IPv6 設計
+    2. **適用場景**：VPC 內 IPv6 EC2 只主動對外連線，不被外部連入
+    3. 使用時，要加入到 Route Table，指定 `::/0` 給 Egress-only IGW
+344. 👀 IPv6 與 Egress-only IGW 的必要性
+    1. **IPv6 特性**：所有 IPv6 位址都是公開可路由的（沒有私有 IP 概念）、VPC 內 EC2 用 IPv6 = 直接暴露在網路上
+    2. **解決方案**：Egress-only IGW 允許內部發起的連線出去，但擋掉外部發起的連入
