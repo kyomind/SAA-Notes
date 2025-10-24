@@ -1101,3 +1101,22 @@
        - 需要「**應用層（Layer 7）防護**」
     2. **選 Shield Standard**：
        - 題目只問「**基本 DDoS 防護**」（這幾乎不會是正解，因為 Standard 是預設開啟的）
+
+331. 😇 共享檔案系統服務的選擇判斷（EFS vs S3 vs EBS）
+    1. **題目關鍵字**：
+       - 「**多個 EC2 同時存取**」→ EFS
+       - 「**跨 AZ 高可用**」→ EFS
+       - 「**共享檔案系統**」→ EFS
+    2. **常見陷阱**：
+       - S3 是 object storage，**不適合**需要檔案系統的場景（無法直接 mount）
+       - EBS Multi-Attach **只在同一 AZ 內**，不跨 AZ
+    3. **記憶口訣**：需要「**共享 + 跨 AZ**」→ 選 **EFS**
+332. ★ FSx for Windows 的選擇關鍵字
+    1. 題目提到 **Active Directory**、**Windows 檔案權限（NTFS ACL）**、**SMB 協議**
+    2. 需要 **end-user file restore** 或 **企業 Windows 環境移轉**
+333. ★ FSx for Windows 的替代服務判斷
+    1. Linux only 環境、需要 POSIX 權限 → **EFS**
+    2. 高效能運算 (HPC) → **FSx for Lustre**
+334. 😇 FSx 服務選擇口訣
+    1. 「**Windows + AD + SMB = FSx for Windows**」
+    2. 題目看到這三個關鍵字其中兩個，**90% 就是選它**
