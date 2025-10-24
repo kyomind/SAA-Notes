@@ -79,3 +79,7 @@
 ## Amazon EventBridge (Amazon CloudWatch Events) 整合
 
 ![圖 5](https://img.kyomind.tw/img-20251024-113633.png)
+
+## File Gateway and Storage Gateway
+
+![圖 6](https://img.kyomind.tw/img-20251024-152412.png)

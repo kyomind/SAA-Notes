@@ -582,7 +582,7 @@
 186. ★★ Multi-AZ Failover 為什麼用 **DNS 切換**而不是 IP 切換（VPC 基礎架構理解）
      1. **技術限制**：IP 地址綁定 subnet，**subnet 無法跨 AZ**（AZ-A: subnet-1 → 10.0.1.0/24、AZ-B: subnet-2 → 10.0.2.0/24）
      2. **核心原理**：Primary 和 Standby 在**不同 subnet**，IP 不可能互換 → 只能用 DNS/CNAME 切換
-187. 👀 RDS 不支援 RMAN（Oracle 恢復管理工具）的原因
+187. 👀 RDS 不支援 Recovery Manager (RMAN，Oracle 恢復管理工具）的原因
      1. **管理方式**：RDS 是託管服務，**AWS 控制底層 OS 和備份機制**
      2. **RMAN 限制**：需要 OS level 存取權限、直接操作檔案系統、自行管理備份儲存
      3. **替代方案**：只能透過 RDS 提供的 **automated backup 和 snapshot**
@@ -1062,5 +1062,34 @@
 321. 👀 ElastiCache IAM Authentication 限制
     1. **適用範圍**：只能用於 **ElastiCache 管理 API** 操作
     2. **不適用於**：**Redis 資料操作指令**（Get、Set、Incr 等）無法使用 IAM Authentication
-322. ★ Target Tracking Policy (ASG)是 AWS 推薦的預設方案。Simple Scaling 有 cooldown，不適合突發流量，目前已少用
+322. ★ Target Tracking Policy (ASG) 是 AWS 推薦的預設方案。Simple Scaling 有 cooldown，不適合突發流量，目前已少用
 323. 實務建議：別用 Simple Scaling，用 Target Tracking 或 Step Scaling。
+324. ★★ FSx for Lustre 檔案系統應用場景
+    1. **關鍵字**：高效能運算（HPC）、機器學習訓練、影片處理、基因體分析
+    2. **特性**：極高 IOPS、低延遲、可與 S3 整合
+    3. **考試判斷**：看到「平行處理大量資料」→ 選 Lustre（賽車級性能）
+325. ★★ FSx for Windows File Server 檔案系統應用場景
+    1. **關鍵字**：Windows 應用、**SMB 協定**、**Active Directory**、企業檔案共享
+    2. **特性**：原生支援 Windows 生態系
+    3. **考試判斷**：題目提到「現有 Windows 環境」或「需要 AD 整合」→ 選 FSx for Windows（微軟親兒子）
+326. ★ EFS (Elastic File System) 檔案系統應用場景
+    1. **關鍵字**：Linux、多個 EC2 同時掛載、自動擴展、**NFS 協定**
+    2. **特性**：通用型、彈性、跨 AZ
+    3. **考試判斷**：看到「多台 Linux EC2 需要共享檔案」→ 選 EFS（標準通用型）
+327. 😇 AWS 檔案系統選型決策樹
+    1. **超高速處理大數據**：FSx for Lustre（賽車級）
+    2. **Windows 企業環境**：FSx for Windows（微軟親兒子）
+    3. **Linux 多機共享檔案**：EFS（標準通用型）
+328. ★ DynamoDB 對頻繁 Schema 變更的適應性
+    1. **特性**：無 Schema 限制，支援動態屬性添加
+    2. **應用場景**：需要頻繁改變資料結構的應用
+329. ★★ AWS Storage Gateway File Gateway 考試應用場景
+    1. **題目特徵**：
+       - On-premises 有大量檔案要歸檔到 AWS
+       - 需要「無痛」整合，不想改現有系統
+       - 要自動轉冷儲存（Glacier）省錢
+    2. **標準答案**：
+       - 部署 **File Gateway**（VM）
+       - 透過 **NFS/SMB** 上傳檔案到 S3
+       - 設定 **Lifecycle Policy** 自動轉 Glacier
+    3. **核心記憶**：File Gateway = **把 S3 偽裝成 NAS**，讓地端系統無感整合
