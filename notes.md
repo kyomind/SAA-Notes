@@ -1028,3 +1028,13 @@
      3. **支援服務**：**只有 S3 和 DynamoDB**（考試必考！）
      4. **計費**：**完全免費**
      5. **DNS**：使用服務的公開 DNS 名稱
+311. ★ AWS Database Migration Service (DMS) 核心概念
+     1. **用途**：遷移 **關聯式資料庫、資料倉庫、NoSQL 資料庫** 到 AWS Cloud（或混合部署）
+     2. **遷移模式**：**一次性遷移** 或 **持續複製** 來保持來源和目標同步
+     3. **跨平台遷移**：使用 **AWS Schema Conversion Tool (SCT)** 翻譯資料庫架構，再用 DMS 遷移資料
+312. ★★ Elastic Beanstalk — PaaS 平台部署
+     1. **本質**：**完全託管的 PaaS**，你只負責上傳程式碼，AWS 自動搞定基礎設施
+     2. **核心優勢**：自動化部署、擴展、負載平衡、監控；保留底層 EC2/RDS 調整權限
+     3. **支援語言**：Go、Java、.NET、Node.js、PHP、Python、Ruby
+313. 😇 Elastic Beanstalk 使用場景評估
+     1. **選擇 Beanstalk 的情境**：快速部署應用、開發團隊專注 code、無需 DevOps 管理、需要自動擴展 + 負載平衡
