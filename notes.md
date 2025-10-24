@@ -1204,4 +1204,21 @@
     3. **核心原則**：**誰需要這個服務，Route table 就設在誰那邊**
 361. 實務提醒：Private Subnet 不代表完全不能上網，可透過 NAT Gateway (IPv4) 或 Egress-only IGW (IPv6) 單向訪問。⭐️
 362. 記憶點： 題目提到「SFTP + S3 + 不想管 server」→ 秒選 Transfer for SFTP
-
+363. ★★ Lambda 環境變數加密：預設機制與自訂加密
+    1. **預設加密**：Lambda 環境變數預設由 AWS 自動用 KMS 的 default service key 加密，無需手動配置
+    2. **自訂加密情境**：只有使用 **encryption helpers** 進行 runtime 動態加解密時，才需建立 **custom KMS key**
+364. ★ Lambda 環境變數自訂加密的實現步驟
+    1. 建立 **custom KMS key**（default key 權限受限，無法在 runtime 使用）
+    2. 給 **Lambda execution role** 賦予該 key 的使用權限
+    3. 在 **Lambda code** 裡使用 **KMS API** 進行加解密操作
+365. 😇 Lambda 環境變數加密的考試判斷標準
+    1. **靜態加密**（只存放不加密）→ 預設配置即可，無需額外設定
+    2. **動態加密**（runtime 加解密）→ 必須使用 **custom KMS key + encryption helpers**
+    3. **關鍵字識別**：看到 **"encryption helpers"** 或 **"runtime 加密"** → 直接選「建立 custom KMS key」
+366. ★★ 多環境部署下的 Lambda 環境變數密鑰管理
+    1. **多環境需求**：DEV、SIT、UAT、PROD 環境隔離需要靈活的密鑰管理
+    2. **解決方案**：必須使用 **custom KMS key** 針對不同環境設定不同權限
+367. ★★ Lambda 環境變數加密的決定性組合關鍵字
+    1. **觸發條件**：題目同時提到 **"plain text"** 和 **"maximum security"**
+    2. **必要配置**：必須使用 **encryption helpers + custom KMS key**
+    3. **判斷標準**：只提「保護敏感資料」而無「plain text」強調 → 預設加密就夠了
