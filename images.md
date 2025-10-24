@@ -75,3 +75,7 @@
 ## Amazon Elastic Beanstalk
 
 ![圖 4](https://img.kyomind.tw/img-20251024-112920.png)
+
+## Amazon EventBridge (Amazon CloudWatch Events) 整合
+
+![圖 5](https://img.kyomind.tw/img-20251024-113633.png)
