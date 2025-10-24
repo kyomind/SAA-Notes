@@ -91,3 +91,7 @@
 ## Setting for IAM DB Authentication
 
 ![圖 8](https://img.kyomind.tw/img-20251024-154724.png)
+
+## Enterprise Identity Federation
+
+![圖 9](https://img.kyomind.tw/img-20251024-212920.png)

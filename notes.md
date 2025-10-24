@@ -1172,3 +1172,20 @@
 350. ★ API Gateway Canary 的考試判斷標準
     1. **關鍵字識別**：看到「逐步發布」、「漸進式部署」、「降低風險」、「測試新版本但不影響所有使用者」、「API Gateway 版本更新」 → 優先選 Canary
     2. **對比其他策略**：**Blue/Green** 是一次性切換全部流量（風險較高）、**Rolling** 是逐批更新實例（適用 EC2/ECS，不適用 API Gateway）
+351. To avoid accidental deletion in an Amazon S3 bucket, you can:
+    - Enable **Versioning**
+    - Enable **MFA (Multi-Factor Authentication) Delete**
+352. Amazon WorkDocs 是 AWS 的企業檔案協作服務，類似 Google Drive 或 Dropbox。
+353. ★★ 企業身份聯合（Enterprise Identity Federation）+ STS 臨時憑證
+    1. **場景**：企業員工用公司帳號（**AD/LDAP**）登入 AWS，存取 S3
+    2. **架構組件**：**Identity Provider (IdP) 或 Federation Proxy** 整合企業身份系統 → **AWS STS** 產生臨時憑證（`AssumeRoleWithSAML` / `AssumeRoleWithWebIdentity`）→ **IAM Role** 定義權限範圍 → **IAM Policy** 附加到 Role，允許存取 S3
+354. ★ 企業身份聯合的考試判斷標準
+    1. **關鍵字識別**：看到「企業現有身份系統（AD/SAML/OIDC）」、「單一登入（SSO）」、「不想建立 IAM User」、「臨時存取」 → 優先選 **Federation + STS**
+    2. **記憶技巧**：外部身份要進 AWS → 必經 **STS** 拿臨時通行證
+355. ★★ 秒級突發流量的架構設計判斷
+    1. **核心限制**：**EC2 Auto Scaling 擴展速度慢**（分鐘級），無法應對「秒級」突發流量
+    2. **判斷標準**：題目強調「**seconds**」→ 選 **Serverless**；強調「**minutes 可接受**」→ EC2 Auto Scaling 才合理
+356. 😇 秒級流量應對方案對比
+    1. **✅ Lambda**：**毫秒級**擴展，適合突發流量⭐️
+    2. **✅ API Gateway + Lambda**：無伺服器架構，自動擴展無上限
+    3. **❌ EC2 Auto Scaling**：冷啟動需數分鐘，無法應對秒級突發
