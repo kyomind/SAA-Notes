@@ -611,7 +611,7 @@
      2. **SQL Server**：使用 **rds.force_ssl** parameter 進行設定
      3. **Oracle**：透過 **option group** 進行設定
 195. ★★ S3 Transfer Acceleration + Multipart Upload
-     1. **Transfer Acceleration**：全球邊緣節點加速跨地區傳輸，速度提升 50-500%
+     1. **Transfer Acceleration**：全球邊緣節點加速跨地區傳輸，速度提升 50-500%⭐️
      2. **Multipart Upload**：大檔案平行上傳，失敗可單獨重傳部分
      3. **組合應用**：跨區域 + 大量資料上傳時同時使用
 196. ★★ S3 防誤刪：Versioning + MFA Delete
@@ -1186,6 +1186,22 @@
     1. **核心限制**：**EC2 Auto Scaling 擴展速度慢**（分鐘級），無法應對「秒級」突發流量
     2. **判斷標準**：題目強調「**seconds**」→ 選 **Serverless**；強調「**minutes 可接受**」→ EC2 Auto Scaling 才合理
 356. 😇 秒級流量應對方案對比
-    1. **✅ Lambda**：**毫秒級**擴展，適合突發流量⭐️
+    1. **✅ Lambda**：**毫秒級**擴展，適合突發流量
     2. **✅ API Gateway + Lambda**：無伺服器架構，自動擴展無上限
     3. **❌ EC2 Auto Scaling**：冷啟動需數分鐘，無法應對秒級突發
+357. 👀 S3 Cross-Region Replication (CRR) 的延遲限制
+    1. **特性**：CRR 延遲約 **15 分鐘**
+    2. **考試判斷**：不符合「**最快聚合資料**」的需求
+358. ★ NAT Gateway 的高可用部署原則
+    1. **正確做法**：**每個 AZ 一個 NAT Gateway**，透過 Route table 指向對應 AZ 的 NAT Gateway
+    2. **常見錯誤**：「每個 AZ 有 3 個 NAT Gateway」→ 浪費成本、Route table 無法多重指向、違反 cost-effective 原則
+    3. **核心限制**：Route table 只能指向**一個** NAT Gateway，多餘的資源無法利用
+359. ★★ NAT Gateway 本身已具備高可用性
+    1. **架構洞察**：NAT Gateway 內置 HA 能力，不需額外部署冗餘
+360. ★★ Private Subnet vs Public Subnet 的 Route Table 設定
+    1. **Private Subnet**：需要 NAT Gateway 代理外連，Route table：`0.0.0.0/0 → NAT Gateway (same AZ)`
+    2. **Public Subnet**：已有 Internet Gateway 直接對外，Route table：`0.0.0.0/0 → Internet Gateway`
+    3. **核心原則**：**誰需要這個服務，Route table 就設在誰那邊**
+361. 實務提醒：Private Subnet 不代表完全不能上網，可透過 NAT Gateway (IPv4) 或 Egress-only IGW (IPv6) 單向訪問。⭐️
+362. 記憶點： 題目提到「SFTP + S3 + 不想管 server」→ 秒選 Transfer for SFTP
+

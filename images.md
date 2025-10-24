@@ -95,3 +95,7 @@
 ## Enterprise Identity Federation
 
 ![圖 9](https://img.kyomind.tw/img-20251024-212920.png)
+
+## AWS Transfer Family
+
+![圖 10](https://img.kyomind.tw/img-20251024-222131.png)
