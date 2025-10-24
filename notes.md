@@ -1093,3 +1093,11 @@
        - 透過 **NFS/SMB** 上傳檔案到 S3
        - 設定 **Lifecycle Policy** 自動轉 Glacier
     3. **核心記憶**：File Gateway = **把 S3 偽裝成 NAS**，讓地端系統無感整合
+330. ★★ AWS Shield Advanced 與 Shield Standard 的選擇判斷
+    1. **選 Shield Advanced 的關鍵字**：
+       - 題目明確提到「**sophisticated DDoS**」
+       - 需要「**24/7 專家支援**」
+       - 擔心「**DDoS 導致費用暴增**」
+       - 需要「**應用層（Layer 7）防護**」
+    2. **選 Shield Standard**：
+       - 題目只問「**基本 DDoS 防護**」（這幾乎不會是正解，因為 Standard 是預設開啟的）

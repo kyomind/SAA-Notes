@@ -83,3 +83,7 @@
 ## File Gateway and Storage Gateway
 
 ![圖 6](https://img.kyomind.tw/img-20251024-152412.png)
+
+## AWS Shield Advanced Architecture
+
+![圖 7](https://img.kyomind.tw/img-20251024-153353.png)
