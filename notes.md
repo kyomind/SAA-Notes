@@ -1149,7 +1149,14 @@
 343. 😇 AWS Egress-only Internet Gateway 核心定義
     1. **定義**：只出不進的 IGW，專為 IPv6 設計
     2. **適用場景**：VPC 內 IPv6 EC2 只主動對外連線，不被外部連入
-    3. 使用時，要加入到 Route Table，指定 `::/0` 給 Egress-only IGW
+    3. 使用時，要加入到 Route Table，指定 `::/0` 給 Egress-only IGW，不然網路不通
 344. 👀 IPv6 與 Egress-only IGW 的必要性
     1. **IPv6 特性**：所有 IPv6 位址都是公開可路由的（沒有私有 IP 概念）、VPC 內 EC2 用 IPv6 = 直接暴露在網路上
     2. **解決方案**：Egress-only IGW 允許內部發起的連線出去，但擋掉外部發起的連入
+345. NAT Gateway vs Egress-only IGW 的區別
+    1. **NAT Gateway**：用於 IPv4，允許私有子網 EC2 對外連線，阻擋外部連入
+    2. **Egress-only IGW**：用於 IPv6，允許 VPC 內 IPv6 EC2 對外連線，阻擋外部連入
+346. Internet Gateway vs Egress-only IGW 的區別
+    1. **Internet Gateway**：允許雙向流量（內外互通），且適用於 IPv4 和 IPv6
+    2. **Egress-only IGW**：只允許單向流量（只出不進），只適用於 IPv6
+    3. 兩者是同層級資源，綁定在 VPC 上，並透過 Route Table 控制流量方向，可同時存在於同一 VPC
