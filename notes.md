@@ -1038,3 +1038,16 @@
      3. **支援語言**：Go、Java、.NET、Node.js、PHP、Python、Ruby
 313. 😇 Elastic Beanstalk 使用場景評估
      1. **選擇 Beanstalk 的情境**：快速部署應用、開發團隊專注 code、無需 DevOps 管理、需要自動擴展 + 負載平衡
+314. ★★ EventBridge 核心定位：Serverless 事件路由器
+     1. **本質**：**事件驅動架構的中樞神經**，負責解耦 Event Producers 和 Consumers
+     2. **運作模式**：Producer 發事件 → EventBridge → 路由到 Consumers，雙方獨立部署、擴展
+     3. **支援事件來源**：AWS 服務（EC2、S3、RDS...）、自己的應用程式、SaaS 應用（Zendesk、Datadog...）
+315. ★★ EventBridge vs SNS 核心差異
+     1. **路由方式**：EventBridge 支援**複雜規則過濾**，SNS 只有**簡單訂閱**
+     2. **應用場景**：EventBridge 用於**事件驅動架構**，SNS 主要用於**訊息廣播**
+     3. **整合能力**：EventBridge 原生整合 **AWS 服務 + SaaS**，SNS 主要推送通知
+316. ★ EventBridge 考試判斷邏輯
+     1. **選 EventBridge**：「根據事件內容路由到不同目標」、「整合多個 AWS 服務事件」、「定時排程任務」（取代 CloudWatch Events）
+     2. **選 SNS**：「單純推送通知」
+317. **Amazon EventBridge (Amazon CloudWatch Events)** is a serverless event bus that makes it easy to connect applications together. → 注意名稱！
+318. 
