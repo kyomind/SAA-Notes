@@ -321,4 +321,3 @@ Read Replicas 有 replication lag（**複製延遲**），不適合做 HA，適�
 | **對外連線** | **NAT Gateway**  | **Egress-only IGW** |
 | **雙向連線** | Internet Gateway | Internet Gateway    |
 | **私有 IP**  | ✅ 有             | ❌（都是公開 IP）    |
-
