@@ -87,3 +87,7 @@
 ## AWS Shield Advanced Architecture
 
 ![圖 7](https://img.kyomind.tw/img-20251024-153353.png)
+
+## Setting for IAM DB Authentication
+
+![圖 8](https://img.kyomind.tw/img-20251024-154724.png)
