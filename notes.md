@@ -1160,3 +1160,15 @@
     1. **Internet Gateway**：允許雙向流量（內外互通），且適用於 IPv4 和 IPv6
     2. **Egress-only IGW**：只允許單向流量（只出不進），只適用於 IPv6
     3. 兩者是同層級資源，綁定在 VPC 上，並透過 Route Table 控制流量方向，可同時存在於同一 VPC
+347. ★ S3 靜態網站與跨 domain API 呼叫的 CORS 問題
+    1. **問題本質**：瀏覽器**同源政策（Same-Origin Policy）**會擋掉跨 domain 的請求，網站從 s3-website-us-east-1 載入，但 JavaScript 要向 s3.amazonaws.com 發 API 請求時會被阻止
+    2. **解決方案**：在 S3 bucket 設定 **CORS**，明確允許來自網站 endpoint 的請求
+348. 😇 S3 CORS 的考試記憶技巧
+    1. **必選規則**：只要看到「S3 靜態網站的 JavaScript 要呼叫 S3 API」，直接選 **CORS**
+349. ★★ API Gateway 的金絲雀部署（Canary Deployment）
+    1. **定義**：**漸進式發布策略**，先讓少量流量（例如 10%）導向新版本，監控表現，若穩定逐步增加流量比例（10% → 25% → 50% → 100%），出問題可快速回滾
+    2. **實作流程**：建立 Canary Stage → 部署新版本 → 透過 `canarySettings.percentTraffic` 設定流量比例（0-100）→ CloudWatch 分開記錄 production 和 canary metrics → 確認無誤後將 canary 提升為 production
+    3. 這是 API Gateway **原生支援**的部署策略，無需額外工具
+350. ★ API Gateway Canary 的考試判斷標準
+    1. **關鍵字識別**：看到「逐步發布」、「漸進式部署」、「降低風險」、「測試新版本但不影響所有使用者」、「API Gateway 版本更新」 → 優先選 Canary
+    2. **對比其他策略**：**Blue/Green** 是一次性切換全部流量（風險較高）、**Rolling** 是逐批更新實例（適用 EC2/ECS，不適用 API Gateway）
