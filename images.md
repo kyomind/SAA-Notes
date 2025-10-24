@@ -71,3 +71,7 @@
 ## Amazon Aurora Serverless v2 database
 
 ![圖 12](https://img.kyomind.tw/img-20251023-175922.png)
+
+## Amazon Elastic Beanstalk
+
+![圖 4](https://img.kyomind.tw/img-20251024-112920.png)
