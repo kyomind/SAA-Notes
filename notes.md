@@ -1050,4 +1050,17 @@
      1. **選 EventBridge**：「根據事件內容路由到不同目標」、「整合多個 AWS 服務事件」、「定時排程任務」（取代 CloudWatch Events）
      2. **選 SNS**：「單純推送通知」
 317. **Amazon EventBridge (Amazon CloudWatch Events)** is a serverless event bus that makes it easy to connect applications together. → 注意名稱！
-318. 
+318. 👀 EventBridge 考試陷阱：避免過度複雜組合
+    1. **警覺信號**：看到「CloudTrail + CloudWatch Alarm + EventBridge」的組合題 → 考慮是否過度複雜
+    2. **核心能力提醒**：EventBridge **本身就能**監聽 AWS 服務事件（包含 S3）、直接觸發 ECS Task、Lambda、Step Functions，**不需要 CloudWatch Alarm 當中介**
+319. ★ EventBridge Target 選項與應用
+    1. **常見 Target 目標**：Lambda、ECS Task、Step Functions、SNS/SQS、API Gateway
+    2. **選項豐富性**：EventBridge 的 Target 配置能力強大，可**直接連接**多數 AWS 服務
+320. 👀 ElastiCache Redis 基本安全組合（冷門題）
+    1. **傳輸層安全**：`--transit-encryption-enabled` 啟用 **TLS 傳輸加密**
+    2. **認證機制**：`--auth-token` 設置 **Redis AUTH 密碼驗證**（長期有效）
+321. 👀 ElastiCache IAM Authentication 限制
+    1. **適用範圍**：只能用於 **ElastiCache 管理 API** 操作
+    2. **不適用於**：**Redis 資料操作指令**（Get、Set、Incr 等）無法使用 IAM Authentication
+322. ★ Target Tracking Policy (ASG)是 AWS 推薦的預設方案。Simple Scaling 有 cooldown，不適合突發流量，目前已少用
+323. 實務建議：別用 Simple Scaling，用 Target Tracking 或 Step Scaling。
