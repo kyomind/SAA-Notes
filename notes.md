@@ -1287,7 +1287,13 @@ NACL = Subnet 層級（控制整個子網路的進出）
      1. **雙向性質**：**VPC Peering 是雙向的**，兩邊的 Route Table 都必須加對方的 CIDR 路由
      2. **完整配置**：**VPC A Route Table** 加一條指向 VPC B CIDR 的路由 + **VPC B Route Table** 加一條指向 VPC A CIDR 的路由
      3. **常見陷阱**：題目只更新 A 的 Route Table，B 沒更新，當然連線不通 - 必須檢查 VPC B 的 Route Tables
-386. 排查正確順序
+386. ★ **VPC 網路連線排查**正確順序
      1. Route Table（流量能不能找到路）
      2. Security Group（流量能不能進門）
      3. NACL（通常不會動）
+387. ★ AWS **CIDR 保留 IP 範圍**規則
+     1. **前 4 個 IP**：.0、.1、.2、.3（AWS 永遠保留）
+     2. **最後 1 個 IP**：broadcast address（AWS 永遠保留）
+388. ★★ AWS **CIDR 位數限制**與最佳實踐
+     1. **禁止使用的位數**：/31 和 /32（AWS 明確不允許）
+     2. **勉強可用但不推薦**：/30 設計不佳，容易耗盡 IP 資源
