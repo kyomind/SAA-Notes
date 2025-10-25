@@ -1301,3 +1301,12 @@ NACL = Subnet 層級（控制整個子網路的進出）
      1. **點對點連接**：每個 Peering 只連接兩個 VPC
      2. **不支援傳遞性**：A-B-C 無法透過 B 互通
      3. **多 VPC 全連**：需要 n(n-1)/2 條線（3個VPC需3條）
+390. VPC Flow Logs 的核心功能與應用場景
+     1. **功能**：捕捉 VPC 內 ENI（網卡）的 IP 流量資訊，包含允許和拒絕的流量
+     2. **應用場景**：安全分析、流量監控、故障排查、合規審計
+391. 😇 **Site-to-Site VPN 組成**
+     1. **Virtual Private Gateway (VGW)**：AWS 端點，掛載在 VPC 上
+     2. **Customer Gateway (CGW)**：本地機房端點，實體路由器/防火牆設備
+392. ★ **AWS VPN CloudHub**
+     1. **用途**：多個 on-premises sites 透過 AWS 作為 hub 互連
+     2. **特性**：走公網、成本低、適合做 backup 連線、提供 failover
