@@ -1308,5 +1308,13 @@ NACL = Subnet 層級（控制整個子網路的進出）
      1. **Virtual Private Gateway (VGW)**：AWS 端點，掛載在 VPC 上
      2. **Customer Gateway (CGW)**：本地機房端點，實體路由器/防火牆設備
 392. ★ **AWS VPN CloudHub**
-     1. **用途**：多個 on-premises sites 透過 AWS 作為 hub 互連
-     2. **特性**：走公網、成本低、適合做 backup 連線、提供 failover
+     1. **用途**：**多個 on-premises sites** 透過 AWS 作為 hub 互連
+     2. **特性**：走公網、成本低、適合做 **backup 連線、提供 failover**
+393. ★★ **Direct Connect 常見錯誤認知與正確理解**
+     1. **錯誤認知**：Direct Connect 只能連 VPC 私有資源 ❌
+     2. **正確理解**：實際上可以透過 **Public VIF** 連所有 AWS 公共服務，且**不走公網**
+     3. **記憶點**：「Direct Connect = 專線到 AWS，要什麼都能拿」
+394. ★★ **Transit Gateway 突破 VPN 頻寬限制**
+     1. **問題**：Site-to-Site VPN 單一 tunnel = **1.25 Gbps**
+     2. **Transit Gateway ECMP**：支援多個 tunnel 並行，頻寬疊加（2 條 = 2.5 Gbps，4 條 = 5 Gbps）
+     3. **對比**：Virtual Private Gateway 只能 failover，**不能疊加頻寬**

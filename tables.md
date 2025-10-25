@@ -356,3 +356,11 @@ Read Replicas 有 replication lag（**複製延遲**），不適合做 HA，適�
 | **Cluster Endpoint** | 寫入操作 | Primary instance (DDL/DML)              |
 | **Reader Endpoint**  | 讀取操作 | 自動 load balance 到最多 15 個 replicas |
 | **Custom Endpoint**  | 特定需求 | 你自訂的 instance 群組                  |
+
+## VPN 連接方案對比
+
+| 選項               | 為何不對                                        |
+| ------------------ | ----------------------------------------------- |
+| **VPC Peering**    | 只能連 VPC 對 VPC，**不能連 on-premises**       |
+| **Direct Connect** | 專線連接，不走公網，且貴（**不適合當 backup**） |
+| **PrivateLink**    | 用於服務存取（如連 S3、API），**不是連機房**    |
