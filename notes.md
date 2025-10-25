@@ -1261,3 +1261,33 @@
 380. ★★ Web Identity Federation 與 Active Directory 不相容性分析
     1. **為什麼不適用**：公司的 **Active Directory (AD) 是私有的企業身份系統**，不是公開的身份提供者
     2. **根本限制**：Web Identity Federation 根本不認識私有 AD，因此無法作為身份來源
+381. ★★ NAT Gateway 部署位置與網路架構必要性
+    1. **部署位置**：**NAT Gateway 必須在 Public Subnet**，因為它需要 **Internet Gateway** 才能真正連到外網
+    2. **功能分工**：**NAT Gateway** 只負責地址轉換（private IP → public IP），**Internet Gateway** 才是真正的出口（負責流量送到網際網路）
+    3. **流量路徑**：Private Subnet EC2 → **NAT Gateway** (Public Subnet) → **Internet Gateway** → Internet
+382. ★★ NAT Gateway 的「單向門」設計與 Private Subnet 應用
+    1. **設計目的**：Private Subnet 資源需要主動連外（下載套件、呼叫 API），但不想被外部主動連入
+    2. **NAT Gateway 角色**：充當「單向門」，只允許從內往外，不允許從外往內
+    3. **核心要點**：這扇門必須開在有真正出口（IGW）的地方，形成完整的網路防護與通訊機制
+383. ★★ AWS VPC CIDR 範圍限制與最大規模
+    1. **CIDR 範圍限制**：最大 **/16**（65,536 個 IP），最小 **/28**（16 個 IP）
+    2. **最大配置示例**：**172.16.0.0/16** 剛好是最大允許範圍，代表可以給予最多 IP 地址空間
+    3. **超限制限制**：例如 **172.16.0.0/12** 超過 AWS 限制，AWS 根本不允許建立此範圍
+Security Group = EC2 instance 層級（綁在網卡 ENI 上）
+NACL = Subnet 層級（控制整個子網路的進出）
+384. ★★ Security Group vs NACL 的核心差異
+    1. **作用範圍**：
+       - Security Group：綁定在 **ENI（網卡）** 上，針對單一 EC2 instance 控制流量
+       - NACL：綁定在 **Subnet（子網路）** 上，針對整個子網路控制流量
+    2. **狀態性**：
+       - Security Group：**有狀態性**，允許進入的流量，自動允許回應流量
+       - NACL：**無狀態性**，進出流量需分別設定規則
+    3. **規則類型**：Security Group（只允許規則、預設拒絕所有）、NACL（允許和拒絕規則皆可設定）
+385. ★★ VPC Peering 雙向路由設定要求與常見陷阱
+    1. **雙向性質**：**VPC Peering 是雙向的**，兩邊的 Route Table 都必須加對方的 CIDR 路由
+    2. **完整配置**：**VPC A Route Table** 加一條指向 VPC B CIDR 的路由 + **VPC B Route Table** 加一條指向 VPC A CIDR 的路由
+    3. **常見陷阱**：題目只更新 A 的 Route Table，B 沒更新，當然連線不通 - 必須檢查 VPC B 的 Route Tables
+386. 排查正確順序
+    1. Route Table（流量能不能找到路）
+     2. Security Group（流量能不能進門）
+     3. NACL（通常不會動）
