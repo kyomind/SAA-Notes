@@ -1240,3 +1240,24 @@
     1. **選擇標誌**：題目提到「不同規格 instance」或「區分流量類型」→ **直接選 Custom Endpoint**
     2. **成本優化**：用 Custom Endpoint 精準控制流量，避免報表流量打到高規格機器（浪費資源）
     3. **常見陷阱**：❌ 用 Reader Endpoint 處理報表會分流到**所有** replicas（包含高規格機器，浪費成本）
+374. ★★ RDS **Enhanced Monitoring** 的核心功能
+    1. **定義**：OS 層級監控功能，直接從 DB instance agent 收集數據（不透過 hypervisor）
+    2. **監控內容**：**CPU per process/thread**、記憶體詳細使用、檔案系統等 OS 層級細節
+    3. **差異優勢**：比 CloudWatch 標準 metrics **更細緻、更即時**
+375. ★ RDS Enhanced Monitoring 的考試判斷標準
+    1. **選擇信號**：題目出現「**OS-level metrics**」、「**process-level CPU usage**」、「**detailed system metrics**」、「**real-time monitoring**」
+    2. **應用場景**：RDS 效能問題時，想深入看**哪個 process/thread 吃掉資源**
+376. 😇 RDS 監控層級對比
+    1. **CloudWatch**：基本款（hypervisor 層），只能看整體 **CPU%**
+    2. **Enhanced Monitoring**：進階款（OS 層，需手動啟用），能看**各個 thread 詳細狀況**
+377. ★ RDS console 預設監控限制與陷阱
+    1. **核心限制**：RDS console **預設「看不到」** CPU% 和 MEM% 的 **process-level 細節**
+    2. **標準 CloudWatch metrics**：只有**整體** CPU utilization，不會顯示「each database process」
+    3. **必要啟動**：要看 per-process 的 CPU%/MEM%，**必須主動啟用 Enhanced Monitoring**
+378. 題目需要 AD 整合：Set up SAML 2.0-Based Federation by using a **Microsoft Active Directory Federation Service**.
+379. ★ Web Identity Federation 支援的身份提供者限制
+    1. **支援清單**：Amazon Cognito、Login with Amazon、Facebook、Google、任何支援 **OpenID Connect (OIDC)** 的提供者
+    2. **核心限制**：**只支援公開的身份提供者**，無法與私有企業系統整合（如公司內部 Active Directory）
+380. ★★ Web Identity Federation 與 Active Directory 不相容性分析
+    1. **為什麼不適用**：公司的 **Active Directory (AD) 是私有的企業身份系統**，不是公開的身份提供者
+    2. **根本限制**：Web Identity Federation 根本不認識私有 AD，因此無法作為身份來源
