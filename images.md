@@ -99,3 +99,7 @@
 ## AWS Transfer Family
 
 ![圖 10](https://img.kyomind.tw/img-20251024-222131.png)
+
+## KMS and CloudHSM Integration
+
+![圖 11](https://img.kyomind.tw/img-20251025-150425.png)

@@ -330,3 +330,29 @@ Read Replicas 有 replication lag（**複製延遲**），不適合做 HA，適�
 | **成本**     | 高（雙倍資源）                       | 低（共用資源）               |
 | **切換方式** | 一次性全切                           | 漸進式調整流量比例           |
 | **風險控制** | 可快速回滾，但出問題影響 100% 使用者 | 出問題只影響小部分使用者     |
+
+## 標準 KMS 與 Custom Key Store 的差異
+
+| 項目         | 標準 KMS           | Custom Key Store          |
+| ------------ | ------------------ | ------------------------- |
+| 金鑰材料位置 | **AWS 管理的 HSM** | **你的 CloudHSM**         |
+| 實體控制權   | **AWS**            | **你**                    |
+| 複雜度       | **低**             | **高**（需管理 CloudHSM） |
+| 成本         | **低**             | **高**（CloudHSM 費用）   |
+
+## KMS Key 類型速查表
+
+| 類型                        | 控制權 | 金鑰材料位置      | 獨立審計 |
+| --------------------------- | ------ | ----------------- | -------- |
+| **AWS Owned**               | AWS    | AWS HSM           | ✗        |
+| **AWS Managed**             | AWS    | AWS HSM           | ✗        |
+| **Customer Managed (標準)** | 你     | AWS HSM           | ✗        |
+| **Custom Key Store**        | 你     | **你的 CloudHSM** | **✓**    |
+
+## Aurora Endpoint 類型對比
+
+| Endpoint             | 用途     | 指向                                    |
+| -------------------- | -------- | --------------------------------------- |
+| **Cluster Endpoint** | 寫入操作 | Primary instance (DDL/DML)              |
+| **Reader Endpoint**  | 讀取操作 | 自動 load balance 到最多 15 個 replicas |
+| **Custom Endpoint**  | 特定需求 | 你自訂的 instance 群組                  |

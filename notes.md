@@ -1222,3 +1222,21 @@
     1. **觸發條件**：題目同時提到 **"plain text"** 和 **"maximum security"**
     2. **必要配置**：必須使用 **encryption helpers + custom KMS key**
     3. **判斷標準**：只提「保護敏感資料」而無「plain text」強調 → 預設加密就夠了
+368. ★ Custom Key Store 的題目關鍵字識別
+    1. **single-tenant / dedicated HSM** → Custom Key Store
+    2. **immediately remove / independent revocation** → Custom Key Store
+    3. **independent audit / beyond CloudTrail** → Custom Key Store
+369. KMS Custom Key Store = KMS + CloudHSM 的混合架構
+370. Use AWS Key Management Service to create a KMS key in a **custom key store** and store the **non-extractable key material in AWS CloudHSM.**
+371. ★★ Aurora **Custom Endpoint** 的核心功能
+    1. **問題解決**：Reader Endpoint 只會平均分流所有 replicas，無法區分不同規格 instances
+    2. **解決方案**：建立 Custom Endpoints 精準控制流量去向
+    3. **典型組合**：Production Custom Endpoint（指向 `db.r5.2xlarge`）+ Reporting Custom Endpoint（指向 `db.t3.medium`）
+372. 😇 Aurora Endpoint 類型對比與使用時機
+    1. **Cluster Endpoint**：寫入 (primary only)
+    2. **Reader Endpoint**：讀取 + **不在乎** replica 規格
+    3. **Custom Endpoint**：讀取 + **需要指定**特定 replica 群組（按規格區分流量）
+373. ★ Aurora Custom Endpoint 的考試判斷標準
+    1. **選擇標誌**：題目提到「不同規格 instance」或「區分流量類型」→ **直接選 Custom Endpoint**
+    2. **成本優化**：用 Custom Endpoint 精準控制流量，避免報表流量打到高規格機器（浪費資源）
+    3. **常見陷阱**：❌ 用 Reader Endpoint 處理報表會分流到**所有** replicas（包含高規格機器，浪費成本）
