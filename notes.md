@@ -1318,3 +1318,12 @@ NACL = Subnet 層級（控制整個子網路的進出）
      1. **問題**：Site-to-Site VPN 單一 tunnel = **1.25 Gbps**
      2. **Transit Gateway ECMP**：支援多個 tunnel 並行，頻寬疊加（2 條 = 2.5 Gbps，4 條 = 5 Gbps）
      3. **對比**：Virtual Private Gateway 只能 failover，**不能疊加頻寬**
+395. Setup a Site-to-Site VPN connection as a backup of an AWS Direct Connect connection.
+396. **AWS Network Firewall** allows you to protect and control traffic in your VPC **from layer 3 to layer 7**.
+397. ★★ Security Group 互相引用實現精確存取控制
+     1. **核心概念**：Security Group 可以用「另一個 Security Group」當作 source/destination，而非只能用 CIDR
+     2. **實作範例**：EC2 Security Group Inbound Rule → Protocol: HTTP, Port: 80, Source: **ALB 的 Security Group**
+     3. **核心優勢**：最精確（只有 ALB 能存取）、動態跟隨（ALB 換 IP 不用改規則）、防止 VPC 內其他資源直接存取
+398. 😇 Security Group 引用的考試記憶技巧
+     1. **記憶方式**：把 Security Group 想成「通行證」，設定「只有持有 ALB 通行證的人才能進來」，而不是「只要住在這個社區的人都能進來（CIDR）」。
+     2. **考試陷阱**：題目會給 VPC CIDR 當干擾選項，正確答案通常是「引用 Security Group」而非「寫 IP range」。
