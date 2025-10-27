@@ -1391,3 +1391,8 @@ NACL = Subnet 層級（控制整個子網路的進出）
      1. **用途**：讓 VPC 內的資源透過**私有網路存取 AWS 服務**，不經過公網
      2. **解決問題**：不需要 Internet Gateway / NAT / VPN、不需要 public IP
      3. **核心優勢**：流量不離開 **AWS 內網** → **更安全、更快**
+414. 題目提到「私有存取 S3/DynamoDB」→ 選 VPC Endpoint(Gateway Endpoint)
+415. Private subnet 的 EC2 要存取 S3：
+     1. 建立 Gateway Endpoint for S3
+     2. 關聯到 route table
+     3. EC2 直接用 private IP 存取，免費且安全
