@@ -1472,9 +1472,11 @@ NACL = Subnet 層級（控制整個子網路的進出）
      1. **Streams（DynamoDB/Kinesis/SQS）**：**被動日誌**，只管記錄，不管誰要讀 → **Poll**
      2. **S3/SNS/EventBridge**：**主動通知者**，事件發生時主動告知訂閱者 → **Push**
      3. **快速判斷**：看服務的設計目的—儲存資料（Poll）vs 發送通知（Push）
-434. ★ 資料庫遷移場景判斷：同質 vs 異質
+434. Database Migration Service (DMS) 可以使用 **change data capture (CDC)** 功能，在遷移過程中持續捕捉並複製來源資料庫的變更，實現最小停機時間的遷移方案。
+435. Schema Conversion Tool (SCT) 可以自動轉換資料庫的 schema 和程式碼，支援異質資料庫遷移。
+436. ★ 資料庫遷移場景判斷：同質 vs 異質
      1. **同質遷移**：只需 **DMS**
      2. **異質遷移**：先 **SCT** 翻譯 Schema，再用 **DMS** 遷移資料
-435. ★★ 最小停機時間的資料庫遷移方案
+437. ★★ 最小停機時間的資料庫遷移方案
      1. **核心需求**：停機時間越短越好
      2. **解決方案**：使用 **DMS 的 CDC（Change Data Capture）功能**，支援**持續複製**
