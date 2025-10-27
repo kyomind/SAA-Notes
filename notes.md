@@ -506,7 +506,7 @@
      2. **自動功能**：批次處理記錄、管理 checkpoint（進度追蹤）、自動處理 retry
 164. ★★ Stream-based 服務的 Lambda 整合模式
      1. **常見服務**：DynamoDB Streams、SQS、Kinesis Data Streams
-     2. **核心特點**：都是 Lambda 主動 poll，而非被動接收
+     2. **核心特點**：都是 Lambda **主動 poll**，而非被動接收。DynamoDB Streams 可以直接推送給 Lambda，但底層仍是 poll 機制
      3. **考試陷阱**：很多人誤以為 Kinesis 是「推送」給 Lambda，實際上是 Lambda 去「拉取」
 165. ★★ Lambda 事件源的判斷標準
      1. **Stream-based 服務**：= Lambda poll（主動拉取）
@@ -1436,3 +1436,27 @@ NACL = Subnet 層級（控制整個子網路的進出）
 424. ★ 高流量場景的架構選擇判斷
      1. **CloudFront 問題**：快取命中 ✅，但未命中請求仍會讓後端爆炸 ❌
      2. **API Gateway 解決方案**：命中快取直接回應 ✅ + 429 擋掉超量請求 ✅
+425. ★★ 考試關鍵字判斷（數據服務選型）
+     1. 出現「**ETL**」「**資料整合**」「**不同 Schema**」→ **Glue**
+     2. 出現「**即時串流分析**」→ **Kinesis Data Analytics**（不是 Glue）
+     3. 出現「**大數據處理**（Hadoop/Spark）」且要自己調參數 → **EMR**
+426. 😇 AWS Glue 架構定位
+     1. **架構等價**：Glue = **Airflow** + **Spark** 的 AWS 託管版
+427. ★★ AWS Glue 的核心功能與特性
+     1. **ETL 服務**：Extract、Transform、Load
+     2. **Serverless**：無伺服器架構，自動擴展
+     3. **資料目錄**：內建 **Data Catalog**，統一管理資料結構
+     4. **支援多種資料來源**：S3、RDS、Redshift、JDBC 等
+428. ★ Lambda Poll 類事件來源(凡是「Stream」類服務接 Lambda，都是 Poll 機制)
+     1. **DynamoDB Streams**
+     2. **Kinesis Data Streams**
+     3. **SQS**
+429. ★ Lambda Push 類事件來源
+     1. **SNS**
+     2. **S3 Events**
+     3. **EventBridge**
+     4. **API Gateway**
+430. ★ Lambda 觸發機制考試判斷
+     1. **題目關鍵字**：「誰觸發 Lambda」
+     2. **Streams/SQS 出現**：→ Lambda **主動 poll**（偵測 event source）
+     3. **SNS/S3/EventBridge 出現**：→ 服務**主動 push** 事件給 Lambda

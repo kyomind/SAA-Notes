@@ -111,3 +111,7 @@
 ## VPC Endpoint for S3 and DynamoDB
 
 ![圖 14](https://img.kyomind.tw/img-20251027-180055.png)
+
+## ETL Architecture with AWS Glue
+
+![圖 12](https://img.kyomind.tw/img-20251027-221851.png)
