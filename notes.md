@@ -1404,3 +1404,15 @@ NACL = Subnet 層級（控制整個子網路的進出）
      1. **Lambda@Edge**：邊緣運算，離用戶近 = **快**
      2. **Origin Failover**：雙保險，一個掛了自動切另一個
      3. **常考組合**：CloudFront 優化 + 高可用性
+418. ★★ Cache-Control vs Lambda@Edge 核心差異
+     1. **Cache-Control max-age**：只能讓**靜態內容**快取優化，無法解決動態驗證問題
+     2. **Lambda@Edge**：提供**動態驗證**低延遲，在邊緣執行運算
+     3. **考試重點**：驗證邏輯不能快取，每次請求都要檢查 token 有效性
+419. ★ CloudFront 優化的常見考試陷阱
+     1. **錯誤思維**：以為 CloudFront 優化 = 只調快取設定
+     2. **正確概念**：要看**什麼內容**需要優化
+     3. **實際應用**：驗證這種動態邏輯 → 用 **Lambda@Edge** 在邊緣執行；靜態資源載入 → 用 **Cache-Control** 延長快取
+420. 😇 Authentication 優化題目解題要點
+     1. **題目陷阱**：故意給「看起來能優化 CloudFront 效能」的選項
+     2. **關鍵判斷**：題目問的是 **authentication 慢**，不是靜態資源載入慢
+     3. **記憶要點**：驗證邏輯必須執行運算（Lambda function），無法透過快取解決
