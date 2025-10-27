@@ -103,3 +103,7 @@
 ## KMS and CloudHSM Integration
 
 ![圖 11](https://img.kyomind.tw/img-20251025-150425.png)
+
+## Invoke an AWS Lambda function from an Amazon Aurora MySQL-Compatible Edition DB cluster with a native function or a stored procedure
+
+![圖 13](https://img.kyomind.tw/img-20251027-173948.png)

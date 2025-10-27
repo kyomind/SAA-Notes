@@ -1340,3 +1340,38 @@ NACL = Subnet 層級（控制整個子網路的進出）
      2. **DynamoDB Streams → Lambda**：資料變更時自動觸發處理
      3. **S3 事件 → Lambda/SNS/SQS**：物件操作觸發多種後續處理
      4. **EventBridge → 幾乎所有服務**：事件路由到各種 AWS 服務
+402. You can **invoke an AWS Lambda function** from an Amazon Aurora MySQL-Compatible Edition DB cluster with a **native function or a stored procedure**.
+403. ★★ RDS Event Subscription 與資料變更通知的核心差異
+     1. **RDS Events 監聽範圍**：**基礎設施事件**，不是業務資料事件
+        - 資料庫實例狀態變更（啟動/停止/故障轉移）
+        - 備份完成
+        - 參數群組變更
+        - 維護事件
+     2. **資料變更（INSERT/UPDATE/DELETE）處理方案**：
+        - **Aurora Native Function + Lambda**（如原題）
+        - **DynamoDB Streams**（若用 DynamoDB）
+        - **Application-level 處理**（在程式碼層抓取）
+404. 😇 RDS Events 考試判斷標準
+     1. **核心記憶**：**RDS Events = 基礎設施事件**，不是業務資料事件
+     2. **考試陷阱**：題目問「車輛被刪除後要處理」→ 這是**資料層變更**，RDS Events 幫不上忙
+405. ★★ EKS Cluster 啟用 Secret 加密的實作步驟
+     1. **啟用加密功能**：在 EKS cluster 設定中開啟 **encryption configuration**，指定用於加密的 **KMS key**
+     2. **加密範圍**：針對 **Kubernetes Secrets 資源**，資料存入 **etcd 前自動加密**，讀取時自動解密
+406. ★ EKS Secrets 的三層加密認知
+     1. **K8s 原生 Secrets**：**base64 編碼**（不是加密！）
+     2. **etcd 存儲**：EKS 的 Secret 最終存在 **etcd**
+     3. **AWS 加密**：用 **KMS key** 對 etcd 內的 Secrets 加密
+407. 😇 EKS Secret 加密的考試判斷與陷阱
+     1. **核心知識**：**EKS Secrets 預設不加密**，需手動啟用 KMS 加密
+     2. **常見陷阱選項**：
+        - ❌ 用 **AWS Secrets Manager** 存（多此一舉，直接加密 etcd 就好）
+        - ❌ 用 **IAM roles**（跟 Secret 加密無關）
+        - ✅ **Enable KMS encryption on EKS cluster**
+408. ★ EKS Secret 加密考試陷阱：AWS Secrets Manager 錯誤選項
+     1. **錯誤原因**：Secrets Manager 是**外部儲存服務**，不加密 etcd
+     2. **流程問題**：App → 呼叫 Secrets Manager API → 取得密碼，但 **K8s Secrets 仍存在 etcd**，沒解決題目要求
+     3. **核心差異**：Secrets Manager = 管理密碼的「金庫」，EKS + KMS = **加密 etcd 內的資料**
+409. ★ EKS Secret 加密考試陷阱：EBS Volume Encryption 錯誤選項
+     1. **錯誤原因**：EBS 是 **worker node 的硬碟**，存應用資料
+     2. **架構問題**：**etcd 存在 control plane**（AWS 管理），不在 EBS
+     3. **記憶類比**：EBS 加密 = 加密你的硬碟，etcd 加密 = **加密系統配置檔**
