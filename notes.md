@@ -1331,3 +1331,12 @@ NACL = Subnet 層級（控制整個子網路的進出）
      1. **動態解析**：AWS 即時查詢「哪些 ENI 掛著指定 SG」，動態允許這些 ENI 的流量通過
      2. **自動追蹤**：ALB 新增/移除 instance 時自動更新允許清單，無需手動維護 IP
      3. **核心優勢**：SG 本身只是標籤，AWS 網路層即時解析對應的網路介面並動態套用規則
+400. ★★ Aurora 與 Lambda 整合的事件驅動架構
+     1. **核心概念**：Aurora Native Function/Stored Procedure 可以直接調用 Lambda
+     2. **技術特性**：Aurora MySQL-Compatible 的特殊功能
+     3. **應用場景**：在資料庫層面觸發外部處理邏輯，常用於資料變更時的事件處理
+401. ★★ AWS 關鍵服務整合地圖
+     1. **Aurora → Lambda**：資料庫層面直接觸發 Lambda 函式
+     2. **DynamoDB Streams → Lambda**：資料變更時自動觸發處理
+     3. **S3 事件 → Lambda/SNS/SQS**：物件操作觸發多種後續處理
+     4. **EventBridge → 幾乎所有服務**：事件路由到各種 AWS 服務
