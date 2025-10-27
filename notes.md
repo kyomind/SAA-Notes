@@ -1460,3 +1460,15 @@ NACL = Subnet 層級（控制整個子網路的進出）
      1. **題目關鍵字**：「誰觸發 Lambda」
      2. **Streams/SQS 出現**：→ Lambda **主動 poll**（偵測 event source）
      3. **SNS/S3/EventBridge 出現**：→ 服務**主動 push** 事件給 Lambda
+431. 😇 S3 Events 為什麼是 Push 機制
+     1. **S3 事件驅動特性**：物件上傳/刪除時，S3 立即知道發生了什麼
+     2. **主動發送通知**：S3 主動發送 event notification 給目標（Lambda/SNS/SQS）
+     3. **Lambda 被動接收**：完全被動等待，不需要去問「有沒有新檔案?」
+432. 😇 Streams（DynamoDB/Kinesis）為什麼是 Poll 機制
+     1. **Stream 本質**：只負責「存放」變更記錄，不知道誰想讀、何時讀
+     2. **消費者主導**：消費者必須主動來問「我上次讀到哪？給我新的」
+     3. **Lambda 主動輪詢**：Lambda 需要不斷偵測 stream 是否有新記錄
+433. 👀 Push vs Poll 的本質判斷方法
+     1. **Streams（DynamoDB/Kinesis/SQS）**：**被動日誌**，只管記錄，不管誰要讀 → **Poll**
+     2. **S3/SNS/EventBridge**：**主動通知者**，事件發生時主動告知訂閱者 → **Push**
+     3. **快速判斷**：看服務的設計目的—儲存資料（Poll）vs 發送通知（Push）
