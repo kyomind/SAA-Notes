@@ -1416,3 +1416,23 @@ NACL = Subnet 層級（控制整個子網路的進出）
      1. **題目陷阱**：故意給「看起來能優化 CloudFront 效能」的選項
      2. **關鍵判斷**：題目問的是 **authentication 慢**，不是靜態資源載入慢
      3. **記憶要點**：驗證邏輯必須執行運算（Lambda function），無法透過快取解決
+421. ★★ API Gateway Throttling（流量限制）機制
+     1. **兩層控制**：**全域** + **個別 API 方法**
+     2. **兩種限制**：
+        - **Rate Limit**：穩定流量（例：1000 req/s）
+        - **Burst**：短時間爆量（例：2000 req/s 持續幾秒）
+     3. **超過限制**：回傳 **429 Too Many Requests**
+     4. **自動重試**：AWS SDK 會自動處理 429 重試
+422. ★ API Gateway Caching（快取）機制
+     1. **設定位置**：針對特定 **Stage**（例：dev、prod）
+     2. **容量單位**：GB
+     3. **可控參數**：
+        - **Cache Key** 建構方式
+        - **TTL**（Time-to-Live）
+     4. **管理功能**：可手動清除（**invalidate**）快取
+423. 😇 CloudFront vs API Gateway Cache 的核心差異
+     1. **CloudFront**：在最前端快取，未命中請求仍會打到後端
+     2. **API Gateway Cache + Throttling**：命中快取直接回應 + 超過限制直接擋掉，完全保護後端
+424. ★ 高流量場景的架構選擇判斷
+     1. **CloudFront 問題**：快取命中 ✅，但未命中請求仍會讓後端爆炸 ❌
+     2. **API Gateway 解決方案**：命中快取直接回應 ✅ + 429 擋掉超量請求 ✅
