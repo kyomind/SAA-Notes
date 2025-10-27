@@ -1375,3 +1375,15 @@ NACL = Subnet 層級（控制整個子網路的進出）
      1. **錯誤原因**：EBS 是 **worker node 的硬碟**，存應用資料
      2. **架構問題**：**etcd 存在 control plane**（AWS 管理），不在 EBS
      3. **記憶類比**：EBS 加密 = 加密你的硬碟，etcd 加密 = **加密系統配置檔**
+410. 😇 CloudWatch 監控指標的預設涵蓋範圍
+     1. **錯誤選項分析**：EC2 instance 的 **Disk Read activity** 不需要自訂監控
+     2. **預設包含**：**Disk read activity** 已包含在 CloudWatch 預設指標中
+     3. **需要自訂監控**：僅有特定存儲相關指標（如 **disk space utilization**）需要自訂監控
+411. ★★ AWS Artifact 合規文件服務
+     1. **題目場景**：審計團隊需要查看 AWS 服務的**合規性文件**（如 SOC、PCI 報告、安全認證等）
+     2. **正確答案**：使用 **AWS Artifact**
+412. ★ AWS Artifact 服務特性與功能
+     1. **核心定義**：AWS 官方的**合規文件下載中心**
+     2. **提供內容**：各種安全與合規報告（**SOC、PCI、ISO 認證**等）
+     3. **協議下載**：線上協議下載（如 **BAA、NDA**）
+     4. **使用條件**：**免費使用**，所有 AWS 帳戶都能存取
