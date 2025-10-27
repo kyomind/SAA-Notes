@@ -107,3 +107,7 @@
 ## Invoke an AWS Lambda function from an Amazon Aurora MySQL-Compatible Edition DB cluster with a native function or a stored procedure
 
 ![圖 13](https://img.kyomind.tw/img-20251027-173948.png)
+
+## VPC Endpoint for S3 and DynamoDB
+
+![圖 14](https://img.kyomind.tw/img-20251027-180055.png)
