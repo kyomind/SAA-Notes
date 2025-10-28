@@ -1557,6 +1557,6 @@ NACL = Subnet 層級（控制整個子網路的進出）
 456. ★★ **RDS MySQL 遷移至 Aurora MySQL**：快速遷移方案
      1. **遷移步驟**：對 RDS MySQL 建立 snapshot → 直接 restore 成 Aurora MySQL
      2. **優勢**：AWS 官方支援的原生遷移路徑，簡單快速
-457. ★★ **AWS DataSync**：全託管資料遷移和同步服務
+457. ★ **AWS DataSync**：全託管資料遷移和同步服務
      1. **用途**：自動化、安全地在不同儲存位置間大量傳輸資料
      2. 本地 NAS/檔案伺服器 ↔ S3/EFS/FSx）；解決手動 rsync/scp 太慢、不穩定的問題
