@@ -1538,7 +1538,9 @@ NACL = Subnet 層級（控制整個子網路的進出）
         - 必須提供 KeyId 給 AWS（KeyId 被送到 AWS）
         - AWS KMS 會參與加密流程（即使是 client-side 也會參與）
      3. **考試陷阱**：AWS 會混淆「確實是 client-side encryption ✓」但「KMS KeyId 還是送到 AWS 了 ✗」
-451. **SSH = TCP，不是 UDP**（常見錯誤選項會故意改成 UDP）
-     1. TCP（需要可靠連線）：SSH、HTTP、RDS
-     2. UDP（即時性優先）：DNS、streaming
-     3. **快速判斷**：考試看到 SSH，直接選 **TCP + Port 22**
+451. SSH 協議層判斷與 Port 22 對應
+     1. **核心知識**：**SSH = TCP，不是 UDP**（常見錯誤選項會故意改成 UDP）
+     2. **協議分類**：TCP（需要可靠連線：SSH、HTTP、RDS）、UDP（即時性優先：DNS、streaming）
+452. ★★ AWS RAM 多帳號資源共享機制
+     1. **核心用途**：在多個 AWS 帳號間共享資源（Transit Gateway、Subnets、Route 53 Resolver rules、License Manager），避免重複建立
+     2. **考試判斷**：看到「多帳號環境 + 避免重複建資源」→ 答案是 RAM；RAM 免費、用於 AWS Organizations 內共享、Transit Gateway 跨帳號必考
