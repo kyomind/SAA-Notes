@@ -1505,3 +1505,17 @@ NACL = Subnet 層級（控制整個子網路的進出）
         - **RPO < 1 秒**（通常幾百毫秒）→ 異步複製到其他 region 延遲極低
         - **RTO < 1 分鐘** → 自動 failover 機制，提升 secondary region 為 primary 約 1 分鐘內完成
         - **自動跨區域複製** → 最多支援 5 個 secondary regions，每個都有完整讀寫能力
+444. ★★ S3 Access Point VPC 隔離限制
+     1. **問題場景**：限制特定 VPC 存取 S3
+     2. **解決方案**：使用 **S3 Access Point** 並設定 VPC 限制
+     3. **核心優勢**：可設定只接受來自特定 VPC 的請求，比修改 bucket policy 更靈活、不影響其他存取路徑
+     4. **實務記憶**：把 Access Point 想成「進入 S3 bucket 的專屬通道」，每個通道有獨立的門禁規則
+445. ★★ S3 Object Lock + Legal Hold 不可變保護機制
+     1. **核心功能**：Object Lock 啟用後強制 **WORM**（Write-Once-Read-Many）模式
+     2. **Legal Hold 特性**：可無限期鎖定物件，防止刪除/覆寫，一旦啟用就無法關閉
+     3. **Versioning 強制啟用**：Object Lock 啟用後 Versioning 會自動強制啟用且無法關閉
+     4. **部署建議**：必須在新 bucket 建立時啟用（雖然既有 bucket 現在也能啟用，但新 bucket 是最佳做法）
+446. ★ Object Lock 強制綁定 Versioning 的技術原理
+     1. **綁定機制**：啟用 Object Lock → **Versioning 自動啟用且無法關閉**，沒有 Versioning，Object Lock 根本無法運作
+     2. **WORM 實現原理**：每次「修改」實際上是建立新版本，舊版本被鎖住無法刪除或覆寫，這才是真正的「**write-once**」
+     3. **核心記憶**：Object Lock 依賴 Versioning 實現版本隔離，才能保證資料不可變性

@@ -115,3 +115,12 @@
 ## ETL Architecture with AWS Glue
 
 ![圖 12](https://img.kyomind.tw/img-20251027-221851.png)
+
+## S3 Access Point - VPC Only
+
+You can configure any access point to accept requests only from a virtual private cloud (VPC) to restrict Amazon S3 data access to a private network.
+![圖 15](https://img.kyomind.tw/img-20251028-173912.png)
+
+## S3 Object Lock
+
+![圖 16](https://img.kyomind.tw/img-20251028-174058.png)
