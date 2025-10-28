@@ -1529,7 +1529,7 @@ NACL = Subnet 層級（控制整個子網路的進出）
         - Retention Period 到期前不可刪除
         - Legal Hold 被設定則即使 Retention 到期仍不可刪除，直到 Legal Hold 被解除
      3. **保護強度**：**Legal Hold 的保護強度比 Retention Period 高**，為最嚴格的鎖定機制
-449. ★★ API Gateway 的 Throttling 過載保護機制
+449. ★ API Gateway 的 Throttling 過載保護機制
      1. **功能**：保護後端服務免於過載，當請求超過設定限制時觸發
      2. **客戶端響應**：回傳 **429 Too Many Requests** 錯誤碼
 450. ★ Client-side Encryption 與 KMS key 的混淆陷阱
@@ -1538,3 +1538,7 @@ NACL = Subnet 層級（控制整個子網路的進出）
         - 必須提供 KeyId 給 AWS（KeyId 被送到 AWS）
         - AWS KMS 會參與加密流程（即使是 client-side 也會參與）
      3. **考試陷阱**：AWS 會混淆「確實是 client-side encryption ✓」但「KMS KeyId 還是送到 AWS 了 ✗」
+451. **SSH = TCP，不是 UDP**（常見錯誤選項會故意改成 UDP）
+     1. TCP（需要可靠連線）：SSH、HTTP、RDS
+     2. UDP（即時性優先）：DNS、streaming
+     3. **快速判斷**：考試看到 SSH，直接選 **TCP + Port 22**
