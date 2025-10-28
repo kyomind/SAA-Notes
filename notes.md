@@ -1519,3 +1519,7 @@ NACL = Subnet 層級（控制整個子網路的進出）
      1. **綁定機制**：啟用 Object Lock → **Versioning 自動啟用且無法關閉**，沒有 Versioning，Object Lock 根本無法運作
      2. **WORM 實現原理**：每次「修改」實際上是建立新版本，舊版本被鎖住無法刪除或覆寫，這才是真正的「**write-once**」
      3. **核心記憶**：Object Lock 依賴 Versioning 實現版本隔離，才能保證資料不可變性
+447. 👀 Legal Hold 的時間限制誤解
+     1. **誤解**：Legal Hold 可以設定時間（如「one year」）
+     2. **事實**：Legal Hold 是**無限期鎖定**，必須手動移除，沒有時間限制
+     3. **考試陷阱**：「legal hold of one year」這選項本身就是錯的
