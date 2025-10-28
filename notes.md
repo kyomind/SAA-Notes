@@ -1541,10 +1541,22 @@ NACL = Subnet 層級（控制整個子網路的進出）
 451. SSH 協議層判斷與 Port 22 對應
      1. **核心知識**：**SSH = TCP，不是 UDP**（常見錯誤選項會故意改成 UDP）
      2. **協議分類**：TCP（需要可靠連線：SSH、HTTP、RDS）、UDP（即時性優先：DNS、streaming）
-452. ★★ AWS RAM 多帳號資源共享機制
+452. ★ AWS RAM 多帳號資源共享機制
      1. **核心用途**：在多個 AWS 帳號間共享資源（Transit Gateway、Subnets、Route 53 Resolver rules、License Manager），避免重複建立
      2. **考試判斷**：看到「多帳號環境 + 避免重複建資源」→ 答案是 RAM；RAM 免費、用於 AWS Organizations 內共享、Transit Gateway 跨帳號必考
 453. ★ **Control Tower**：自動化建立多帳號治理環境
      1. **用途**：快速設定符合最佳實踐的多帳號架構
      2. **功能**：自動套用 **guardrails**（防護欄）、logging、基礎架構
      3. **考試判斷**：看到「set up and govern」→ Control Tower
+454. ★★ **AWS Backup**：統一備份管理中心
+     1. **用途**：在單一 console 管理多種 AWS 資源的備份（EC2、EBS、DynamoDB、RDS、Aurora、EFS、FSx、Storage Gateway）
+     2. **考試判斷**：看到「many resources + single place + easy way」→ AWS Backup；支援統一的備份計劃（Backup Plan）、retention policy、lifecycle rules
+455. ★★ **AWS Application Migration Service (MGN)**：lift-and-shift 遷移方案
+     1. **用途**：直接搬遷整台機器 (servers、VMs)，最小化停機時間（minimum downtime）
+     2. **特點**：不改變架構（lift-and-shift），專為大規模伺服器遷移設計
+456. ★★ **RDS MySQL 遷移至 Aurora MySQL**：快速遷移方案
+     1. **遷移步驟**：對 RDS MySQL 建立 snapshot → 直接 restore 成 Aurora MySQL
+     2. **優勢**：AWS 官方支援的原生遷移路徑，簡單快速
+457. ★★ **AWS DataSync**：全託管資料遷移和同步服務
+     1. **用途**：自動化、安全地在不同儲存位置間大量傳輸資料
+     2. 本地 NAS/檔案伺服器 ↔ S3/EFS/FSx）；解決手動 rsync/scp 太慢、不穩定的問題
