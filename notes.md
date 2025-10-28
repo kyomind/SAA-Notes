@@ -1559,4 +1559,11 @@ NACL = Subnet 層級（控制整個子網路的進出）
      2. **優勢**：AWS 官方支援的原生遷移路徑，簡單快速
 457. ★ **AWS DataSync**：全託管資料遷移和同步服務
      1. **用途**：自動化、安全地在不同儲存位置間大量傳輸資料
-     2. 本地 NAS/檔案伺服器 ↔ S3/EFS/FSx）；解決手動 rsync/scp 太慢、不穩定的問題
+     2. **使用情境**：本地 NAS/檔案伺服器 ↔ S3/EFS/FSx；解決手動 rsync/scp 太慢、不穩定的問題
+458. ★★ **HPC 網路效能最佳化**：EFA (Elastic Fabric Adapter)
+     1. **核心特性**：EFA 支援 OS-bypass 技術，讓應用程式直接跟網路硬體溝通，繞過作業系統的網路堆疊。**極致的網路效能 + 超低延遲**，專為 HPC 設計
+     2. **使用組合**：HPC + Cluster Placement Group（把 instances 放在同一個機架上，進一步降低延遲） + EFA 最大化網路效能
+     3. **協定**：支援 MPI (Message Passing Interface)，這是 HPC 應用的標準通訊協定
+459. 👀 **HPC 儲存解決方案與網路性能的區別**
+     1. **FSx for Lustre 的角色**：高效能共享儲存（解決儲存問題）
+     2. **考試陷阱**：區分「儲存效能」vs「網路效能」；題目問「maximize network performance」→ 選 EFA，不是 FSx for Lustre
