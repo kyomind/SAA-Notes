@@ -1544,3 +1544,7 @@ NACL = Subnet 層級（控制整個子網路的進出）
 452. ★★ AWS RAM 多帳號資源共享機制
      1. **核心用途**：在多個 AWS 帳號間共享資源（Transit Gateway、Subnets、Route 53 Resolver rules、License Manager），避免重複建立
      2. **考試判斷**：看到「多帳號環境 + 避免重複建資源」→ 答案是 RAM；RAM 免費、用於 AWS Organizations 內共享、Transit Gateway 跨帳號必考
+453. ★ **Control Tower**：自動化建立多帳號治理環境
+     1. **用途**：快速設定符合最佳實踐的多帳號架構
+     2. **功能**：自動套用 **guardrails**（防護欄）、logging、基礎架構
+     3. **考試判斷**：看到「set up and govern」→ Control Tower
