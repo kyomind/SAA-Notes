@@ -1499,3 +1499,9 @@ NACL = Subnet 層級（控制整個子網路的進出）
      1. **SNS**：**Push Model**（主動推送訊息到訂閱者）
      2. **SQS**：**被動接收**（接收 SNS 推過來的訊息，而非主動 poll SNS）
      3. **常見誤解**：❌ 「SQS poll SNS」← 這是錯的
+443. ★★ Aurora Global Database 的 RPO/RTO 考試判斷
+     1. **核心要求**：RPO < 1 秒 + RTO < 1 分鐘 的組合判斷
+     2. **為什麼是 Aurora Global Database**：
+        - **RPO < 1 秒**（通常幾百毫秒）→ 異步複製到其他 region 延遲極低
+        - **RTO < 1 分鐘** → 自動 failover 機制，提升 secondary region 為 primary 約 1 分鐘內完成
+        - **自動跨區域複製** → 最多支援 5 個 secondary regions，每個都有完整讀寫能力
