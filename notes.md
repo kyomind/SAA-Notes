@@ -1523,3 +1523,18 @@ NACL = Subnet 層級（控制整個子網路的進出）
      1. **誤解**：Legal Hold 可以設定時間（如「one year」）
      2. **事實**：Legal Hold 是**無限期鎖定**，必須手動移除，沒有時間限制
      3. **考試陷阱**：「legal hold of one year」這選項本身就是錯的
+448. ★ Object Lock 的 Retention Period 與 Legal Hold 可同時設定
+     1. **兩種機制獨立性**：Retention Period 和 Legal Hold 互相獨立但可共存
+     2. **同時設定的行為**：
+        - Retention Period 到期前不可刪除
+        - Legal Hold 被設定則即使 Retention 到期仍不可刪除，直到 Legal Hold 被解除
+     3. **保護強度**：**Legal Hold 的保護強度比 Retention Period 高**，為最嚴格的鎖定機制
+449. ★★ API Gateway 的 Throttling 過載保護機制
+     1. **功能**：保護後端服務免於過載，當請求超過設定限制時觸發
+     2. **客戶端響應**：回傳 **429 Too Many Requests** 錯誤碼
+450. ★ Client-side Encryption 與 KMS key 的混淆陷阱
+     1. **錯誤觀念**：使用 AWS KMS key 做 client-side encryption 符合「master keys never sent to AWS」要求
+     2. **為什麼不符合**：
+        - 必須提供 KeyId 給 AWS（KeyId 被送到 AWS）
+        - AWS KMS 會參與加密流程（即使是 client-side 也會參與）
+     3. **考試陷阱**：AWS 會混淆「確實是 client-side encryption ✓」但「KMS KeyId 還是送到 AWS 了 ✗」
