@@ -364,3 +364,19 @@ Read Replicas 有 replication lag（**複製延遲**），不適合做 HA，適�
 | **VPC Peering**    | 只能連 VPC 對 VPC，**不能連 on-premises**       |
 | **Direct Connect** | 專線連接，不走公網，且貴（**不適合當 backup**） |
 | **PrivateLink**    | 用於服務存取（如連 S3、API），**不是連機房**    |
+
+## S3 Object Lock 模式對比
+
+| 項目     | **Governance Mode**    | **Compliance Mode**            |
+| -------- | ---------------------- | ------------------------------ |
+| 保護程度 | 軟性保護               | **硬性保護**                   |
+| 誰能繞過 | 有特殊權限的人可以解除 | **誰都不能動，包括 root user** |
+| 適用場景 | 一般資料保護           | **法規遵循、audit 要求**       |
+
+## S3 Object Lock：Retention Period vs Legal Hold
+
+| 特性            | **Retention Period**           | **Legal Hold**                               |
+| --------------- | ------------------------------ | -------------------------------------------- |
+| 運作方式        | **設定時間範圍**               | **無限期鎖定**                               |
+| 解除條件        | **時間到就解除保護**           | **必須手動解除**                             |
+| Compliance Mode | **受到 retention period 約束** | 即使 legal hold 也受到 retention period 約束 |
