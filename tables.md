@@ -441,4 +441,4 @@ Read Replicas 有 replication lag（**複製延遲**），不適合做 HA，適�
 | **SQL Injection 防護**      | **WAF + ALB**        |
 | **Rate Limiting (IP)**      | **WAF + ALB**        |
 
-**判斷標準**：題目提到「SQL Injection」、「XSS」、「bot protection」、「web application firewall」→ 必定是 **ALB + WAF**
+**判斷標準**：題目提到「SQL Injection」、「XSS」、「bot protection」、「web application firewall」→ 必定是 **ALB + WAF** (因為 WAF **只能**掛 ALB)
