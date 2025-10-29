@@ -13,3 +13,11 @@
    2. **應用場景**：題目明確說 EBS snapshot 時，DLM 是標準答案（相比 AWS Backup）
 4. 😇 AWS Storage Gateway 存取範圍限制
    1. **用途**：僅用於備份**本地伺服器**資料，**不支援存取 Amazon VPC 內的資源**
+5. ★★ NLB (Network Load Balancer) - Layer 4 高效能負載均衡
+   1. **工作方式**：只看 **IP + Port**，直接轉發 TCP/UDP 封包
+   2. **架構設計**：每個 AZ 配置一個固定的**網路介面（ENI）**，ENI 可綁定**靜態 IP**
+   3. **本質**：像一個「高效能的網路交換器」，IP 就是它的門牌
+6. ★ ALB (Application Load Balancer) - Layer 7 智慧路由
+   1. **工作方式**：需要解析 **HTTP Header、URL、Cookie** 等內容做**智慧路由**
+   2. **架構設計**：背後是**動態擴展的節點池**，IP 會隨著流量自動增減變動
+   3. **本質**：像一個「反向代理伺服器」，需要彈性擴展才能應對流量波動
