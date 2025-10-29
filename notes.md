@@ -34,3 +34,10 @@
     1. **功能**：自動化系統更新、安全補丁部署
     2. **配置**：可設定維護視窗（Maintenance Window）控制更新時機
 11. 😇 AWS Cost Explorer：視覺化分析 AWS 帳單的工具，讓你看懂錢花在哪、預測未來開銷。
+12. ★ AWS Cost Anomaly Detection - ML 自動異常偵測
+    1. **功能**：用 ML 學習花費模式，**自動找出異常**（不用設定閾值）
+    2. **運作方式**：系統自己判斷「這次不正常」，發現異常時發 SNS 通知
+13. ★ AWS Budgets vs Cost Anomaly Detection - 考試判斷關鍵
+    1. **AWS Budgets**：**你主動設定**閾值（「alert when cost exceeds $X」），超過時發出通知
+    2. **Cost Anomaly Detection**：**AI 自動判斷**異常（「automatically detect unusual spending」），無需預設閾值
+    3. **核心差異**：Budgets 是「**你說多少算超標**」，Anomaly Detection 是「**AI 說這次不對勁**」
