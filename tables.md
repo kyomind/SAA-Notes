@@ -2,20 +2,20 @@
 
 ## AWS 服務的 Caching 機制
 
-| 服務        | Caching 機制                                                |
-| ----------- | ----------------------------------------------------------- |
+| 服務        | Caching 機制                                                 |
+| ----------- | ------------------------------------------------------------ |
 | API Gateway | 可啟用 stage-level caching，暫存 API 回應內容（TTL 可調整）⭐️ |
-| DynamoDB    | 有 DAX (DynamoDB Accelerator)，提供 in-memory cache         |
-| CloudFront  | 本質就是 CDN，核心功能就是 edge caching                     |
+| DynamoDB    | 有 DAX (DynamoDB Accelerator)，提供 in-memory cache          |
+| CloudFront  | 本質就是 CDN，核心功能就是 edge caching                      |
 
 ## Gateway Endpoint vs Interface Endpoint
 
-| 特性     | Gateway Endpoint | Interface Endpoint    |
-| -------- | ---------------- | --------------------- |
-| 支援服務 | S3、DynamoDB ⭐️    | 其他 AWS 服務         |
-| 費用     | 免費             | 按小時 + 流量收費     |
+| 特性     | Gateway Endpoint   | Interface Endpoint    |
+| -------- | ------------------ | --------------------- |
+| 支援服務 | S3、DynamoDB ⭐️     | 其他 AWS 服務         |
+| 費用     | 免費               | 按小時 + 流量收費     |
 | 實作方式 | 修改 route table ⭐️ | 建立 ENI (private IP) |
-| 使用場景 | 考試首選         | 需要 PrivateLink 時   |
+| 使用場景 | 考試首選           | 需要 PrivateLink 時   |
 
 ## RDS Read Replica 按位置分類
 
@@ -65,7 +65,7 @@
 | 特性         | General Purpose | Max I/O                   |
 | ------------ | --------------- | ------------------------- |
 | **適用場景** | 一般網站、CMS   | **大量併發存取**          |
-| **延遲**     | 較低（ms）⭐️      | 較高（可接受）            |
+| **延遲**     | 較低（ms）⭐️     | 較高（可接受）            |
 | **併發連線** | 適中            | **無限制**                |
 | **判斷關鍵** | 少量 tasks      | **數百個 tasks 同時存取** |
 
@@ -91,21 +91,21 @@
 | 限制請求頻率 / Rate limit | **WAF Rate-Based Rule** |
 | 封鎖特定 IP/地區          | WAF Regular Rule        |
 | Layer 4 DDoS 防護         | **AWS Shield**          |
-| 整合 ALB ⭐️                 | 用 WAF（可直接關聯）    |
-| 整合 CloudFront ⭐️          | 用 WAF（可直接關聯）    |
+| 整合 ALB ⭐️                | 用 WAF（可直接關聯）    |
+| 整合 CloudFront ⭐️         | 用 WAF（可直接關聯）    |
 
-## 考試陷阱題:ALB vs NLB vs CLB
+## 考試陷阱題:ALB vs NLB
 
-| 特性        | ALB          | NLB            | CLB (舊版)     |
-| ----------- | ------------ | -------------- | -------------- |
-| OSI Layer   | Layer 7      | Layer 4        | Layer 4/7      |
-| 適用協定    | HTTP/HTTPS   | TCP/UDP/TLS    | HTTP/HTTPS/TCP |
-| 路由能力    | **內容路由** | 無 (只看 port) | 基本           |
-| 效能        | 高           | **極高**       | 中             |
-| 靜態 IP     | ❌            | ✅              | ❌              |
-| WebSocket   | ✅            | ✅              | ✅              |
-| Lambda 支援 | ✅            | ❌              | ❌              |
-| 價格        | 中           | 低             | 低             |
+| 特性        | ALB          | NLB            |
+| ----------- | ------------ | -------------- |
+| OSI Layer   | Layer 7      | Layer 4        |
+| 適用協定    | HTTP/HTTPS   | TCP/UDP/TLS    |
+| 路由能力    | **內容路由** | 無 (只看 port) |
+| 效能        | 高           | **極高**       |
+| 靜態 IP     | ❌            | ✅              |
+| WebSocket   | ✅            | ✅              |
+| Lambda 支援 | ✅            | ❌              |
+| 價格        | 中           | 低             |
 
 **判斷標準**:
 
