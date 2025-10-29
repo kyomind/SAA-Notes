@@ -1585,3 +1585,23 @@ NACL = Subnet 層級（控制整個子網路的進出）
      2. **支援所有作業系統**：Windows、Linux、macOS
      3. **企業級功能最完整**：snapshot、複製、thin provisioning 等進階特性
 464. 題目同時要求「Multi-AZ」+「block storage」+「Windows 相容性」→ 十之八九是 FSx for NetApp ONTAP
+465. ★★ 身份聯邦的核心需求與場景判斷
+     1. **核心要求**：**Identity Federation（身份聯邦）** → 用戶用企業 AD 帳號登入 AWS
+     2. **附帶需求**：**Role-based Access Control（RBAC）** → 權限控制
+     3. **前提條件**：**已有 corporate Active Directory** → 不需要新建 AD
+466. ★★ AWS Directory Service AD Connector 的聯邦角色
+     1. **本質**：企業 AD 與 AWS 之間的「認證代理人」，不儲存用戶資料
+     2. **運作原理**：
+        - 用戶用 AD 帳號登入 AWS Console
+        - AD Connector 轉發認證請求到企業 AD
+        - AD 回覆「此人是 DevTeam 群組成員」
+     3. **核心差異**：Simple AD 是「新建託管 AD」，AD Connector 是「連接現有 AD」
+467. ★★ IAM Roles 在身份聯邦中的應用
+     1. **核心功能**：承接 AD 的身份映射，轉換為 AWS 權限
+     2. **映射機制**：企業 AD 群組 → AWS IAM Role（例：`DevTeam` 群組 → `DeveloperRole`）
+     3. **權限方式**：登入成功後自動取得對應的 IAM Role 權限
+468. ★ 身份聯邦方案選項對比與記憶技巧
+     1. **為什麼不選 Simple AD**：新建託管 AD，但題目已有企業 AD，浪費成本
+     2. **為什麼不選 Lambda**：與身份認證無關
+     3. **為什麼不選 IAM Groups**：IAM Groups 只管理 IAM User，無法跟企業 AD 整合
+     4. **判斷標準**：題目說「已有 AD」→ **AD Connector**；「需要 AD 功能但沒有 AD」→ **Simple AD**
