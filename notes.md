@@ -33,3 +33,4 @@
 10. 😇 AWS Systems Manager **Patch Manager** - 自動化系統更新管理
     1. **功能**：自動化系統更新、安全補丁部署
     2. **配置**：可設定維護視窗（Maintenance Window）控制更新時機
+11. 😇 AWS Cost Explorer：視覺化分析 AWS 帳單的工具，讓你看懂錢花在哪、預測未來開銷。

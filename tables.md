@@ -491,3 +491,12 @@ S3 Pre-Signed URL → 讓用戶「**上傳/下載**」但不給 AWS 憑證
 | 存應用配置（如 DB 連線）      | Parameter Store | 寫在程式碼裡              |
 | 需要自動輪替密碼              | Secrets Manager | Parameter Store           |
 | 管理混合環境（AWS + 本地）    | SSM + SSM Agent | 只想到 AWS 內部           |
+
+## AWS 成本管理工具對比
+
+| 工具                      | 用途                    | 記憶點         |
+| ------------------------- | ----------------------- | -------------- |
+| **Cost Explorer**         | **分析歷史 + 預測未來** | 看圖表、找趨勢 |
+| **AWS Budgets**           | **設定預算 + 超標告警** | 主動通知       |
+| **Cost and Usage Report** | **詳細原始數據匯出**    | 給 BI 工具用   |
+| **Billing Dashboard**     | **當月帳單總覽**        | 只看總數       |
