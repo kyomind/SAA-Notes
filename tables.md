@@ -4,7 +4,7 @@
 
 | 服務        | Caching 機制                                                |
 | ----------- | ----------------------------------------------------------- |
-| API Gateway | 可啟用 stage-level caching，暫存 API 回應內容（TTL 可調整） |
+| API Gateway | 可啟用 stage-level caching，暫存 API 回應內容（TTL 可調整）⭐️ |
 | DynamoDB    | 有 DAX (DynamoDB Accelerator)，提供 in-memory cache         |
 | CloudFront  | 本質就是 CDN，核心功能就是 edge caching                     |
 
@@ -12,18 +12,20 @@
 
 | 特性     | Gateway Endpoint | Interface Endpoint    |
 | -------- | ---------------- | --------------------- |
-| 支援服務 | S3、DynamoDB     | 其他 AWS 服務         |
+| 支援服務 | S3、DynamoDB ⭐️    | 其他 AWS 服務         |
 | 費用     | 免費             | 按小時 + 流量收費     |
-| 實作方式 | 修改 route table | 建立 ENI (private IP) |
+| 實作方式 | 修改 route table ⭐️ | 建立 ENI (private IP) |
 | 使用場景 | 考試首選         | 需要 PrivateLink 時   |
 
 ## RDS Read Replica 按位置分類
 
 | 位置              | 用途                        | 說明                                 |
 | ----------------- | --------------------------- | ------------------------------------ |
-| 同 Region 不同 AZ | ✅ 分散讀取 + 災難備援       | 主要用途，既能分流讀取又能跨 AZ 容錯 |
-| 同 AZ             | ✅ 分散讀取                  | 單純分流讀取，但沒有 AZ 層級容錯     |
-| 跨 Region         | ✅ 分散讀取 + 跨區域災難備援 | 全球化應用、異地備援                 |
+| 同 Region 不同 AZ | ✅ 分散讀取 + 手動故障恢復   | 標準做法，AZ 掛了可手動提升為 Master |
+| 同 AZ             | ⚠️ 分散讀取（不建議）        | 無 AZ 容錯，實務上不使用             |
+| 跨 Region         | ✅ 分散讀取 + 跨區域災難恢復 | 全球化應用、Region 級災難恢復        |
+
+**重點**：Read Replica 不提供自動故障轉移，真正的自動容錯用 **Multi-AZ**
 
 ## Read Replica vs Multi-AZ
 
