@@ -482,3 +482,12 @@ S3 Pre-Signed URL → 讓用戶「**上傳/下載**」但不給 AWS 憑證
 | **Rate Limiting (IP)**     | **WAF + ALB**        |
 
 **判斷標準**：題目提到「SQL Injection」、「XSS」、「bot protection」、「web application firewall」→ 必定是 **ALB + WAF** (因為 WAF **只能**掛 ALB)
+
+## 常見 SSM 使用情境對應表
+
+| 情境                          | 正確答案        | 常見錯誤                  |
+| ----------------------------- | --------------- | ------------------------- |
+| 需要遠端連線 EC2 但不想開 SSH | Session Manager | 開 port 22 + Bastion Host |
+| 存應用配置（如 DB 連線）      | Parameter Store | 寫在程式碼裡              |
+| 需要自動輪替密碼              | Secrets Manager | Parameter Store           |
+| 管理混合環境（AWS + 本地）    | SSM + SSM Agent | 只想到 AWS 內部           |

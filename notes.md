@@ -21,3 +21,15 @@
    1. **工作方式**：需要解析 **HTTP Header、URL、Cookie** 等內容做**智慧路由**
    2. **架構設計**：背後是**動態擴展的節點池**，IP 會隨著流量自動增減變動
    3. **本質**：像一個「反向代理伺服器」，需要彈性擴展才能應對流量波動
+7. ★★ AWS Systems Manager (SSM) Session Manager - 無需 SSH 的安全遠端連線
+   1. **特點**：無需 SSH、無需開 port 22，直接在 AWS Console 連線進 EC2
+   2. **優勢**：不用管理 SSH key、不用開防火牆、自動記錄操作歷史
+8. ★ AWS Systems Manager Parameter Store - 集中式配置與密碼存儲
+   1. **功能**：存放配置資料、密碼、連線字串
+   2. **對比 Secrets Manager**：Parameter Store 免費（標準版）適合簡單配置；Secrets Manager 收費但支援自動輪替密碼
+9. 😇 AWS Systems Manager Run Command - 批次遠端指令執行
+   1. **用途**：批次執行指令到多台 EC2（同時更新 100 台機器等場景）
+   2. **優勢**：不用一台一台 SSH 連線
+10. 😇 AWS Systems Manager Patch Manager - 自動化系統更新管理
+    1. **功能**：自動化系統更新、安全補丁部署
+    2. **配置**：可設定維護視窗（Maintenance Window）控制更新時機
