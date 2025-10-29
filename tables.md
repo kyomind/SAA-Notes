@@ -251,12 +251,12 @@ Multi-AZ 解決的是「服務不中斷」，想分散讀取流量要用 Read Re
 
 Read Replicas 有 replication lag（**複製延遲**），不適合做 HA，適合分散讀取流量。
 
-## SNS 訂閱端點類型
+## SNS 訂閱端點類型(推送的目標)
 
 | 訂閱者類型           | 使用場景                       |
 | -------------------- | ------------------------------ |
 | **SQS Queue**        | 解耦非同步處理，確保訊息不遺失 |
-| **Lambda**           | 觸發無伺服器函數，自動執行邏輯 |
+| **Lambda**           | 觸發無伺服器函式，自動執行邏輯 |
 | **HTTP/HTTPS**       | 推送到自訂 API endpoint        |
 | **Email/Email-JSON** | 通知管理員或發送報表           |
 | **SMS**              | 手機簡訊告警                   |
@@ -276,8 +276,8 @@ Read Replicas 有 replication lag（**複製延遲**），不適合做 HA，適�
 | 機制                            | 用途                                   | 考試重點                                |
 | ------------------------------- | -------------------------------------- | --------------------------------------- |
 | **Signed URLs/Cookies**         | 控制內容存取權限                       | **付費內容、時效性限制首選**            |
-| **OAC (Origin Access Control)** | 強制用戶只能透過 CloudFront 存取 S3    | **防止繞過 CloudFront 直接打 S3 URL**   |
-| **Pre-signed URLs**             | 讓用戶上傳檔案到 S3，但不需要 AWS 憑證 | **注意：這是 S3 功能，不是 CloudFront** |
+| **OAC (Origin Access Control)** | 強制用戶只能透過 CloudFront 存取 **S3** ⭐️   | **防止繞過 CloudFront 直接打 S3 URL**   |
+| **S3 Pre-signed URLs**             | 讓用戶上傳檔案到 S3，但不需要 AWS 憑證 | **注意：這是 S3 功能，不是 CloudFront** |
 
 ## VPC Endpoint 完整對比 (Interface vs Gateway)
 
