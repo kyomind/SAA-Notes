@@ -185,7 +185,7 @@ WAF 只能掛 ALB 是因為它需要檢查 HTTP/HTTPS 內容（Layer 7），而 
 **記憶點**：
 
 - IGW = 大門（可進可出）
-- NAT = 單向閥門（只能出去下載更新、呼叫 API）
+- NAT = 單向閥門（只能出去下載更新、呼叫 API ⭐️）
 
 ---
 
@@ -193,7 +193,7 @@ WAF 只能掛 ALB 是因為它需要檢查 HTTP/HTTPS 內容（Layer 7），而 
 
 |              | Security Group          | NACL                       |
 | ------------ | ----------------------- | -------------------------- |
-| **層級**     | Instance（EC2、RDS 等） | Subnet                     |
+| **層級**     | Instance（EC2、RDS 等） | Subnet ⭐️                    |
 | **Stateful** | 是（回程自動放行）      | 否（必須明確設定進出規則） |
 | **規則**     | 只有 Allow              | Allow + Deny               |
 | **預設**     | 全關閉                  | 全開放                     |
