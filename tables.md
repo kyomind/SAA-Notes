@@ -111,7 +111,7 @@
 
 - 題目提到「**根據 URL path 路由**」→ ALB
 - 題目提到「**需要靜態 IP**」或「**極致效能**」→ NLB
-- 題目提到「**WebSocket**」→ ALB 或 NLB 都可以,但通常選 ALB
+- 題目提到「**WebSocket**」→ ALB 或 NLB 都可以，但通常選 ALB
 
 ## WAF 支援的服務
 
@@ -121,16 +121,18 @@
 | **ALB**         | 負載均衡器 | 保護後端 API/應用程式      |
 | **API Gateway** | API 管理   | 保護 RESTful/WebSocket API |
 
+WAF 只能掛 ALB 是因為它需要檢查 HTTP/HTTPS 內容（Layer 7），而 NLB 工作在 Layer 4，根本看不到 HTTP 內容。
+
 ## WAF 規則類型與用途
 
 | 規則類型               | 範例                   | 實務用途     |
 | :--------------------- | :--------------------- | :----------- |
-| **IP 白/黑名單**       | 阻擋來自中國的 IP      | 地理封鎖     |
+| **IP 白/黑名單**       | 阻擋來自中國的 IP      | 地理封鎖 ⭐️    |
 | **Query String**       | `?admin=true`          | 防止參數注入 |
 | **HTTP Header**        | `User-Agent: BadBot`   | 阻擋爬蟲     |
 | **Request Body**       | 包含 `<script>`        | 防 XSS 攻擊  |
-| **Rate Limiting**      | 單 IP 每分鐘 > 1000 次 | 防 DDoS      |
-| **SQL Injection 規則** | 自動偵測 SQL 注入模式  | 防資料庫攻擊 |
+| **Rate Limiting** ⭐️     | 單 IP 每分鐘 > 1000 次 | 防 DDoS      |
+| **SQL Injection 規則** ⭐️ | 自動偵測 SQL 注入模式  | 防資料庫攻擊 |
 
 ## 安全服務防護層級對比
 
@@ -429,3 +431,14 @@ Read Replicas 有 replication lag（**複製延遲**），不適合做 HA，適�
 | 複雜度   | 簡單直接                  | 功能完整但設定較複雜               |
 | 成本     | 免費（只付儲存）          | 免費（只付儲存）                   |
 | 考試答案 | **單純 EBS 問題選這個**   | **跨服務備份選這個**               |
+
+## 安全防護需求與解決方案對應表
+
+| 需求                        | 選擇方案            |
+| --------------------------- | ------------------- |
+| **DDoS 防護 (Layer 3/4)**   | **AWS Shield + NLB** |
+| **Web 攻擊防護 (Layer 7)**  | **WAF + ALB**        |
+| **SQL Injection 防護**      | **WAF + ALB**        |
+| **Rate Limiting (IP)**      | **WAF + ALB**        |
+
+**判斷標準**：題目提到「SQL Injection」、「XSS」、「bot protection」、「web application firewall」→ 必定是 **ALB + WAF**
