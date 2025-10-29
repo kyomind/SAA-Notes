@@ -8,8 +8,8 @@
 2. ★ FSx for Windows File Server = AWS 上的 Windows 檔案伺服器
    1. **特性**：完全託管的 **Windows 原生檔案系統**，支援 **SMB 協定**（Windows 的檔案共享協定）
    2. **存取方式**：跨平台存取，**Windows、Linux、macOS** 都能用
-3. Amazon Data Lifecycle Manager (DLM) 就是一個「定時排程器」，**專門管理 EBS snapshot 的生命週期**：
-   1. 創建：自動按排程備份
-   2. 保留：依政策決定保留多久
-   3. 刪除：自動清理過期的 snapshot
-   4. 用 AWS Backup → 可以，但題目明確說 EBS snapshot 時，DLM 是標準答案
+3. ★★ Amazon Data Lifecycle Manager (DLM) = EBS Snapshot 生命週期管理工具
+   1. **功能**：自動按排程創建、保留、刪除 EBS snapshot
+   2. **應用場景**：題目明確說 EBS snapshot 時，DLM 是標準答案（相比 AWS Backup）
+4. 😇 AWS Storage Gateway 存取範圍限制
+   1. **用途**：僅用於備份**本地伺服器**資料，**不支援存取 Amazon VPC 內的資源**
