@@ -353,9 +353,7 @@ S3 Pre-Signed URL → 讓用戶「**上傳/下載**」但不給 AWS 憑證
 | 複雜度       | **低**             | **高**（需管理 CloudHSM） |
 | 成本         | **低**             | **高**（CloudHSM 費用）   |
 
-# CloudHSM = 硬體加密模組
-
-## 核心概念
+## CloudHSM = 硬體加密模組
 
 **HSM (Hardware Security Module)**：專門用來保管加密金鑰的實體硬體設備
 
