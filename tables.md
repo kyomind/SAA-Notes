@@ -8,15 +8,6 @@
 | DynamoDB    | 有 DAX (DynamoDB Accelerator)，提供 in-memory cache          |
 | CloudFront  | 本質就是 CDN，核心功能就是 edge caching                      |
 
-## Gateway Endpoint vs Interface Endpoint
-
-| 特性     | Gateway Endpoint   | Interface Endpoint    |
-| -------- | ------------------ | --------------------- |
-| 支援服務 | S3、DynamoDB ⭐️     | 其他 AWS 服務         |
-| 費用     | 免費               | 按小時 + 流量收費     |
-| 實作方式 | 修改 route table ⭐️ | 建立 ENI (private IP) |
-| 使用場景 | 考試首選           | 需要 PrivateLink 時   |
-
 ## RDS Read Replica 按位置分類
 
 | 位置              | 用途                        | 說明                                 |
@@ -125,13 +116,13 @@ WAF 只能掛 ALB 是因為它需要檢查 HTTP/HTTPS 內容（Layer 7），而 
 
 ## WAF 規則類型與用途
 
-| 規則類型               | 範例                   | 實務用途     |
-| :--------------------- | :--------------------- | :----------- |
-| **IP 白/黑名單**       | 阻擋來自中國的 IP      | 地理封鎖 ⭐️    |
-| **Query String**       | `?admin=true`          | 防止參數注入 |
-| **HTTP Header**        | `User-Agent: BadBot`   | 阻擋爬蟲     |
-| **Request Body**       | 包含 `<script>`        | 防 XSS 攻擊  |
-| **Rate Limiting** ⭐️     | 單 IP 每分鐘 > 1000 次 | 防 DDoS      |
+| 規則類型                 | 範例                   | 實務用途     |
+| :----------------------- | :--------------------- | :----------- |
+| **IP 白/黑名單**         | 阻擋來自中國的 IP      | 地理封鎖 ⭐️   |
+| **Query String**         | `?admin=true`          | 防止參數注入 |
+| **HTTP Header**          | `User-Agent: BadBot`   | 阻擋爬蟲     |
+| **Request Body**         | 包含 `<script>`        | 防 XSS 攻擊  |
+| **Rate Limiting** ⭐️      | 單 IP 每分鐘 > 1000 次 | 防 DDoS      |
 | **SQL Injection 規則** ⭐️ | 自動偵測 SQL 注入模式  | 防資料庫攻擊 |
 
 ## 安全服務防護層級對比
@@ -193,7 +184,7 @@ WAF 只能掛 ALB 是因為它需要檢查 HTTP/HTTPS 內容（Layer 7），而 
 
 |              | Security Group          | NACL                       |
 | ------------ | ----------------------- | -------------------------- |
-| **層級**     | Instance（EC2、RDS 等） | Subnet ⭐️                    |
+| **層級**     | Instance（EC2、RDS 等） | Subnet ⭐️                   |
 | **Stateful** | 是（回程自動放行）      | 否（必須明確設定進出規則） |
 | **規則**     | 只有 Allow              | Allow + Deny               |
 | **預設**     | 全關閉                  | 全開放                     |
@@ -273,11 +264,22 @@ Read Replicas 有 replication lag（**複製延遲**），不適合做 HA，適�
 
 ## CloudFront 內容存取控制機制
 
-| 機制                            | 用途                                   | 考試重點                                |
-| ------------------------------- | -------------------------------------- | --------------------------------------- |
-| **Signed URLs/Cookies**         | 控制內容存取權限                       | **付費內容、時效性限制首選**            |
-| **OAC (Origin Access Control)** | 強制用戶只能透過 CloudFront 存取 **S3** ⭐️   | **防止繞過 CloudFront 直接打 S3 URL**   |
-| **S3 Pre-signed URLs**             | 讓用戶上傳檔案到 S3，但不需要 AWS 憑證 | **注意：這是 S3 功能，不是 CloudFront** |
+| 機制                            | 用途                                      | 考試重點                                |
+| ------------------------------- | ----------------------------------------- | --------------------------------------- |
+| **Signed URLs/Cookies**         | 控制內容存取權限                          | **付費內容、時效性限制首選**            |
+| **OAC (Origin Access Control)** | 強制用戶只能透過 CloudFront 存取 **S3** ⭐️ | **防止繞過 CloudFront 直接打 S3 URL**   |
+| **S3 Pre-signed URLs**          | 讓用戶上傳檔案到 S3，但不需要 AWS 憑證    | **注意：這是 S3 功能，不是 CloudFront** |
+
+S3 Pre-Signed URL → 讓用戶「**上傳/下載**」但不給 AWS 憑證
+
+## Gateway Endpoint vs Interface Endpoint
+
+| 特性     | Gateway Endpoint   | Interface Endpoint    |
+| -------- | ------------------ | --------------------- |
+| 支援服務 | S3、DynamoDB ⭐️     | 其他 AWS 服務         |
+| 費用     | 免費               | 按小時 + 流量收費     |
+| 實作方式 | 修改 route table ⭐️ | 建立 ENI (private IP) |
+| 使用場景 | 考試首選           | 需要 PrivateLink 時   |
 
 ## VPC Endpoint 完整對比 (Interface vs Gateway)
 
@@ -434,11 +436,11 @@ Read Replicas 有 replication lag（**複製延遲**），不適合做 HA，適�
 
 ## 安全防護需求與解決方案對應表
 
-| 需求                        | 選擇方案            |
-| --------------------------- | ------------------- |
-| **DDoS 防護 (Layer 3/4)**   | **AWS Shield + NLB** |
-| **Web 攻擊防護 (Layer 7)**  | **WAF + ALB**        |
-| **SQL Injection 防護**      | **WAF + ALB**        |
-| **Rate Limiting (IP)**      | **WAF + ALB**        |
+| 需求                       | 選擇方案             |
+| -------------------------- | -------------------- |
+| **DDoS 防護 (Layer 3/4)**  | **AWS Shield + NLB** |
+| **Web 攻擊防護 (Layer 7)** | **WAF + ALB**        |
+| **SQL Injection 防護**     | **WAF + ALB**        |
+| **Rate Limiting (IP)**     | **WAF + ALB**        |
 
 **判斷標準**：題目提到「SQL Injection」、「XSS」、「bot protection」、「web application firewall」→ 必定是 **ALB + WAF** (因為 WAF **只能**掛 ALB)
