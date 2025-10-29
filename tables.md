@@ -406,3 +406,12 @@ Read Replicas 有 replication lag（**複製延遲**），不適合做 HA，適�
 | **Provisioned IOPS**    | 固定的高 I/O 性能          | 需要穩定的高性能，不在意成本 |
 | **Multi-AZ**            | 高可用性備援               | 關注災難恢復，非性能擴展     |
 | **Read Replica (手動)** | 固定數量的副本             | 流量穩定，不需動態調整       |
+
+## EBS vs FSx for Windows
+
+| 特性     | **EBS**                  | **FSx for Windows**    |
+| -------- | ------------------------ | ---------------------- |
+| 儲存類型 | 區塊儲存 (Block Storage) | 檔案系統 (File System) |
+| 掛載方式 | 只能掛給單一 EC2         | 多台機器同時存取       |
+| 協定支援 | 無 SMB                   | 原生支援 SMB           |
+| 使用場景 | EC2 的硬碟               | 共享檔案伺服器         |
