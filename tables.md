@@ -376,12 +376,24 @@ S3 Pre-Signed URL → 讓用戶「**上傳/下載**」但不給 AWS 憑證
 
 ## KMS Key 類型速查表
 
-| 類型                        | 控制權 | 金鑰材料位置      | 獨立審計 |
-| --------------------------- | ------ | ----------------- | -------- |
-| **AWS Owned**               | AWS    | AWS HSM           | ✗        |
-| **AWS Managed**             | AWS    | AWS HSM           | ✗        |
-| **Customer Managed (標準)** | 你     | AWS HSM           | ✗        |
-| **Custom Key Store**        | 你     | **你的 CloudHSM** | **✓**    |
+| 類型                        | 誰能管理 Key Policy | 能否設定 Rotation | 能否查看 CloudTrail | 金鑰材料存放位置  | 獨立審計 FIPS 140-2 Level 3 |
+| --------------------------- | ------------------- | ----------------- | ------------------- | ----------------- | --------------------------- |
+| **AWS Owned**               | AWS（你看不到）     | AWS 自動處理      | ✗ 看不到            | AWS HSM           | ✗                           |
+| **AWS Managed**             | AWS（你只能看）     | ✓ 自動每年        | ✓                   | AWS HSM           | ✗                           |
+| **Customer Managed (標準)** | **你**              | ✓ 可選自動/手動   | ✓                   | AWS HSM           | ✗                           |
+| **Custom Key Store**        | **你**              | ✓ 可選自動/手動   | ✓                   | **你的 CloudHSM** | **✓**                       |
+
+### 關鍵判斷點
+
+- AWS Owned vs AWS Managed：前者你完全看不到、後者你能看但不能改
+- AWS Managed vs Customer Managed：前者 AWS 幫你管、後者你自己管（考試愛考這個）
+- Customer Managed vs Custom Key Store：後者是你要「完全掌控硬體」+ 獨立審計需求時才用
+
+### 考試出題邏輯
+
+- 題目提到 "full control" → Customer Managed
+- 題目提到 "compliance" + "dedicated HSM" → Custom Key Store
+- 題目只說要 "encryption" 沒特別要求 → AWS Managed 最省事
 
 ## Aurora Endpoint 類型對比
 
