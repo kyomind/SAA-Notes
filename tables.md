@@ -272,24 +272,29 @@ Read Replicas 有 replication lag（**複製延遲**），不適合做 HA，適�
 
 S3 Pre-Signed URL → 讓用戶「**上傳/下載**」但不給 AWS 憑證
 
-## Gateway Endpoint vs Interface Endpoint
+# VPC Endpoint 完整對比
 
-| 特性     | Gateway Endpoint   | Interface Endpoint    |
-| -------- | ------------------ | --------------------- |
-| 支援服務 | S3、DynamoDB ⭐️     | 其他 AWS 服務         |
-| 費用     | 免費               | 按小時 + 流量收費     |
-| 實作方式 | 修改 route table ⭐️ | 建立 ENI (private IP) |
-| 使用場景 | 考試首選           | 需要 PrivateLink 時   |
+| 特性         | Gateway Endpoint     | Interface Endpoint |
+| ------------ | -------------------- | ------------------ |
+| **支援服務** | **僅 S3 + DynamoDB** | 幾乎所有 AWS 服務  |
+| **費用**     | **免費 ⭐️**           | 按小時 + 流量收費  |
+| **實作方式** | **修改 Route Table** | 建立 ENI (私有 IP) |
+| **配置層級** | Route Table 層級     | Subnet 層級        |
+| **安全組**   | **不需要**           | 需要               |
+| **跨 VPC**   | **僅限同 VPC**       | 可透過 PrivateLink |
+| **考試判斷** | **S3/DynamoDB 首選** | 其他服務才考慮     |
 
-## VPC Endpoint 完整對比 (Interface vs Gateway)
+## 考試記憶要點
 
-| 特性         | Interface Endpoint | Gateway Endpoint     |
-| ------------ | ------------------ | -------------------- |
-| **支援服務** | 幾乎所有服務       | **僅 S3 + DynamoDB** |
-| **成本**     | 收費               | **免費**             |
-| **組態位置** | Subnet 層級        | **Route Table 層級** |
-| **安全組**   | 需要               | **不需要**           |
-| **跨 VPC**   | 可透過 PrivateLink | **僅限同 VPC**       |
+看到 S3 或 DynamoDB 私有連線 → 直接選 Gateway Endpoint
+
+理由：
+
+1. 免費（成本最佳化）
+2. 配置簡單（改 route table 就好）
+3. AWS 官方推薦做法
+
+其他服務需要私有連線 → Interface Endpoint
 
 ## 記憶技巧：VPC Endpoint 的考試秘訣
 
