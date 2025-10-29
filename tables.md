@@ -272,7 +272,7 @@ Read Replicas 有 replication lag（**複製延遲**），不適合做 HA，適�
 
 S3 Pre-Signed URL → 讓用戶「**上傳/下載**」但不給 AWS 憑證
 
-# VPC Endpoint 完整對比
+## VPC Endpoint 完整對比
 
 | 特性         | Gateway Endpoint     | Interface Endpoint |
 | ------------ | -------------------- | ------------------ |
@@ -281,7 +281,7 @@ S3 Pre-Signed URL → 讓用戶「**上傳/下載**」但不給 AWS 憑證
 | **實作方式** | **修改 Route Table** | 建立 ENI (私有 IP) |
 | **配置層級** | Route Table 層級     | Subnet 層級        |
 | **安全組**   | **不需要**           | 需要               |
-| **跨 VPC**   | **僅限同 VPC**       | 可透過 PrivateLink |
+| **跨 VPC**   | **僅限同 VPC** ⭐️      | 可透過 PrivateLink |
 | **考試判斷** | **S3/DynamoDB 首選** | 其他服務才考慮     |
 
 ## 考試記憶要點
