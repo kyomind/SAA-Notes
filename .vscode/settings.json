@@ -16,6 +16,7 @@
         "NTFS",
         "numpy",
         "OLAP",
+        "ONTAP",
         "Preemptible",
         "Remediations",
         "RMAN",

@@ -1567,3 +1567,21 @@ NACL = Subnet 層級（控制整個子網路的進出）
 459. 👀 **HPC 儲存解決方案與網路性能的區別**
      1. **FSx for Lustre 的角色**：高效能共享儲存（解決儲存問題）
      2. **考試陷阱**：區分「儲存效能」vs「網路效能」；題目問「maximize network performance」→ 選 EFA，不是 FSx for Lustre
+460. ★★ **Windows Workload HA 架構的核心需求**
+     1. **多 AZ 高可用性**：跨 AZ 自動 failover
+     2. **低延遲 block storage**：支援 sub-millisecond latency
+     3. **Windows Server 相容性**：傳統 trading application 需求
+461. ★★ **FSx for NetApp ONTAP 為 Windows Workload HA 的正解**
+     1. **Multi-AZ 原生支援**：跨 AZ 自動 failover，無需手動配置
+     2. **iSCSI 協定**：提供 block-level storage，符合傳統 trading application 需求
+     3. **Sub-millisecond latency**：SSD 支援，滿足金融交易的低延遲要求
+     4. **NetApp 生態**：企業級功能（snapshot、複製、thin provisioning）
+462. 😇 **FSx 儲存方案的選擇陷阱分析**
+     1. **FSx for Windows File Server 的致命傷**：只有 SMB（無 iSCSI）、File storage ≠ Block storage、無法提供 block-level access
+     2. **EFS 的雙重限制**：NFS 協定（Linux 優化、Windows 支援差）、File storage（不是 block storage）
+     3. **考試誤導**：題目的「cross-region replication」是干擾項（EFS 本身就是 Multi-AZ，不需要 cross-region）
+463. ★★ **FSx for NetApp ONTAP = 萬能儲存解決方案**
+     1. **支援所有協定**：NFS、SMB、iSCSI
+     2. **支援所有作業系統**：Windows、Linux、macOS
+     3. **企業級功能最完整**：snapshot、複製、thin provisioning 等進階特性
+464. 題目同時要求「Multi-AZ」+「block storage」+「Windows 相容性」→ 十之八九是 FSx for NetApp ONTAP
