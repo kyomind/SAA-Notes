@@ -143,15 +143,15 @@ WAF 只能掛 ALB 是因為它需要檢查 HTTP/HTTPS 內容（Layer 7），而 
 | **AWS WAF**        | Layer 7 (應用層) | 檢查 HTTP/HTTPS 內容   | ✅ 可以看 URL、Header、Body |
 | **AWS Shield**     | Layer 3/4        | 自動防 DDoS            | ❌ 不看內容，只擋大流量     |
 
-## WAF 題目關鍵字對應
+## WAF vs Security Group 選擇指南
 
-| 關鍵字                 | 答案                                      |
-| :--------------------- | :---------------------------------------- |
-| 「阻擋特定國家」       | ✅ WAF Geo Match                           |
-| 「防止 SQL Injection」 | ✅ WAF Managed Rules                       |
-| 「限制請求頻率」       | ✅ WAF Rate Limiting                       |
-| 「只允許公司 IP 存取」 | ❌ Security Group (不用 WAF)               |
-| 「防 DDoS 攻擊」       | 看情況：Layer 7 → WAF，Layer 3/4 → Shield |
+| 需求                     | 能用 WAF? | 適合用 WAF? | 最佳方案                  | 原因                |
+| ------------------------ | --------- | ----------- | ------------------------- | ------------------- |
+| 只允許公司固定 IP        | ✅         | ❌           | Security Group            | 免費、簡單、直接    |
+| 阻擋惡意 IP (動態黑名單) | ✅         | ✅           | WAF IP Set                | 可程式化更新大量 IP |
+| 阻擋特定國家             | ✅         | ✅           | WAF Geo Match             | SG 做不到           |
+| 限制單一 IP 請求頻率     | ✅         | ✅           | WAF Rate Limiting         | SG 做不到           |
+| 阻擋已知攻擊來源         | ✅         | ✅           | WAF + Threat Intelligence | 整合威脅情報        |
 
 ## AWS Config 三大功能對比
 
