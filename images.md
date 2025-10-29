@@ -124,3 +124,7 @@ You can configure any access point to accept requests only from a virtual privat
 ## S3 Object Lock
 
 ![圖 16](https://img.kyomind.tw/img-20251028-174058.png)
+
+## Data Lifecycle Manager for EBS Snapshots
+
+![圖 17](https://img.kyomind.tw/img-20251029-170633.png)
