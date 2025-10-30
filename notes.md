@@ -70,3 +70,10 @@
     - 「特定國家用戶必須連特定資源」→ Geolocation
     - 「調整某地區流量偏向某資源」或「bias」→ Geoproximity
     - 「藍綠部署」、「A/B 測試」、「流量分配比例」→ Weighted
+22. ★★ NLB Elastic IP - 客戶端白名單 IP 場景
+    1. **問題**：客戶端只信任特定 IP，客戶端只信任特定 IP，你的服務必須用這些 IP 來接收請求
+    2. **解法**：**NLB + Elastic IP**（將靜態 IP 綁定到每個 AZ 的 ENI 上）
+23. 重點情境說明 NLB + EIP 的必要性
+    1. 客戶發請求 → 目標是你的 NLB IP
+    2. 你必須提供固定 IP → 讓客戶設白名單
+    3. NLB + EIP 確保 IP 不會變
