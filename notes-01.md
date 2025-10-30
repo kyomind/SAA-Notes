@@ -403,26 +403,25 @@
 134. ★★ EBS 可用性與複製特性總結
      1. **基本綁定**：EBS 綁定單一 AZ，不跨 AZ、不跨 region
      2. **跨域保護**：要跨 AZ/region 保護資料 → 需手動建 snapshot 並複製⭐️
-135. ★ EBS 線上修改支援與限制○
+135. ★ EBS 線上修改支援與限制
      1. **可修改項目**：Volume size（只能增加）、Volume type、IOPS / throughput
-     2. **修改特性**：無需停機，修改後需等 6 小時才能再次修改
+     2. **修改特性**：無需停機，但修改後需等 6 小時才能再次修改
      3. **考試重點**：EBS 支援熱修改，不用停機
-136. ★★ EBS SSD 系列（注重 IOPS）
+136. ★★ EBS SSD 系列
      1. **gp3/gp2 (General Purpose)**：通用型，CP 值最高，預設選項
      2. **io2/io1 (Provisioned IOPS)**：需要穩定高 IOPS 的場景（**資料庫**）
 137. ★ EBS HDD 系列（注重 Throughput）
      1. **st1 (Throughput Optimized)**：大量順序讀寫（Big Data、Log）
      2. **sc1 (Cold HDD)**：最便宜，不常存取的冷資料
-138. 👀 EBS 已淘汰的類型
-    - Magnetic volumes（上一代產品，考試可能還會出現但不要選）
-139. ★ Custom Identity Broker 的運作與應用
+138. (刪除)
+139. ★ Custom Identity Broker 的運作與應用？
      1. **完整流程**：員工 → 企業認證系統 (LDAP/AD) → Identity Broker (驗證身份 + 呼叫 STS AssumeRole + 返回憑證) → 臨時憑證 → 存取 AWS
      2. **適用情況**：企業用 LDAP/AD 等非 SAML 2.0 系統、題目說「existing corporate identity system」、需要「programmatic access」給內部員工
 140. ★ IAM 認証整合方案的選擇指南
      1. **SAML 2.0 相容**：直接用 IAM Identity Provider（不需要自己寫 broker）
      2. **外部用戶登入**：用 Cognito
      3. **企業舊系統**：Custom Identity Broker（過渡方案，優先考慮升級到 SAML 2.0 或 OIDC）
-141. ★★ IAM User 建立後的預設狀態
+141. ★★ IAM User 建立後的預設狀態○
      1. **有身份**：可以被識別 ✅
      2. **沒有權限**：不能做任何事 ❌
      3. **沒有憑證**：無法驗證身份 ❌
