@@ -132,3 +132,7 @@ You can configure any access point to accept requests only from a virtual privat
 ## S3 → EMR → Redshift Spectrum 數據分析架構
 
 ![圖 18](https://img.kyomind.tw/img-20251030-145051.png)
+
+## Route 53 Failover Routing Policy
+
+![圖 19](https://img.kyomind.tw/img-20251030-162905.png)
