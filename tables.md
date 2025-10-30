@@ -501,3 +501,12 @@ S3 Pre-Signed URL → 讓用戶「**上傳/下載**」但不給 AWS 憑證
 | **Cost Anomaly Detection** | **AI 自動偵測異常花費** | 機器學習找異常 |
 | **Cost and Usage Report**  | **詳細原始數據匯出**    | 給 BI 工具用   |
 | **Billing Dashboard**      | **當月帳單總覽**        | 只看總數       |
+
+## AWS Glue vs Amazon EMR
+
+| 特性     | **AWS Glue**             | **Amazon EMR**                   |
+| -------- | ------------------------ | -------------------------------- |
+| **用途** | **Serverless ETL**       | **完整 big data framework**      |
+| **框架** | **內建 Spark**           | **Hadoop/Spark/Hive/Pig 等多種** |
+| **適用** | **簡單到中等複雜度 ETL** | **複雜資料處理、自訂演算法**     |
+| **管理** | **全託管**               | **需管理 cluster**               |
