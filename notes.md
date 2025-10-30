@@ -41,3 +41,11 @@
     1. **AWS Budgets**：**你主動設定**閾值（「alert when cost exceeds $X」），超過時發出通知
     2. **Cost Anomaly Detection**：**AI 自動判斷**異常（「automatically detect unusual spending」），無需預設閾值
     3. **核心差異**：Budgets 是「**你說多少算超標**」，Anomaly Detection 是「**AI 說這次不對勁**」
+14. ★★ S3 One Zone-IA vs Standard-IA 核心對比
+    1. **可用性區域差異**：Standard-IA 跨 ≥3 個 AZ（SLA 99.9%、貴）；One Zone-IA 單一 AZ（SLA 99.5%、便宜 20%）
+    2. **耐久性**：兩者皆 **11 個 9**（99.999999999%），但 AZ 毀損時 One Zone-IA **資料全失**
+    3. **最低儲存天數**：兩者均 30 天
+    4. **記憶技巧**：One Zone = **單點故障風險**；Standard-IA = **跨 AZ 備援安全但貴一點**
+15. ★★ S3 One Zone-IA vs Standard-IA 考試選擇判斷標準
+    1. **選 One Zone-IA**：資料**可重新產生**或**遺失可接受**，強調**成本最優化**（例：縮圖、暫存資料、可從其他來源重建的資料）
+    2. **選 Standard-IA**：資料**重要且訪問頻率低**（每月或每季），需要**高可用性保證**（例：備份檔案、歷史紀錄、合規資料）

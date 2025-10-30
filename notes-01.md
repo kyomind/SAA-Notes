@@ -362,30 +362,30 @@
      - **Kendra**：ML 驅動的搜尋引擎
      - **Personalize**：實時個性化推薦
      - **Textract**：文件中的文字和資料偵測
-121. 😇 Amazon Lex 整合 ASR (語音轉文字) 和 NLU (**意圖辨識**) 於一個服務，適合建構對話機器人○
+121. 😇 Amazon Lex 整合 ASR (語音轉文字) 和 NLU (**意圖辨識**) 於一個服務，適合建構對話機器人
 122. 👀 Amazon Polly 的進階語音控制功能
      1. **Pronunciation Lexicons (發音字典)**：自訂特定詞彙發音（例：EC2 → 讀成 Elastic Compute Cloud）
      2. **SSML (Speech Synthesis Markup Language)**：控制語音表達方式（強調、停頓、呼吸聲、耳語）
 123. 👀 Amazon Comprehend Medical 的核心功能
-     1. **用途**：AWS 專門處理醫療文字的 NLP 服務，為非結構化醫療文檔設計
-     2. **功能特性**：自動識別醫療實體（藥物、疾病、劑量、症狀）、自動偵測 PHI（姓名、日期、地址等敏感資訊）
+     1. **用途**：AWS **專門處理醫療文字的 NLP 服務**，為非結構化醫療文檔設計
+     2. **功能特性**：自動識別醫療實體（藥物、疾病、劑量、症狀）、自動偵測 **PHI**（姓名、日期、地址等敏感資訊）
      3. **合規性**：HIPAA eligible（符合醫療合規）
 124. ★★ Infrequent Access 儲存類別的考試陷阱
-     1. **IA 的定位**：Infrequent Access（不常存取）= 不常用但隨時要拿
+     1. **IA 的定位**：Infrequent Access（不常存取）= 不常用但**隨時要拿**
      2. **S3 One Zone-IA 的分類**：是 Infrequent Access 儲存類別，不是 Archive（封存）類別
 125. ★★ Glacier 封存類別的選用原則
-     1. **Glacier 的用途**：Glacier（封存）= 封存不急著用
-     2. **選題標準**：題目若要求 backup/archive，應選 Glacier 系列，不是 IA 系列
+     1. **Glacier 的用途**：Glacier（封存）= 封存**不急著用**
+     2. **選題標準**：題目若要求 **backup/archive**，應選 Glacier 系列，不是 IA 系列
 126. ★ Amazon Data Lifecycle Manager (DLM) 的核心功能
-     1. **用途**：自動化管理 EBS snapshots 的生命週期，無需手動建立或寫 Lambda 排程
+     1. **用途**：**自動化管理 EBS snapshots 的生命週期**，無需手動建立或寫 Lambda 排程
      2. **自動建立**：定期自動快照
-127. 😇 DLM 的保留與刪除管理
+127. 👀 DLM 的保留與刪除管理
      1. **保留政策**：依政策保存（如：保留 7 天、30 天）
      2. **自動刪除**：過期快照自動清除，省成本
-128. 😇 AWS Backup 與 DLM 的定位區別
+128. 😇 AWS Backup 的定位
      1. **AWS Backup 的特性**：多服務集中備份平台（EBS、RDS、DynamoDB、EFS 等）
      2. **應用場景**：適合跨服務統一備份策略
-129. ★ Instance Store-backed AMI 的特性
+129. 👀 Instance Store-backed AMI 的特性（已淘汰，少考）
      1. **Root device**：Instance Store（臨時儲存）
      2. **資料生命週期**：資料只存在於 instance 生命週期內，instance 終止 → 資料自動刪除
 130. ★ EBS-backed AMI 的特性
@@ -396,14 +396,14 @@
      2. **現狀**：現在 99% 都用 EBS-backed，Instance Store-backed 幾乎淘汰
 132. ★ EBS Snapshot 儲存位置的常見誤解
      1. **錯誤說法**：EBS snapshot 不會寫入 Amazon RDS
-     2. **正確位置**：EBS snapshot 儲存在 Amazon S3（不是 RDS）
+     2. **正確位置**：EBS snapshot **儲存在 Amazon S3**（不是 RDS）
 133. ★ EBS 複製範圍的常見誤解
      1. **錯誤觀念**：EBS 會跨 region 複製 ❌
-     2. **正確觀念**：EBS volume 只在單一 AZ 內自動複製多份 ✅
+     2. **正確觀念**：EBS volume 綁定單一 AZ，在該 AZ 內自動做冗餘備份（高可用性）✅
 134. ★★ EBS 可用性與複製特性總結
      1. **基本綁定**：EBS 綁定單一 AZ，不跨 AZ、不跨 region
-     2. **跨域保護**：要跨 AZ/region 保護資料 → 需手動建 snapshot 並複製
-135. ★ EBS 線上修改支援與限制
+     2. **跨域保護**：要跨 AZ/region 保護資料 → 需手動建 snapshot 並複製⭐️
+135. ★ EBS 線上修改支援與限制○
      1. **可修改項目**：Volume size（只能增加）、Volume type、IOPS / throughput
      2. **修改特性**：無需停機，修改後需等 6 小時才能再次修改
      3. **考試重點**：EBS 支援熱修改，不用停機
@@ -1275,7 +1275,7 @@
      3. **超限制限制**：例如 **172.16.0.0/12** 超過 AWS 限制，AWS 根本不允許建立此範圍
 Security Group = EC2 instance 層級（綁在網卡 ENI 上）
 NACL = Subnet 層級（控制整個子網路的進出）
-384. ★★ Security Group vs NACL 的核心差異
+1. ★★ Security Group vs NACL 的核心差異
      1. **作用範圍**：
         - Security Group：綁定在 **ENI（網卡）** 上，針對單一 EC2 instance 控制流量
         - NACL：綁定在 **Subnet（子網路）** 上，針對整個子網路控制流量
@@ -1283,65 +1283,65 @@ NACL = Subnet 層級（控制整個子網路的進出）
         - Security Group：**有狀態性**，允許進入的流量，自動允許回應流量
         - NACL：**無狀態性**，進出流量需分別設定規則
      3. **規則類型**：Security Group（只允許規則、預設拒絕所有）、NACL（允許和拒絕規則皆可設定）
-385. ★★ VPC Peering 雙向路由設定要求與常見陷阱
+2. ★★ VPC Peering 雙向路由設定要求與常見陷阱
      1. **雙向性質**：**VPC Peering 是雙向的**，兩邊的 Route Table 都必須加對方的 CIDR 路由
      2. **完整配置**：**VPC A Route Table** 加一條指向 VPC B CIDR 的路由 + **VPC B Route Table** 加一條指向 VPC A CIDR 的路由
      3. **常見陷阱**：題目只更新 A 的 Route Table，B 沒更新，當然連線不通 - 必須檢查 VPC B 的 Route Tables
-386. ★ **VPC 網路連線排查**正確順序
+3. ★ **VPC 網路連線排查**正確順序
      1. Route Table（流量能不能找到路）
      2. Security Group（流量能不能進門）
      3. NACL（通常不會動）
-387. ★ AWS **CIDR 保留 IP 範圍**規則
+4. ★ AWS **CIDR 保留 IP 範圍**規則
      1. **前 4 個 IP**：.0、.1、.2、.3（AWS 永遠保留）
      2. **最後 1 個 IP**：broadcast address（AWS 永遠保留）
-388. ★★ AWS **CIDR 位數限制**
+5. ★★ AWS **CIDR 位數限制**
      1. **禁止**：/30、/31、/32（保留 IP 超過總數）
      2. **最小建議**：/29（8 個 IP，可用 3 個）
-389. ★★ **VPC Peering 特性**
+6. ★★ **VPC Peering 特性**
      1. **點對點連接**：每個 Peering 只連接兩個 VPC
      2. **不支援傳遞性**：A-B-C 無法透過 B 互通
      3. **多 VPC 全連**：需要 n(n-1)/2 條線（3個VPC需3條）
-390. VPC Flow Logs 的核心功能與應用場景
+7. VPC Flow Logs 的核心功能與應用場景
      1. **功能**：捕捉 VPC 內 ENI（網卡）的 IP 流量資訊，包含允許和拒絕的流量
      2. **應用場景**：安全分析、流量監控、故障排查、合規審計
-391. 😇 **Site-to-Site VPN 組成**
+8. 😇 **Site-to-Site VPN 組成**
      1. **Virtual Private Gateway (VGW)**：AWS 端點，掛載在 VPC 上
      2. **Customer Gateway (CGW)**：本地機房端點，實體路由器/防火牆設備
-392. ★ **AWS VPN CloudHub**
+9. ★ **AWS VPN CloudHub**
      1. **用途**：**多個 on-premises sites** 透過 AWS 作為 hub 互連
      2. **特性**：走公網、成本低、適合做 **backup 連線、提供 failover**
-393. ★★ **Direct Connect 常見錯誤認知與正確理解**
+10. ★★ **Direct Connect 常見錯誤認知與正確理解**
      1. **錯誤認知**：Direct Connect 只能連 VPC 私有資源 ❌
      2. **正確理解**：實際上可以透過 **Public VIF** 連所有 AWS 公共服務，且**不走公網**
      3. **記憶點**：「Direct Connect = 專線到 AWS，要什麼都能拿」
-394. ★★ **Transit Gateway 突破 VPN 頻寬限制**
+11. ★★ **Transit Gateway 突破 VPN 頻寬限制**
      1. **問題**：Site-to-Site VPN 單一 tunnel = **1.25 Gbps**
      2. **Transit Gateway ECMP**：支援多個 tunnel 並行，頻寬疊加（2 條 = 2.5 Gbps，4 條 = 5 Gbps）
      3. **對比**：Virtual Private Gateway 只能 failover，**不能疊加頻寬**
-395. Setup a Site-to-Site VPN connection as a backup of an AWS Direct Connect connection.
-396. **AWS Network Firewall** allows you to protect and control traffic in your VPC **from layer 3 to layer 7**.
-397. ★★ Security Group 互相引用實現精確存取控制
+12. Setup a Site-to-Site VPN connection as a backup of an AWS Direct Connect connection.
+13. **AWS Network Firewall** allows you to protect and control traffic in your VPC **from layer 3 to layer 7**.
+14. ★★ Security Group 互相引用實現精確存取控制
      1. **核心概念**：Security Group 可以用「另一個 Security Group」當作 source/destination，而非只能用 CIDR
      2. **實作範例**：EC2 Security Group Inbound Rule → Protocol: HTTP, Port: 80, Source: **ALB 的 Security Group**
      3. **核心優勢**：最精確（只有 ALB 能存取）、動態跟隨（ALB 換 IP 不用改規則）、防止 VPC 內其他資源直接存取
-398. 😇 Security Group 引用的考試記憶技巧
+15. 😇 Security Group 引用的考試記憶技巧
      1. **記憶方式**：把 Security Group 想成「通行證」，設定「只有持有 ALB 通行證的人才能進來」，而不是「只要住在這個社區的人都能進來（CIDR）」。
      2. **考試陷阱**：題目會給 VPC CIDR 當干擾選項，正確答案通常是「引用 Security Group」而非「寫 IP range」
-399. ★ Security Group 引用的底層運作機制
+16. ★ Security Group 引用的底層運作機制
      1. **動態解析**：AWS 即時查詢「哪些 ENI 掛著指定 SG」，動態允許這些 ENI 的流量通過
      2. **自動追蹤**：ALB 新增/移除 instance 時自動更新允許清單，無需手動維護 IP
      3. **核心優勢**：SG 本身只是標籤，AWS 網路層即時解析對應的網路介面並動態套用規則
-400. ★★ Aurora 與 Lambda 整合的事件驅動架構
+17. ★★ Aurora 與 Lambda 整合的事件驅動架構
      1. **核心概念**：Aurora Native Function/Stored Procedure 可以直接調用 Lambda
      2. **技術特性**：Aurora MySQL-Compatible 的特殊功能
      3. **應用場景**：在資料庫層面觸發外部處理邏輯，常用於資料變更時的事件處理
-401. ★★ AWS 關鍵服務整合地圖
+18. ★★ AWS 關鍵服務整合地圖
      1. **Aurora → Lambda**：資料庫層面直接觸發 Lambda 函式
      2. **DynamoDB Streams → Lambda**：資料變更時自動觸發處理
      3. **S3 事件 → Lambda/SNS/SQS**：物件操作觸發多種後續處理
      4. **EventBridge → 幾乎所有服務**：事件路由到各種 AWS 服務
-402. You can **invoke an AWS Lambda function** from an Amazon Aurora MySQL-Compatible Edition DB cluster with a **native function or a stored procedure**.
-403. ★★ RDS Event Subscription 與資料變更通知的核心差異
+19. You can **invoke an AWS Lambda function** from an Amazon Aurora MySQL-Compatible Edition DB cluster with a **native function or a stored procedure**.
+20. ★★ RDS Event Subscription 與資料變更通知的核心差異
      1. **RDS Events 監聽範圍**：**基礎設施事件**，不是業務資料事件
         - 資料庫實例狀態變更（啟動/停止/故障轉移）
         - 備份完成
@@ -1351,256 +1351,256 @@ NACL = Subnet 層級（控制整個子網路的進出）
         - **Aurora Native Function + Lambda**（如原題）
         - **DynamoDB Streams**（若用 DynamoDB）
         - **Application-level 處理**（在程式碼層抓取）
-404. 😇 RDS Events 考試判斷標準
+21. 😇 RDS Events 考試判斷標準
      1. **核心記憶**：**RDS Events = 基礎設施事件**，不是業務資料事件
      2. **考試陷阱**：題目問「車輛被刪除後要處理」→ 這是**資料層變更**，RDS Events 幫不上忙
-405. ★★ EKS Cluster 啟用 Secret 加密的實作步驟
+22. ★★ EKS Cluster 啟用 Secret 加密的實作步驟
      1. **啟用加密功能**：在 EKS cluster 設定中開啟 **encryption configuration**，指定用於加密的 **KMS key**
      2. **加密範圍**：針對 **Kubernetes Secrets 資源**，資料存入 **etcd 前自動加密**，讀取時自動解密
-406. ★ EKS Secrets 的三層加密認知
+23. ★ EKS Secrets 的三層加密認知
      1. **K8s 原生 Secrets**：**base64 編碼**（不是加密！）
      2. **etcd 存儲**：EKS 的 Secret 最終存在 **etcd**
      3. **AWS 加密**：用 **KMS key** 對 etcd 內的 Secrets 加密
-407. 😇 EKS Secret 加密的考試判斷與陷阱
+24. 😇 EKS Secret 加密的考試判斷與陷阱
      1. **核心知識**：**EKS Secrets 預設不加密**，需手動啟用 KMS 加密
      2. **常見陷阱選項**：
         - ❌ 用 **AWS Secrets Manager** 存（多此一舉，直接加密 etcd 就好）
         - ❌ 用 **IAM roles**（跟 Secret 加密無關）
         - ✅ **Enable KMS encryption on EKS cluster**
-408. ★ EKS Secret 加密考試陷阱：AWS Secrets Manager 錯誤選項
+25. ★ EKS Secret 加密考試陷阱：AWS Secrets Manager 錯誤選項
      1. **錯誤原因**：Secrets Manager 是**外部儲存服務**，不加密 etcd
      2. **流程問題**：App → 呼叫 Secrets Manager API → 取得密碼，但 **K8s Secrets 仍存在 etcd**，沒解決題目要求
      3. **核心差異**：Secrets Manager = 管理密碼的「金庫」，EKS + KMS = **加密 etcd 內的資料**
-409. ★ EKS Secret 加密考試陷阱：EBS Volume Encryption 錯誤選項
+26. ★ EKS Secret 加密考試陷阱：EBS Volume Encryption 錯誤選項
      1. **錯誤原因**：EBS 是 **worker node 的硬碟**，存應用資料
      2. **架構問題**：**etcd 存在 control plane**（AWS 管理），不在 EBS
      3. **記憶類比**：EBS 加密 = 加密你的硬碟，etcd 加密 = **加密系統配置檔**
-410. 😇 CloudWatch 監控指標的預設涵蓋範圍
+27. 😇 CloudWatch 監控指標的預設涵蓋範圍
      1. **錯誤選項分析**：EC2 instance 的 **Disk Read activity** 不需要自訂監控
      2. **預設包含**：**Disk read activity** 已包含在 CloudWatch 預設指標中
      3. **需要自訂監控**：僅有特定存儲相關指標（如 **disk space utilization**）需要自訂監控
-411. ★★ AWS Artifact 合規文件服務
+28. ★★ AWS Artifact 合規文件服務
      1. **題目場景**：審計團隊需要查看 AWS 服務的**合規性文件**（如 SOC、PCI 報告、安全認證等）
      2. **正確答案**：使用 **AWS Artifact**
-412. ★ AWS Artifact 服務特性與功能
+29. ★ AWS Artifact 服務特性與功能
      1. **核心定義**：AWS 官方的**合規文件下載中心**
      2. **提供內容**：各種安全與合規報告（**SOC、PCI、ISO 認證**等）
      3. **協議下載**：線上協議下載（如 **BAA、NDA**）
      4. **使用條件**：**免費使用**，所有 AWS 帳戶都能存取
-413. ★★ VPC Endpoint 核心概念與用途
+30. ★★ VPC Endpoint 核心概念與用途
      1. **用途**：讓 VPC 內的資源透過**私有網路存取 AWS 服務**，不經過公網
      2. **解決問題**：不需要 Internet Gateway / NAT / VPN、不需要 public IP
      3. **核心優勢**：流量不離開 **AWS 內網** → **更安全、更快**
-414. 題目提到「私有存取 S3/DynamoDB」→ 選 VPC Endpoint(Gateway Endpoint)
-415. ★ Private subnet 的 EC2 要存取 S3
+31. 題目提到「私有存取 S3/DynamoDB」→ 選 VPC Endpoint(Gateway Endpoint)
+32. ★ Private subnet 的 EC2 要存取 S3
      1. 建立 **Gateway Endpoint for S3**
      2. 關聯到 **route table**
      3. EC2 直接用 **private IP** 存取，**免費且安全**
-416. ★★ CloudFront Origin Failover 機制
+33. ★★ CloudFront Origin Failover 機制
      1. **核心功能**：解決 **504 錯誤**，Primary 掛了自動切 Secondary
      2. **觸發條件**：可設定特定 HTTP status codes（如 **500, 502, 503, 504**）
      3. **考試要點**：CloudFront 優化 + 高可用性的常見組合
-417. 😇 CloudFront 服務記憶技巧
+34. 😇 CloudFront 服務記憶技巧
      1. **Lambda@Edge**：邊緣運算，離用戶近 = **快**
      2. **Origin Failover**：雙保險，一個掛了自動切另一個
      3. **常考組合**：CloudFront 優化 + 高可用性
-418. ★★ Cache-Control vs Lambda@Edge 核心差異
+35. ★★ Cache-Control vs Lambda@Edge 核心差異
      1. **Cache-Control max-age**：只能讓**靜態內容**快取優化，無法解決動態驗證問題
      2. **Lambda@Edge**：提供**動態驗證**低延遲，在邊緣執行運算
      3. **考試重點**：驗證邏輯不能快取，每次請求都要檢查 token 有效性
-419. ★ CloudFront 優化的常見考試陷阱
+36. ★ CloudFront 優化的常見考試陷阱
      1. **錯誤思維**：以為 CloudFront 優化 = 只調快取設定
      2. **正確概念**：要看**什麼內容**需要優化
      3. **實際應用**：驗證這種動態邏輯 → 用 **Lambda@Edge** 在邊緣執行；靜態資源載入 → 用 **Cache-Control** 延長快取
-420. 😇 Authentication 優化題目解題要點
+37. 😇 Authentication 優化題目解題要點
      1. **題目陷阱**：故意給「看起來能優化 CloudFront 效能」的選項
      2. **關鍵判斷**：題目問的是 **authentication 慢**，不是靜態資源載入慢
      3. **記憶要點**：驗證邏輯必須執行運算（Lambda function），無法透過快取解決
-421. ★★ API Gateway Throttling（流量限制）機制
+38. ★★ API Gateway Throttling（流量限制）機制
      1. **兩層控制**：**全域** + **個別 API 方法**
      2. **兩種限制**：
         - **Rate Limit**：穩定流量（例：1000 req/s）
         - **Burst**：短時間爆量（例：2000 req/s 持續幾秒）
      3. **超過限制**：回傳 **429 Too Many Requests**
      4. **自動重試**：AWS SDK 會自動處理 429 重試
-422. ★ API Gateway Caching（快取）機制
+39. ★ API Gateway Caching（快取）機制
      1. **設定位置**：針對特定 **Stage**（例：dev、prod）
      2. **容量單位**：GB
      3. **可控參數**：
         - **Cache Key** 建構方式
         - **TTL**（Time-to-Live）
      4. **管理功能**：可手動清除（**invalidate**）快取
-423. 😇 CloudFront vs API Gateway Cache 的核心差異
+40. 😇 CloudFront vs API Gateway Cache 的核心差異
      1. **CloudFront**：在最前端快取，未命中請求仍會打到後端
      2. **API Gateway Cache + Throttling**：命中快取直接回應 + 超過限制直接擋掉，完全保護後端
-424. ★ 高流量場景的架構選擇判斷
+41. ★ 高流量場景的架構選擇判斷
      1. **CloudFront 問題**：快取命中 ✅，但未命中請求仍會讓後端爆炸 ❌
      2. **API Gateway 解決方案**：命中快取直接回應 ✅ + 429 擋掉超量請求 ✅
-425. ★★ 考試關鍵字判斷（數據服務選型）
+42. ★★ 考試關鍵字判斷（數據服務選型）
      1. 出現「**ETL**」「**資料整合**」「**不同 Schema**」→ **Glue**
      2. 出現「**即時串流分析**」→ **Kinesis Data Analytics**（不是 Glue）
      3. 出現「**大數據處理**（Hadoop/Spark）」且要自己調參數 → **EMR**
-426. 😇 AWS Glue 架構定位
+43. 😇 AWS Glue 架構定位
      1. **架構等價**：Glue = **Airflow** + **Spark** 的 AWS 託管版
-427. ★★ AWS Glue 的核心功能與特性
+44. ★★ AWS Glue 的核心功能與特性
      1. **ETL 服務**：Extract、Transform、Load
      2. **Serverless**：無伺服器架構，自動擴展
      3. **資料目錄**：內建 **Data Catalog**，統一管理資料結構
      4. **支援多種資料來源**：S3、RDS、Redshift、JDBC 等
-428. ★ Lambda Poll 類事件來源(凡是「Stream」類服務接 Lambda，都是 Poll 機制)
+45. ★ Lambda Poll 類事件來源(凡是「Stream」類服務接 Lambda，都是 Poll 機制)
      1. **DynamoDB Streams**
      2. **Kinesis Data Streams**
      3. **SQS**
-429. ★ Lambda Push 類事件來源
+46. ★ Lambda Push 類事件來源
      1. **SNS**
      2. **S3 Events**
      3. **EventBridge**
      4. **API Gateway**
-430. ★ Lambda 觸發機制考試判斷
+47. ★ Lambda 觸發機制考試判斷
      1. **題目關鍵字**：「誰觸發 Lambda」
      2. **Streams/SQS 出現**：→ Lambda **主動 poll**（偵測 event source）
      3. **SNS/S3/EventBridge 出現**：→ 服務**主動 push** 事件給 Lambda
-431. 😇 S3 Events 為什麼是 Push 機制
+48. 😇 S3 Events 為什麼是 Push 機制
      1. **S3 事件驅動特性**：物件上傳/刪除時，S3 立即知道發生了什麼
      2. **主動發送通知**：S3 主動發送 event notification 給目標（Lambda/SNS/SQS）
      3. **Lambda 被動接收**：完全被動等待，不需要去問「有沒有新檔案?」
-432. 😇 Streams（DynamoDB/Kinesis）為什麼是 Poll 機制
+49. 😇 Streams（DynamoDB/Kinesis）為什麼是 Poll 機制
      1. **Stream 本質**：只負責「存放」變更記錄，不知道誰想讀、何時讀
      2. **消費者主導**：消費者必須主動來問「我上次讀到哪？給我新的」
      3. **Lambda 主動輪詢**：Lambda 需要不斷偵測 stream 是否有新記錄
-433. 👀 Push vs Poll 的本質判斷方法
+50. 👀 Push vs Poll 的本質判斷方法
      1. **Streams（DynamoDB/Kinesis/SQS）**：**被動日誌**，只管記錄，不管誰要讀 → **Poll**
      2. **S3/SNS/EventBridge**：**主動通知者**，事件發生時主動告知訂閱者 → **Push**
      3. **快速判斷**：看服務的設計目的—儲存資料（Poll）vs 發送通知（Push）
-434. Database Migration Service (DMS) 可以使用 **change data capture (CDC)** 功能，在遷移過程中持續捕捉並複製來源資料庫的變更，實現最小停機時間的遷移方案。
-435. Schema Conversion Tool (SCT) 可以自動轉換資料庫的 schema 和程式碼，支援異質資料庫遷移。
-436. ★ 資料庫遷移場景判斷：同質 vs 異質
+51. Database Migration Service (DMS) 可以使用 **change data capture (CDC)** 功能，在遷移過程中持續捕捉並複製來源資料庫的變更，實現最小停機時間的遷移方案。
+52. Schema Conversion Tool (SCT) 可以自動轉換資料庫的 schema 和程式碼，支援異質資料庫遷移。
+53. ★ 資料庫遷移場景判斷：同質 vs 異質
      1. **同質遷移**：只需 **DMS**
      2. **異質遷移**：先 **SCT** 翻譯 Schema，再用 **DMS** 遷移資料
-437. ★★ 最小停機時間的資料庫遷移方案
+54. ★★ 最小停機時間的資料庫遷移方案
      1. **核心需求**：停機時間越短越好
      2. **解決方案**：使用 **DMS 的 CDC（Change Data Capture）功能**，支援**持續複製**
-438. S3 可以在特定事件發生時（如**檔案上傳、刪除**）推送通知到三個目的地
+55. S3 可以在特定事件發生時（如**檔案上傳、刪除**）推送通知到三個目的地
      1. **SNS Topic**：適合多個訂閱者接收通知
      2. **SQS Queue**：適合單一消費者處理
      3. **Lambda**：適合自動化處理
-439. ★ SNS Fanout Pattern 扇出模式應用
+56. ★ SNS Fanout Pattern 扇出模式應用
      1. **運作流程**：一個 **S3 事件** → 發到 **SNS** → SNS 自動複製並推送到**多個端點**
      2. **支援端點**：SQS、HTTP(S)、Lambda
      3. **核心優勢**：**並行非同步處理**
-440. ★★ S3 Event Notification 與 SNS Fanout 的強制組合
+57. ★★ S3 Event Notification 與 SNS Fanout 的強制組合
      1. **限制**：同一事件類型只能設定**一個目標**
      2. **解決方案**：S3 事件發到 **SNS** → SNS 自動複製推送到**多個端點**（SQS、HTTP(S)、Lambda）
      3. **核心記憶**：「**S3 事件一對多 = 必上 SNS**」
-441. 👀 S3 Event 直接多重目標的誤解
+58. 👀 S3 Event 直接多重目標的誤解
      1. **常見錯誤**：試圖直接加第二個 SQS → ❌ 不能直接加第二個 SQS
      2. **正確做法**：✅ 必須用 **SNS Fanout** 作為中介
-442. ★ SNS 與 SQS 的根本概念區別
+59. ★ SNS 與 SQS 的根本概念區別
      1. **SNS**：**Push Model**（主動推送訊息到訂閱者）
      2. **SQS**：**被動接收**（接收 SNS 推過來的訊息，而非主動 poll SNS）
      3. **常見誤解**：❌ 「SQS poll SNS」← 這是錯的
-443. ★★ Aurora Global Database 的 RPO/RTO 考試判斷
+60. ★★ Aurora Global Database 的 RPO/RTO 考試判斷
      1. **核心要求**：RPO < 1 秒 + RTO < 1 分鐘 的組合判斷
      2. **為什麼是 Aurora Global Database**：
         - **RPO < 1 秒**（通常幾百毫秒）→ 異步複製到其他 region 延遲極低
         - **RTO < 1 分鐘** → 自動 failover 機制，提升 secondary region 為 primary 約 1 分鐘內完成
         - **自動跨區域複製** → 最多支援 5 個 secondary regions，每個都有完整讀寫能力
-444. ★★ S3 Access Point VPC 隔離限制
+61. ★★ S3 Access Point VPC 隔離限制
      1. **問題場景**：限制特定 VPC 存取 S3
      2. **解決方案**：使用 **S3 Access Point** 並設定 VPC 限制
      3. **核心優勢**：可設定只接受來自特定 VPC 的請求，比修改 bucket policy 更靈活、不影響其他存取路徑
      4. **實務記憶**：把 Access Point 想成「進入 S3 bucket 的專屬通道」，每個通道有獨立的門禁規則
-445. ★★ S3 Object Lock + Legal Hold 不可變保護機制
+62. ★★ S3 Object Lock + Legal Hold 不可變保護機制
      1. **核心功能**：Object Lock 啟用後強制 **WORM**（Write-Once-Read-Many）模式
      2. **Legal Hold 特性**：可無限期鎖定物件，防止刪除/覆寫，一旦啟用就無法關閉
      3. **Versioning 強制啟用**：Object Lock 啟用後 Versioning 會自動強制啟用且無法關閉
      4. **部署建議**：必須在新 bucket 建立時啟用（雖然既有 bucket 現在也能啟用，但新 bucket 是最佳做法）
-446. ★ Object Lock 強制綁定 Versioning 的技術原理
+63. ★ Object Lock 強制綁定 Versioning 的技術原理
      1. **綁定機制**：啟用 Object Lock → **Versioning 自動啟用且無法關閉**，沒有 Versioning，Object Lock 根本無法運作
      2. **WORM 實現原理**：每次「修改」實際上是建立新版本，舊版本被鎖住無法刪除或覆寫，這才是真正的「**write-once**」
      3. **核心記憶**：Object Lock 依賴 Versioning 實現版本隔離，才能保證資料不可變性
-447. 👀 Legal Hold 的時間限制誤解
+64. 👀 Legal Hold 的時間限制誤解
      1. **誤解**：Legal Hold 可以設定時間（如「one year」）
      2. **事實**：Legal Hold 是**無限期鎖定**，必須手動移除，沒有時間限制
      3. **考試陷阱**：「legal hold of one year」這選項本身就是錯的
-448. ★ Object Lock 的 Retention Period 與 Legal Hold 可同時設定
+65. ★ Object Lock 的 Retention Period 與 Legal Hold 可同時設定
      1. **兩種機制獨立性**：Retention Period 和 Legal Hold 互相獨立但可共存
      2. **同時設定的行為**：
         - Retention Period 到期前不可刪除
         - Legal Hold 被設定則即使 Retention 到期仍不可刪除，直到 Legal Hold 被解除
      3. **保護強度**：**Legal Hold 的保護強度比 Retention Period 高**，為最嚴格的鎖定機制
-449. ★ API Gateway 的 Throttling 過載保護機制
+66. ★ API Gateway 的 Throttling 過載保護機制
      1. **功能**：保護後端服務免於過載，當請求超過設定限制時觸發
      2. **客戶端響應**：回傳 **429 Too Many Requests** 錯誤碼
-450. ★ Client-side Encryption 與 KMS key 的混淆陷阱
+67. ★ Client-side Encryption 與 KMS key 的混淆陷阱
      1. **錯誤觀念**：使用 AWS KMS key 做 client-side encryption 符合「master keys never sent to AWS」要求
      2. **為什麼不符合**：
         - 必須提供 KeyId 給 AWS（KeyId 被送到 AWS）
         - AWS KMS 會參與加密流程（即使是 client-side 也會參與）
      3. **考試陷阱**：AWS 會混淆「確實是 client-side encryption ✓」但「KMS KeyId 還是送到 AWS 了 ✗」
-451. SSH 協議層判斷與 Port 22 對應
+68. SSH 協議層判斷與 Port 22 對應
      1. **核心知識**：**SSH = TCP，不是 UDP**（常見錯誤選項會故意改成 UDP）
      2. **協議分類**：TCP（需要可靠連線：SSH、HTTP、RDS）、UDP（即時性優先：DNS、streaming）
-452. ★ AWS RAM 多帳號資源共享機制
+69. ★ AWS RAM 多帳號資源共享機制
      1. **核心用途**：在多個 AWS 帳號間共享資源（Transit Gateway、Subnets、Route 53 Resolver rules、License Manager），避免重複建立
      2. **考試判斷**：看到「多帳號環境 + 避免重複建資源」→ 答案是 RAM；RAM 免費、用於 AWS Organizations 內共享、Transit Gateway 跨帳號必考
-453. ★ **Control Tower**：自動化建立多帳號治理環境
+70. ★ **Control Tower**：自動化建立多帳號治理環境
      1. **用途**：快速設定符合最佳實踐的多帳號架構
      2. **功能**：自動套用 **guardrails**（防護欄）、logging、基礎架構
      3. **考試判斷**：看到「set up and govern」→ Control Tower
-454. ★★ **AWS Backup**：統一備份管理中心
+71. ★★ **AWS Backup**：統一備份管理中心
      1. **用途**：在單一 console 管理多種 AWS 資源的備份（EC2、EBS、DynamoDB、RDS、Aurora、EFS、FSx、Storage Gateway）
      2. **考試判斷**：看到「many resources + single place + easy way」→ AWS Backup；支援統一的備份計劃（Backup Plan）、retention policy、lifecycle rules
-455. ★★ **AWS Application Migration Service (MGN)**：lift-and-shift 遷移方案
+72. ★★ **AWS Application Migration Service (MGN)**：lift-and-shift 遷移方案
      1. **用途**：直接搬遷整台機器 (servers、VMs)，最小化停機時間（minimum downtime）
      2. **特點**：不改變架構（lift-and-shift），專為大規模伺服器遷移設計
-456. ★★ **RDS MySQL 遷移至 Aurora MySQL**：快速遷移方案
+73. ★★ **RDS MySQL 遷移至 Aurora MySQL**：快速遷移方案
      1. **遷移步驟**：對 RDS MySQL 建立 snapshot → 直接 restore 成 Aurora MySQL
      2. **優勢**：AWS 官方支援的原生遷移路徑，簡單快速
-457. ★ **AWS DataSync**：全託管資料遷移和同步服務
+74. ★ **AWS DataSync**：全託管資料遷移和同步服務
      1. **用途**：自動化、安全地在不同儲存位置間大量傳輸資料
      2. **使用情境**：本地 NAS/檔案伺服器 ↔ S3/EFS/FSx；解決手動 rsync/scp 太慢、不穩定的問題
-458. ★★ **HPC 網路效能最佳化**：EFA (Elastic Fabric Adapter)
+75. ★★ **HPC 網路效能最佳化**：EFA (Elastic Fabric Adapter)
      1. **核心特性**：EFA 支援 OS-bypass 技術，讓應用程式直接跟網路硬體溝通，繞過作業系統的網路堆疊。**極致的網路效能 + 超低延遲**，專為 HPC 設計
      2. **使用組合**：HPC + Cluster Placement Group（把 instances 放在同一個機架上，進一步降低延遲） + EFA 最大化網路效能
      3. **協定**：支援 MPI (Message Passing Interface)，這是 HPC 應用的標準通訊協定
-459. 👀 **HPC 儲存解決方案與網路性能的區別**
+76. 👀 **HPC 儲存解決方案與網路性能的區別**
      1. **FSx for Lustre 的角色**：高效能共享儲存（解決儲存問題）
      2. **考試陷阱**：區分「儲存效能」vs「網路效能」；題目問「maximize network performance」→ 選 EFA，不是 FSx for Lustre
-460. ★★ **Windows Workload HA 架構的核心需求**
+77. ★★ **Windows Workload HA 架構的核心需求**
      1. **多 AZ 高可用性**：跨 AZ 自動 failover
      2. **低延遲 block storage**：支援 sub-millisecond latency
      3. **Windows Server 相容性**：傳統 trading application 需求
-461. ★★ **FSx for NetApp ONTAP 為 Windows Workload HA 的正解**
+78. ★★ **FSx for NetApp ONTAP 為 Windows Workload HA 的正解**
      1. **Multi-AZ 原生支援**：跨 AZ 自動 failover，無需手動配置
      2. **iSCSI 協定**：提供 block-level storage，符合傳統 trading application 需求
      3. **Sub-millisecond latency**：SSD 支援，滿足金融交易的低延遲要求
      4. **NetApp 生態**：企業級功能（snapshot、複製、thin provisioning）
-462. 😇 **FSx 儲存方案的選擇陷阱分析**
+79. 😇 **FSx 儲存方案的選擇陷阱分析**
      1. **FSx for Windows File Server 的致命傷**：只有 SMB（無 iSCSI）、File storage ≠ Block storage、無法提供 block-level access
      2. **EFS 的雙重限制**：NFS 協定（Linux 優化、Windows 支援差）、File storage（不是 block storage）
      3. **考試誤導**：題目的「cross-region replication」是干擾項（EFS 本身就是 Multi-AZ，不需要 cross-region）
-463. ★★ **FSx for NetApp ONTAP = 萬能儲存解決方案**
+80. ★★ **FSx for NetApp ONTAP = 萬能儲存解決方案**
      1. **支援所有協定**：NFS、SMB、iSCSI
      2. **支援所有作業系統**：Windows、Linux、macOS
      3. **企業級功能最完整**：snapshot、複製、thin provisioning 等進階特性
-464. 題目同時要求「Multi-AZ」+「block storage」+「Windows 相容性」→ 十之八九是 FSx for NetApp ONTAP
-465. ★★ 身份聯邦的核心需求與場景判斷
+81. 題目同時要求「Multi-AZ」+「block storage」+「Windows 相容性」→ 十之八九是 FSx for NetApp ONTAP
+82. ★★ 身份聯邦的核心需求與場景判斷
      1. **核心要求**：**Identity Federation（身份聯邦）** → 用戶用企業 AD 帳號登入 AWS
      2. **附帶需求**：**Role-based Access Control（RBAC）** → 權限控制
      3. **前提條件**：**已有 corporate Active Directory** → 不需要新建 AD
-466. ★★ AWS Directory Service AD Connector 的聯邦角色
+83. ★★ AWS Directory Service AD Connector 的聯邦角色
      1. **本質**：企業 AD 與 AWS 之間的「認證代理人」，不儲存用戶資料
      2. **運作原理**：
         - 用戶用 AD 帳號登入 AWS Console
         - AD Connector 轉發認證請求到企業 AD
         - AD 回覆「此人是 DevTeam 群組成員」
      3. **核心差異**：Simple AD 是「新建託管 AD」，AD Connector 是「連接現有 AD」
-467. ★★ IAM Roles 在身份聯邦中的應用
+84. ★★ IAM Roles 在身份聯邦中的應用
      1. **核心功能**：承接 AD 的身份映射，轉換為 AWS 權限
      2. **映射機制**：企業 AD 群組 → AWS IAM Role（例：`DevTeam` 群組 → `DeveloperRole`）
      3. **權限方式**：登入成功後自動取得對應的 IAM Role 權限
-468. ★ 身份聯邦方案選項對比與記憶技巧
+85. ★ 身份聯邦方案選項對比與記憶技巧
      1. **為什麼不選 Simple AD**：新建託管 AD，但題目已有企業 AD，浪費成本
      2. **為什麼不選 Lambda**：與身份認證無關
      3. **為什麼不選 IAM Groups**：IAM Groups 只管理 IAM User，無法跟企業 AD 整合
