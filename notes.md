@@ -102,3 +102,19 @@
     1. **核心功能**：Transit Gateway **支援傳遞路由**，可以讓流量透過 TGW 在多個 VPC 間轉傳
     2. **使用場景**：需要複雜的 VPC 互聯且要支援流量轉傳時（比 Peering 更靈活但配置更複雜）
     3. **考試應用**：若題目提到「Transit Gateway」和「多個 VPC 備援」，則 TGW 路由方案可行
+31. ★★ AWS Cost Allocation Tags - 按部門追蹤成本的標準方案
+    1. **核心流程**：**打標籤** (Tag resources with department name) → **啟用** (Activate in Billing Console) → **自動分組** (AWS generates report)
+    2. **實作方式**：在資源上加標籤（例：`Department: Engineering`），然後在 Billing Console 啟用 Cost Allocation Tags
+    3. **產出成果**：AWS 自動按啟用的 tags 分組顯示成本，實現**跨部門成本追蹤**
+32. 😇 成本分配標籤 vs 一般標籤的區別
+    1. **一般標籤**：用於資源管理、自動化等用途
+    2. **成本分配標籤**：需在 Billing Console **額外啟用**，才能在 AWS Cost Explorer 中按 tag 分組計費
+    3. **考試判斷**：題目提「按部門分析成本」或「cost allocation」→ 選 Cost Allocation Tags（而非其他監控工具）
+33. ★ DMS 的搬遷模式選擇
+    1. **Full Load**：**一次性全量搬遷**，適合初次遷移或資料量不大的情況
+    2. **CDC (Change Data Capture)**：**持續同步異動**，保持源系統和目標系統資料一致（zero-downtime migration）
+    3. **組合策略**：常見做法是先做 Full Load 打底，再啟動 CDC 同步增量變更
+34. ★ AWS DMS 搭配 S3 的格式最佳實踐
+    1. **預設格式**：`.csv`（通用但體積大）
+    2. **優化格式**：**`.parquet`**（壓縮率高、查詢效能優）
+    3. **選擇判斷**：題目提「節省成本」或「提升查詢效能」→ 優先選擇 **Parquet 格式**
