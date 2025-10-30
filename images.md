@@ -128,3 +128,7 @@ You can configure any access point to accept requests only from a virtual privat
 ## Data Lifecycle Manager for EBS Snapshots
 
 ![圖 17](https://img.kyomind.tw/img-20251029-170633.png)
+
+## S3 → EMR → Redshift Spectrum 數據分析架構
+
+![圖 18](https://img.kyomind.tw/img-20251030-145051.png)
