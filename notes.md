@@ -84,3 +84,21 @@
     1. 本質：強制 WORM 模式，連 root 帳號都不能刪/改
     2. 場景：法規遵循（例如金融業、醫療業需符合法規要求）
     3. 考點：題目提到「regulatory compliance」、「prevent deletion by anyone including root」→ 選這個
+26. ★★ VPC Peering 不支援**邊緣到邊緣路由** (Transitive Routing) - 考試頻考陷阱
+    1. **核心限制**：VPC Peering 是「點對點」連接，不支援跨 VPC 傳遞流量
+    2. **實際案例**：VPC-1 有 Direct Connect 連到地端，VPC-1 和 VPC-2 有 Peering，但**地端無法透過 VPC-1 → VPC-2 的路徑存取 VPC-2 的資源**
+    3. **考試判斷關鍵**：看到「需要備援線路連結多個 VPC」且「提案用 Peering 傳遞」→ 立刻判斷為**錯誤**
+27. ★ VPC Peering 不支援的傳遞項目清單（必背）
+    1. **VPN 連線、Direct Connect、Internet Gateway、NAT Gateway、VPC Endpoint、ClassicLink IPv6**
+    2. **記憶技巧**：所有**邊界連接類型**都不支援 Peering 傳遞，Peering 只負責「兩個 VPC 之間」
+28. ★★ 跨 VPC 高可用備援方案 - 直接連線原則
+    1. **正確方案 1**：**在目標 VPC 建立第二條 Direct Connect**（兩條專線都直接連到同一 VPC，主線故障時備線接手）
+    2. **正確方案 2**：**VPN over Internet 作為備援**（直接連到目標 VPC，成本低於 Direct Connect）
+    3. **判斷標準**：備援線路必須**直接連到目標 VPC**，不能透過 Peering 傳遞
+29. 👀 錯誤方案範例 - VPC Peering 傳遞路由的死路
+    1. **❌ 在 VPC-2 建立 Direct Connect**：地端流量無法透過 VPC-1 ↔ VPC-2 Peering 轉傳到 VPC-2 的 Direct Connect
+    2. **❌ 在 VPC-2 建立 VPN**：同樣限制，VPN 連到 VPC-2 但流量無法經 Peering 到達 VPC-1
+30. 😇 Transit Gateway 解決方案 - VPC Peering 的升級選項
+    1. **核心功能**：Transit Gateway **支援傳遞路由**，可以讓流量透過 TGW 在多個 VPC 間轉傳
+    2. **使用場景**：需要複雜的 VPC 互聯且要支援流量轉傳時（比 Peering 更靈活但配置更複雜）
+    3. **考試應用**：若題目提到「Transit Gateway」和「多個 VPC 備援」，則 TGW 路由方案可行

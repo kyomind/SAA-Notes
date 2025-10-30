@@ -527,3 +527,18 @@ S3 Pre-Signed URL → 讓用戶「**上傳/下載**」但不給 AWS 憑證
 | **SSE-S3**  | AWS 完全管理   | **最簡單，預設選項**                             | AES-256    |
 | **SSE-KMS** | AWS KMS 管理   | **需要金鑰審計日誌、CloudTrail、金鑰輪替**       | CloudTrail |
 | **SSE-C**   | 你自己管理金鑰 | **完全控制金鑰，但你要保管、每次請求都要帶金鑰** | 客戶自管   |
+
+## VPC Peering vs Transit Gateway vs VPN 比較
+
+| 特性           | **VPC Peering**           | **Transit Gateway** | **VPN**                |
+| -------------- | ------------------------- | ------------------- | ---------------------- |
+| **轉送能力**   | ❌ 不支援 (non-transitive) | ✅ 支援多 VPC 互通   | ✅ 可與 On-Premise 連線 |
+| **CIDR 限制**  | 不能重疊                  | 不能重疊            | 可透過 NAT 解決        |
+| **跨區域支援** | ✅ 支援，會收費            | ✅ 支援，集中管理    | ✅ 支援，但效能較低     |
+| **適合場景**   | 少量 VPC 互聯             | 大規模多 VPC 架構   | 與 On-Premise 或其他雲 |
+
+考試記法：
+
+- **VPC Peering** → **一對一、無轉送、CIDR 不重疊**。
+- **Transit Gateway** → **Hub-and-Spoke、大規模、多 VPC 可轉送**。
+- **VPN** → **跨雲或 On-Premise，經公網加密，效能較差**。
