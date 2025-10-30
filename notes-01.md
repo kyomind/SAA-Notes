@@ -438,10 +438,9 @@
      1. **Console（AWS Management Console）**：用瀏覽器登入 <https://console.aws.amazon.com> 看到的圖形化介面
      2. **Programmatic access**：用 CLI、SDK、API 呼叫 AWS（需要 **Access Key**）⭐️
      3. **Console access**：人類用瀏覽器「點點點」操作 AWS（需要登入帳號）
-146. ★ GuardDuty 威脅偵測與判斷標準——**S3 相關**
+146. ★ GuardDuty 威脅偵測與判斷標準
      1. **選題關鍵詞**：出現「malicious」、「suspicious」、「threat」→ 選 GuardDuty
-     2. **服務定位**：S3 威脅偵測服務
-     3. **偵測能力**：已知惡意 IP 存取 S3、Bucket Policy/ACL 被改成公開、異常 API 呼叫模式（如暴力掃描權限設定）
+     2. **服務定位**：跨服務威脅偵測（S3、EC2、IAM、CloudTrail）
 147. ★ CloudTrail 與 GuardDuty 的核心差異○
      1. **CloudTrail 的用途**：記錄 API 呼叫（稽核、合規、事後調查）
      2. **GuardDuty 的用途**：分析行為模式進行即時威脅偵測
