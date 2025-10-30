@@ -61,4 +61,4 @@
     3. **架構原則**：**不要把 Route 53 當成應用層的 Load Balancer 用**，這是錯誤的架構思維
 19. ★★ EMR + Redshift 大數據分析架構
     1. **情境判斷**：需要 **big data processing frameworks**（Apache Hadoop/Spark）+ **標準 SQL 和 BI 工具分析**
-    2. **服務角色**：EMR（**ETL 處理層** - 執行 Hadoop/Spark 做資料轉換和清洗） + Redshift（**分析層** - 支援 SQL 查詢和 BI 工具整合）
+    2. **服務角色**：EMR（**ETL 處理層** - 執行 Hadoop/Spark 做資料轉換和清洗） + Redshift（**分析層** - **支援 SQL 查詢和 BI 工具整合**）
