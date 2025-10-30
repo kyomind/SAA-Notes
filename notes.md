@@ -80,3 +80,7 @@
     1. **問題**：主站掛了，要**快速自動切換**到備援站點
     2. **解法**：**Route 53 Failover routing + 健康檢查**（檢測主站不健康時自動轉向備援）
     3. **適配服務**：搭配 **S3 靜態網站**或 **CloudFront** 作為備援端點
+25. **S3 Object Lock** (Compliance Mode)
+    1. 本質：強制 WORM 模式，連 root 帳號都不能刪/改
+    2. 場景：法規遵循（例如金融業、醫療業需符合法規要求）
+    3. 考點：題目提到「regulatory compliance」、「prevent deletion by anyone including root」→ 選這個
