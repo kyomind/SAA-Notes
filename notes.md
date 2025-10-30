@@ -153,3 +153,9 @@
 44. 😇 AWS Organizations 基本結構與帳戶管理
     1. **獨立帳戶特性**：每個帳戶有**獨立的 account ID**、每個帳戶有**自己的 root user**
     2. **統一管理功能**：Organizations 提供**統一帳單**、**SCP 權限控管**、**集中管理**
+45. ★★ 多帳戶架構實戰題解：正確答案組合（2選項）
+    1. **選項一**：**Integrate AWS IAM Identity Center with the corporate directory service**（與企業目錄整合實現**集中式身份驗證**）+ **Configure SCP to manage AWS accounts**（配置 **SCP 管理帳戶權限**）
+    2. **選項二**：**Implement AWS Organizations to create multi-account architecture**（建立**多帳戶架構**提供**整合檢視和集中管理**）
+46. ★ AWS Directory Service vs IAM Identity Center - 考試陷阱對比
+    1. **AWS Directory Service 錯誤原因**：僅管理**目錄服務**（如 AD）、**不是做多帳戶認證**、缺少**跨帳戶身份聯邦功能**
+    2. **正確做法**：**IAM Identity Center 整合 Directory Service**（IAM Identity Center 提供多帳戶認證，Directory Service 提供目錄管理）
