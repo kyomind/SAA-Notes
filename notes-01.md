@@ -421,28 +421,28 @@
      1. **SAML 2.0 相容**：直接用 IAM Identity Provider（不需要自己寫 broker）
      2. **外部用戶登入**：用 Cognito
      3. **企業舊系統**：Custom Identity Broker（過渡方案，優先考慮升級到 SAML 2.0 或 OIDC）
-141. ★★ IAM User 建立後的預設狀態○
+141. ★★ IAM User 建立後的預設狀態
      1. **有身份**：可以被識別 ✅
      2. **沒有權限**：不能做任何事 ❌
      3. **沒有憑證**：無法驗證身份 ❌
 142. ★★ 透過 CLI/API 呼叫 AWS 的兩個必要步驟
-     1. **Access Key**：讓程式能用這組 Key 證明「我是這個 User」（身份驗證）
-     2. **IAM Policy**：賦予權限，允許存取 S3、DynamoDB、Lambda 等服務（授權）
+     1. **Access Key**：讓程式能用這組 Key 證明「我是這個 User」（**驗證**）
+     2. **IAM Policy**：賦予權限，允許存取 S3、DynamoDB、Lambda 等服務（**授權**）
 143. ★ S3 存取控制方案的選擇建議
      1. **不推薦**：ACL（太細碎難管理）
-     2. **推薦方案一**：Bucket Policy（大部分情況）
+     2. **推薦方案一**：Bucket Policy（大部分情況）⭐️
      3. **推薦方案二**：IAM Role（需要 Console 或臨時憑證時）
 144. ★ IAM Role vs Bucket Policy 的關鍵差異
-    - **只有 IAM Role 能讓跨帳號用戶用 Console 登入查看 S3**（Bucket Policy 只支援程式存取）
+    - **只有 IAM Role 能讓跨帳號用戶用 Console 登入查看 S3**（Bucket Policy **只支援程式存取**）
 145. ★ AWS 存取方式的定義與區別
      1. **Console（AWS Management Console）**：用瀏覽器登入 <https://console.aws.amazon.com> 看到的圖形化介面
-     2. **Programmatic access**：用 CLI、SDK、API 呼叫 AWS（需要 Access Key）
-     3. **Console access**：人類用瀏覽器點點點操作 AWS（需要登入帳號）
-146. ★ GuardDuty 威脅偵測與判斷標準
+     2. **Programmatic access**：用 CLI、SDK、API 呼叫 AWS（需要 **Access Key**）⭐️
+     3. **Console access**：人類用瀏覽器「點點點」操作 AWS（需要登入帳號）
+146. ★ GuardDuty 威脅偵測與判斷標準——**S3 相關**
      1. **選題關鍵詞**：出現「malicious」、「suspicious」、「threat」→ 選 GuardDuty
      2. **服務定位**：S3 威脅偵測服務
      3. **偵測能力**：已知惡意 IP 存取 S3、Bucket Policy/ACL 被改成公開、異常 API 呼叫模式（如暴力掃描權限設定）
-147. ★ CloudTrail 與 GuardDuty 的核心差異
+147. ★ CloudTrail 與 GuardDuty 的核心差異○
      1. **CloudTrail 的用途**：記錄 API 呼叫（稽核、合規、事後調查）
      2. **GuardDuty 的用途**：分析行為模式進行即時威脅偵測
      3. **定位區別**：CloudTrail 只是「錄影機」，記錄誰做了什麼，但不會主動告訴你「這是惡意行為」
