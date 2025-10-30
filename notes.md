@@ -138,3 +138,18 @@
     2. **解決方案**：需使用 **EFS** 或**多 AZ 架構**
 40. 😇 EBS 核心概念記憶
     1. **本質**：EBS = **本地硬碟**概念，**綁定單一 AZ**
+41. ★★ AWS Organizations + IAM Identity Center - 多帳戶統一管理與認證方案
+    1. **AWS Organizations 解決的問題**：**多個帳戶統一管理**（帳單、資源控管）、用 **SCP (Service Control Policy)** 做權限邊界控管（連 root user 都受限）
+    2. **IAM Identity Center 解決的問題**：**一組帳密登所有帳戶**（類似 SSO）、可整合**企業 AD、Okta 等目錄服務**
+    3. **架構整合**：AWS Organizations + IAM Identity Center 組合達成**多帳戶統一身份驗證和權限管理**
+42. ★★ SCP vs IAM Policy - 權限管理層級對比
+    1. **SCP (Service Control Policy)**：作用於**整個 OU 或帳戶**層級、本質是**權限邊界（否決權）**、用於**組織層級限制**
+    2. **IAM Policy**：作用於**單一 user/role** 層級、本質是**賦予權限**、用於**個別使用者授權**
+    3. **記憶口訣**：SCP 是「**天花板**」（最高限制），IAM Policy 是「**地板**」（實際權限）
+43. ★ 多帳戶架構考試判斷技巧
+    1. 「**多帳戶管理**」→ **AWS Organizations**
+    2. 「**集中式認證 / 企業目錄**」→ **IAM Identity Center**
+    3. 「**控制帳戶權限**」→ **SCP**
+44. 😇 AWS Organizations 基本結構與帳戶管理
+    1. **獨立帳戶特性**：每個帳戶有**獨立的 account ID**、每個帳戶有**自己的 root user**
+    2. **統一管理功能**：Organizations 提供**統一帳單**、**SCP 權限控管**、**集中管理**
