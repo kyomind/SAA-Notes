@@ -52,3 +52,6 @@
 16. ★★ Security Group vs NACL - 網路安全層級對比
     1. **Security Group**：**EC2 instance 層級**，綁在**網卡 (ENI) 上**，精細控制單一主機的進出流量
     2. **NACL**：**Subnet 層級**，控制**整個子網路的進出**，粗粒度的網路邊界防護
+17. ★★ AWS GuardDuty - 跨服務威脅偵測與異常監控
+    1. **監控範圍**：EC2/VPC（透過 VPC Flow Logs）、IAM/API（透過 CloudTrail）、S3（透過 CloudTrail S3 data events）、DNS 查詢
+    2. **進階保護**：EKS/Lambda **執行時期威脅**（需額外啟用）
