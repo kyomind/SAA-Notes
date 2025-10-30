@@ -122,33 +122,3 @@
     1. 搬什麼：關聯式、NoSQL、Data Warehouse 都行
     2. 怎麼搬：一次性 (Full Load) 還是持續同步 (CDC)
     3. 安全性：提到加密 → 想到 SSL + CA certificate
-
-
-## VPC 網路連通性問題的排查順序
-
-這題考的是 **Security Group vs NACL** 的差異和排查邏輯。
-
-### 檢查順序
-
-1. **Security Group**（Stateful）
-   - 檢查 Web Server SG 是否允許 outbound 到 DB port
-   - 檢查 DB Server SG 是否允許 inbound 從 Web Server
-
-2. **Network ACL**（Stateless）
-   - 檢查兩個 subnet 的 NACL 規則
-   - 必須同時設定 inbound 和 outbound
-
-### 考試判斷標準
-
-| 類型     | Security Group           | NACL                    |
-| -------- | ------------------------ | ----------------------- |
-| 作用層級 | Instance                 | Subnet                  |
-| 狀態     | Stateful（回傳自動允許） | Stateless（需雙向規則） |
-| 預設行為 | Deny all inbound         | Allow all               |
-| 優先檢查 | ✓ 先查這個               | 再查這個                |
-
-**記憶技巧**：
-- SG = 門禁卡（instance 層級）
-- NACL = 社區大門（subnet 層級）
-
-題目提「兩個 subnet 之間通訊」→ 兩者都要檢查。
