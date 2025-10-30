@@ -62,3 +62,11 @@
 19. ★★ EMR + Redshift 大數據分析架構
     1. **情境判斷**：需要 **big data processing frameworks**（Apache Hadoop/Spark）+ **標準 SQL 和 BI 工具分析**
     2. **服務角色**：EMR（**ETL 處理層** - 執行 Hadoop/Spark 做資料轉換和清洗） + Redshift（**分析層** - **支援 SQL 查詢和 BI 工具整合**）
+20. ★★ Redshift 相比 S3+Athena 的優勢與應用場景
+    1. **Redshift 優勢**：**列式儲存**（查詢效能遠超 S3+Athena）、**BI 工具整合**（原生支援 Tableau、PowerBI）、**MPP 架構**（join/aggregation 極快）
+    2. **使用判斷**：S3+Athena 適合**偶爾查詢**；Redshift 適合**高頻分析**（無論用 EMR 或 Glue 處理，分析層都該用 Redshift）
+21. 題目出現這些關鍵字，直接選：
+    - 「最低延遲」但不限制地區 → Latency
+    - 「特定國家用戶必須連特定資源」→ Geolocation
+    - 「調整某地區流量偏向某資源」或「bias」→ Geoproximity
+    - 「藍綠部署」、「A/B 測試」、「流量分配比例」→ Weighted

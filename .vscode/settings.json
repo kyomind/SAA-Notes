@@ -9,6 +9,7 @@
         "FIPS",
         "Gbps",
         "Geolocation",
+        "Geoproximity",
         "Instancesmd",
         "JDBC",
         "myapp",
