@@ -122,3 +122,11 @@
     1. 搬什麼：關聯式、NoSQL、Data Warehouse 都行
     2. 怎麼搬：一次性 (Full Load) 還是持續同步 (CDC)
     3. 安全性：提到加密 → 想到 SSL + CA certificate
+36. ★★ CloudWatch + SNS 監控告警標準組合
+    1. **CloudWatch**：監控 **AWS 資源**（CPU、記憶體、磁碟等），設定**告警規則**
+    2. **SNS**：當告警觸發時，**自動發送通知**給訂閱者（email、SMS、HTTP endpoint 等）
+    3. **典型流程**：CloudWatch 偵測 → 告警觸發 → SNS 發送通知 → 人工或自動化回應
+37. ★ SNS vs SES 服務選擇判斷標準
+    1. **SNS 用途**：系統通知、告警、**事件驅動**的消息分發（內部系統間通信）
+    2. **SES 用途**：**發送給終端使用者**的郵件（客戶、會員）、需要**退信管理、開信率追蹤、郵件信譽管理**
+    3. **記憶技巧**：SNS = Simple Notification Service (系統內告警)；SES = Simple Email Service (用戶外發郵件)
