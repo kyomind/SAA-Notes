@@ -55,3 +55,7 @@
 17. ★★ AWS GuardDuty - 跨服務威脅偵測與異常監控
     1. **監控範圍**：EC2/VPC（透過 VPC Flow Logs）、IAM/API（透過 CloudTrail）、S3（透過 CloudTrail S3 data events）、DNS 查詢
     2. **進階保護**：EKS/Lambda **執行時期威脅**（需額外啟用）
+18. ★★ Route 53 vs ELB - 負載均衡層級區分（考試重點）
+    1. **看到「elasticity」**：首選 **ELB 系列**（ALB/NLB/CLB）
+    2. **Route 53 應用場景**：**多區域流量分配**（Latency-based、Geolocation）、**災難恢復**（Failover）、**藍綠部署**（Weighted）
+    3. **架構原則**：**不要把 Route 53 當成應用層的 Load Balancer 用**，這是錯誤的架構思維
