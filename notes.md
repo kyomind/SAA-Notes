@@ -168,3 +168,11 @@
     2. **測試優化**：A/B Testing
     3. **多管道發送**：SMS、Email、Push、Voice
     4. **效果追蹤**：開信率、點擊率
+49. ★★ Amazon AppFlow - SaaS 應用整合專用服務
+    1. **核心價值**：無需寫程式就能在 **AWS 和第三方 SaaS 之間傳輸資料**
+    2. **識別關鍵字**：**Salesforce/Slack 等 SaaS** → **AWS S3**、**歸檔 + 分析需求**
+50. 😇 Amazon AppFlow 核心特性
+    1. **原生支援**：50+ SaaS（Salesforce、Slack、Google Analytics、Zendesk 等）
+    2. **簡化設定**：點選設定，不用寫 API 串接
+    3. **彈性觸發**：支援排程或事件觸發
+    4. **自動處理**：資料轉換和加密
