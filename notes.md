@@ -159,3 +159,12 @@
 46. ★ AWS Directory Service vs IAM Identity Center - 考試陷阱對比
     1. **AWS Directory Service 錯誤原因**：僅管理**目錄服務**（如 AD）、**不是做多帳戶認證**、缺少**跨帳戶身份聯邦功能**
     2. **正確做法**：**IAM Identity Center 整合 Directory Service**（IAM Identity Center 提供多帳戶認證，Directory Service 提供目錄管理）
+47. ★ Amazon Pinpoint 服務識別關鍵字
+    1. **Marketing**：行銷用途
+    2. **Personalized**：個人化訊息（可帶入姓名、喜好等變數）
+    3. **Large number of customers**：大量客戶管理
+48. 😇 Amazon Pinpoint 核心功能
+    1. **客戶分群**：Segmentation
+    2. **測試優化**：A/B Testing
+    3. **多管道發送**：SMS、Email、Push、Voice
+    4. **效果追蹤**：開信率、點擊率
