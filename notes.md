@@ -176,3 +176,10 @@
     2. **簡化設定**：點選設定，不用寫 API 串接
     3. **彈性觸發**：支援排程或事件觸發
     4. **自動處理**：資料轉換和加密
+51. ★★ AWS Trusted Advisor - 最佳實踐檢查工具
+    1. **本質**：AWS 內建的**最佳實踐檢查工具**，自動掃描帳號並給建議
+    2. **五大檢查類別**：Cost Optimization（閒置資源、低使用率 instances）、Performance（服務限制使用率、throughput 瓶頸）、Security（Security Group 開放規則、IAM 使用情況）、Fault Tolerance（EBS/RDS 快照、Multi-AZ 設定）、Service Limits（各服務配額使用情況）
+52. 應考三個小技巧
+    1. 陷阱題很少
+    2. 不要 overthink
+    3. 如果一個方案看起來可行，但過於複雜，那可能是錯的
