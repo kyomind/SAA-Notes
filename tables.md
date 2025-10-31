@@ -561,3 +561,14 @@ S3 Pre-Signed URL → 讓用戶「**上傳/下載**」但不給 AWS 憑證
 | 優先檢查 | ✓ 先查這個               | 再查這個                |
 
 題目提「兩個 subnet 之間通訊」→ 兩者都要檢查。
+
+## AWS Code 系列服務對比
+
+| 服務             | 用途                                           | 類比 / 備註                                     |
+| ---------------- | ---------------------------------------------- | ----------------------------------------------- |
+| **CodeCommit**   | 原始碼管理（Git repository）                   | 類似 GitHub、GitLab                             |
+| **CodeBuild**    | 程式建置、執行測試                             | 類似 Jenkins build job、GitHub Actions          |
+| **CodeDeploy**   | 自動部署到 EC2、Lambda、ECS                    | 類似 Ansible、Octopus Deploy                    |
+| **CodePipeline** | CI/CD 流程編排（串起 Commit → Build → Deploy） | 類似 GitHub Actions workflow / Jenkins pipeline |
+| **CodeArtifact** | 套件管理（npm、maven、pip repository）         | 類似 Artifactory、Nexus                         |
+| **CodeStar**     | CI/CD 專案管理入口（整合上述所有服務）         | 現在用得少，多數用 CodePipeline 直接整合        |
