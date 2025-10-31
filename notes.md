@@ -186,6 +186,6 @@
 53. Site-to-Site VPN 的兩個部分是：
     1. Customer Gateway (CGW) - 客戶端的 VPN 設備
     2. Virtual Private Gateway (VGW) - AWS 端的 VPN 閘道
-    3. 兩扇門對接，VPN 隧道才能建立。
-    4. 如果題目問「如何讓本地機房連到 AWS」→ 答案通常就是 Site-to-Site VPN
-    5. CGW 需要一個固定的公網 IP
+    3. 兩扇門對接，VPN 隧道才能建立
+    4. 如果題目問「如何**讓本地機房連到 AWS**」→ 答案通常就是 Site-to-Site VPN
+    5. CGW 需要一個**固定的公網 IP**
