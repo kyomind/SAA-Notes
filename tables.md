@@ -562,13 +562,18 @@ S3 Pre-Signed URL → 讓用戶「**上傳/下載**」但不給 AWS 憑證
 
 題目提「兩個 subnet 之間通訊」→ 兩者都要檢查。
 
-## AWS Code 系列服務對比
+## 🎯 考試核心：只需搞懂這三個
 
-| 服務             | 用途                                           | 類比 / 備註                                     |
-| ---------------- | ---------------------------------------------- | ----------------------------------------------- |
-| **CodeCommit**   | 原始碼管理（Git repository）                   | 類似 GitHub、GitLab                             |
-| **CodeBuild**    | 程式建置、執行測試                             | 類似 Jenkins build job、GitHub Actions          |
-| **CodeDeploy**   | 自動部署到 EC2、Lambda、ECS                    | 類似 Ansible、Octopus Deploy                    |
-| **CodePipeline** | CI/CD 流程編排（串起 Commit → Build → Deploy） | 類似 GitHub Actions workflow / Jenkins pipeline |
-| **CodeArtifact** | 套件管理（npm、maven、pip repository）         | 類似 Artifactory、Nexus                         |
-| **CodeStar**     | CI/CD 專案管理入口（整合上述所有服務）         | 現在用得少，多數用 CodePipeline 直接整合        |
+| 服務             | 考試常見問法                                              | 關鍵判斷標準                                       | 核心概念                                     | 必記重點                                                                        |
+| ---------------- | --------------------------------------------------------- | -------------------------------------------------- | -------------------------------------------- | ------------------------------------------------------------------------------- |
+| **CodeBuild**    | 如何建置 Docker image？如何執行自動化測試？               | 看到 `buildspec.yml`、「build」「compile」「test」 | **建置工具**，相當於 Jenkins build job       | buildspec.yml 定義建置步驟、可建置 Docker image 推到 ECR、支援多種語言環境      |
+| **CodeDeploy**   | 如何零停機部署？如何快速回滾？部署到 EC2 / Lambda / ECS   | 看到 `appspec.yml`、「Blue/Green」「In-place」     | **部署工具**，相當於 Ansible + 部署策略      | appspec.yml 定義部署步驟、Blue/Green 零停機、In-place 直接替換但有短暫中斷      |
+| **CodePipeline** | 如何自動化 CI/CD 流程？如何串接 GitHub → Build → Deploy？ | 看到「orchestrate」「automate」「workflow」        | **編排工具**，相當於 GitHub Actions workflow | 串接多個 stage（Source → Build → Deploy）、可整合第三方工具、自動觸發或手動核准 |
+
+## 📦 考試偶爾出現（知道就好）
+
+| 服務             | 一句話記憶                             | 考試出現率 |
+| ---------------- | -------------------------------------- | ---------- |
+| **CodeCommit**   | AWS 自己的 Git repository，與 IAM 整合 | ⭐ 10%      |
+| **CodeArtifact** | 私有套件庫（npm / pip / maven）        | ⭐⭐ 20%     |
+| **CodeStar**     | ❌ AWS 專案樣板工具（已過時，直接忽略） | ❌ 0%       |
