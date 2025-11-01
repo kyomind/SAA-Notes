@@ -232,3 +232,19 @@
     1. **技術能力 vs 安全原則**：技術上可以在私有子網路的 EC2 附加 Elastic IP，但違反安全最佳實踐
     2. **風險分析**：私有子網路 EC2 若附加 Elastic IP，就變成可從 internet 直接訪問，**破壞了「私有」的安全設計**
     3. **設計原則**：**公網資源用 EIP，私網資源不該有**
+67. ★★ AWS DMS NoSQL 遷移能力 - 容易忽視的考試重點
+    1. **服務核心定位**：**DMS = 資料搬運工**，只要 AWS 支援的資料庫就幾乎都能搬（不限於關聯式）
+    2. **NoSQL 遷移路線**：主要是 **MongoDB → DynamoDB** 這條路線
+    3. **考試應用**：DMS 不是只給 RDB 用的，**NoSQL 遷移也是它的強項**，考試中會出現此場景
+
+68. ★★ AWS Network Firewall - VPC 層級 Layer 7 流量過濾
+    1. **核心能力**：支援 **Layer 7 檢查**，可以基於 **URL、FQDN 進行過濾**（Security Group/NACL 只能基於 IP/Port）
+    2. **應用場景**：自動阻擋惡意 URL、黑名單 FQDN、VPC 級別的入侵偵測
+69. ★★ 多層防禦架構 (Defense-in-Depth) 考試判斷技巧
+    1. **關鍵字識別**：「malicious URLs」「blacklisted FQDNs」→ **Layer 7 過濾** → **Network Firewall**⭐️
+    2. **架構設計**：「layered approach」「defense-in-depth」→ **公私有 subnet 分離** + **Network Firewall 在邊界**
+    3. **成本控制**：「minimum resources」→ **只用 Network Firewall**（無需 WAF、Shield 等額外服務）
+70. 👀 多層防禦常見陷阱選項
+    1. **用 WAF**：WAF 主要保護應用層，**不是 VPC 級別過濾**
+    2. **只用 Security Group**：**無法識別 URL 或 FQDN**，僅能基於 IP/Port
+    3. **複雜多 VPC 架構**：題目要求最小資源，不適用此方案

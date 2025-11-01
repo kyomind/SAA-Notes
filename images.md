@@ -146,3 +146,9 @@ You can configure any access point to accept requests only from a virtual privat
 兩個 VPC，一公一私。 公有 VPC 放 Bastion Host，私有 VPC 放內部資源。Bastion Host 透過 Private IP 連接私有 VPC 的資源。
 
 ![圖 14](https://img.kyomind.tw/img-20251101-114637.png)
+
+## DMS 搬家架構
+
+重點：需要一個**中繼的 EC2 instance** 來跑 DMS agent。
+
+![圖 15](https://img.kyomind.tw/img-20251101-141404.png)
