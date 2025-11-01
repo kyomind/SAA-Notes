@@ -215,3 +215,10 @@
 61. ★★ Route 53 + S3 靜態網站託管 - 考試常見組合
     1. **必要條件**：**S3 bucket 名稱必須完全等於 domain name**（例：bucket 名稱為 `example.com`）
     2. **配置流程**：**Registered domain name**（已註冊域名）→ **Route 53 DNS 設定** → **S3 bucket（啟用靜態網站裝載）** → **ALIAS 記錄指向 S3**
+62. 😇 ECS Task 基本特性
+    1. **執行環境**：可以跑在 **EC2 或 Fargate**（無伺服器）
+    2. **權限與網路**：每個 Task 有**自己的 IAM Role**（Task Role）、每個 Task 有**獨立的 ENI**（網路介面）
+63. 😇 Task Definition vs Task - 藍圖與實例
+    1. **Task Definition**：**藍圖**（定義要跑什麼 image、要多少 CPU/RAM）
+    2. **Task**：**實例**（根據藍圖實際跑起來的容器）
+    3. **類比**：**ECS Task ≈ Docker Compose 的一組容器**，是**容器化應用程式的執行單位**
