@@ -577,3 +577,17 @@ S3 Pre-Signed URL → 讓用戶「**上傳/下載**」但不給 AWS 憑證
 | **CodeCommit**   | AWS 自己的 Git repository，與 IAM 整合 | ⭐ 10%      |
 | **CodeArtifact** | 私有套件庫（npm / pip / maven）        | ⭐⭐ 20%     |
 | **CodeStar**     | ❌ AWS 專案樣板工具（已過時，直接忽略） | ❌ 0%       |
+
+## SQS vs Amazon MQ (RabbitMQ)
+
+| 特性 | **SQS**                | **Amazon MQ (RabbitMQ)** |
+| ---- | ---------------------- | ------------------------ |
+| 管理 | **全託管，零維護**     | **需選機器規格**         |
+| 費用 | **按請求計費（便宜）** | **按執行時間計費**       |
+| 協定 | **AWS SDK/HTTP**       | **AMQP 0-9-1**           |
+| 適用 | **雲原生應用**         | **遷移既有系統**         |
+
+**考試判斷標準**：
+
+- 題目提到「existing application」或「migrate from on-premises RabbitMQ」→ **Amazon MQ**
+- 其他情況 → **SQS**

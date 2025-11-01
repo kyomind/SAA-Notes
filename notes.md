@@ -222,3 +222,6 @@
     1. **Task Definition**：**藍圖**（定義要跑什麼 image、要多少 CPU/RAM）
     2. **Task**：**實例**（根據藍圖實際跑起來的容器）
     3. **類比**：**ECS Task ≈ Docker Compose 的一組容器**，是**容器化應用程式的執行單位**
+64. ★★ SQS vs Amazon MQ - 消息佇列服務對比
+    1. **SQS**：**AWS 原生服務**，簡單便宜，適合新應用開發
+    2. **Amazon MQ**：**相容 ActiveMQ/RabbitMQ**，用於遷移舊系統（已用 ActiveMQ/RabbitMQ 的應用無需改程式碼）
