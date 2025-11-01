@@ -248,3 +248,6 @@
     1. **用 WAF**：WAF 主要保護應用層，**不是 VPC 級別過濾**
     2. **只用 Security Group**：**無法識別 URL 或 FQDN**，僅能基於 IP/Port
     3. **複雜多 VPC 架構**：題目要求最小資源，不適用此方案
+71. 😇 Network Firewall 部署架構
+    1. **位置**：VPC 邊界（不掛在 ALB 上）
+    2. **流量必經**：所有進出流量 → Network Firewall（Layer 7 檢查）→ 應用層
