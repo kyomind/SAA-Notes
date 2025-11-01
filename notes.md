@@ -206,3 +206,12 @@
 58. 😇 ENI vs EIP vs Transit Gateway 服務用途判斷標準
     1. **Private 應用 HA**：用 **ENI detach/attach**（故障轉移用 secondary ENI + Private IP）
     2. **考試陷阱提醒**：看到熟悉服務名稱（EIP、Transit Gateway）就選下去是錯的；EIP 解決 public 訪問問題、Transit Gateway 解決網路連接問題，都**不是 instance 故障轉移**工具
+59. ★★ CloudFront + Lambda@Edge - 動態內容處理能力
+    1. **Lambda@Edge 執行時間點**：**Viewer Request**（用戶請求到達時）、**Origin Request**（轉發到源站前）、**Origin Response**（源站回應後）、**Viewer Response**（回傳給用戶前）
+    2. **使用判斷**：需要「**看請求內容做決定**」→ **Lambda@Edge**；只是「加固定 headers」→ **Response Headers Policy**
+60. 😇 Lambda@Edge 核心概念
+    1. **本質**：**CloudFront 的攔截器**，在邊緣節點執行程式碼
+    2. **典型場景**：動態內容改寫、請求/回應處理、條件邏輯判斷
+61. ★★ Route 53 + S3 靜態網站託管 - 考試常見組合
+    1. **必要條件**：**S3 bucket 名稱必須完全等於 domain name**（例：bucket 名稱為 `example.com`）
+    2. **配置流程**：**Registered domain name**（已註冊域名）→ **Route 53 DNS 設定** → **S3 bucket（啟用靜態網站裝載）** → **ALIAS 記錄指向 S3**
