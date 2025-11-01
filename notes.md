@@ -189,3 +189,20 @@
     3. 兩扇門對接，VPN 隧道才能建立
     4. 如果題目問「如何**讓本地機房連到 AWS**」→ 答案通常就是 Site-to-Site VPN
     5. CGW 需要一個**固定的公網 IP**
+54. ★★ ENI (Elastic Network Interface) 故障轉移機制 - 高可用性架構
+    1. **核心概念**：ENI = 虛擬網卡，記憶 **Private IP、Elastic IP、MAC address**；**可從一台 EC2 拔下來插到另一台**
+    2. **使用場景**：資料庫 instance、NAT instance、需要固定 IP 的應用
+    3. **運作流程**：主 instance 掛 ENI（綁定應用 Private IP）→ DNS 指向此 IP → 主 instance 掛時**拔下 ENI 插到備援機器** → **流量自動轉移，無需改 DNS、Route Table**
+55. ★★ ENI Detach/Attach 技術操作與限制條件
+    1. **操作步驟**：**Detach**（解除故障 EC2 的 ENI 綁定）→ **Attach**（綁定 ENI 到備援 EC2）
+    2. **核心限制**：**Primary ENI (eth0) 不能拔**（只有 secondary ENI 能做 detach/attach）；兩台 EC2 必須**同一 AZ**；ENI 與目標 EC2 必須**同一 subnet**
+    3. **技術原因**：EC2 instance **必須至少有一張 ENI 才能運作**，eth0 是 launch 時自動建立的 primary ENI，所以 AWS 不允許 detach（故障轉移必須用 secondary ENI）
+56. 😇 ENI 自動故障轉移實務與範例
+    1. **實現方式**：通常寫成自動化腳本，**監控發現主機掛時自動執行 detach/attach**
+    2. **運作範例**：主機 (i-abc123) eth1 (10.0.1.50) → 故障後 detach eth1 → attach 到備援機 (i-xyz789) eth1 ← **同一 IP 自動轉移，無需改 DNS、Route Table**
+57. ★★ ENI HA 常見錯誤方案 - 考試陷阱（EIP + Transit Gateway）
+    1. **錯誤點 1：不需要 EIP**：題目說應用是 **private**（內網）；EIP 是給 **public** 訪問用的；內網通訊用 **Private IP 就好**
+    2. **錯誤點 2：Transit Gateway 用途錯誤**：**Transit Gateway 用來連接多個 VPC、VPC 和 on-premises，充當網路中心樞紐**；**不能做故障轉移**，不能「自動搬移 EIP」
+58. 😇 ENI vs EIP vs Transit Gateway 服務用途判斷標準
+    1. **Private 應用 HA**：用 **ENI detach/attach**（故障轉移用 secondary ENI + Private IP）
+    2. **考試陷阱提醒**：看到熟悉服務名稱（EIP、Transit Gateway）就選下去是錯的；EIP 解決 public 訪問問題、Transit Gateway 解決網路連接問題，都**不是 instance 故障轉移**工具

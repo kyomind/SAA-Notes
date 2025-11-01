@@ -136,3 +136,7 @@ You can configure any access point to accept requests only from a virtual privat
 ## Route 53 Failover Routing Policy
 
 ![圖 19](https://img.kyomind.tw/img-20251030-162905.png)
+
+## 直接用 ENI 插拔進行故障轉移(私有ip不變更)
+
+![圖 13](https://img.kyomind.tw/img-20251101-111830.png)
