@@ -591,3 +591,21 @@ S3 Pre-Signed URL → 讓用戶「**上傳/下載**」但不給 AWS 憑證
 
 - 題目提到「existing application」或「migrate from on-premises RabbitMQ」→ **Amazon MQ**
 - 其他情況 → **SQS**
+
+## AWS WAF vs AWS Network Firewall 比較
+
+| 比較項目            | AWS WAF                                 | AWS Network Firewall                                     |
+| ------------------- | --------------------------------------- | -------------------------------------------------------- |
+| **防護層級**        | Layer 7 (應用層)                        | Layer 3-7 (網路到應用層)                                 |
+| **部署位置**        | ALB/API Gateway/CloudFront 前面         | VPC 邊界（Internet Gateway/NAT Gateway 旁）              |
+| **主要用途**        | 保護 Web 應用免受攻擊                   | VPC 層級的流量過濾與檢查                                 |
+| **過濾能力**        | HTTP/HTTPS 請求內容、SQL injection、XSS | 所有協定（TCP/UDP/ICMP）、Domain filtering、IPS          |
+| **Domain/URL 過濾** | 可以，但僅限 HTTP/HTTPS                 | 可以，支援所有協定的 FQDN 過濾                           |
+| **使用場景**        | 防範 Web 攻擊、Bot、DDoS                | 整個 VPC 的進出流量管控                                  |
+| **價格**            | 較便宜（按規則和請求數計費）            | 較貴（按 endpoint 小時數和處理量計費）                   |
+| **題目關鍵字**      | SQL injection / XSS / Bot / Web attack  | VPC perimeter / FQDN filtering / All protocols / IPS/IDS |
+
+### 速判口訣
+
+- **Web 攻擊** → WAF
+- **VPC 邊界 + FQDN** → Network Firewall
