@@ -140,3 +140,9 @@ You can configure any access point to accept requests only from a virtual privat
 ## 直接用 ENI 插拔進行故障轉移(私有ip不變更)
 
 ![圖 13](https://img.kyomind.tw/img-20251101-111830.png)
+
+## 合理的 Bastion Host 架構
+
+兩個 VPC，一公一私。 公有 VPC 放 Bastion Host，私有 VPC 放內部資源。Bastion Host 透過 Private IP 連接私有 VPC 的資源。
+
+![圖 14](https://img.kyomind.tw/img-20251101-114637.png)

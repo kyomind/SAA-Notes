@@ -225,3 +225,10 @@
 64. ★★ SQS vs Amazon MQ - 消息佇列服務對比
     1. **SQS**：**AWS 原生服務**，簡單便宜，適合新應用開發
     2. **Amazon MQ**：**相容 ActiveMQ/RabbitMQ**，用於遷移舊系統（已用 ActiveMQ/RabbitMQ 的應用無需改程式碼）
+65. ★★ Bastion Host 網路架構與安全設計
+    1. **位置限制**：**必須在公有子網路（Public Subnet）**，才能從 internet 連線進來，是唯一的入口點
+    2. **IP 配置**：需要 **Elastic IP 或 Public IP**；私有子網路的資源不需要也不該有
+66. ★ Elastic IP 安全最佳實踐 - 私有子網路資源的關鍵限制
+    1. **技術能力 vs 安全原則**：技術上可以在私有子網路的 EC2 附加 Elastic IP，但違反安全最佳實踐
+    2. **風險分析**：私有子網路 EC2 若附加 Elastic IP，就變成可從 internet 直接訪問，**破壞了「私有」的安全設計**
+    3. **設計原則**：**公網資源用 EIP，私網資源不該有**
