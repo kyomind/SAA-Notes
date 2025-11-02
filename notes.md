@@ -331,3 +331,30 @@
        - **Presentation Tier**（展示層）：前端 UI、使用者介面
        - **Application Tier**（應用層）：後端 API、商業邏輯
        - **Data Tier**（資料層）：資料庫、儲存系統
+95. ★★ Site-to-Site VPN 連線必要元件
+    1. **核心觀念**：要讓 AWS VPC 跟地端機房溝通，雙方都要有「門」（**Customer Gateway** 和 **Virtual Private Gateway**）
+    2. **VPC 外部配置**：**Customer Gateway**（你的 VPN 設備，硬體或軟體）+ **靜態公網 IP**（此設備必須有固定的公網 IP）
+96. 😇 Site-to-Site VPN 架構與實戰經驗
+    1. **典型應用場景**：傳統企業有地端的 SAP、Oracle 等系統搬不動，用 Site-to-Site VPN 跟 AWS 打通
+    2. **架構示意**：你的機房 [Customer Gateway (需要 static IP)] ←--VPN Tunnel--→ AWS VPC [Virtual Private Gateway]
+97. ★★ Site-to-Site VPN 題目判斷標準
+    1. **VPC 外部設定**：題目問「VPC 外部要設定什麼」→ 一定是 **Customer Gateway**
+    2. **VPC 內部配置**：題目問「VPC 內部要設定什麼」→ **Virtual Private Gateway + Route Table + Security Group**（三個都需要）
+98. ★★ Virtual Private Gateway (VPG) 架構與公網暴露原理
+    1. **VPG 公網特性**：**VPG 有 AWS 提供的公網 endpoint**；建立時 AWS 自動分配**兩個公網 IP**（用於 HA）
+    2. **連線流程**：你的機房（公網 IP）→ Internet（加密通道）→ VPG（AWS 公網 endpoint）→ VPC 內部網路
+99. ★ Site-to-Site VPN 安全設計核心觀念
+    1. **VPG 暴露vs內部資源私有**：**VPG 本身要能從公網存取**，但連線是**加密的 IPsec tunnel**；**VPC 內的資源（EC2、RDS）不需要公網 IP**，透過 VPG 就能跟機房溝通
+    2. **架構區別**：Site-to-Site VPN ≠ 將 EC2 放在 public subnet；VPC **內部資源仍是私有的**，只是透過加密通道與地端溝通
+100. ★★ AWS Outposts - 邊界運算與本地處理方案
+    1. **核心本質**：**把 AWS 搬到你家機房**，在地端運行 AWS 服務（EC2、RDS、ECS 等），享受託管服務便利同時兼顧本地延遲和合規性
+    2. **典型應用場景**：需要 **low latency（低延遲）**、**local data processing（本地資料處理）**、**regulatory compliance（法規遵循）** 的工作負載
+101. ★★ CloudFront + S3 全球軟體分發方案
+    1. **場景**：全球多個 Outposts 要從 us-west-2 S3 下載大型軟體更新檔
+    2. **延遲優勢**：**Edge locations 快取**，不用每次都從 us-west-2 拉⭐️
+    3. **成本優勢**：CloudFront 流量費比跨區 S3 傳輸便宜
+    4. **管理優勢**：設定一次就完成，自動全球分發
+102. ★★ CloudFront Signed URLs - S3 內容安全分發
+    1. **權限控制**：透過 Signed URLs 限制誰能下載軟體更新，不是誰都能存取
+    2. **時效性管理**：URL 可設定過期時間，確保只有授權使用者在時間範圍內存取
+    3. **考試陷阱**：題目出現「**secure distribution**」→ 直接選 **Signed URLs**
