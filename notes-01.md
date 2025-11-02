@@ -813,7 +813,7 @@
      2. **觸發機制**：訊息被 receive 3 次後仍未刪除 → 送到 DLQ
 250. ★★ AWS WAF 核心功能與部署位置
      1. **功能**：**Web 應用防火牆**，擋常見攻擊（**SQL injection**、**XSS** 等）
-     2. **可部署位置**：CloudFront（CDN）、ALB（Application Load Balancer）、API Gateway
+     2. **可部署位置**：CloudFront⭐️（CDN）、ALB（Application Load Balancer）、API Gateway⭐️
 251. ★★ AWS WAF 部署位置的考試陷阱
      1. **限制**：❌ 不能放在 NLB（Network Load Balancer）、❌ 不能直接保護 EC2（要透過 ALB）
      2. **核心原理**：WAF 只保護 **Layer 7**（HTTP/HTTPS），所以只能接在處理 HTTP 的服務上
