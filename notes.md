@@ -290,3 +290,22 @@
 82. 😇 RDS Proxy 支援範圍與額外好處
     1. **支援資料庫**：**MySQL、PostgreSQL、Aurora**
     2. **額外收益**：**降低 failover 時間**、**IAM 整合增強安全性**
+83. ★★ AWS Global Accelerator - 非 HTTP 協定與靜態 IP 場景
+    1. **典型使用場景**：**遊戲伺服器（UDP）、IoT（MQTT）、VoIP、需要靜態 IP 的應用、快速區域 failover**
+    2. **核心特性**：**Anycast IP** 提供靜態全球 IP、支援**非 HTTP 協定**（相比 CloudFront 只支援 HTTP/HTTPS）
+84. 👀 CloudFront vs Global Accelerator 考試判斷陷阱
+    1. **CloudFront**：S3 靜態網站、內容分發、**HTTP/HTTPS 協定**
+    2. **Global Accelerator**：**非 HTTP 協定或需要固定 IP**（UDP/MQTT/VoIP 等）
+    3. **記憶重點**：不要因為看到「全球加速」就選 Global Accelerator，要看**協定類型和後端服務特性**
+85. ★★ 解耦架構 (Decoupled Architecture) 服務判斷 - 系統間通訊與消息傳遞
+    1. **核心概念**：**讓系統各組件獨立運作，透過中間層傳遞訊息/任務**，避免直接溝通
+    2. **標準解耦服務**：**SQS**（訊息佇列，A 系統 → 佇列 ← B 系統）、**SNS**（Pub/Sub 發佈/訂閱）、**EventBridge**（事件驅動）、**SWF**（複雜工作流協調）
+86. 👀 解耦架構常見陷阱選項 - 錯誤原因分析
+    1. **RDS/DynamoDB**：資料庫服務，存放資料但**不能解決系統間通訊問題**
+    2. **VPC Peering**：網路連線工具，讓 VPC 互通但**on-premises 根本無法使用**（Peering 只限 VPC 之間）
+87. ★ Amazon SWF (Simple Workflow Service) - 工作流程協調與長時間任務管理
+    1. **核心功能**：**協調分散式應用中的工作流程**，確保任務按順序執行、追蹤狀態
+    2. **關鍵特性**：**支援 human tasks（人工介入）**、**長時間工作流（最長 1 年）**、屬於**解耦架構工具**
+88. 😇 SWF vs Step Functions - 工作流服務選擇與實務應用
+    1. **實務優先順序**：**優先用 Step Functions**（現代化、更好的整合）
+    2. **SWF 考試應用**：SAA-C03 考試仍會出現 SWF，**舊系統或複雜分散式工作流才考慮**

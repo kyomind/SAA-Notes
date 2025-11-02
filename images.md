@@ -156,3 +156,7 @@ You can configure any access point to accept requests only from a virtual privat
 ## RDS Proxy 管理 Lambda 連線池
 
 ![圖 16](https://img.kyomind.tw/img-20251102-113148.png)
+
+## CloudFront + S3 管理靜態資源
+
+![圖 17](https://img.kyomind.tw/img-20251102-113247.png)
