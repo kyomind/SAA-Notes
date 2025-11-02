@@ -551,17 +551,18 @@
 176. ★ EC2ThrottledException 的發生原因與解決方案
      1. **發生原因**：Subnet IP 不足、ENI 配額達上限、Lambda 快速 scale 時建立 ENI 太慢
      2. **解決方案**：確保 subnet 有足夠 IP（至少保留幾十個）、用 `/24` 或更大的 CIDR、Lambda 會重用 ENI，不是每次執行都建新的
-177. ★ Lambda + VPC 的核心記憶點
+177. ★ Lambda + VPC 的核心記憶點⭐️
      1. **簡潔定義**：Lambda 要進 VPC = 需要網卡（ENI）= 需要 IP
-     2. **常考場景**：Lambda 連 RDS、EFS、內部 API 都需要在 VPC 內
+     2. **常考場景**：Lambda 連 RDS、EFS、內部 API 都需要在 VPC 內⭐️
 178. ★ Lambda 在 VPC 內 scale 失敗的第一大原因：ENI 配額達上限
      1. **原因分析**：VPC 有 ENI 數量限制，Lambda scale 時需要更多 ENI
      2. **考試重點**：當 Lambda 快速擴展時，可能因為 ENI 配額已滿而無法建立新 instance
+     3. ENI 配額需要透過 AWS Support 提升
 179. ★ Lambda 在 VPC 內 scale 失敗的第二大原因：Subnet IP 不足
      1. **原因分析**：ENI 需要消耗 IP，Subnet CIDR 太小（如 /28 只有 16 個 IP）導致 IP 枯竭
-     2. **考試重點**：小型 subnet 無法支撐 Lambda 的大規模 scale，造成限流
-180. 👀 Lambda@Edge 是 Amazon CloudFront 的一個功能，讓您可以在應用程式的使用者附近運行代碼，從而提高性能並降低延遲。
-181. ★ Athena vs Kinesis 的核心定位區別
+     2. **考試重點**：小型 subnet 無法支撐 Lambda 的大規模 scale，造成限流⭐️
+180. (刪除)
+181. ★ Athena vs Kinesis 的核心定位區別○
      1. **Athena**：對 S3 上的**靜態資料**做 SQL 查詢 → batch processing / 事後查詢
      2. **Kinesis**：處理**即時串流資料** → 即時 real-time 應用（Data Streams/Analytics/Firehose）
      3. **考試判斷**：歷史資料/S3 分析 = Athena；real-time 流量 = Kinesis
