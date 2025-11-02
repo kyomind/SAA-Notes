@@ -400,3 +400,29 @@
 114. ★ Snowball Edge 考試判斷標準
     1. **選 Snowball Edge**：看到「**離線 / 斷網 / 邊緣運算 / 本地處理 / 即時分析**」等關鍵字
     2. **選普通 Snowball**：只說「**大量資料搬 AWS**」，沒提本地運算需求
+115. ★★ AWS Storage Gateway - 混合雲儲存統一存取
+    1. **核心概念**：**讓地端應用透過標準協定存取 AWS 雲端儲存**，就像存取本地儲存一樣
+    2. **三種模式**：**File Gateway**（NFS/SMB→S3、快取熱門檔案）、**Volume Gateway**（iSCSI→S3+EBS Snapshots、分 Cached 和 Stored）、**Tape Gateway**（虛擬磁帶庫→S3/Glacier、取代實體磁帶）
+116. ★ File Gateway 實務應用
+    1. **協定**：NFS / SMB
+    2. **後端**：Amazon S3
+    3. **適用場景**：檔案共享、內容分發、備份
+117. ★ Volume Gateway 深入對比 - Cached vs Stored
+    1. **協定**：iSCSI (區塊儲存)
+    2. **後端**：S3 + EBS Snapshots
+    3. **Cached 模式**：**主資料在雲端 S3，常用資料快取本地**（讀快、容量受限）
+    4. **Stored 模式**：**主資料在地端，非同步備份到 S3**（容量大但初次上傳慢）
+118. 👀 Tape Gateway - 舊系統備份整合
+    1. **協定**：iSCSI VTL (虛擬磁帶庫)
+    2. **後端**：S3 / Glacier
+    3. **用途**：取代實體磁帶備份系統，適合長期歸檔需求
+119. 😇 Storage Gateway 核心價值四要素
+    1. **無痛整合**：地端應用不需改寫程式碼
+    2. **混合雲資料同步**：資料自動同步到 AWS
+    3. **成本優化**：用 S3 取代昂貴的地端儲存設施
+    4. **災難復原**：雲端自動備份，提升 DR 能力
+120. ★★ Storage Gateway 考試判斷關鍵字
+    1. **看到「hybrid storage」或「on-premises 持續存取雲端」**→ **Storage Gateway**
+    2. **需要 NFS/SMB 檔案共享**→ **File Gateway**
+    3. **需要區塊儲存/磁碟介面**→ **Volume Gateway**
+    4. **需要磁帶介面/舊備份系統相容**→ **Tape Gateway**
