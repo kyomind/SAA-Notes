@@ -402,7 +402,7 @@
     2. **選普通 Snowball**：只說「**大量資料搬 AWS**」，沒提本地運算需求
 115. ★★ AWS Storage Gateway - 混合雲儲存統一存取
     1. **核心概念**：**讓地端應用透過標準協定存取 AWS 雲端儲存**，就像存取本地儲存一樣
-    2. **三種模式**：**File Gateway**（NFS/SMB→S3、快取熱門檔案）、**Volume Gateway**（iSCSI→S3+EBS Snapshots、分 Cached 和 Stored）、**Tape Gateway**（虛擬磁帶庫→S3/Glacier、取代實體磁帶）
+    2. **三種模式**：**File Gateway**（NFS/SMB）、**Volume Gateway**（iSCSI）、**Tape Gateway**（磁帶庫）
 116. ★ File Gateway 實務應用
     1. **協定**：NFS / SMB
     2. **後端**：Amazon S3
