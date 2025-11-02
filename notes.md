@@ -358,3 +358,16 @@
     1. **權限控制**：透過 Signed URLs 限制誰能下載軟體更新，不是誰都能存取
     2. **時效性管理**：URL 可設定過期時間，確保只有授權使用者在時間範圍內存取
     3. **考試陷阱**：題目出現「**secure distribution**」→ 直接選 **Signed URLs**
+103. ★★ S3 Server-Side Encryption (SSE) 核心概念與實作方式
+    1. **技術特性**：使用 **256-bit AES-256 演算法**、每個物件用**獨立密鑰加密**、**密鑰本身也會加密**並定期輪替
+    2. **實作方式**：在 **bucket policy** 中要求所有上傳須帶 **x-amz-server-side-encryption header**
+104. 😇 SSE-S3 vs SSE-C 加密方案選擇
+    1. **SSE-S3**：AWS 託管密鑰，使用 `x-amz-server-side-encryption header` 啟用
+    2. **SSE-C**：客戶提供密鑰，需提供 `x-amz-server-side-encryption-customer-algorithm`、`x-amz-server-side-encryption-customer-key`、`x-amz-server-side-encryption-customer-key-MD5` 三個 headers
+105. ★ SCP 常見陷阱 - 權限控管工具不是登入機制
+    1. **SCP 的真正用途**：**限制子帳號的權限範圍**（禁止使用特定 region、禁止刪除 CloudTrail）
+    2. **考試陷阱**：題目提 Organizations → 容易聯想 SCP；但若題目要的是**統一登入機制**（而非權限控管），SCP 就是**錯誤答案**
+    3. **記憶重點**：**SCP 跟登入無關**，是權限控制工具；登入問題應找 **IAM Identity Center**
+106. ★ Directory Service vs IAM Identity Center 選擇陷阱
+    1. **Directory Service 限制**：**只負責目錄管理**（AD Connector、Managed Microsoft AD），太籠統、**缺少跨帳戶認證功能**
+    2. **正確答案**：跨帳戶統一登入應選 **IAM Identity Center 整合 Directory Service**（前者做多帳戶認證，後者做目錄管理）

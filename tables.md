@@ -630,3 +630,31 @@ S3 Pre-Signed URL → 讓用戶「**上傳/下載**」但不給 AWS 憑證
 
 - Transfer Acceleration & CloudFront：HTTP/HTTPS（應用層）
 - Global Accelerator：TCP/UDP（傳輸層）
+
+## S3 加密方式比較
+
+| 加密類型    | Header                                    | 金鑰管理者 | 使用場景               |
+| ----------- | ----------------------------------------- | ---------- | ---------------------- |
+| **SSE-S3**  | `x-amz-server-side-encryption`            | AWS 管理   | 一般用途，最簡單       |
+| **SSE-KMS** | `x-amz-server-side-encryption: aws:kms`   | AWS KMS    | 需要金鑰審計、權限控管 |
+| **SSE-C**   | `x-amz-server-side-encryption-customer-*` | 你自己管理 | 自帶金鑰、合規要求     |
+
+### SSE-S3 特徵
+
+- 只需一個 header：`x-amz-server-side-encryption`
+- AWS 自動輪替 master key
+- AES-256 加密
+- **最常考**：用 Bucket Policy 強制加密
+
+### SSE-C 特徵
+
+- 需要三個 header（algorithm、key、MD5）
+- 你負責金鑰管理
+- 每次請求都要帶金鑰
+
+**白話文**：沒帶加密 header 就不准上傳
+
+### 記憶技巧
+
+- SSE-S3 = 一個 header 搞定
+- SSE-C = 三個 customer header（customer 自帶金鑰當然麻煩）
