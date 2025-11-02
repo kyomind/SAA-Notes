@@ -5,9 +5,9 @@
    2. **存取控制**：定義策略在細粒度級別控制資料存取（grant and revoke permissions）
    3. **權限配置**：支援 IAM users、roles、groups 及聯邦式 Active Directory users
    4. **權限指派方式**：針對目錄物件（如 tables、columns）而非 buckets 和 objects
-2. ★ FSx for Windows File Server = AWS 上的 Windows 檔案伺服器
+2. 😇 FSx for Windows File Server = AWS 上的 Windows 檔案伺服器
    1. **特性**：完全託管的 **Windows 原生檔案系統**，支援 **SMB 協定**（Windows 的檔案共享協定）
-   2. **存取方式**：跨平台存取，**Windows、Linux、macOS** 都能用
+   2. **存取方式**：**跨平台存取**，**Windows、Linux、macOS** 都能用
 3. ★★ Amazon Data Lifecycle Manager (DLM) = EBS Snapshot 生命週期管理工具
    1. **功能**：自動按排程創建、保留、刪除 EBS snapshot
    2. **應用場景**：題目明確說 EBS snapshot 時，DLM 是標準答案（相比 AWS Backup）
@@ -251,3 +251,42 @@
 71. 😇 Network Firewall 部署架構
     1. **位置**：VPC 邊界（不掛在 ALB 上）
     2. **流量必經**：所有進出流量 → Network Firewall（Layer 7 檢查）→ 應用層
+72. ★ CIDR Block 核心概念與 VPC 地址管理
+    1. **Block 定義**：**一個完整的 IP 地址段**（例：Primary 10.0.0.0/16、Secondary 10.1.0.0/16）
+    2. **多 Block 支援**：VPC 最多 **5 個 CIDR blocks**（1 個 Primary + 4 個 Secondary），每個 block **獨立的地址池**
+    3. **Exhaustion 含義**：「blocks are nearing exhaustion」= **所有 CIDR blocks 加總的可用空間快用完**
+73. 😇 VPC CIDR Block 名詞釐清
+    1. **複數用法**：AWS 文件習慣用複數「blocks」因為 VPC 支援多個 CIDR（題目可能只有 1 個 block，但「blocks」是通用說法）
+    2. **配置範例**：Primary: 10.0.0.0/16（必須有）+ Secondary: 10.1.0.0/16、172.31.0.0/16（額外附加）
+74. ★★ VPC IPv4 Exhaustion 擴展方案 - IPv6-Only Subnet
+    1. **問題場景**：VPC 的 IPv4 CIDR blocks **加總快用完**（exhaustion）
+    2. **正確解法**：建立 **IPv6-only subnet**（前提：VPC 已啟用 IPv6）
+    3. **核心優勢**：IPv6 **無限供應**，不佔用 IPv4 資源，實現**無限擴展性**
+75. ★ IPv4 vs IPv6 架構分層 - VPC 設計原則
+    1. **VPC 層級**：IPv4 **強制存在、不可移除**（無法停用或完全遷移）
+    2. **Subnet 層級**：可以 **IPv6-only**（純 IPv6，不需要 IPv4 CIDR）
+    3. **架構設計**：VPC 保持雙棧（IPv4 + IPv6）；新 subnet 用 IPv6-only 擴展
+76. 👀 IPv4 Exhaustion 常見陷阱方案
+    1. **❌ 移除/停用 VPC 的 IPv4**：**不可能**，IPv4 是強制的
+    2. **❌ 新增更大的 IPv4 subnet**：**不符合 scalability**，IPv4 本質有限
+    3. **✅ 建 IPv6-only subnet**：**符合題意**，實現長期擴展
+77. ★ VPC 和 Subnet 的 IPv4 層級差異 - 架構分層理解
+    1. **VPC 層級**：創建時**必須指定 IPv4 CIDR**（例：10.0.0.0/16）、**地址池總量**、**無法移除**
+    2. **Subnet 層級**：**從 VPC CIDR 切分**（例：10.0.1.0/24）、**實際配 IP 給資源的地方**、EC2/RDS 等的 IPv4 地址來自此層
+78. 😇 IPv4 層級架構比喻與陷阱認知
+    1. **層級比喻**：VPC = 倉庫總容量、Subnet = 具體貨架
+    2. **陷阱認知**：「停用 VPC 的 IPv4」= 拆掉整個倉庫，**所有貨架（subnet）都會掛**，這是為什麼不可能移除 VPC 層級的 IPv4
+79. ★ VPC IPv6 啟用與 Subnet 建立流程
+    1. **VPC 建立**：**必須指定 IPv4 CIDR**（例：10.0.0.0/16）；IPv6 CIDR **可選、隨時可加**
+    2. **IPv6-only Subnet 建立**：VPC **先有 IPv6 CIDR**（例：2001:db8::/56） → **Subnet 的 IPv6 範圍從 VPC 的 IPv6 CIDR 切分**（例：2001:db8::/64）
+    3. **獨立性**：IPv6-only subnet **不佔用 IPv4 CIDR**，完全獨立運作
+80. 😇 VPC IPv6 實務配置範例
+    1. **雙棧 VPC**：VPC: 10.0.0.0/16（IPv4）+ 2001:db8::/56（IPv6）
+    2. **IPv6-only Subnet**：2001:db8::/64（純 IPv6，不需要 IPv4 CIDR 分配）
+    3. **應用場景**：IPv4 exhaustion 時直接建 IPv6-only subnet 擴展，VPC 已有 IPv6 CIDR 即可實現
+81. ★★ RDS Proxy - Lambda 高併發連線池管理方案
+    1. **問題核心**：Lambda 高併發時每個實例建立新連線，導致 RDS **連線數爆掉**
+    2. **解決方案**：**RDS Proxy 複用連線池**，Lambda 不直接連 RDS，改透過 Proxy 的 **warm connection pool** 分配連線，即使 Lambda 瞬間擴展數萬個也能穩定控制對 RDS 的實際連線數
+82. 😇 RDS Proxy 支援範圍與額外好處
+    1. **支援資料庫**：**MySQL、PostgreSQL、Aurora**
+    2. **額外收益**：**降低 failover 時間**、**IAM 整合增強安全性**
