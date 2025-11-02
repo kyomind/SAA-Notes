@@ -371,3 +371,10 @@
 106. ★ Directory Service vs IAM Identity Center 選擇陷阱
     1. **Directory Service 限制**：**只負責目錄管理**（AD Connector、Managed Microsoft AD），太籠統、**缺少跨帳戶認證功能**
     2. **正確答案**：跨帳戶統一登入應選 **IAM Identity Center 整合 Directory Service**（前者做多帳戶認證，後者做目錄管理）
+107. ★★ AWS Config - 資源配置變更持續記錄與合規檢查
+    1. **核心功能**：**持續記錄 AWS 資源配置狀態變化**、**自動檢查是否符合規範**（類似「配置的 Git history + 自動 linter」）
+    2. **Config Rules**：自動檢查資源是否符合規則（例如：所有 S3 bucket 必須加密、EC2 必須在特定 VPC）
+108. 😇 AWS Config vs CloudTrail - 配置記錄與稽核對比
+    1. **CloudTrail**：記錄「**誰做了什麼操作**」（API calls）、誰在什麼時間改了什麼
+    2. **Config**：記錄「**資源配置的狀態變化**」（configuration snapshots）、檢查配置是否符合規範
+    3. **應用場景**：合規稽核、安全分析、故障排查找出根本原因
