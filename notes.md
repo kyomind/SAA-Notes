@@ -378,3 +378,15 @@
     1. **CloudTrail**：記錄「**誰做了什麼操作**」（API calls）、誰在什麼時間改了什麼
     2. **Config**：記錄「**資源配置的狀態變化**」（configuration snapshots）、檢查配置是否符合規範
     3. **應用場景**：合規稽核、安全分析、故障排查找出根本原因
+109. ★★ EC2 存取 AWS 服務最佳實踐 - IAM Role vs Access Key
+    1. **正確做法**：**給 EC2 掛 IAM Role**（自動輪換臨時憑證、無需管理金鑰、遵循最小權限原則）
+    2. **絕對禁止**：**在 EC2 裡放 IAM User 的 Access Key**（洩露風險高、無自動輪換）
+    3. **記憶口訣**：**機器用 Role，人類用 User**
+110. 😇 MFA - 多因子驗證安全防護
+    1. **應用對象**：**系統管理員和人類使用者**（登入 AWS Console、使用 API 時）
+    2. **防護機制**：多一層驗證，防止帳號被盜用（類似銀行 App 的 OTP）
+    3. **記憶**：MFA = **Multi-Factor Authentication**（雙因子驗證）
+111. ★ MFA 對 Console 和 API 的不同驗證方式
+    1. **Console 登入**：輸入帳密 → 輸入 MFA code → 進入（直覺式流程）
+    2. **API 呼叫**：需要用**臨時憑證（STS）+ MFA token**（比 Console 複雜，通常只用於高權限操作如刪 RDS、改 IAM policy）
+    3. **考試重點**：題目說「MFA can control access to AWS service APIs」指的就是透過 STS 機制實現
