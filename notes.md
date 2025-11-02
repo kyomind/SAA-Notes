@@ -390,3 +390,7 @@
     1. **Console 登入**：輸入帳密 → 輸入 MFA code → 進入（直覺式流程）
     2. **API 呼叫**：需要用**臨時憑證（STS）+ MFA token**（比 Console 複雜，通常只用於高權限操作如刪 RDS、改 IAM policy）
     3. **考試重點**：題目說「MFA can control access to AWS service APIs」指的就是透過 STS 機制實現
+112. ★★ Auto Scaling Cooldown Period - 擴縮容間隔控制
+    1. **功能**：防止 Auto Scaling group 在前一次擴容/縮容完成前立即執行下一次擴縮容
+    2. **預設值**：300 秒
+    3. **特性**：可依需求調整配置
