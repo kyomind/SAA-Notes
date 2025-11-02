@@ -426,3 +426,17 @@
     2. **需要 NFS/SMB 檔案共享**→ **File Gateway**
     3. **需要區塊儲存/磁碟介面**→ **Volume Gateway**
     4. **需要磁帶介面/舊備份系統相容**→ **Tape Gateway**
+121. ★★ Lambda VPC 存取原理 - ENI 自動建立機制
+    1. **預設行為**：Lambda **預設不在你的 VPC 內**，跑在 AWS 自己的網路環境
+    2. **VPC 存取方式**：當設定 Lambda 要存取 VPC 資源（例如 RDS）時，AWS 會**自動建立 ENI**（虛擬網卡）做為連線橋樑
+    3. **技術原理**：Lambda 透過 ENI 連進你的 VPC，就像**插網路線**讓 Lambda 能存取私有網路資源
+122. ★★ Lambda 多組合 VPC 配置 - ENI 數量與 IP 消耗
+    1. **ENI 產生規則**：每個「**Subnet + Security Group**」組合產生一個 ENI，相同組合複用同一個 ENI⭐️
+    2. **配置範例**
+       - Subnet A + Security Group X → 1 個 ENI
+       - Subnet B + Security Group X → 另 1 個 ENI
+       - Subnet A + Security Group Y → 又 1 個 ENI
+    3. **IP 消耗影響**：Lambda 連 VPC 會消耗 subnet IP，若 CIDR 太小可能 **IP 不足導致 Lambda 無法冷啟**
+123. ★★ ENI 與 Private IP 的綁定關係 - IP 消耗機制
+    1. **IP 分配規則**：**每個 ENI = 至少 1 個 private IP**；ENI 會從 subnet 的 CIDR 中分配至少一個 private IP
+    2. **本質限制**：**ENI 本身一定會佔用 IP**，無論是否在使用中（每個 ENI 都會消耗 1 個 private IP）
