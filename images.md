@@ -152,3 +152,7 @@ You can configure any access point to accept requests only from a virtual privat
 重點：需要一個**中繼的 EC2 instance** 來跑 DMS agent。
 
 ![圖 15](https://img.kyomind.tw/img-20251101-141404.png)
+
+## RDS Proxy 管理 Lambda 連線池
+
+![圖 16](https://img.kyomind.tw/img-20251102-113148.png)
