@@ -1018,7 +1018,6 @@
      2. **Bastion Host 用途**：給 **人** 使用的 **SSH/RDP 跳板**
      3. **NAT Instance 用途**：給 **機器** 使用的 **私網流量轉發器**
      4. **快速區分**：NAT Instance 是「出口代辦」，Bastion Host 是「入口守門」
-
 309. ★★ Interface Endpoint （介面端點）
      1. **本質**：在 VPC 裡創建一個 **ENI (網卡)**，配上私有 IP
      2. **運作**：流量透過 ENI 走 **AWS PrivateLink** 到服務
