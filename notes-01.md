@@ -763,45 +763,49 @@
 236. ★ AWS Systems Manager (SSM) Parameter Store 的用途
      1. **核心功能**：儲存密碼和機密資訊
      2. **版本管理**：追蹤值隨時間的變化歷史⭐️
-237. ★ AWS Shield Advanced 的關鍵特性○
+237. ★ AWS Shield Advanced 的關鍵特性
      1. **24/7 支援**：需要 DDoS Response Team (DRT) 的專業協助
      2. **成本保護**：提供 AWS 帳單報銷保障，降低 DDoS 攻擊成本
      3. 一個月要價 3,000 美元
-238. ★★ SQS Visibility Timeout 的運作機制
+238. ★ SQS Visibility Timeout 的運作機制
      1. **定義**：訊息的「**處理鎖定期**」，控制訊息可見性
-     2. **核心行為**：Consumer 收到訊息後，其他 consumer 在此期間暫時看不到這則訊息；時間到還未刪除，訊息會自動重新出現在 queue 中
-     3. **時間設定**：預設 30 秒，最長 12 小時
+     2. **核心行為**：Consumer 收到訊息後，其他 consumer 在此期間**暫時看不到**這則訊息
+     3. 時間到還**未刪除**，訊息會自動重新出現在 queue 中
+     4. **時間設定**：預設 30 秒，最長 12 小時
 239. ★★ SQS 優先權處理的正確姿勢
-     1. **核心觀念**：SQS 沒有原生的訊息優先權機制 ❌
-     2. **正確做法**：使用**多個 queue 分流**，並控制 consumer 的**輪詢順序** ✅
+     1. **核心觀念**：SQS 沒有原生的訊息優先權機制
+     2. **正確做法**：使用**多個 queue 分流**，並控制 consumer 的**輪詢順序**
      3. **記憶點**：想要優先權 = 用多個 queue 分流
-     4. **EC2 Consumer 行為**：持續檢查 Premium Queue → 有就處理；Premium 空了 → 才檢查 Free Queue
+     4. **EC2 Consumer 行為**：持續檢查 Premium Queue → 有就處理；**Premium 空了 → 才檢查 Free Queue**
+     5. **考試提醒**：這是非常常見的考試思路和實務解決方案
 240. 👀 AWS 中負責不同任務協調的服務比較
-     - SQS = 訊息佇列,解耦元件
+     - SQS = 訊息佇列，解耦元件
      - SWF = 工作流程協調
-241. SWF 現在較少出現在考試，AWS 主推 Step Functions 取代 SWF。遇到工作流程題目，Step Functions 是更新的答案
+241. SWF 現在較少出現在考試，AWS 主推 Step Functions 取代 SWF。遇到工作流程題目，Step Functions 是**更新**的答案
 242. S3 Event 可發送到：
      - SNS Topic
      - SQS Queue
      - Lambda
 243. ★★ S3 → SNS 實現 Fanout Pattern 的關鍵設計
-     1. **問題**：S3 event notification 只能設一個目標，無法同時通知多個團隊 ❌
-     2. **解決方案**：使用 **SNS fanout pattern**：S3 → SNS Topic → 多個 endpoint（可同時通知多個接收者） ✅
-     3. **對比**：直接用 SQS 只能一對一，無法 fanout
-     4. **考試記憶**：需要多個接收者 = SNS fanout pattern
+     1. **問題**：S3 event notification 只能設一個目標，無法同時通知多個團隊
+     2. **解決方案**：使用 **SNS fanout pattern**：S3 → SNS Topic → 多個 endpoint（可同時通知多個接收者）
+     3. Endpoint 可包含**多個 SQS queue、Lambda function、HTTP endpoint**⭐️
+     4. **對比**：直接用 SQS 只能一對一，無法 fanout
+     5. **考試記憶**：需要多個接收者 = SNS fanout pattern
 244. 😇 S3 Event 通知多方的考試技巧
      1. **題目特徵**：看到「S3 event 要通知多方」
      2. **答案必有**：SNS
 245. ★★ SNS 與 SQS 的訂閱關係是 Push Model
      1. **核心概念**：SQS 訂閱 SNS，**不是 poll SNS**
-     2. **運作方式**：**SNS 是 push model**⭐️，主動推送訊息到訂閱的 SQS queue
-     3. **訂閱流程**：SQS queue 訂閱 SNS topic → SNS 主動推送訊息到 queue
-246. ★★ SQS 訊息保留期**預設 4 天，最長 14 天**
+     2. **運作方式**：**SNS 是 push model**，主動推送訊息到訂閱的 SQS queue
+     3. **訂閱流程**：SQS queue **訂閱 SNS topic**⭐️ → SNS 主動推送訊息到 queue
+246. ★ SQS 訊息保留期**預設 4 天，最長 14 天**⭐️
      1. 若 batch job 每週才處理
      2. 需調整 `SetQueueAttributes` 將訊息保留期設為 7 天以上
 247. ★★ SQS 送訊息到 DLQ 的觸發條件
      1. **唯一觸發條件**：超過 **maxReceiveCount**
      2. **判斷邏輯**：當一則訊息被 receive 但沒被刪除的次數 > 設定的閾值，就會被移到 DLQ
+     3. **推測原理**：系統推測反覆被接收卻不被刪除的訊息可能**無法正常處理**⭐️
 248. ★ SQS 訊息重複接收的常見原因
      1. **處理失敗**：Lambda 處理訊息時 throw exception，訊息回到 queue
      2. **Visibility timeout 太短**：處理還沒完成，訊息就又變 visible，被重複接收
@@ -811,10 +815,11 @@
      2. **觸發機制**：訊息被 receive 3 次後仍未刪除 → 送到 DLQ
 250. ★★ AWS WAF 核心功能與部署位置
      1. **功能**：**Web 應用防火牆**，擋常見攻擊（**SQL injection**、**XSS** 等）
-     2. **可部署位置**：CloudFront⭐️（CDN）、ALB（Application Load Balancer）、API Gateway⭐️
+     2. **可部署位置⭐️必背！**：CloudFront、ALB、API Gateway
 251. ★★ AWS WAF 部署位置的考試陷阱
-     1. **限制**：❌ 不能放在 NLB（Network Load Balancer）、❌ 不能直接保護 EC2（要透過 ALB）
-     2. **核心原理**：WAF 只保護 **Layer 7**（HTTP/HTTPS），所以只能接在處理 HTTP 的服務上
+     1. **限制**：不能放在 NLB（Network Load Balancer）
+     2. **限制**：不能直接保護 EC2（要透過 ALB）
+     3. **核心原理**：WAF 只保護 **Layer 7**（HTTP/HTTPS），所以只能接在**處理 HTTP 的服務**上⭐️
 252. ★★ AWS WAF 保護場景的判斷
      1. **題目特徵**：提到「防止 **SQL injection** / **XSS**」或「**rate limiting** / **IP blocking**」
      2. **答案**：選 **WAF**
@@ -824,20 +829,22 @@
      3. **應用場景**：需要主動阻擋攻擊時 → 選 **WAF**；只需要威脅監控時 → 選 **GuardDuty**
 254. ★ CloudFront Origin 來源服務的支援限制
      1. **定義**：**Origin** = CloudFront 後面接的來源服務
-     2. **支援服務**：只能接 **HTTP/HTTPS 相關服務**（ALB、S3、custom HTTP server）
-     3. **考試陷阱**：❌ 不能接 **NLB**（NLB 是 Layer 4，不是 HTTP/HTTPS）
+     2. **支援服務**：只能接 **HTTP/HTTPS 相關服務⭐️**（ALB、S3、custom HTTP server）
+     3. **考試陷阱**：不能接 **NLB**（NLB 是 Layer 4，不是 HTTP/HTTPS）
 255. 😇 S3 + CloudFront 靜態網站的標準架構
      1. **S3 角色**：存放**靜態檔案**（HTML/CSS/JS/圖片），開啟 website hosting 功能
      2. **CloudFront 角色**：**CDN 服務**，快取內容到全球邊緣節點，加速訪問
 256. 👀 CloudFront + S3 靜態網站架構的考試陷阱
-     1. **錯誤做法**：CloudFront 直接指向 S3 website endpoint ❌（無法使用 OAI，安全性差）
-     2. **正確做法**：CloudFront 指向 S3 REST endpoint + 使用 OAI ✅（安全且標準）
-257. ★ CloudFront Origin Group 的 Failover 機制
+     1. **錯誤做法**：CloudFront 直接指向 S3 website endpoint（無法使用 OAI，安全性差）
+     2. **正確做法**：CloudFront 指向 S3 REST endpoint + 使用 OAI（安全且標準）
+     3. **OAI 說明**：Origin Access Identity，讓 CloudFront 安全存取**私有 S3**，防止直接存取
+257. ★★ CloudFront Origin Group 的 Failover 機制
      1. **定義**：**Origin Group** = 1 個 primary origin + 1 個 secondary origin
      2. **用途**：**高可用性設計**，不是負載分散
      3. **觸發條件**：當 primary 失敗（**5xx 錯誤**）時，自動切換到 secondary
+     4. **考試重點**：CloudFront 高可用性的核心機制，容易與負載分散概念混淆
 258. S3 預設全私有 - 只有 owner 能存取
-259. ★★ SSM Parameter Store 的組態管理應用
+259. ★ SSM Parameter Store 的組態管理應用
      1. **核心用途**：支援 **externally maintain**（外部維護）、**version history**（版本歷史）、**configuration values**（組態值）管理
      2. **特性**：專門處理應用組態的中央存儲和版本控制
 260. ★ GuardDuty 的威脅偵測資料來源分析
@@ -846,7 +853,7 @@
         2. **CloudTrail Logs** - API 操作記錄監控
         3. **DNS Logs** - DNS 查詢記錄分析
      2. **不掃描的資料源**：**CloudWatch Logs**（內容過於雜亂，應用程式 logs 難以標準化分析）
-261. ★★ Amazon Inspector 用於 EC2 主機漏洞掃描
+261. ★ Amazon Inspector **用於 EC2 主機漏洞掃描**⭐️概念類似 GitHub 上的 Dependabot
      1. **核心用途**：檢測 **OS vulnerabilities**（作業系統漏洞）**within EC2 instances**（EC2 內部）
      2. **特性**：支援 **定期掃描**（weekly）、提供 **concrete recommendations**（具體建議）
 262. ★ AWS 安全服務的角色分工
@@ -855,44 +862,48 @@
      3. **Shield**：擋 DDoS 攻擊
 263. ★★ Secrets Manager vs SSM Parameter Store 密碼存儲對比
      1. **SSM Parameter Store**：便宜甚至免費，但 **密碼輪換需自己實作**（要寫 Lambda）
-     2. **Secrets Manager**：費用較高，但 **原生支援自動輪換**（automatic rotation）
-     3. **KMS**：加密金鑰管理服務，**不適合存密碼**
+     2. **Secrets Manager**：費用較高，但 **原生支援自動輪換**（automatic rotation）⭐️
+     3. **KMS**：加密金鑰管理服務，**不適合存密碼**⭐️
 264. ★★ Secrets Manager 自動輪換機制
      1. **核心功能**：支援 **automatic rotation**（自動輪換密碼）
-     2. **內建整合**：原生支援 RDS、Aurora、DocumentDB 等資料庫
-     3. **輪換流程**：自動產生新密碼 → 更新資料庫 → 更新 secret 值（**零停機時間**）
-265. 😇 Parameter Store 與 Secrets Manager 的取捨
-     1. **Parameter Store**：便宜甚至免費，但 **密碼輪換需自己實作**（要寫 Lambda）
-     2. **Secrets Manager**：費用較高，但 **省事**（原生支援自動輪換）
+     2. **內建整合**：**原生支援** RDS、Aurora、DocumentDB 等資料庫⭐️
+     3. **輪換流程**：自動產生新密碼 → 更新資料庫 → 更新 secret 值（**零停機時間⭐️**）
+265. 😇 Client-side Encryption 考試判斷關鍵字
+     1. **"even admins can't see"** → 直接選 Client-side Encryption
+     2. **"zero-trust"** → 客戶端加密
+     3. **"application must encrypt before storing"** → 應用程式層加密
+     4. **"database layer should never see plaintext"** → 資料庫層看不到明文
 266. ★★ Amazon Macie 敏感資料偵測服務
      1. **核心功能**：使用 ML **自動發現敏感資料**（PII、財務資料等）
-     2. **典型應用**：掃描 S3 bucket 安全性問題、提供 bucket 清單（未加密、公開、跨帳號共享）
+     2. **典型應用**：掃描 **S3 bucket** 安全性問題、提供 bucket 清單（未加密、公開、跨帳號共享）
+     3. **服務範圍**：**S3 專用服務**，只能掃描 S3 bucket 中的資料
 267. ★ Macie 與 GuardDuty 的功能定位
      1. **Macie**：專注 **S3 資料內容安全**（敏感資料偵測）
      2. **GuardDuty**：偵測 **整體威脅行為**（網路/API 層級威脅監控）
 268. 😇 Macie 考試判斷標準
      1. 看到「S3 + 敏感資料偵測」→ **Macie**
      2. 看到「PII 掃描」→ **Macie**
-     3. 看到「找出公開的 S3 bucket」→ **Macie**
+     3. 看到「找出**公開**的 S3 bucket」→ **Macie**
 269. ★★ 客戶端加密（Client-side Encryption）應用場景
-     1. **判斷標準**：題目提到「**even company admins can't see**」→ 直接選 **Client-side Encryption**
+     1. **判斷標準**：題目提到「**even company admins can't see**(連 DBA 都不能看到明文)」→ 直接選 **Client-side Encryption**
      2. **運作原理**：在應用程式層面加密資料 → 寫入資料庫（密文形式）→ 資料庫無法看到明文 → 只有持有解密金鑰的客戶端能解密
+     3. 缺點是「無法用資料庫層做 `WHERE` 查詢（都是密文）」
 270. ★★ KMS Multi-region Keys 跨域加密解決方案
      1. **問題場景**：Aurora Global Database 跨多區域，單區域 KMS key 無法在其他區域解密
-     2. **解決方案**：使用 **Multi-region Keys**，每個區域都有對應的 key replica，能解密同一份資料
+     2. **解決方案**：使用 **Multi-region Keys**，每個區域都有對應的 key **replica**，能解密同一份資料
 271. ★ Aurora Client-side Encryption + KMS Multi-region Keys 組合方案
      1. **應用場景**：資料庫跨域部署 + 需要強加密（連管理員都無法看到）
      2. **實作組合**：Client-side Encryption（應用層加密） + Multi-region Keys（跨域密鑰管理） = **唯一解**
-272. S3 跨 KMS Key Replication = 解密 + 加密
+272. 👀 S3 跨 KMS Key Replication = 解密 + 加密
      1. Source Key → `kms:Decrypt`（解開舊的）
      2. Target Key → `kms:Encrypt`（用新的加密）
      3. 授權對象 → S3 Replication Service Role
      4. 你只要記得：換 Key 複製 = 要給兩把 Key 的權限。
-273. S3 Replication 在跨 KMS Key 複製時的流程：
+273. 👀 S3 Replication 在跨 KMS Key 複製時的流程：
      1. 從 Source Bucket 讀取加密物件 → 需要用 Source KMS Key 解密
      2. 用 Target KMS Key 加密
      3. 寫入 Target Bucket
-274. 👀 S3 Replication Service 的權限需求
+274. 👀 S3 Replication Service 的權限需求○
      1. 角色身份：**AWS 服務角色**（非 IAM User），需要明確授權
      2. 必要權限：Source Key 的 `kms:Decrypt` + Target Key 的 `kms:Encrypt`
 275. ★★ ACM 證書到期通知方案（EventBridge + SNS）
