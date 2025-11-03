@@ -562,44 +562,42 @@
      1. **原因分析**：ENI 需要消耗 IP，Subnet CIDR 太小（如 /28 只有 16 個 IP）導致 IP 枯竭
      2. **考試重點**：小型 subnet 無法支撐 Lambda 的大規模 scale，造成限流⭐️
 180. (刪除)
-181. ★ Athena vs Kinesis 的核心定位區別○
+181. ★ Athena vs Kinesis 的核心定位區別
      1. **Athena**：對 S3 上的**靜態資料**做 SQL 查詢 → batch processing / 事後查詢
      2. **Kinesis**：處理**即時串流資料** → 即時 real-time 應用（Data Streams/Analytics/Firehose）
      3. **考試判斷**：歷史資料/S3 分析 = Athena；real-time 流量 = Kinesis
 182. ★ 記憶點：Athena vs Kinesis 的核心概念
      1. **Athena**：事後諸葛（查過去的資料）
      2. **Kinesis**：當下反應（處理現在的資料流）
-183. 😇 Multi-AZ failover = CNAME 切換，不碰 IP
-184. ★ Multi-AZ Failover 核心機制
-     1. **實作方式**：CNAME 切換才是 failover 的方式
-     2. **故障轉移流程**：故障前（your-db.xxx.rds.amazonaws.com → Primary DB (AZ-A)）→ 故障後（your-db.xxx.rds.amazonaws.com → Standby DB (AZ-B，升級為新 Primary)）
-185. ★ Multi-AZ Failover 的優勢
+183. (刪除)
+184. ★ RDS Multi-AZ Failover **流程**
+     1. **故障前**：`db.rds.amazonaws.com` → Primary (AZ-A)
+     2. **故障後**：`db.rds.amazonaws.com` → Standby→Primary (AZ-B)
+     3. **結果**：應用層無感知，**connection string 不變**⭐️
+185. ★ RDS Multi-AZ Failover 的**優勢**
      1. **應用層無感知**：connection string 不變，無需修改程式
      2. **自動 Promote**：Standby 被 promote 成新 Primary
      3. **容錯轉移時間**：通常 60-120 秒
-186. ★★ Multi-AZ Failover 為什麼用 **DNS 切換**而不是 IP 切換（VPC 基礎架構理解）
+186. ★ Multi-AZ Failover 為什麼用 **DNS 切換**而不是 IP 切換（VPC 基礎架構理解）
      1. **技術限制**：IP 地址綁定 subnet，**subnet 無法跨 AZ**（AZ-A: subnet-1 → 10.0.1.0/24、AZ-B: subnet-2 → 10.0.2.0/24）
      2. **核心原理**：Primary 和 Standby 在**不同 subnet**，IP 不可能互換 → 只能用 DNS/CNAME 切換
 187. 👀 RDS 不支援 Recovery Manager (RMAN，Oracle 恢復管理工具）的原因
      1. **管理方式**：RDS 是託管服務，**AWS 控制底層 OS 和備份機制**
      2. **RMAN 限制**：需要 OS level 存取權限、直接操作檔案系統、自行管理備份儲存
      3. **替代方案**：只能透過 RDS 提供的 **automated backup 和 snapshot**
-188. 👀 Global Accelerator 在 RDS 題目中出現的考試陷阱
-     1. **服務定位**：Global Accelerator 是**網路服務**，用於將使用者流量導向最近的 endpoint，降低延遲
-     2. **與 RDS 無關**：完全不涉及資料庫性能提升
-     3. **考題關鍵**：看到 Global Accelerator 出現在 RDS 題目 → **直接排除**（誘導選項）
+188. (刪除)
 189. ★ Read Replicas 的真實作用與常見誤解
      1. **核心功能**：Read Replicas **不會提升 Primary DB 的效能**
      2. **正確理解**：只是讓應用程式從 replica 讀取資料、分散讀取流量、降低 Primary 的負載
      3. **效能限制**：**Primary 的 IOPS、運算能力不變**（不是性能提升，是讀取分流）
-190. ★★ Multi-AZ 同步複製的核心特性
+190. ★★ RDS Multi-AZ 同步複製的核心特性
      1. **同步複製本質**：Multi-AZ 使用 **synchronous（同步）** 複製，每次寫入都要等 standby 確認
      2. **實務意義**：寫入延遲較高（通常幾毫秒）、資料零遺失（主節點掛掉時 standby 100% 有最新資料）、自動容錯移轉（DNS 自動指向 standby）
-191. ★★ RDS **IAM Database Authentication** 的三層雙向設定（缺一不可）
+191. ★ RDS **IAM Database Authentication** 的三層雙向設定（缺一不可）
      1. **EC2 IAM Role**：允許呼叫 **rds-db:connect** 權限
      2. **RDS 啟用 IAM Auth**：開啟 IAM Database Authentication 功能
      3. **DB 建立 IAM User**：資料庫層級建立對應的 IAM 使用者帳號
-192. ★★ RDS Microsoft SQL Server 連線加密的完整實現（兩步驟缺一不可）
+192. ★ RDS Microsoft SQL Server 連線加密的完整實現（兩步驟缺一不可）
      1. **伺服器端設定**：設定 **rds.force_ssl = true** + **重開 DB**（static parameter）
      2. **用戶端設定**：下載 **Amazon RDS Root CA 憑證** → 匯入伺服器 → 應用程式使用 **SSL 連線**
 193. 😇 RDS 各引擎都支援 SSL/TLS 加密連線
