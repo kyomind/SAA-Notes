@@ -894,7 +894,7 @@
 271. ★ Aurora Client-side Encryption + KMS Multi-region Keys 組合方案
      1. **應用場景**：資料庫跨域部署 + 需要強加密（連管理員都無法看到）
      2. **實作組合**：Client-side Encryption（應用層加密） + Multi-region Keys（跨域密鑰管理） = **唯一解**
-272. 👀 S3 跨 KMS Key Replication = 解密 + 加密
+272. 👀 S3 跨 KMS Key Replication = 解密 + 加密(這三項都太過細節)
      1. Source Key → `kms:Decrypt`（解開舊的）
      2. Target Key → `kms:Encrypt`（用新的加密）
      3. 授權對象 → S3 Replication Service Role
@@ -903,19 +903,17 @@
      1. 從 Source Bucket 讀取加密物件 → 需要用 Source KMS Key 解密
      2. 用 Target KMS Key 加密
      3. 寫入 Target Bucket
-274. 👀 S3 Replication Service 的權限需求○
+274. 👀 S3 Replication Service 的權限需求
      1. 角色身份：**AWS 服務角色**（非 IAM User），需要明確授權
      2. 必要權限：Source Key 的 `kms:Decrypt` + Target Key 的 `kms:Encrypt`
-275. ★★ ACM 證書到期通知方案（EventBridge + SNS）
-     1. **完整流程**：ACM 發出證書到期事件 → EventBridge 設定規則 → 觸發 SNS → Email 通知
+275. ★ ACM 證書到期通知方案（EventBridge + SNS）
+     1. **完整流程**：ACM 發出證書到期事件(這是重點) → EventBridge 設定規則 → 觸發 SNS → Email 通知
      2. **核心優勢**：ACM 原生支援 EventBridge（含 **DaysToExpiry** 事件）、支援「每天檢查」、能提前 30 天通知
-276. 😇 ACM 與 EventBridge 整合的考試判斷
-     1. 看到「證書到期提醒」+ 「email 通知」→ **EventBridge + SNS**
-     2. 記住：EventBridge 可設定「每日檢查」規則，實現精確的提前通知
+     3. **為何需要 EventBridge**：ACM 不直接支援 SNS，必須透過 EventBridge 作為事件路由器；EventBridge 提供條件篩選（如剩餘天數）和標準化事件格式
+276. (刪除)
 277. ★★ Edge-Optimized API Gateway 的 ACM 證書位置限制
-     1. **必要條件**：Edge-Optimized API Gateway 的 ACM 證書 **必須在 us-east-1**
-     2. **原因**：API Gateway 背後使用 CloudFront，而 CloudFront 的證書 **只能來自 us-east-1**（AWS 硬性規定）
-     3. **核心記憶**：**CloudFront 或 Edge-Optimized 服務 → ACM 證書必須在 us-east-1**（與 API Gateway 所在 region 無關）
+     1. **必要條件**：Edge-Optimized API Gateway 的 ACM 證書 **必須在 us-east-1**⭐️
+     2. **原因與記憶**：API Gateway 背後使用 CloudFront，而 CloudFront 的證書只能來自 us-east-1（AWS 硬性規定）→ **CloudFront 或 Edge-Optimized 服務 = ACM 證書必須在 us-east-1**（與 API Gateway 所在 region 無關）
 278. ★★ CloudFront Signed URLs/Cookies 付費內容授權方案
      1. **題目判斷**：看到「付費內容」、「限制存取」、「授權用戶」→ **Signed URLs/Cookies**
      2. **單一檔案下載**：使用 **Signed URLs**
@@ -926,36 +924,36 @@
      3. ✅ **CloudFront Signed URLs/Cookies**：正確方案
 280. ★★ 強制透過 CloudFront 的核心原因
      1. **安全隱患**：若不強制，用戶可能直接訪問 S3 URL 繞過你的付費機制
-     2. **解決方案**：設定 **S3 Bucket Policy 僅允許 CloudFront Origin Access Identity (OAI) 存取**，禁止直接公網存取
-281. ★★ CloudFront 安全提供私密內容的兩大要求
+     2. **解決方案**：設定 **S3 Bucket Policy 僅允許 CloudFront Origin Access Identity (OAI) 存取**，禁止直接公網存取⭐️此時是透過 CloudFront 從內網直接存取 S3
+281. ★ CloudFront 安全提供私密內容的兩大要求
      1. **要求 1：使用簽名授權**：要求用戶使用 **CloudFront Signed URLs 或 Signed Cookies** 存取私密內容（不是直接 S3 URL）
      2. **要求 2：禁止直接來源伺服器存取**：禁止用戶直接存取來源伺服器上的內容（例如 Amazon S3 或私有 HTTP 伺服器），改由 CloudFront URLs 提供
 282. 😇 Signed URLs 和 Signed Cookies 的功能對比
      1. **基本功能相同**：都允許你控制誰可以存取你的內容
-     2. **主要差異**：Signed URLs 用於單一檔案限期授權，Signed Cookies 用於多檔案/整站授權
-283. ★★ 題目提到「不想改現有 URL 結構」時，使用 **Signed Cookies**
+     2. **主要差異**：Signed URLs 用於**單一檔案限期**授權，Signed Cookies 用於**多檔案/整站**授權
+283. ★ 題目提到「不想改現有 URL 結構」時，使用 **Signed Cookies**
 284. ★★ Pre-signed URLs vs Signed URLs 的核心區別
-     1. **Pre-signed URLs**：**S3 原生功能**，用於上傳或下載檔案，**不走 CloudFront**
+     1. **Pre-signed URLs**：**S3 原生功能**，用於上傳或下載檔案，**不走 CloudFront⭐️**
      2. **Signed URLs**：**CloudFront 功能**，用於分發內容，**必須走 CloudFront**
-285. ★★ 為什麼要用 Origin Access Identity (OAI)？
+285. ★ 為什麼要用 Origin Access Identity (OAI)？
      1. **沒設定 OAI**：用戶拿到 S3 原始 URL 就能繞過 CloudFront（**安全缺陷**）
      2. **有設定 OAI**：**S3 只允許 CloudFront 存取**，所有流量必須經過 CloudFront
-286. ★★ 實務判斷規則
+286. ★ 實務判斷規則
      1. **識別題型**：題目出現「付費內容」、「限時存取」、「地理限制」→ 想到 **CloudFront Signed URLs/Cookies**
      2. **防直接存取**：題目要求「防止直接存取 S3」→ **必須搭配 OAI/OAC**
 287. ★ S3 Pre-signed URLs 的問題：
      1. **繞過 CloudFront**：直接從 S3 讀取
-     2. **失去優勢**：失去 CDN 加速、快取、地理分佈等優勢
+     2. **失去優勢**：失去 CDN 加速、快取、地理分佈等優勢⭐️
      3. **不符合要求**：題目要求「透過 CloudFront 分發」就直接不符合
-288. ★★ 效能優化的層次與考試判斷
+288. ★ 效能優化的層次與考試判斷
      1. **層次架構**：CloudFront（**CDN 加速**靜態內容）、ElastiCache（**動態資料快取**）、Multi-region（**只在 DR/合規需求**時）
-     2. **考試判斷**：題目只提「improve performance」無「disaster recovery/compliance」→ **CloudFront + ElastiCache 就夠**；看到 multi-region 選項 → 問自己：**真的需要還是只為效能？**
+     2. **考試判斷**：題目只提「improve performance」無「disaster recovery/compliance」→ **CloudFront + ElastiCache 就夠**
 289. ★★ CloudFront vs Global Accelerator 選擇決策
      1. **CloudFront 應用場景**：網站、圖片、影片、API、cache；關鍵需求為**降低延遲、減少源站負載**
-     2. **Global Accelerator 應用場景**：遊戲、IoT、VoIP、UDP、TCP（非 HTTP）；關鍵需求為**靜態 IP、快速區域容錯、固定入口點**
+     2. **Global Accelerator 應用場景**：遊戲、IoT、VoIP、UDP、TCP（**非 HTTP**）；關鍵需求為**靜態 IP、快速區域容錯、固定入口點**
 290. 😇 CloudFront vs Global Accelerator 記憶技巧
      1. **CloudFront**：**內容為王** - 什麼內容都能加速，但就是 HTTP(S)
-     2. **Global Accelerator**：**協定不限** - TCP/UDP 都行，關鍵是**固定 IP + 快速切換**
+     2. **Global Accelerator**：TCP/UDP 都行，關鍵是**固定 IP + 快速切換**
 291. ★ CloudFront vs Global Accelerator 實戰判斷
      1. **快速決策**：題目同時提到**「需要固定 IP」或「非 HTTP 協定」** → **直接選 Global Accelerator**，別被 CloudFront 的萬能感騙了
 292. 😇 AWS Cost Anomaly Detection 異常支出偵測服務
@@ -963,23 +961,22 @@
      2. **核心功能**：使用 ML 模型**偵測異常支出模式**（Anomalous spend patterns）
      3. **應用場景**：自動告警異常支出，幫助控制成本
 293. 👀 AWS 成本管理工具的考試陷阱與比較
-     1. **CloudWatch Billing Alarm**：只能監控總花費超過閾值，無法做根因分析 ❌ 異常偵測
-     2. **AWS Budgets**：適合預算控管，但不是「異常偵測」的最佳解 ❌
-     3. **Cost Explorer**：適合事後分析，不是主動告警 ❌
+     1. **CloudWatch Billing Alarm & AWS Budgets**：都是基於閾值的預算監控工具，無法做異常偵測或根因分析
+     2. **Cost Explorer**：適合事後分析，不是主動告警
 294. ★ EKS 對外暴露服務的標準架構：Ingress + ALB
      1. **典型方案**：安裝 **AWS Load Balancer Controller** → 建立 Ingress 資源 → **自動建立 ALB**
-     2. **流量路徑**：Internet → ALB → Kubernetes Service → Pod
+     2. **流量路徑**：Internet → ALB → Ingress → Kubernetes Service → Node → Pod
 295. ★ AWS Load Balancer Controller 的核心功能
      1. **資源監聽**：監聽 Kubernetes 的 **Ingress/Service** 資源
      2. **自動配置**：在 AWS 自動建立對應的 **ALB/NLB**
      3. **管理職責**：負責 Target Group、健康檢查等設定
-296. ★★ AWS Control Tower 管理多帳號架構
+296. ★ AWS Control Tower 管理多帳號架構
      1. **適用場景**：大規模 AWS 帳號治理，需要統一基準線和自動化控制
      2. **核心價值**：
         1. **一鍵建立 Landing Zone**：自動設定 OU 結構、帳號基準線
         2. **內建 Drift Detection**：自動監控帳號是否偏離最佳實踐
         3. **整合式管理**：串接 Organizations、Service Catalog、IAM Identity Center
-297. ★ AWS Control Tower Drift 偵測範圍
+297. 👀 AWS Control Tower Drift 偵測範圍
      1. **OU 結構變更**：帳號移入/移出
      2. **Guardrails 違規**：SCP、Config Rules 不合規
      3. **基準設定變更**：CloudTrail、Config 配置偏離
@@ -987,7 +984,7 @@
      1. **適用場景**：評估資源配置是否符合規範（例如：S3 bucket 是否加密、EC2 是否有正確 tag）、跨帳號聚合資源合規狀態
      2. **不適合多帳號治理的原因**：監控對象錯誤（Config 看的是資源而非帳號結構變更）、需要額外設定（要寫 custom rule 才能監控 OU 變更）、不是設計用途（帳號治理不是 AWS Config 的主要場景）
 299. 記憶技巧：
-     1. **Control Tower** = 帳號治理層級
+     1. **Control Tower** = 帳號治理層級⭐️
      2. **Config** = 資源合規層級
 300. ★ Aurora Serverless V2 的彈性混搭架構
      1. **核心優勢**：在同一個 cluster 中**混用 provisioned 和 serverless 實例**，靈活應對多變工作負載
@@ -995,7 +992,7 @@
 301. 😇 Aurora Serverless V2 應用場景分析
      1. **讀取流量**：穩定、可預測 → 用 provisioned reader（成本穩定）
      2. **寫入流量**：不規則、難預測 → 用 serverless writer（自動應對高峰）
-302. ★ ACU (Aurora Capacity Unit) 容量單位定義
+302. ★ ACU (Aurora Capacity Unit) 容量單位定義⭐️
      1. **基本定義**：**1 ACU = 2 GiB RAM** + 對應的 CPU 和網路資源
      2. **設定方式**：使用**容量範圍**而非固定值（min 1 ACU / max 8 ACU = 記憶體 2-16 GiB）
 303. 😇 Aurora Serverless V2 容量規劃的最佳實踐
@@ -1010,14 +1007,13 @@
      1. **Reserved Instances / Savings Plans**：適合 24/7 持續運行
      2. **Instance Scheduler**：適合間歇性使用（例如只在上班時間）
 306. ★ Instance Scheduler 架構和實現方式
-     1. **本質**：**不是** AWS 服務，而是 AWS 提供的 **CloudFormation template**（IaC 模板）
-     2. **部署後自動建立**：**Lambda functions**（執行開關邏輯）、**DynamoDB table**（存排程設定）、**CloudWatch Events**（觸發排程）
+     1. **不是** AWS 服務，而是 AWS 提供的 **CloudFormation template**（IaC 模板）⭐️
+     2. **部署後自動建立**：Lambda functions（執行開關邏輯）、DynamoDB table（存排程設定）、CloudWatch Events（觸發排程）
      3. **正確實現步驟**：Deploy CloudFormation template of Instance Scheduler → 設定 start/stop schedules
-307. ★★ Lambda SnapStart 解決冷啟動問題
+307. ★★ Lambda **SnapStart** 解決冷啟動問題
      1. **適用場景**：**Java Lambda + cold start 問題** → **低延遲啟動** → **減少初始化時間**
      2. **支援範圍**：**僅限 Java 11、17 以上**（考試陷阱：Python、Node.js 不支援）
-
-308. ★★ Bastion Host vs NAT Instance 區別
+308. ★★ Bastion Host vs NAT Instance 區別○
      1. **共同點**：都是一台在公有子網的 EC2 執行個體
      2. **Bastion Host 用途**：給 **人** 使用的 **SSH/RDP 跳板**
      3. **NAT Instance 用途**：給 **機器** 使用的 **私網流量轉發器**
