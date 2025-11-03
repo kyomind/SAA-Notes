@@ -662,10 +662,10 @@
 209. 👀 S3 Client-Side Encryption 的核心概念
      1. **加密時機**：加密動作發生在**資料傳到 S3 之前**（端對端加密）
      2. **應用場景**：需要完全控制加密金鑰、確保 AWS 無法存取原始資料時使用
-210. ★ S3 Client-Side Encryption 兩種選項○
+210. ★ S3 Client-Side Encryption 兩種選項
      1. **AWS KMS key**：金鑰由 KMS 管理，客戶端加密/解密
-     2. **Client-side master key**：完全由客戶端自己管理金鑰
-211. ★★ 記住：S3 Server-Side Encryption 只支援 AES-256，沒有 AES-128 選項。
+     2. **Client-side master key**：完全由客戶端自己管理金鑰(不常用)
+211. 記住：S3 Server-Side Encryption 只支援 AES-256，沒有 AES-128 選項。
 212. ★★ S3 Server-Side Encryption (SSE) 加密方案對比
      1. **SSE-S3**：**AES-256** 加密，**AWS 管理金鑰**
      2. **SSE-KMS**：**AES-256** 加密，**KMS 管理金鑰**
@@ -684,7 +684,7 @@
         - SQS Queue 2（庫存更新）
         - Lambda（發送 Email）
         - HTTP endpoint（第三方 webhook）
-216. ★★ SNS Message Filtering（重要考點）
+216. ★★ SNS Message Filtering（重要考點⭐️）
      1. **功能**：訂閱者可設定 **filter policy**，**只接收符合條件的訊息**
      2. **典型架構**：
         - SNS Topic（Quote Requests）
@@ -699,57 +699,56 @@
      1. **發布訊息時**：帶上 attributes（如 `type: "insurance"`, `amount: 50000`）
      2. **訂閱時設定 filter**：定義要接收的條件（如 `{"type": ["insurance"]}`）
      3. **SNS 自動分流**：根據 filter policy 決定推送給哪些訂閱者
-219. ★ SNS Message Filtering 的實踐判斷
-     1. **正確做法**：**Filter in SNS subscription**（訂閱層級過濾）✅
-     2. **錯誤做法**：**Filter in SQS queue**（隊列層級過濾）❌ 太晚過濾，已經浪費資源
+219. (刪除)
 220. ★★ SQS Short Polling（預設模式）
      1. **ReceiveMessageWaitTimeSeconds**：0（預設）
      2. **行為**：只查詢部分 server，**立即回應**（無等待）
      3. **適用場景**：高吞吐量需求
      4. **缺點**：容易產生**空請求**（訊息未到時仍回傳），浪費成本
 221. ★★ SQS Long Polling（成本優化模式）
-     1. **ReceiveMessageWaitTimeSeconds**：> 0（最高 20 秒）
+     1. **ReceiveMessageWaitTimeSeconds**：> 0（最高 **20** 秒）⭐️
      2. **運作方式**：**等待訊息到達才回應**，如期間沒訊息就 hold 著
      3. **適用場景**：降低成本、減少空請求
-     4. **優勢**：**減少 API 呼叫**，伺服器負擔更輕
+     4. **優勢**：**減少 API 呼叫次數**，伺服器負擔更輕
 222. `ReceiveMessageWaitTimeSeconds` 這個參數就是 Long vs Short Polling 的唯一差異。
 223. Encryption in transit vs Encryption at rest
      1. **Encryption in transit(in-flight)**：資料在傳輸過程中加密（SSL/TLS）
-     2. **Encryption at rest**：資料靜止存放時加密（AES-256、KMS）
-224. API Gateway 有三種 Endpoint 類型
-     1. **Regional endpoint**：部署在特定區域，適合內部或區域性應用
-     2. **Edge-optimized endpoint**：使用 CloudFront 全球加速，適合公開 API
+     2. **Encryption at rest**：資料**靜止存放**時加密（AES-256、KMS）
+224. API Gateway 有三種 Endpoint 類型：建立時必須選擇，沒有預設值
+     1. **Regional endpoint**：部署在特定區域，適合內部或區域性應用。適合特定區域用戶
+     2. **Edge-optimized endpoint**：使用 CloudFront 全球加速，適合公開 API。適合全球用戶
      3. **Private endpoint**：只能在 VPC 內存取，適合內部服務
 225. ★ API Gateway + Lambda 的整合模式
      1. **同步呼叫**：API Gateway → Lambda（等待結果回傳）
-     2. **非同步呼叫**：API Gateway → SQS → Lambda（解耦，適合長時間處理）
+     2. **非同步呼叫**：API Gateway → SQS → Lambda（解耦，適合長時間處理）⭐️直接打去 SQS，Lambda 再去**拉取**
      3. **考試判斷**：需要即時回應用同步，需要排隊處理用非同步
 226. ★★ Server-Side Encryption (SSE) 的核心概念
-     1. **加密時機**：資料寫入 AWS 服務（S3/EBS/RDS 等）時，AWS 在**伺服器端自動加密**
+     1. **加密時機**：資料寫入 AWS 服務（S3/EBS/RDS 等）**前**，AWS 在**伺服器端自動加密**後存入⭐️
      2. **解密時機**：讀取資料時，AWS 在**伺服器端自動解密**後才回傳給你
-     3. **使用者角色**：只負責指定加密金鑰，不用自己寫加解密程式
+     3. **儲存狀態**：AWS 服務中的資料都是**已加密狀態⭐️**，使用者接觸不到加密檔案(你下載時都是已解密的)
+     4. **使用者角色**：只負責指定加密金鑰，不用自己寫加解密程式
 227. ★★ AWS KMS 的兩種金鑰類型
      1. **AWS Managed Keys**：AWS 自動產生，名稱固定（如 aws/s3、aws/rds），無法手動建立，適合基礎加密需求
      2. **Customer Managed Keys (CMK)**：需要手動建立，當需要控制權限、輪替政策、刪除時機時使用
-228. 😇 KMS 金鑰自動輪換
+228. 😇 KMS 金鑰自動輪換：僅限 **Customer Managed Keys (CMK)**
      1. **啟用方式**：在 CMK 設定中啟用自動輪換功能
-     2. **只有** Customer Managed Keys (CMK) 支援自動輪換，AWS Managed Keys 不支援
-     3. **輪換週期**：後端金鑰每 **365 天**自動輪換一次
-229. ★★ 跨帳號分享加密資源的兩個必要步驟
+     2. **只有** Customer Managed Keys (CMK) 支援自動輪換，AWS Managed Keys 不支援⭐️
+     3. **輪換週期**：後端金鑰每 **365 天**自動輪換一次(且不可調整)
+229. ★ 跨帳號分享加密資源的兩個必要步驟
      1. **分享資源本身**：分享 AMI/Snapshot 等資源給目標帳號
-     2. **分享 KMS Key 權限**：務必同時分享相應的 KMS 金鑰權限（常被忽略）
+     2. **分享 KMS Key 權限**：務必同時分享相應的 KMS 金鑰權限（常被忽略）⭐️
      3. **關鍵提醒**：沒有 Key 權限 = 資源看得到但用不了
 230. 😇 KMS Key Rotation 的兩種方式
      1. **Automatic Rotation**：固定每年輪換一次，頻率**不可調整**
      2. **Manual Rotation**：頻率**可自訂**，需要時隨時手動進行輪換
-231. ★★ KMS Key Policy 的角色
+231. ★★ KMS **Key Policy** 的角色
      1. **定義**：控制 KMS **CMK** 存取權限的**主要機制**，類似 S3 Bucket Policy
-     2. **核心作用**：直接定義誰能使用這把金鑰
+     2. **核心作用**：直接定義**誰能使用**這把金鑰
      3. **適用場景**：跨帳號授權、Root 權限控制
 232. ★★ KMS 存取控制的三層機制
      1. **KMS Key Policy**：直接定義誰能使用此 CMK，是**必要條件**
-     2. **IAM Policy**：定義使用者能做什麼操作，需搭配 Key Policy 才有效
-     3. **Grants**：程式化臨時授權方式，適合動態權限和自動化場景
+     2. **IAM Policy**：定義使用者能做什麼操作，**需搭配** Key Policy 才有效⭐️
+     3. **Grants**：**程式化**臨時授權方式，適合動態權限和自動化場景
 233. ★★ KMS 存取權限的判斷邏輯
      1. **完整判斷**：能否使用 KMS CMK = (KMS Key Policy 允許) **AND** (IAM Policy 允許)
      2. **關鍵點**：Key Policy 是**必要條件**，IAM Policy 單獨存在無效
@@ -758,12 +757,13 @@
      1. **Key Policy**：「門鎖」（直接控制存取權）
      2. **IAM Policy**：「鑰匙」（使用者能否持有權限）
 235. 😇 AWS Managed Keys vs CMK 的 Key Policy 管理差異
-     1. **AWS Managed Keys**：無法修改 Key Policy
+     1. **AWS Managed Keys**：無法修改 Key Policy（但**仍有預設 Key Policy**）⭐️
      2. **Customer Managed Keys (CMK)**：可以自由修改 Key Policy
+     3. **重要澄清**：「無法修改」≠「沒有 Policy」，AWS Managed Keys 有 AWS 預配置的標準 Policy
 236. ★ AWS Systems Manager (SSM) Parameter Store 的用途
      1. **核心功能**：儲存密碼和機密資訊
-     2. **版本管理**：追蹤值隨時間的變化歷史
-237. ★ AWS Shield Advanced 的關鍵特性
+     2. **版本管理**：追蹤值隨時間的變化歷史⭐️
+237. ★ AWS Shield Advanced 的關鍵特性○
      1. **24/7 支援**：需要 DDoS Response Team (DRT) 的專業協助
      2. **成本保護**：提供 AWS 帳單報銷保障，降低 DDoS 攻擊成本
      3. 一個月要價 3,000 美元

@@ -395,6 +395,16 @@ S3 Pre-Signed URL → 讓用戶「**上傳/下載**」但不給 AWS 憑證
 - 題目提到 "compliance" + "dedicated HSM" → Custom Key Store
 - 題目只說要 "encryption" 沒特別要求 → AWS Managed 最省事
 
+## S3 加密選項對比
+
+| 加密位置    | 金鑰來源 | AWS 術語 | 實務常見度 |
+| ----------- | -------- | -------- | ---------- |
+| Server-Side | S3 管理  | SSE-S3   | ⭐⭐⭐        |
+| Server-Side | AWS KMS  | SSE-KMS  | ⭐⭐⭐        |
+| Server-Side | 客戶提供 | SSE-C    | ⭐⭐         |
+| Client-Side | AWS KMS  | CSE-KMS  | ⭐⭐         |
+| Client-Side | 客戶管理 | CSE-C    | ⭐          |
+
 ## Aurora Endpoint 類型對比
 
 | Endpoint             | 用途     | 指向                                    |
