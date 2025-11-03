@@ -597,74 +597,74 @@
      1. **EC2 IAM Role**：允許呼叫 **rds-db:connect** 權限
      2. **RDS 啟用 IAM Auth**：開啟 IAM Database Authentication 功能
      3. **DB 建立 IAM User**：資料庫層級建立對應的 IAM 使用者帳號
-192. ★ RDS Microsoft SQL Server 連線加密的完整實現（兩步驟缺一不可）
+192. 👀 RDS Microsoft SQL Server 連線加密的完整實現（兩步驟缺一不可）
      1. **伺服器端設定**：設定 **rds.force_ssl = true** + **重開 DB**（static parameter）
      2. **用戶端設定**：下載 **Amazon RDS Root CA 憑證** → 匯入伺服器 → 應用程式使用 **SSL 連線**
 193. 😇 RDS 各引擎都支援 SSL/TLS 加密連線
-     1. **支援的引擎**：**MySQL**、**PostgreSQL**、**MariaDB**、**Oracle**、**SQL Server**、**Aurora (MySQL/PostgreSQL)**
 194. 😇 RDS 各引擎的 SSL/TLS 設定方式差異
      1. **MySQL/PostgreSQL**：使用 **require_secure_transport** parameter 進行設定
      2. **SQL Server**：使用 **rds.force_ssl** parameter 進行設定
      3. **Oracle**：透過 **option group** 進行設定
 195. ★★ S3 Transfer Acceleration + Multipart Upload
-     1. **Transfer Acceleration**：全球邊緣節點加速跨地區傳輸，速度提升 50-500%⭐️
+     1. **Transfer Acceleration**：全球邊緣節點加速跨地區傳輸，速度提升 50-500%⭐️僅加速**跨區域上傳**
      2. **Multipart Upload**：大檔案平行上傳，失敗可單獨重傳部分
      3. **組合應用**：跨區域 + 大量資料上傳時同時使用
-196. ★★ S3 防誤刪：Versioning + MFA Delete
+196. ★ S3 防誤刪：Versioning + MFA Delete
      1. **Versioning**：保留歷史版本、刪除只標記 delete marker、可復原
      2. **MFA Delete**：需 MFA 才能改變 versioning 狀態和永久刪除版本
      3. **組合用途**：基本防護用 Versioning，強化防護加上 MFA Delete
 197. 😇 S3 One Zone-IA 的選擇邏輯
-     1. **特性**：**可快速存取**（毫秒級同 S3 Standard）、**檔案可重建**（easily reproducible，單 AZ 掛無妨）、**成本降 80%**（vs Standard）
+     1. 需求特性：**可快速存取**（毫秒級同 S3 Standard）、**檔案可重建**（easily reproducible，單 AZ 掛無妨）、**成本降 80%**（vs Standard）
      2. **判斷標準**：檔案「可重建 + 需要快速存取」→ One Zone-IA 最佳解
-198. 👀 S3 儲存類別選型的常見誤區
-     1. **誤選情境**：很多人會選 **S3-IA (Intelligent-Tiering)** 或 **S3 Standard-IA**
-     2. **錯誤原因**：Standard-IA 跨 3 個 AZ 成本較高（若檔案可重建則浪費）；Intelligent-Tiering 自動移動檔案但無法針對特定 prefix 處理
+198. (刪除)
 199. 👀 S3 儲存類別選型的 3 個關鍵問題
      1. **能重建嗎**：檔案遺失能復原 → 考慮 One Zone-IA（單 AZ）
      2. **多快要拿**：毫秒級 → IA；數分鐘 → Glacier；數小時 → Glacier Deep Archive
      3. **需差異化嗎**：不同檔案不同保留策略 → 用 Lifecycle Policy + prefix filter
 200. ★ S3 儲存類別選型的考試判斷邏輯
-     1. **選 Intelligent-Tiering**：存取模式「不可預測/不斷變化」、題目關鍵字 `unpredictable access patterns`、`unknown usage`
+     1. **選 Intelligent-Tiering**：存取模式「不可預測/不斷變化」、題目關鍵字 `unpredictable access patterns`、`unknown usage`⭐️
      2. **選 Lifecycle Policy**：存取模式「已知」、需要「針對不同檔案做不同處理」、題目明確說明時間點或分類邏輯
-     3. **記憶點**：Intelligent-Tiering = **自動但無法客製**；Lifecycle = **手動但精準控制**
-201. ★★ Lifecycle Policy 的核心功能：自動化資料生命週期管理
+     3. Intelligent-Tiering = **自動但無法客製**
+     4. Lifecycle = **手動但精準控制**
+201. ★ S3 **Lifecycle Policy**：自動化資料生命週期管理
      1. **定義**：Lifecycle Policy = **規則引擎**，用於設定「條件」+「動作」
      2. **運作模式**：S3 自動執行，無需人工介入
 202. ★ AWS Organizations + SCP 的多帳戶隔離架構
      1. **核心需求**：在同一個組織內隔離 Production 和 Development 環境，限制只有通過稽核的服務能在 Production 使用
      2. **AWS Organizations**：統一管理**多個 AWS 帳戶**的容器
      3. **Organizational Units (OUs)**：邏輯分組（Prod OU、Dev OU）
-     4. **SCP (Service Control Policy)**：套用在 OU 層級的**權限邊界**，控制整個 OU 內所有帳戶能用什麼服務
+     4. **SCP (Service Control Policy)**：套用在 **OU 層級**的**權限邊界**，控制整個 OU 內所有帳戶能用什麼服務⭐️控制「授權」(與驗證無關)
 203. 😇 SCP 的運作方式與權限控制機制
      1. **Prod OU 策略**：套用 SCP → 只允許已稽核的服務（例如：EC2、RDS、S3）
      2. **Dev OU 策略**：不套用限制 → 團隊自由實驗任何服務
-     3. **權限邊界特性**：**即使 Prod 帳戶內的 IAM 使用者有 Admin 權限，也無法使用被 SCP 禁止的服務**
+     3. **權限邊界特性**：**即使 Prod 帳戶內的 IAM 使用者有 Admin 權限，也無法使用被 SCP 禁止的服務**⭐️
 204. 👀 S3 與檔案系統的類比記憶法
-     1. **物件層級**：`arn:aws:s3:::bucket-name` → 資料夾本身（可以 ls、rm -rf）
-     2. **檔案層級**：`arn:aws:s3:::bucket-name/*` → 資料夾內的檔案（可以 cat、touch）
+     1. **Bucket 層級**：`arn:aws:s3:::bucket-name` → 資料夾本身（可以 ls、rm -rf）
+     2. **物件層級**：`arn:aws:s3:::bucket-name/*` → 資料夾內的檔案（可以 cat、touch）
      3. **GetObject 操作**：讀取檔案，當然要加 `/*`
 205. 👀 IAM Condition Key：aws:**RequestedRegion** 的用途
      1. **功能定義**：限制 **API 呼叫的目標區域**
      2. **應用場景**：例如限制使用者只能在特定 Region 建立或修改資源
-206. ★★ EventBridge 權限組態的核心邏輯
-     1. **權限判斷原則**：**誰主動 vs 誰被動決定 Policy 類型**
-     2. **Lambda 作為目標**：EventBridge → Lambda（EventBridge 主動呼叫）使用 **Resource-Based Policy**（附加在 Lambda 上）
-     3. **Kinesis Data Streams 作為目標**：EventBridge → Kinesis（EventBridge 需要推送權限）使用 **Identity-Based Policy**（附加在 EventBridge 的 IAM Role 上）
-207. ★★ S3 Client-Side Encryption：使用 AWS KMS key
+206. ★★ EventBridge 權限組態的核心邏輯⭐️有點複雜
+     1. **權限判斷原則**：根據目標服務的**呼叫模式**決定 Policy 類型
+     2. **Lambda 作為目標**：Lambda 支援 **Resource-Based Policy**，所以在 Lambda 上設定「允許 EventBridge 呼叫我」
+     3. **Kinesis 作為目標**：Kinesis **不支援 Resource-Based Policy**，所以 EventBridge 需要 IAM Role 擁有「寫入 Kinesis」權限
+     4. 支援 Resource-Based → 設定在目標服務；比如 Lambda、S3、SQS
+     5. 不支援 → 設定在呼叫者。比如 Kinesis、DynamoDB
+207. ★ S3 Client-Side Encryption：使用 AWS KMS key
      1. **金鑰管理者**：AWS KMS 管理金鑰
      2. **AWS 能看到什麼**：AWS 知道你的 KMS KeyId，但看不到**原始資料**
      3. **風險評估**：金鑰遺失機率低，但 **AWS 有金鑰存取權限**
-208. ★★ S3 Client-Side Encryption：使用 Client-side master key
+208. ★ S3 Client-Side Encryption：使用 Client-side master key
      1. **金鑰管理者**：**你自己管理金鑰**（完全掌控）
      2. **AWS 能看到什麼**：AWS 完全看不到**金鑰和原始資料**
-     3. **風險評估**：**金鑰遺失 = 資料永久無法解密**（零恢復可能）
+     3. **風險評估**：**金鑰遺失 = 資料永久無法解密**（零恢復可能）⭐️
 209. 👀 S3 Client-Side Encryption 的核心概念
      1. **加密時機**：加密動作發生在**資料傳到 S3 之前**（端對端加密）
      2. **應用場景**：需要完全控制加密金鑰、確保 AWS 無法存取原始資料時使用
-210. ★★ To enable client-side encryption, you have the following options:
-     - Use an AWS KMS key.
-     - Use a client-side master key.
+210. ★ S3 Client-Side Encryption 兩種選項○
+     1. **AWS KMS key**：金鑰由 KMS 管理，客戶端加密/解密
+     2. **Client-side master key**：完全由客戶端自己管理金鑰
 211. ★★ 記住：S3 Server-Side Encryption 只支援 AES-256，沒有 AES-128 選項。
 212. ★★ S3 Server-Side Encryption (SSE) 加密方案對比
      1. **SSE-S3**：**AES-256** 加密，**AWS 管理金鑰**
