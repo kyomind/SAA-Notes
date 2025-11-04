@@ -160,3 +160,7 @@ You can configure any access point to accept requests only from a virtual privat
 ## CloudFront + S3 管理靜態資源
 
 ![圖 17](https://img.kyomind.tw/img-20251102-113247.png)
+
+## Direct Connect gateways and Transit Gateways
+
+![圖 21](https://img.kyomind.tw/img-20251104-180235.png)

@@ -706,3 +706,20 @@ S3 Pre-Signed URL → 讓用戶「**上傳/下載**」但不給 AWS 憑證
 | **使用時機** | 一次性/定期大量遷移    | 持續雙向存取               |
 | **地端角色** | 任務完成後可移除 agent | 需長期運行 gateway         |
 | **典型場景** | 資料中心關閉、歸檔     | 地端應用仍需讀寫雲端資料   |
+
+## 🧩 EventBridge vs SNS 比較表
+
+| 項目              | **Amazon EventBridge**                                                      | **Amazon SNS (Simple Notification Service)**                      |
+| ----------------- | --------------------------------------------------------------------------- | ----------------------------------------------------------------- |
+| 💡 **設計目的**    | 建立 **事件驅動架構 (Event-Driven Architecture)** 的核心路由器              | 實現 **訊息廣播與通知 (Pub/Sub)**                                 |
+| 🧭 **資料流方式**  | **事件 (event)**：發生某件事 → 根據規則路由給多個 target                    | **訊息 (message)**：主題發佈 → 廣播給所有訂閱者                   |
+| 🎯 **路由邏輯**    | 支援 **複雜過濾條件 (event pattern filtering)**，可針對 JSON 屬性比對       | 僅支援「topic-based 訂閱」，無法針對內容過濾                      |
+| 🧱 **整合對象**    | 原生整合超過 **100+ AWS 服務與 SaaS** (e.g. Zendesk, Auth0, Datadog)        | 支援推送到 **SQS、Lambda、HTTP、SMS、Email**                      |
+| ⚙️ **觸發單位**    | 每個事件皆有 **固定結構 (source, detail-type, detail)**                     | 訊息格式自由，完全由 Publisher 決定                               |
+| 📦 **傳遞模型**    | **事件路由 (Event Bus → Rule → Target)**                                    | **主題廣播 (Topic → Subscriber)**                                 |
+| 🔁 **用途舉例**    | - 跨服務事件通知（OrderCreated → Shipping） / 第三方 SaaS 整合 / 微服務解耦 | - 發送警示（CloudWatch → SNS → Email） / Lambda 觸發器 / 系統廣播 |
+| 🧩 **與 SQS 整合** | 可將事件送至 SQS 作為 target（事件中繼）                                    | 常與 SQS 搭配成「fan-out」架構                                    |
+| 🧠 **抽象層級**    | **事件層級 (semantic event)**，強調「發生了什麼事」                         | **訊息層級 (payload message)**，強調「傳送什麼內容」              |
+| 🔒 **重試機制**    | 內建多種重試與死信佇列（DLQ）支援                                           | 也支援 DLQ，但僅限特定傳送失敗情境                                |
+| ⚡ **延遲 / 吞吐** | 適合中大型事件整合（延遲略高但功能更強）                                    | 延遲極低，適合高頻簡單通知                                        |
+| 🧠 **考試陷阱**    | 若題目提到「**事件路由、過濾條件、多目標整合、SaaS**」→ 選 **EventBridge**  | 若題目提到「**即時通知、簡單廣播、Email/SMS**」→ 選 **SNS**       |

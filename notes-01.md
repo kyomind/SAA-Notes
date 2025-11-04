@@ -1013,20 +1013,20 @@
 307. ★★ Lambda **SnapStart** 解決冷啟動問題
      1. **適用場景**：**Java Lambda + cold start 問題** → **低延遲啟動** → **減少初始化時間**
      2. **支援範圍**：**僅限 Java 11、17 以上**（考試陷阱：Python、Node.js 不支援）
-308. ★★ Bastion Host vs NAT Instance 區別○
+308. ★ Bastion Host vs NAT Instance 區別
      1. **共同點**：都是一台在公有子網的 EC2 執行個體
      2. **Bastion Host 用途**：給 **人** 使用的 **SSH/RDP 跳板**
      3. **NAT Instance 用途**：給 **機器** 使用的 **私網流量轉發器**
      4. **快速區分**：NAT Instance 是「出口代辦」，Bastion Host 是「入口守門」
-309. ★★ Interface Endpoint （介面端點）
+309. ★ Interface Endpoint (Type of VPC Endpoint)
      1. **本質**：在 VPC 裡創建一個 **ENI (網卡)**，配上私有 IP
      2. **運作**：流量透過 ENI 走 **AWS PrivateLink** 到服務
      3. **支援服務**：大多數 AWS 服務（S3、DynamoDB、SNS、SQS 等）
      4. **計費**：按小時收費 + 數據傳輸費
      5. **DNS**：提供私有 DNS 名稱
-310. ★★ Gateway Endpoint （閘道端點）— 只有 S3 和 DynamoDB
-     1. **本質**：在 **Route Table** 加一條路由規則
-     2. **運作**：修改路由表，讓流量直接導向 AWS 服務
+310. ★★ Gateway Endpoint — 只有 S3 和 DynamoDB
+     1. **本質**：在 **Route Table** 加一條路由規則⭐️
+     2. **運作**：修改路由表⭐️，讓流量直接導向 AWS 服務
      3. **支援服務**：**只有 S3 和 DynamoDB**（考試必考！）
      4. **計費**：**完全免費**
      5. **DNS**：使用服務的公開 DNS 名稱
@@ -1034,7 +1034,8 @@
      1. **用途**：遷移 **關聯式資料庫、資料倉庫、NoSQL 資料庫** 到 AWS Cloud（或混合部署）
      2. **遷移模式**：**一次性遷移** 或 **持續複製** 來保持來源和目標同步
      3. **跨平台遷移**：使用 **AWS Schema Conversion Tool (SCT)** 翻譯資料庫架構，再用 DMS 遷移資料
-312. ★★ Elastic Beanstalk — PaaS 平台部署
+     4. SCT 主要是給**關聯式資料庫**做 schema 轉換，原則上不適用於 NoSQL 資料庫
+312. ★ Elastic Beanstalk — PaaS 平台部署
      1. **本質**：**完全託管的 PaaS**，你只負責上傳程式碼，AWS 自動搞定基礎設施
      2. **核心優勢**：自動化部署、擴展、負載平衡、監控；保留底層 EC2/RDS 調整權限
      3. **支援語言**：Go、Java、.NET、Node.js、PHP、Python、Ruby
@@ -1043,20 +1044,18 @@
 314. ★★ EventBridge 核心定位：Serverless 事件路由器
      1. **本質**：**事件驅動架構的中樞神經**，負責解耦 Event Producers 和 Consumers
      2. **運作模式**：Producer 發事件 → EventBridge → 路由到 Consumers，雙方獨立部署、擴展
-     3. **支援事件來源**：AWS 服務（EC2、S3、RDS...）、自己的應用程式、SaaS 應用（Zendesk、Datadog...）
-315. ★★ EventBridge vs SNS 核心差異
-     1. **路由方式**：EventBridge 支援**複雜規則過濾**，SNS 只有**簡單訂閱**
+     3. **支援事件來源**：AWS 服務（EC2、S3、RDS...）、自己的應用程式、**SaaS 應用**（Zendesk、Datadog...）
+315. ★★ EventBridge vs SNS 核心差異⭐️
+     1. **路由方式**：EventBridge 支援**複雜規則過濾**，SNS 只有**簡單訂閱**⭐️重點是「訂閱」
      2. **應用場景**：EventBridge 用於**事件驅動架構**，SNS 主要用於**訊息廣播**
-     3. **整合能力**：EventBridge 原生整合 **AWS 服務 + SaaS**，SNS 主要推送通知
+     3. **整合能力**：EventBridge 原生整合 **AWS 服務 + SaaS**，SNS 主要**推送通知**
 316. ★ EventBridge 考試判斷邏輯
-     1. **選 EventBridge**：「根據事件內容路由到不同目標」、「整合多個 AWS 服務事件」、「定時排程任務」（取代 CloudWatch Events）
+     1. **選 EventBridge**：「根據事件內容路由到不同目標」、「整合多個 AWS 服務事件」、「定時排程任務」
      2. **選 SNS**：「單純推送通知」
-317. **Amazon EventBridge (Amazon CloudWatch Events)** is a serverless event bus that makes it easy to connect applications together. → 注意名稱！
-318. 👀 EventBridge 考試陷阱：避免過度複雜組合
-     1. **警覺信號**：看到「CloudTrail + CloudWatch Alarm + EventBridge」的組合題 → 考慮是否過度複雜
-     2. **核心能力提醒**：EventBridge **本身就能**監聽 AWS 服務事件（包含 S3）、直接觸發 ECS Task、Lambda、Step Functions，**不需要 CloudWatch Alarm 當中介**
+317. **Amazon EventBridge (舊稱：Amazon CloudWatch Events)** is a serverless event bus that makes it easy to connect applications together. → 注意名稱！
+318. (刪除)
 319. ★ EventBridge Target 選項與應用
-     1. **常見 Target 目標**：Lambda、ECS Task、Step Functions、SNS/SQS、API Gateway
+     1. **常見 Target 目標**：Lambda、**ECS Task**、Step Functions、SNS/SQS、API Gateway
      2. **選項豐富性**：EventBridge 的 Target 配置能力強大，可**直接連接**多數 AWS 服務
 320. 👀 ElastiCache Redis 基本安全組合（冷門題）
      1. **傳輸層安全**：`--transit-encryption-enabled` 啟用 **TLS 傳輸加密**
@@ -1064,28 +1063,35 @@
 321. 👀 ElastiCache IAM Authentication 限制
      1. **適用範圍**：只能用於 **ElastiCache 管理 API** 操作
      2. **不適用於**：**Redis 資料操作指令**（Get、Set、Incr 等）無法使用 IAM Authentication
-322. ★ Target Tracking Policy (ASG) 是 AWS 推薦的預設方案。Simple Scaling 有 cooldown，不適合突發流量，目前已少用
+322. ★ ASG Scaling Policy 選擇策略
+     1. **AWS 官方強烈建議**：優先使用 **Target Tracking Policy**（最推薦）
+     2. **Simple Scaling 問題**：
+        - 必須等待 **cooldown period** 結束才能回應新警報
+        - 無法處理突發流量，反應遲緩
+        - **AWS 官方已不推薦使用**，僅保留作向後相容
+     3. **Step Scaling 優勢**：可在 scaling activity 進行中繼續回應警報，比 Simple Scaling 靈活
 323. 實務建議：別用 Simple Scaling，用 Target Tracking 或 Step Scaling。
-324. ★★ FSx for Lustre 檔案系統應用場景
-     1. **關鍵字**：高效能運算（HPC）、機器學習訓練、影片處理、基因體分析
+324. ★★ FSx for **Lustre** 檔案系統應用場景
+     1. **關鍵字**：高效能運算（**HPC**）、機器學習訓練、影片處理、基因體分析
      2. **特性**：極高 IOPS、低延遲、可與 S3 整合
-     3. **考試判斷**：看到「平行處理大量資料」→ 選 Lustre（賽車級性能）
+     3. **考試判斷**：看到「**平行處理**大量資料」→ 選 Lustre（賽車級性能）
 325. ★★ FSx for Windows File Server 檔案系統應用場景
      1. **關鍵字**：Windows 應用、**SMB 協定**、**Active Directory**、企業檔案共享
      2. **特性**：原生支援 Windows 生態系
      3. **考試判斷**：題目提到「現有 Windows 環境」或「需要 AD 整合」→ 選 FSx for Windows（微軟親兒子）
 326. ★ EFS (Elastic File System) 檔案系統應用場景
-     1. **關鍵字**：Linux、多個 EC2 同時掛載、自動擴展、**NFS 協定**
+     1. **關鍵字**：Linux/Mac、多個 EC2 同時掛載、自動擴展、**NFS 協定**
      2. **特性**：通用型、彈性、跨 AZ
-     3. **考試判斷**：看到「多台 Linux EC2 需要共享檔案」→ 選 EFS（標準通用型）
+     3. **重要限制**：**不支援 Windows instances**⭐️
+     4. **考試判斷**：看到「多台 Linux EC2 需要共享檔案」→ 選 EFS（標準通用型）
 327. 😇 AWS 檔案系統選型決策樹
      1. **超高速處理大數據**：FSx for Lustre（賽車級）
      2. **Windows 企業環境**：FSx for Windows（微軟親兒子）
      3. **Linux 多機共享檔案**：EFS（標準通用型）
-328. ★ DynamoDB 對頻繁 Schema 變更的適應性
+328. ★ DynamoDB 對頻繁 Schema 變更的高適應性
      1. **特性**：無 Schema 限制，支援動態屬性添加
      2. **應用場景**：需要頻繁改變資料結構的應用
-329. ★★ AWS Storage Gateway File Gateway 考試應用場景
+329. ★ AWS **Storage Gateway** File Gateway 考試應用場景
      1. **題目特徵**：
         - On-premises 有大量檔案要歸檔到 AWS
         - 需要「無痛」整合，不想改現有系統
@@ -1094,8 +1100,8 @@
         - 部署 **File Gateway**（VM）
         - 透過 **NFS/SMB** 上傳檔案到 S3
         - 設定 **Lifecycle Policy** 自動轉 Glacier
-     3. **核心記憶**：File Gateway = **把 S3 偽裝成 NAS**，讓地端系統無感整合
-330. ★★ AWS Shield Advanced 與 Shield Standard 的選擇判斷
+     3. **核心記憶**：File Gateway = **把 S3 偽裝成 NAS**，讓地端系統無感整合⭐️
+330. ★ AWS Shield Advanced 與 Shield Standard 的選擇判斷
      1. **選 Shield Advanced 的關鍵字**：
         - 題目明確提到「**sophisticated DDoS**」
         - 需要「**24/7 專家支援**」
@@ -1103,15 +1109,14 @@
         - 需要「**應用層（Layer 7）防護**」
      2. **選 Shield Standard**：
         - 題目只問「**基本 DDoS 防護**」（這幾乎不會是正解，因為 Standard 是預設開啟的）
-
-331. 😇 共享檔案系統服務的選擇判斷（EFS vs S3 vs EBS）
+331. ★ 共享檔案系統服務的選擇判斷（EFS vs S3 vs EBS）
      1. **題目關鍵字**：
         - 「**多個 EC2 同時存取**」→ EFS
-        - 「**跨 AZ 高可用**」→ EFS
+        - 「**跨 AZ 高可用**」→ EFS⭐️
         - 「**共享檔案系統**」→ EFS
      2. **常見陷阱**：
         - S3 是 object storage，**不適合**需要檔案系統的場景（無法直接 mount）
-        - EBS Multi-Attach **只在同一 AZ 內**，不跨 AZ
+        - EBS Multi-Attach **只在同一 AZ 內**，不跨 AZ⭐️
      3. **記憶口訣**：需要「**共享 + 跨 AZ**」→ 選 **EFS**
 332. ★ FSx for Windows 的選擇關鍵字
      1. 題目提到 **Active Directory**、**Windows 檔案權限（NTFS ACL）**、**SMB 協議**
@@ -1120,18 +1125,19 @@
      1. Linux only 環境、需要 POSIX 權限 → **EFS**
      2. 高效能運算 (HPC) → **FSx for Lustre**
 334. 😇 FSx 服務選擇口訣
-     1. 「**Windows + AD + SMB = FSx for Windows**」
+     1. 「**Windows + AD + SMB = FSx for Windows**」⭐️
      2. 題目看到這三個關鍵字其中兩個，**90% 就是選它**
-335. ★★ IAM DB Authentication 核心特性
+335. ★ IAM DB Authentication 核心特性
      1. **運作**：用 **IAM token** 取代密碼，**15 分鐘有效**（AWS Signature V4）
      2. **優勢**：無需存密碼、IAM 集中管理、自動輪替、可混用傳統認證
-336. ★★ IAM DB Authentication 考試判斷
+     3. 這是 RDS、Aurora 的一項附加功能
+336. ★ IAM DB Authentication 考試判斷
      1. **選擇**：題目強調「不要在 DB 存密碼」或「集中管理 DB 存取」
      2. **不適用**：長時間連線（token 過期）、非 AWS 環境、不支援的 DB 引擎
 337. ★★ AWS Direct Connect（DX）
      1. **功能**：**專線** 直接連接到 AWS，**繞過公網**
      2. **效能**：穩定、低延遲（< 10ms）、1/10/100 Gbps 選項
-     3. **安全**：流量不走公網、可搭配 VPN 加密
+     3. **安全**：流量**不走公網**、可搭配 VPN 加密⭐️
 338. ★ AWS Direct Connect 的成本與應用
      1. **計費**：按小時 + 傳輸量，月傳 10TB+ 較划算
      2. **缺點**：**建置時間長**（幾週到幾個月）
@@ -1144,21 +1150,22 @@
      2. **Transit Gateway**：VPC 間路由、跨帳號、支援多種連接方式
 341. ★★ AWS Transit Gateway (TGW) 核心定義
      1. **定義**：雲端路由器，讓多個 VPC、VPN、DX 專線**互連**
-     2. **優勢場景**：多個 VPC 互連時，使用星狀拓撲而非全 mesh Peering
+     2. **優勢場景**：多個 VPC 互連時，使用**星狀拓撲**而非全 mesh Peering⭐️
 342. 😇 Transit Gateway vs 傳統 VPC Peering
      1. **傳統做法**：5 個 VPC 互連 = 需要 10 條 VPC Peering（n(n-1)/2）、加上 DX、VPN = 每個都要連、架構複雜
      2. **Transit Gateway**：所有 VPC、VPN、DX 都連到 TGW、TGW 統一管理路由、星狀拓撲簡單清晰
 343. 😇 AWS Egress-only Internet Gateway 核心定義
-     1. **定義**：只出不進的 IGW，專為 IPv6 設計
+     1. **定義**：只出不進的 IGW，**專為 IPv6 設計**
      2. **適用場景**：VPC 內 IPv6 EC2 只主動對外連線，不被外部連入
-     3. 使用時，要加入到 Route Table，指定 `::/0` 給 Egress-only IGW，不然網路不通
+     3. 使用時，要加入到 Route Table，指定 `::/0` 給 Egress-only IGW，不然網路不通⭐️
 344. 👀 IPv6 與 Egress-only IGW 的必要性
-     1. **IPv6 特性**：所有 IPv6 位址都是公開可路由的（沒有私有 IP 概念）、VPC 內 EC2 用 IPv6 = 直接暴露在網路上
-     2. **解決方案**：Egress-only IGW 允許內部發起的連線出去，但擋掉外部發起的連入
+     1. **IPv6 特性**：所有 IPv6 位址**都是公開可路由**的（沒有私有 IP 概念）
+     2. VPC 內 EC2 用 IPv6 = 直接暴露在網路上
+     3. **解決方案**：Egress-only IGW 允許內部發起的連線出去，但擋掉外部發起的連入
 345. NAT Gateway vs Egress-only IGW 的區別
      1. **NAT Gateway**：用於 IPv4，允許私有子網 EC2 對外連線，阻擋外部連入
      2. **Egress-only IGW**：用於 IPv6，允許 VPC 內 IPv6 EC2 對外連線，阻擋外部連入
-346. Internet Gateway vs Egress-only IGW 的區別
+346. Internet Gateway vs Egress-only IGW 的區別○
      1. **Internet Gateway**：允許雙向流量（內外互通），且適用於 IPv4 和 IPv6
      2. **Egress-only IGW**：只允許單向流量（只出不進），只適用於 IPv6
      3. 兩者是同層級資源，綁定在 VPC 上，並透過 Route Table 控制流量方向，可同時存在於同一 VPC
