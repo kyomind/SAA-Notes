@@ -723,3 +723,11 @@ S3 Pre-Signed URL → 讓用戶「**上傳/下載**」但不給 AWS 憑證
 | 🔒 **重試機制**    | 內建多種重試與死信佇列（DLQ）支援                                           | 也支援 DLQ，但僅限特定傳送失敗情境                                |
 | ⚡ **延遲 / 吞吐** | 適合中大型事件整合（延遲略高但功能更強）                                    | 延遲極低，適合高頻簡單通知                                        |
 | 🧠 **考試陷阱**    | 若題目提到「**事件路由、過濾條件、多目標整合、SaaS**」→ 選 **EventBridge**  | 若題目提到「**即時通知、簡單廣播、Email/SMS**」→ 選 **SNS**       |
+
+## Aurora Endpoint 背後的運作機制
+
+| Endpoint 類型        | DNS 解析行為                         | 實際效果           |
+| -------------------- | ------------------------------------ | ------------------ |
+| **Cluster Endpoint** | 永遠指向 **Primary (Writer)**        | 寫入流量固定打主機 |
+| **Reader Endpoint**  | Round-robin 到**所有** read replicas | 讀取流量自動分散   |
+| **Custom Endpoint**  | Round-robin 到**你指定的** instances | 流量只打你選的機器 |

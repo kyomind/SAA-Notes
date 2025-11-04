@@ -1165,35 +1165,36 @@
 345. NAT Gateway vs Egress-only IGW 的區別
      1. **NAT Gateway**：用於 IPv4，允許私有子網 EC2 對外連線，阻擋外部連入
      2. **Egress-only IGW**：用於 IPv6，允許 VPC 內 IPv6 EC2 對外連線，阻擋外部連入
-346. Internet Gateway vs Egress-only IGW 的區別○
-     1. **Internet Gateway**：允許雙向流量（內外互通），且適用於 IPv4 和 IPv6
-     2. **Egress-only IGW**：只允許單向流量（只出不進），只適用於 IPv6
-     3. 兩者是同層級資源，綁定在 VPC 上，並透過 Route Table 控制流量方向，可同時存在於同一 VPC
+346. Internet Gateway vs Egress-only IGW 的區別
+     1. **Internet Gateway**：允許**雙向**流量（內外互通），且適用於 IPv4 和 IPv6
+     2. **Egress-only IGW**：只允許**單向**流量（**只出不進**），只適用於 **IPv6**
+     3. 兩者是同層級資源，**綁定在 VPC 上**，並透過 Route Table 控制流量方向，可**同時存在**於同一 VPC⭐️
 347. ★ S3 靜態網站與跨 domain API 呼叫的 CORS 問題
      1. **問題本質**：瀏覽器**同源政策（Same-Origin Policy）**會擋掉跨 domain 的請求，網站從 s3-website-us-east-1 載入，但 JavaScript 要向 s3.amazonaws.com 發 API 請求時會被阻止
      2. **解決方案**：在 S3 bucket 設定 **CORS**，明確允許來自網站 endpoint 的請求
-348. 😇 S3 CORS 的考試記憶技巧
-     1. **必選規則**：只要看到「S3 靜態網站的 JavaScript 要呼叫 S3 API」，直接選 **CORS**
-349. ★★ API Gateway 的金絲雀部署（Canary Deployment）
+348. (刪除)
+349. ★ API Gateway 的金絲雀部署（Canary Deployment）
      1. **定義**：**漸進式發布策略**，先讓少量流量（例如 10%）導向新版本，監控表現，若穩定逐步增加流量比例（10% → 25% → 50% → 100%），出問題可快速回滾
      2. **實作流程**：建立 Canary Stage → 部署新版本 → 透過 `canarySettings.percentTraffic` 設定流量比例（0-100）→ CloudWatch 分開記錄 production 和 canary metrics → 確認無誤後將 canary 提升為 production
      3. 這是 API Gateway **原生支援**的部署策略，無需額外工具
 350. ★ API Gateway Canary 的考試判斷標準
      1. **關鍵字識別**：看到「逐步發布」、「漸進式部署」、「降低風險」、「測試新版本但不影響所有使用者」、「API Gateway 版本更新」 → 優先選 Canary
-     2. **對比其他策略**：**Blue/Green** 是一次性切換全部流量（風險較高）、**Rolling** 是逐批更新實例（適用 EC2/ECS，不適用 API Gateway）
+     2. **Blue/Green** 是一次性切換全部流量（風險較高）
+     3. **Rolling** 是逐批更新實例（適用 EC2/ECS，不適用 API Gateway）
 351. To avoid accidental deletion in an Amazon S3 bucket, you can:
      - Enable **Versioning**
-     - Enable **MFA (Multi-Factor Authentication) Delete**
+     - Enable **MFA Delete**
 352. Amazon WorkDocs 是 AWS 的企業檔案協作服務，類似 Google Drive 或 Dropbox。
-353. ★★ 企業身份聯合（Enterprise Identity Federation）+ STS 臨時憑證
+353. ★ 企業身份聯合（Enterprise Identity Federation）+ STS 臨時憑證
      1. **場景**：企業員工用公司帳號（**AD/LDAP**）登入 AWS，存取 S3
      2. **架構組件**：**Identity Provider (IdP) 或 Federation Proxy** 整合企業身份系統 → **AWS STS** 產生臨時憑證（`AssumeRoleWithSAML` / `AssumeRoleWithWebIdentity`）→ **IAM Role** 定義權限範圍 → **IAM Policy** 附加到 Role，允許存取 S3
 354. ★ 企業身份聯合的考試判斷標準
      1. **關鍵字識別**：看到「企業現有身份系統（AD/SAML/OIDC）」、「單一登入（SSO）」、「不想建立 IAM User」、「臨時存取」 → 優先選 **Federation + STS**
-     2. **記憶技巧**：外部身份要進 AWS → 必經 **STS** 拿臨時通行證
+     2. **記憶技巧**：外部身份要進 AWS → 必經 **STS** 拿臨時通行證⭐️
 355. ★★ 秒級突發流量的架構設計判斷
      1. **核心限制**：**EC2 Auto Scaling 擴展速度慢**（分鐘級），無法應對「秒級」突發流量
-     2. **判斷標準**：題目強調「**seconds**」→ 選 **Serverless**；強調「**minutes 可接受**」→ EC2 Auto Scaling 才合理
+     2. **判斷標準**：題目強調「**seconds**」→ 選 **Serverless**(主要有 Lambda + API Gateway)
+     3. 強調「**minutes 可接受**」→ EC2 Auto Scaling 才合理
 356. 😇 秒級流量應對方案對比
      1. **✅ Lambda**：**毫秒級**擴展，適合突發流量
      2. **✅ API Gateway + Lambda**：無伺服器架構，自動擴展無上限
@@ -1203,9 +1204,9 @@
      2. **考試判斷**：不符合「**最快聚合資料**」的需求
 358. ★ NAT Gateway 的高可用部署原則
      1. **正確做法**：**每個 AZ 一個 NAT Gateway**，透過 Route table 指向對應 AZ 的 NAT Gateway
-     2. **常見錯誤**：「每個 AZ 有 3 個 NAT Gateway」→ 浪費成本、Route table 無法多重指向、違反 cost-effective 原則
+     2. **常見錯誤**：「每個 AZ 有 3 個 NAT Gateway」→ 浪費成本、Route table 無法多重指向
      3. **核心限制**：Route table 只能指向**一個** NAT Gateway，多餘的資源無法利用
-359. ★★ NAT Gateway 本身已具備高可用性
+359. ★★ NAT Gateway 本身已具備**高可用性**
      1. **架構洞察**：NAT Gateway 內置 HA 能力，不需額外部署冗餘
 360. ★★ Private Subnet vs Public Subnet 的 Route Table 設定
      1. **Private Subnet**：需要 NAT Gateway 代理外連，Route table：`0.0.0.0/0 → NAT Gateway (same AZ)`
@@ -1213,7 +1214,7 @@
      3. **核心原則**：**誰需要這個服務，Route table 就設在誰那邊**
 361. 實務提醒：Private Subnet 不代表完全不能上網，可透過 NAT Gateway (IPv4) 或 Egress-only IGW (IPv6) 單向訪問。⭐️
 362. 記憶點： 題目提到「SFTP + S3 + 不想管 server」→ 秒選 Transfer for SFTP
-363. ★★ Lambda 環境變數加密：預設機制與自訂加密
+363. ★★ Lambda 環境變數加密：預設機制與自訂加密(ai說這個重要)
      1. **預設加密**：Lambda 環境變數預設由 AWS 自動用 KMS 的 default service key 加密，無需手動配置
      2. **自訂加密情境**：只有使用 **encryption helpers** 進行 runtime 動態加解密時，才需建立 **custom KMS key**
 364. ★ Lambda 環境變數自訂加密的實現步驟
@@ -1231,15 +1232,16 @@
      1. **觸發條件**：題目同時提到 **"plain text"** 和 **"maximum security"**
      2. **必要配置**：必須使用 **encryption helpers + custom KMS key**
      3. **判斷標準**：只提「保護敏感資料」而無「plain text」強調 → 預設加密就夠了
-368. ★ Custom Key Store 的題目關鍵字識別
-     1. **single-tenant / dedicated HSM** → Custom Key Store
-     2. **immediately remove / independent revocation** → Custom Key Store
-     3. **independent audit / beyond CloudTrail** → Custom Key Store
-369. KMS Custom Key Store = KMS + CloudHSM 的混合架構
+     4. **語境解釋**：**"plain text" ≠ 非常保密**，而是指「**沒有額外加密保護的資料（安全風險警示）**」。考試邏輯：`"plain text" + "maximum security" = 必須選最強加密方案`
+368. ★ KMS **Custom Key Store** 的題目關鍵字識別
+     1. single-tenant / dedicated HSM
+     2. immediately remove / independent revocation
+     3. independent audit / beyond CloudTrail
+369. KMS Custom Key Store = KMS + **CloudHSM 的混合架構**
 370. Use AWS Key Management Service to create a KMS key in a **custom key store** and store the **non-extractable key material in AWS CloudHSM.**
 371. ★★ Aurora **Custom Endpoint** 的核心功能
-     1. **問題解決**：Reader Endpoint 只會平均分流所有 replicas，無法區分不同規格 instances
-     2. **解決方案**：建立 Custom Endpoints 精準控制流量去向
+     1. **問題解決**：Reader Endpoint 只會**平均**分流所有 replicas，無法區分不同規格 instances
+     2. **解決方案**：建立 Custom Endpoints 精準控制流量去向⭐️
      3. **典型組合**：Production Custom Endpoint（指向 `db.r5.2xlarge`）+ Reporting Custom Endpoint（指向 `db.t3.medium`）
 372. 😇 Aurora Endpoint 類型對比與使用時機
      1. **Cluster Endpoint**：寫入 (primary only)
@@ -1249,7 +1251,8 @@
      1. **選擇標誌**：題目提到「不同規格 instance」或「區分流量類型」→ **直接選 Custom Endpoint**
      2. **成本優化**：用 Custom Endpoint 精準控制流量，避免報表流量打到高規格機器（浪費資源）
      3. **常見陷阱**：❌ 用 Reader Endpoint 處理報表會分流到**所有** replicas（包含高規格機器，浪費成本）
-374. ★★ RDS **Enhanced Monitoring** 的核心功能
+     4. 每個 Custom Endpoint 都有自己的 DNS！你可以完全控制流量的去向⭐️
+374. ★ RDS **Enhanced Monitoring** 的核心功能
      1. **定義**：OS 層級監控功能，直接從 DB instance agent 收集數據（不透過 hypervisor）
      2. **監控內容**：**CPU per process/thread**、記憶體詳細使用、檔案系統等 OS 層級細節
      3. **差異優勢**：比 CloudWatch 標準 metrics **更細緻、更即時**
@@ -1268,7 +1271,7 @@
      1. **支援清單**：Amazon Cognito、Login with Amazon、Facebook、Google、任何支援 **OpenID Connect (OIDC)** 的提供者
      2. **核心限制**：**只支援公開的身份提供者**，無法與私有企業系統整合（如公司內部 Active Directory）
 380. ★★ Web Identity Federation 與 Active Directory 不相容性分析
-     1. **為什麼不適用**：公司的 **Active Directory (AD) 是私有的企業身份系統**，不是公開的身份提供者
+     1. **為什麼不適用**：公司的 **Active Directory (AD) 是私有的企業身份系統**，不是公開的身份提供者⭐️
      2. **根本限制**：Web Identity Federation 根本不認識私有 AD，因此無法作為身份來源
 381. ★★ NAT Gateway 部署位置與網路架構必要性
      1. **部署位置**：**NAT Gateway 必須在 Public Subnet**，因為它需要 **Internet Gateway** 才能真正連到外網
@@ -1277,21 +1280,21 @@
 382. ★★ NAT Gateway 的「單向門」設計與 Private Subnet 應用
      1. **設計目的**：Private Subnet 資源需要主動連外（下載套件、呼叫 API），但不想被外部主動連入
      2. **NAT Gateway 角色**：充當「單向門」，只允許從內往外，不允許從外往內
-     3. **核心要點**：這扇門必須開在有真正出口（IGW）的地方，形成完整的網路防護與通訊機制
+     3. **核心要點**：這扇門**必須開在有真正出口（IGW）的地方**，形成完整的網路防護與通訊機制
 383. ★★ AWS VPC CIDR 範圍限制與最大規模
-     1. **CIDR 範圍限制**：最大 **/16**（65,536 個 IP），最小 **/28**（16 個 IP）
+     1. **CIDR 範圍限制**：最大 **/16**（65,536 個 IP），最小 **/28**（16 個 IP）⭐️
      2. **最大配置示例**：**172.16.0.0/16** 剛好是最大允許範圍，代表可以給予最多 IP 地址空間
      3. **超限制限制**：例如 **172.16.0.0/12** 超過 AWS 限制，AWS 根本不允許建立此範圍
 384. ★★ Security Group vs NACL 的核心差異
-     1. **作用範圍**：
+     1. **作用範圍**：⭐️
         - Security Group：綁定在 **ENI（網卡）** 上，針對單一 EC2 instance 控制流量
         - NACL：綁定在 **Subnet（子網路）** 上，針對整個子網路控制流量
      2. **狀態性**：
         - Security Group：**有狀態性**，允許進入的流量，自動允許回應流量
         - NACL：**無狀態性**，進出流量需分別設定規則
      3. **規則類型**：Security Group（只允許規則、預設拒絕所有）、NACL（允許和拒絕規則皆可設定）
-385. ★★ VPC Peering 雙向路由設定要求與常見陷阱
-     1. **雙向性質**：**VPC Peering 是雙向的**，兩邊的 Route Table 都必須加對方的 CIDR 路由
+385. ★ VPC Peering 雙向路由設定要求與常見陷阱
+     1. **雙向性質**：**VPC Peering 是雙向的**，兩邊的 Route Table 都**必須加對方**的 CIDR 路由⭐️
      2. **完整配置**：**VPC A Route Table** 加一條指向 VPC B CIDR 的路由 + **VPC B Route Table** 加一條指向 VPC A CIDR 的路由
      3. **常見陷阱**：題目只更新 A 的 Route Table，B 沒更新，當然連線不通 - 必須檢查 VPC B 的 Route Tables
 386. ★ **VPC 網路連線排查**正確順序
@@ -1301,9 +1304,7 @@
 387. ★ AWS **CIDR 保留 IP 範圍**規則
      1. **前 4 個 IP**：.0、.1、.2、.3（AWS 永遠保留）
      2. **最後 1 個 IP**：broadcast address（AWS 永遠保留）
-388. ★★ AWS **CIDR 位數限制**
-     1. **禁止**：/30、/31、/32（保留 IP 超過總數）
-     2. **最小建議**：/29（8 個 IP，可用 3 個）
+388. (刪除)
 389. ★★ **VPC Peering 特性**
      1. **點對點連接**：每個 Peering 只連接兩個 VPC
      2. **不支援傳遞性**：A-B-C 無法透過 B 互通
@@ -1317,32 +1318,32 @@
 392. ★ **AWS VPN CloudHub**
      1. **用途**：**多個 on-premises sites** 透過 AWS 作為 hub 互連
      2. **特性**：走公網、成本低、適合做 **backup 連線、提供 failover**
-393. ★★ **Direct Connect 常見錯誤認知與正確理解**
-     1. **錯誤認知**：Direct Connect 只能連 VPC 私有資源 ❌
+393. ★ **Direct Connect 常見錯誤認知與正確理解**
+     1. **錯誤認知**：Direct Connect 只能連 VPC 私有資源
      2. **正確理解**：實際上可以透過 **Public VIF** 連所有 AWS 公共服務，且**不走公網**
      3. **記憶點**：「Direct Connect = 專線到 AWS，要什麼都能拿」
-394. ★★ **Transit Gateway 突破 VPN 頻寬限制**
+394. ★ **Transit Gateway 突破 VPN 頻寬限制**
      1. **問題**：Site-to-Site VPN 單一 tunnel = **1.25 Gbps**
      2. **Transit Gateway ECMP**：支援多個 tunnel 並行，頻寬疊加（2 條 = 2.5 Gbps，4 條 = 5 Gbps）
      3. **對比**：Virtual Private Gateway 只能 failover，**不能疊加頻寬**
 395. Setup a Site-to-Site VPN connection as a backup of an AWS Direct Connect connection.
-396. **AWS Network Firewall** allows you to protect and control traffic in your VPC **from layer 3 to layer 7**.
+396. **AWS Network Firewall** allows you to protect and control traffic in your VPC **from layer 3 to layer 7**.→保護的是 VPC 裡的流量⭐️
 397. ★★ Security Group 互相引用實現精確存取控制
      1. **核心概念**：Security Group 可以用「另一個 Security Group」當作 source/destination，而非只能用 CIDR
      2. **實作範例**：EC2 Security Group Inbound Rule → Protocol: HTTP, Port: 80, Source: **ALB 的 Security Group**
      3. **核心優勢**：最精確（只有 ALB 能存取）、動態跟隨（ALB 換 IP 不用改規則）、防止 VPC 內其他資源直接存取
 398. 😇 Security Group 引用的考試記憶技巧
      1. **記憶方式**：把 Security Group 想成「通行證」，設定「只有持有 ALB 通行證的人才能進來」，而不是「只要住在這個社區的人都能進來（CIDR）」。
-     2. **考試陷阱**：題目會給 VPC CIDR 當干擾選項，正確答案通常是「引用 Security Group」而非「寫 IP range」
+     2. **考試陷阱**：題目會給 VPC CIDR 當干擾選項，正確答案通常是「**引用 Security Group**」而非「寫 IP range」
 399. ★ Security Group 引用的底層運作機制
-     1. **動態解析**：AWS 即時查詢「哪些 ENI 掛著指定 SG」，動態允許這些 ENI 的流量通過
+     1. **動態解析**：AWS 即時查詢「**哪些 ENI 掛著指定 SG**」，動態允許這些 ENI 的流量通過
      2. **自動追蹤**：ALB 新增/移除 instance 時自動更新允許清單，無需手動維護 IP
      3. **核心優勢**：SG 本身只是標籤，AWS 網路層即時解析對應的網路介面並動態套用規則
-400. ★★ Aurora 與 Lambda 整合的事件驅動架構
-     1. **核心概念**：Aurora Native Function/Stored Procedure 可以直接調用 Lambda
-     2. **技術特性**：Aurora MySQL-Compatible 的特殊功能
+400. ★ Aurora 與 Lambda 整合的事件驅動架構
+     1. **核心概念**：Aurora Native Function/Stored Procedure 可以**直接調用 Lambda**
+     2. **技術特性**：Aurora **MySQL-Compatible 的特殊功能**
      3. **應用場景**：在資料庫層面觸發外部處理邏輯，常用於資料變更時的事件處理
-401. ★★ AWS 關鍵服務整合地圖
+401. ★★ AWS 關鍵服務整合地圖⭐️
      1. **Aurora → Lambda**：資料庫層面直接觸發 Lambda 函式
      2. **DynamoDB Streams → Lambda**：資料變更時自動觸發處理
      3. **S3 事件 → Lambda/SNS/SQS**：物件操作觸發多種後續處理
@@ -1361,15 +1362,15 @@
 404. 😇 RDS Events 考試判斷標準
      1. **核心記憶**：**RDS Events = 基礎設施事件**，不是業務資料事件
      2. **考試陷阱**：題目問「車輛被刪除後要處理」→ 這是**資料層變更**，RDS Events 幫不上忙
-405. ★★ EKS Cluster 啟用 Secret 加密的實作步驟
+405. ★ EKS Cluster 啟用 Secret 加密的實作步驟
      1. **啟用加密功能**：在 EKS cluster 設定中開啟 **encryption configuration**，指定用於加密的 **KMS key**
-     2. **加密範圍**：針對 **Kubernetes Secrets 資源**，資料存入 **etcd 前自動加密**，讀取時自動解密
+     2. **加密範圍**：針對 **Kubernetes Secrets 資源**，資料**存入 etcd 前自動加密**，讀取時自動解密
 406. ★ EKS Secrets 的三層加密認知
      1. **K8s 原生 Secrets**：**base64 編碼**（不是加密！）
      2. **etcd 存儲**：EKS 的 Secret 最終存在 **etcd**
      3. **AWS 加密**：用 **KMS key** 對 etcd 內的 Secrets 加密
 407. 😇 EKS Secret 加密的考試判斷與陷阱
-     1. **核心知識**：**EKS Secrets 預設不加密**，需手動啟用 KMS 加密
+     1. **核心知識**：EKS Secrets **預設不加密**，需手動啟用 KMS 加密
      2. **常見陷阱選項**：
         - ❌ 用 **AWS Secrets Manager** 存（多此一舉，直接加密 etcd 就好）
         - ❌ 用 **IAM roles**（跟 Secret 加密無關）
@@ -1395,15 +1396,15 @@
      3. **協議下載**：線上協議下載（如 **BAA、NDA**）
      4. **使用條件**：**免費使用**，所有 AWS 帳戶都能存取
 413. ★★ VPC Endpoint 核心概念與用途
-     1. **用途**：讓 VPC 內的資源透過**私有網路存取 AWS 服務**，不經過公網
+     1. **用途**：讓 VPC 內的資源透過**私有網路存取 AWS 服務**，不經過公網⭐️
      2. **解決問題**：不需要 Internet Gateway / NAT / VPN、不需要 public IP
-     3. **核心優勢**：流量不離開 **AWS 內網** → **更安全、更快**
+     3. **核心優勢**：流量不離開 **AWS 內網** → **更安全、更快**⭐️
 414. 題目提到「私有存取 S3/DynamoDB」→ 選 VPC Endpoint(Gateway Endpoint)
 415. ★ Private subnet 的 EC2 要存取 S3
      1. 建立 **Gateway Endpoint for S3**
      2. 關聯到 **route table**
      3. EC2 直接用 **private IP** 存取，**免費且安全**
-416. ★★ CloudFront Origin Failover 機制
+416. ★★ CloudFront Origin Failover 機制⭐️
      1. **核心功能**：解決 **504 錯誤**，Primary 掛了自動切 Secondary
      2. **觸發條件**：可設定特定 HTTP status codes（如 **500, 502, 503, 504**）
      3. **考試要點**：CloudFront 優化 + 高可用性的常見組合
@@ -1418,12 +1419,13 @@
 419. ★ CloudFront 優化的常見考試陷阱
      1. **錯誤思維**：以為 CloudFront 優化 = 只調快取設定
      2. **正確概念**：要看**什麼內容**需要優化
-     3. **實際應用**：驗證這種動態邏輯 → 用 **Lambda@Edge** 在邊緣執行；靜態資源載入 → 用 **Cache-Control** 延長快取
+     3. 驗證這種動態邏輯 → 用 **Lambda@Edge** 在邊緣執行
+     4. 靜態資源載入 → 用 **Cache-Control** 延長快取
 420. 😇 Authentication 優化題目解題要點
      1. **題目陷阱**：故意給「看起來能優化 CloudFront 效能」的選項
      2. **關鍵判斷**：題目問的是 **authentication 慢**，不是靜態資源載入慢
      3. **記憶要點**：驗證邏輯必須執行運算（Lambda function），無法透過快取解決
-421. ★★ API Gateway Throttling（流量限制）機制
+421. ★★ API Gateway **Throttling**（流量限制）機制
      1. **兩層控制**：**全域** + **個別 API 方法**
      2. **兩種限制**：
         - **Rate Limit**：穩定流量（例：1000 req/s）
@@ -1437,7 +1439,7 @@
         - **Cache Key** 建構方式
         - **TTL**（Time-to-Live）
      4. **管理功能**：可手動清除（**invalidate**）快取
-423. 😇 CloudFront vs API Gateway Cache 的核心差異
+423. 😇 CloudFront vs API Gateway Cache 的核心差異○
      1. **CloudFront**：在最前端快取，未命中請求仍會打到後端
      2. **API Gateway Cache + Throttling**：命中快取直接回應 + 超過限制直接擋掉，完全保護後端
 424. ★ 高流量場景的架構選擇判斷

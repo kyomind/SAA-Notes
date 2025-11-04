@@ -451,3 +451,11 @@
     1. **✅ 通過場景**：私有 EC2 下載套件、呼叫 API（內部主動發起）
     2. **❌ 阻擋場景**：外部掃描 NAT IP、從家裡 SSH 進私有 EC2（外部主動發起）
     3. **記憶口訣**：「**內部主動我放行，外部主動我不理**」
+127. ★★ NAT Gateway 部署位置限制 - 必須在 Public Subnet
+    1. **核心原因**：**NAT Gateway 自己需要公開 IP (Elastic IP) 才能對外通訊**
+    2. 如果放在 Private Subnet，它自己都出不去，無法幫其他機器上網
+    3. **Public Subnet 定義**：**Route Table 有 0.0.0.0/0 → Internet Gateway**、**裡面的資源有 Public IP 或 Elastic IP**
+128. ★ NAT Gateway 部署配置與運作原理
+    1. **部署要求**：必須指定一個 **Elastic IP** 給 NAT Gateway
+    2. **網路配置**：它所在的 Public Subnet 的 **Route Table 會指向 IGW**
+    3. **運作結果**：因此 NAT Gateway 自己就能上網，才能幫助 Private Subnet 的資源對外通訊
