@@ -1520,10 +1520,10 @@
      3. **核心優勢**：可設定只接受來自特定 VPC 的請求，比修改 bucket policy 更靈活、不影響其他存取路徑
      4. **實務記憶**：把 Access Point 想成「**進入 S3 bucket 的專屬通道**」，每個通道有獨立的門禁規則
 445. ★★ S3 Object Lock + Legal Hold 不可變保護機制
-     1. **核心功能**：Object Lock 啟用後強制 **WORM**（Write-Once-Read-Many）模式
-     2. **Legal Hold 特性**：可**無限期**鎖定物件，防止刪除/覆寫，一旦啟用就無法關閉
+     1. **核心功能**：Object Lock 啟用後強制 **WORM**（Write-Once-Read-Many）模式⭐️
+     2. **Legal Hold 特性**：可**無限期**鎖定物件，防止刪除/覆寫，**可隨時啟用或移除**
      3. **Versioning 強制啟用**：Object Lock 啟用後 Versioning 會自動強制啟用且無法關閉
-     4. **部署建議**：必須在新 bucket 建立時啟用（雖然既有 bucket 現在也能啟用，但新 bucket 是最佳做法）
+     4. **部署建議**：必須在新 bucket 建立時啟用（既有 bucket 需聯絡 AWS Support）
 446. ★ Object Lock 強制綁定 Versioning 的技術原理
      1. **綁定機制**：啟用 Object Lock → **Versioning 自動啟用且無法關閉**，沒有 Versioning，Object Lock 根本無法運作
      2. **WORM 實現原理**：每次「修改」實際上是建立新版本，舊版本被鎖住無法刪除或覆寫，這才是真正的「**write-once**」
@@ -1532,7 +1532,7 @@
      1. **誤解**：Legal Hold 可以設定時間（如「one year」）
      2. **事實**：Legal Hold 是**無限期鎖定**，必須手動移除，沒有時間限制
      3. **考試陷阱**：「legal hold of one year」這選項本身就是錯的
-448. ★ Object Lock 的 Retention Period 與 Legal Hold 可同時設定
+448. ★ Object Lock 的 Retention Period 與 Legal Hold 可同時設定⭐️
      1. **兩種機制獨立性**：Retention Period 和 Legal Hold 互相獨立但可共存
      2. **同時設定的行為**：
         - Retention Period 到期前不可刪除
@@ -1550,15 +1550,15 @@
 451. SSH 協議層判斷與 Port 22 對應
      1. **核心知識**：**SSH = TCP，不是 UDP**（常見錯誤選項會故意改成 UDP）
      2. **協議分類**：TCP（需要可靠連線：SSH、HTTP、RDS）、UDP（即時性優先：DNS、streaming）
-452. ★ AWS RAM 多帳號資源共享機制
-     1. **核心用途**：在多個 AWS 帳號間共享資源（Transit Gateway、Subnets、Route 53 Resolver rules、License Manager），避免重複建立
+452. ★ AWS RAM(Resource Access Manager) 多帳號資源共享機制
+     1. **核心用途**：在多個 AWS 帳號間共享資源（Transit Gateway、Subnets、Route 53 Resolver rules、License Manager），**避免重複建立**
      2. **考試判斷**：看到「多帳號環境 + 避免重複建資源」→ 答案是 RAM；RAM 免費、用於 AWS Organizations 內共享、Transit Gateway 跨帳號必考
-453. ★ **Control Tower**：自動化建立多帳號治理環境
+453. ★ **Control Tower**：自動化建立**多帳號治理環境**
      1. **用途**：快速設定符合最佳實踐的多帳號架構
      2. **功能**：自動套用 **guardrails**（防護欄）、logging、基礎架構
      3. **考試判斷**：看到「set up and govern」→ Control Tower
-454. ★★ **AWS Backup**：統一備份管理中心
-     1. **用途**：在單一 console 管理多種 AWS 資源的備份（EC2、EBS、DynamoDB、RDS、Aurora、EFS、FSx、Storage Gateway）
+454. ★★ **AWS Backup**：統一備份管理中心○
+     1. **用途**：在單一 console 管理**多種 AWS 資源的備份**（EC2、EBS、DynamoDB、RDS、Aurora、EFS、FSx、Storage Gateway）
      2. **考試判斷**：看到「many resources + single place + easy way」→ AWS Backup；支援統一的備份計劃（Backup Plan）、retention policy、lifecycle rules
 455. ★★ **AWS Application Migration Service (MGN)**：lift-and-shift 遷移方案
      1. **用途**：直接搬遷整台機器 (servers、VMs)，最小化停機時間（minimum downtime）
