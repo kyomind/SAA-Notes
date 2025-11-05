@@ -1557,30 +1557,38 @@
      1. **用途**：快速設定符合最佳實踐的多帳號架構
      2. **功能**：自動套用 **guardrails**（防護欄）、logging、基礎架構
      3. **考試判斷**：看到「set up and govern」→ Control Tower
-454. ★★ **AWS Backup**：統一備份管理中心○
-     1. **用途**：在單一 console 管理**多種 AWS 資源的備份**（EC2、EBS、DynamoDB、RDS、Aurora、EFS、FSx、Storage Gateway）
-     2. **考試判斷**：看到「many resources + single place + easy way」→ AWS Backup；支援統一的備份計劃（Backup Plan）、retention policy、lifecycle rules
+454. ★★ **AWS Backup**：統一備份管理中心
+     1. **用途**：在單一 console **管理多種 AWS 資源的備份**（EC2、EBS、DynamoDB、RDS、Aurora、EFS、FSx、Storage Gateway）
+     2. **考試判斷**：看到「many resources + single place + easy way」→ AWS Backup
+     3. 支援統一的備份計劃（Backup Plan）、retention policy、lifecycle rules
 455. ★★ **AWS Application Migration Service (MGN)**：lift-and-shift 遷移方案
      1. **用途**：直接搬遷整台機器 (servers、VMs)，最小化停機時間（minimum downtime）
      2. **特點**：不改變架構（lift-and-shift），專為大規模伺服器遷移設計
 456. ★★ **RDS MySQL 遷移至 Aurora MySQL**：快速遷移方案
-     1. **遷移步驟**：對 RDS MySQL 建立 snapshot → 直接 restore 成 Aurora MySQL
+     1. **遷移步驟**：對 RDS MySQL 建立 snapshot → 直接 restore 成 Aurora MySQL⭐️
      2. **優勢**：AWS 官方支援的原生遷移路徑，簡單快速
-457. ★ **AWS DataSync**：全託管資料遷移和同步服務
-     1. **用途**：自動化、安全地在不同儲存位置間大量傳輸資料
-     2. **使用情境**：本地 NAS/檔案伺服器 ↔ S3/EFS/FSx；解決手動 rsync/scp 太慢、不穩定的問題
-458. ★★ **HPC 網路效能最佳化**：EFA (Elastic Fabric Adapter)
+457. ★ **AWS DataSync**：自動化大量資料傳輸服務
+     1. **解決什麼問題**：需要在不同儲存系統間**持續/大量**搬移資料，但手動 rsync/scp 太慢、不穩定、難管理
+     2. **典型場景**：⭐️
+        - On-premises NAS/檔案伺服器 → S3/EFS/FSx（**上雲遷移**）
+        - S3 ↔ EFS/FSx（AWS **內部跨服務同步**）
+     3. **考試判斷點**：
+        - 關鍵字：「自動化」「排程」「大量檔案」「持續同步」→ 選 DataSync
+        - 一次性小量傳輸 → 用 S3 CLI/SDK 就夠了
+        - 需要**資料庫層級複製** → 不是 DataSync（用 **DMS**）
+458. ★ **HPC 網路效能最佳化**：EFA (Elastic Fabric Adapter)
      1. **核心特性**：EFA 支援 OS-bypass 技術，讓應用程式直接跟網路硬體溝通，繞過作業系統的網路堆疊。**極致的網路效能 + 超低延遲**，專為 HPC 設計
-     2. **使用組合**：HPC + Cluster Placement Group（把 instances 放在同一個機架上，進一步降低延遲） + EFA 最大化網路效能
+     2. **使用組合**：HPC + Cluster **Placement Group**（把 instances 放在同一個機架上，進一步降低延遲） + EFA 最大化網路效能
      3. **協定**：支援 MPI (Message Passing Interface)，這是 HPC 應用的標準通訊協定
 459. 👀 **HPC 儲存解決方案與網路性能的區別**
      1. **FSx for Lustre 的角色**：高效能共享儲存（解決儲存問題）
-     2. **考試陷阱**：區分「儲存效能」vs「網路效能」；題目問「maximize network performance」→ 選 EFA，不是 FSx for Lustre
-460. ★★ **Windows Workload HA 架構的核心需求**
+     2. **考試陷阱**：區分「**儲存效能**」vs「**網路效能**」
+     3. 題目問「maximize network performance」→ 選 EFA，不是 FSx for Lustre（這是「儲存效能」解決方案）
+460. ★ **Windows Workload HA 架構的核心需求**
      1. **多 AZ 高可用性**：跨 AZ 自動 failover
      2. **低延遲 block storage**：支援 sub-millisecond latency
      3. **Windows Server 相容性**：傳統 trading application 需求
-461. ★★ **FSx for NetApp ONTAP 為 Windows Workload HA 的正解**
+461. ★ **FSx for NetApp ONTAP 為 Windows Workload HA 的正解**
      1. **Multi-AZ 原生支援**：跨 AZ 自動 failover，無需手動配置
      2. **iSCSI 協定**：提供 block-level storage，符合傳統 trading application 需求
      3. **Sub-millisecond latency**：SSD 支援，滿足金融交易的低延遲要求
@@ -1594,17 +1602,17 @@
      2. **支援所有作業系統**：Windows、Linux、macOS
      3. **企業級功能最完整**：snapshot、複製、thin provisioning 等進階特性
 464. 題目同時要求「Multi-AZ」+「block storage」+「Windows 相容性」→ 十之八九是 FSx for NetApp ONTAP
-465. ★★ 身份聯邦的核心需求與場景判斷
+465. ★ 身份聯邦的核心需求與場景判斷
      1. **核心要求**：**Identity Federation（身份聯邦）** → 用戶用企業 AD 帳號登入 AWS
      2. **附帶需求**：**Role-based Access Control（RBAC）** → 權限控制
      3. **前提條件**：**已有 corporate Active Directory** → 不需要新建 AD
-466. ★★ AWS Directory Service AD Connector 的聯邦角色
-     1. **本質**：企業 AD 與 AWS 之間的「認證代理人」，不儲存用戶資料
+466. ★★ AWS Directory Service **AD Connector** 的聯邦角色
+     1. **本質**：企業 AD 與 AWS 之間的「**認證代理人**」，不儲存用戶資料
      2. **運作原理**：
         - 用戶用 AD 帳號登入 AWS Console
         - AD Connector 轉發認證請求到企業 AD
         - AD 回覆「此人是 DevTeam 群組成員」
-     3. **核心差異**：Simple AD 是「新建託管 AD」，AD Connector 是「連接現有 AD」
+     3. **核心差異**：Simple AD 是「新建**託管 AD**」，AD Connector 是「連接現有 AD」⭐️
 467. ★★ IAM Roles 在身份聯邦中的應用
      1. **核心功能**：承接 AD 的身份映射，轉換為 AWS 權限
      2. **映射機制**：企業 AD 群組 → AWS IAM Role（例：`DevTeam` 群組 → `DeveloperRole`）
