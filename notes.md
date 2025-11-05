@@ -491,3 +491,22 @@
      2. **非路由功能**：**不是選擇性路由**，無法實現「歐洲去 Frankfurt，亞洲去 Singapore」的智慧導向
      3. **核心區別**：**Restriction = 禁止存取**；**Routing = 智慧導向**（後者需要 Route 53 Geolocation/Geoproximity）
      4. **考試應用**：題目提到「阻擋特定國家」→ **Geo-restriction**；提到「就近存取」→ **Route 53 地理路由**
+
+137. ★★ Route 53 Failover Routing 配置 - Active-Passive 災難恢復
+    1. **核心設定**：建立 Primary + Secondary 記錄，routing policy 選 Failover
+    2. **Health Check 運作**：監控 Primary endpoint，Route 53 定期發送 HTTP/HTTPS/TCP 檢查；**Evaluate Target Health = Yes** 檢查 ALB 背後的 targets 狀態
+    3. **網路開放**：NACL 和 Route Table 必須允許 Route 53 health checker 的 IP，否則 Health Check 永遠失敗
+138. 👀 Route 53 Failover 常見陷阱
+    1. **只設 Failover Policy 沒設 Health Check**：不會自動切換
+    2. **防火牆擋 Route 53 IP**：Health Check 誤判為 unhealthy
+    3. **忘記 Evaluate Target Health**：ALB 活著但 EC2 全掛還是導流量過去
+139. ★★ API Gateway - REST / WebSocket API 的統一管理平台
+    1. **統一入口**：提供 **REST API 和 WebSocket API** 的中央存取點
+    2. **流量管理**：**Throttling**（限速）和 **Quota**（配額管理）控制 API 使用量
+    3. **請求/回應轉換**：支援 **HTTP Header、Body、Path 參數**的轉換與修改
+    4. **快取機制**：內建 **Response Caching**，減少後端呼叫
+    5. **認證授權**：支援 **IAM、Lambda authorizer、Cognito** 多種認證方式
+    6. **後端整合**：與 **Lambda、EC2、HTTP 端點、其他 AWS 服務**無縫整合
+140. 😇 API Gateway 應用場景與架構定位
+    1. **定位**：API 的「前門」，負責流量調度、安全驗證、轉換和限流
+    2. **典型架構**：Clients → API Gateway（認證、限流、轉換）→ Lambda / EC2（商業邏輯）→ 資料庫
