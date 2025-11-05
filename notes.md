@@ -536,3 +536,31 @@
      2. **三大關鍵特性**：**自動化傳輸**（無需管理排程、監控）、**高速傳輸**（優化網路效能）、**支援冷資料歸檔**（直接送 Glacier Deep Archive）
      3. 題目提「**大量資料**」「**自動化遷移**」「**加速傳輸**」→ **DataSync**
      4. 題目提「**實體硬碟**」→ **Snowball**；題目提「**混合雲持續存取**」→ **Storage Gateway**
+147. ★★ Gateway Endpoint Policy - 集中式 S3 存取控制方案
+    1. **核心概念**：Gateway Endpoint 讓 VPC 內的資源**不透過網際網路**直接存取 S3/DynamoDB，想像成「**內網專線**」
+    2. **存取控制方式**：控制「**哪些 S3 buckets 可以被存取**」有兩種方式
+       - **Bucket Policy**：在每個 bucket 設定
+       - **Endpoint Policy**：在 Gateway Endpoint 設定
+148. ★★ Endpoint Policy vs Bucket Policy - 集中管理優勢
+    1. **效率對比**
+       - **Bucket Policy**：10 個 trusted buckets = 設定 10 次
+       - **Endpoint Policy**：10 個 trusted buckets = 設定 1 次
+    2. **考試判斷**：AWS 考試偏好「**集中管理、簡化維運**」的方案
+       - **multiple buckets** + Gateway Endpoint 場景 → **Endpoint Policy**
+    3. **關鍵記憶**：Endpoint Policy **優先於 Bucket Policy**，是額外的限制層
+149. ★ 權限驗證三層模型 - IAM/Bucket/Endpoint Policy 共同作用
+    1. **驗證流程**：三層依序檢查
+       - **IAM Policy**：使用者有什麼權限
+       - **Bucket Policy**：bucket 允許誰存取
+       - **Endpoint Policy**：這條路徑允許存取哪些 bucket
+    2. **通過條件**：三者**都要 Allow** 才能成功存取，任一層 Deny 就無法通過
+150. ★★ Gateway Endpoint Policy 配置機制
+    1. **政策設定**：建立 Gateway endpoint 時可附加 **endpoint policy** 控制對服務的存取權限
+    2. **政策修改**：可修改附加到 endpoint 的政策、新增或移除 route tables
+    3. **政策關係**：Endpoint Policy **不會覆蓋或替代** IAM user policies 或服務專屬政策（如 S3 bucket policies），是**獨立的控制層**
+151. 😇 Bucket Policy vs Endpoint Policy 使用判斷
+    1. **技術可行性**：兩者都能控制流量到 trusted S3 buckets
+    2. **實務優勢**
+       - **Bucket Policy**：逐個 bucket 設定，**時間成本高**
+       - **Endpoint Policy**：單一 policy 設定，**效率高**
+    3. **題目判斷**：看到「**trusted S3 buckets**」+ 「multiple buckets」→ 優先選 **Endpoint Policy**
