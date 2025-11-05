@@ -515,3 +515,7 @@
      3. Macie：偵測 S3 內的敏感資料（PII、機密資訊）
      4. Config：檢查 S3 設定是否符合規範
      5. Amazon Inspector：掃描 EC2 上的 S3 存取程式碼漏洞
+142. ★★ RDS Multi-AZ Failover 機制 - DNS (CNAME) 切換原理
+     1. **Failover 工作方式**：**RDS endpoint (CNAME)** 指向 primary 的 DNS 記錄，failover 時 CNAME 自動指向 standby，**應用程式無需改 connection string**
+     2. **為何不是 IP 切換**：**IP 是綁定 subnet 的**，subnet 不能跨 AZ（Primary 在 AZ-A：IP `10.0.1.10`，Standby 在 AZ-B：IP `10.0.2.20`，無法搬遷）
+     3. **記憶點**：**Multi-AZ Failover = DNS (CNAME) 切換，不是 IP 切換**，這也是為何 RDS endpoint 是 DNS 名稱而非 IP 的原因
