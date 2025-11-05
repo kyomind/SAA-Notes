@@ -347,115 +347,128 @@
     1. **VPG 暴露vs內部資源私有**：**VPG 本身要能從公網存取**，但連線是**加密的 IPsec tunnel**；**VPC 內的資源（EC2、RDS）不需要公網 IP**，透過 VPG 就能跟機房溝通
     2. **架構區別**：Site-to-Site VPN ≠ 將 EC2 放在 public subnet；VPC **內部資源仍是私有的**，只是透過加密通道與地端溝通
 100. ★★ AWS Outposts - 邊界運算與本地處理方案
-    1. **核心本質**：**把 AWS 搬到你家機房**，在地端運行 AWS 服務（EC2、RDS、ECS 等），享受託管服務便利同時兼顧本地延遲和合規性
-    2. **典型應用場景**：需要 **low latency（低延遲）**、**local data processing（本地資料處理）**、**regulatory compliance（法規遵循）** 的工作負載
+     1. **核心本質**：**把 AWS 搬到你家機房**，在地端運行 AWS 服務（EC2、RDS、ECS 等），享受託管服務便利同時兼顧本地延遲和合規性
+     2. **典型應用場景**：需要 **low latency（低延遲）**、**local data processing（本地資料處理）**、**regulatory compliance（法規遵循）** 的工作負載
 101. ★★ CloudFront + S3 全球軟體分發方案
-    1. **場景**：全球多個 Outposts 要從 us-west-2 S3 下載大型軟體更新檔
-    2. **延遲優勢**：**Edge locations 快取**，不用每次都從 us-west-2 拉⭐️
-    3. **成本優勢**：CloudFront 流量費比跨區 S3 傳輸便宜
-    4. **管理優勢**：設定一次就完成，自動全球分發
+     1. **場景**：全球多個 Outposts 要從 us-west-2 S3 下載大型軟體更新檔
+     2. **延遲優勢**：**Edge locations 快取**，不用每次都從 us-west-2 拉⭐️
+     3. **成本優勢**：CloudFront 流量費比跨區 S3 傳輸便宜
+     4. **管理優勢**：設定一次就完成，自動全球分發
 102. ★★ CloudFront Signed URLs - S3 內容安全分發
-    1. **權限控制**：透過 Signed URLs 限制誰能下載軟體更新，不是誰都能存取
-    2. **時效性管理**：URL 可設定過期時間，確保只有授權使用者在時間範圍內存取
-    3. **考試陷阱**：題目出現「**secure distribution**」→ 直接選 **Signed URLs**
+     1. **權限控制**：透過 Signed URLs 限制誰能下載軟體更新，不是誰都能存取
+     2. **時效性管理**：URL 可設定過期時間，確保只有授權使用者在時間範圍內存取
+     3. **考試陷阱**：題目出現「**secure distribution**」→ 直接選 **Signed URLs**
 103. ★★ S3 Server-Side Encryption (SSE) 核心概念與實作方式
-    1. **技術特性**：使用 **256-bit AES-256 演算法**、每個物件用**獨立密鑰加密**、**密鑰本身也會加密**並定期輪替
-    2. **實作方式**：在 **bucket policy** 中要求所有上傳須帶 **x-amz-server-side-encryption header**
+     1. **技術特性**：使用 **256-bit AES-256 演算法**、每個物件用**獨立密鑰加密**、**密鑰本身也會加密**並定期輪替
+     2. **實作方式**：在 **bucket policy** 中要求所有上傳須帶 **x-amz-server-side-encryption header**
 104. 😇 SSE-S3 vs SSE-C 加密方案選擇
-    1. **SSE-S3**：AWS 託管密鑰，使用 `x-amz-server-side-encryption header` 啟用
-    2. **SSE-C**：客戶提供密鑰，需提供 `x-amz-server-side-encryption-customer-algorithm`、`x-amz-server-side-encryption-customer-key`、`x-amz-server-side-encryption-customer-key-MD5` 三個 headers
+     1. **SSE-S3**：AWS 託管密鑰，使用 `x-amz-server-side-encryption header` 啟用
+     2. **SSE-C**：客戶提供密鑰，需提供 `x-amz-server-side-encryption-customer-algorithm`、`x-amz-server-side-encryption-customer-key`、`x-amz-server-side-encryption-customer-key-MD5` 三個 headers
 105. ★ SCP 常見陷阱 - 權限控管工具不是登入機制
-    1. **SCP 的真正用途**：**限制子帳號的權限範圍**（禁止使用特定 region、禁止刪除 CloudTrail）
-    2. **考試陷阱**：題目提 Organizations → 容易聯想 SCP；但若題目要的是**統一登入機制**（而非權限控管），SCP 就是**錯誤答案**
-    3. **記憶重點**：**SCP 跟登入無關**，是權限控制工具；登入問題應找 **IAM Identity Center**
+     1. **SCP 的真正用途**：**限制子帳號的權限範圍**（禁止使用特定 region、禁止刪除 CloudTrail）
+     2. **考試陷阱**：題目提 Organizations → 容易聯想 SCP；但若題目要的是**統一登入機制**（而非權限控管），SCP 就是**錯誤答案**
+     3. **記憶重點**：**SCP 跟登入無關**，是權限控制工具；登入問題應找 **IAM Identity Center**
 106. ★ Directory Service vs IAM Identity Center 選擇陷阱
-    1. **Directory Service 限制**：**只負責目錄管理**（AD Connector、Managed Microsoft AD），太籠統、**缺少跨帳戶認證功能**
-    2. **正確答案**：跨帳戶統一登入應選 **IAM Identity Center 整合 Directory Service**（前者做多帳戶認證，後者做目錄管理）
+     1. **Directory Service 限制**：**只負責目錄管理**（AD Connector、Managed Microsoft AD），太籠統、**缺少跨帳戶認證功能**
+     2. **正確答案**：跨帳戶統一登入應選 **IAM Identity Center 整合 Directory Service**（前者做多帳戶認證，後者做目錄管理）
 107. ★★ AWS Config - 資源配置變更持續記錄與合規檢查
-    1. **核心功能**：**持續記錄 AWS 資源配置狀態變化**、**自動檢查是否符合規範**（類似「配置的 Git history + 自動 linter」）
-    2. **Config Rules**：自動檢查資源是否符合規則（例如：所有 S3 bucket 必須加密、EC2 必須在特定 VPC）
+     1. **核心功能**：**持續記錄 AWS 資源配置狀態變化**、**自動檢查是否符合規範**（類似「配置的 Git history + 自動 linter」）
+     2. **Config Rules**：自動檢查資源是否符合規則（例如：所有 S3 bucket 必須加密、EC2 必須在特定 VPC）
 108. 😇 AWS Config vs CloudTrail - 配置記錄與稽核對比
-    1. **CloudTrail**：記錄「**誰做了什麼操作**」（API calls）、誰在什麼時間改了什麼
-    2. **Config**：記錄「**資源配置的狀態變化**」（configuration snapshots）、檢查配置是否符合規範
-    3. **應用場景**：合規稽核、安全分析、故障排查找出根本原因
+     1. **CloudTrail**：記錄「**誰做了什麼操作**」（API calls）、誰在什麼時間改了什麼
+     2. **Config**：記錄「**資源配置的狀態變化**」（configuration snapshots）、檢查配置是否符合規範
+     3. **應用場景**：合規稽核、安全分析、故障排查找出根本原因
 109. ★★ EC2 存取 AWS 服務最佳實踐 - IAM Role vs Access Key
-    1. **正確做法**：**給 EC2 掛 IAM Role**（自動輪換臨時憑證、無需管理金鑰、遵循最小權限原則）
-    2. **絕對禁止**：**在 EC2 裡放 IAM User 的 Access Key**（洩露風險高、無自動輪換）
-    3. **記憶口訣**：**機器用 Role，人類用 User**
+     1. **正確做法**：**給 EC2 掛 IAM Role**（自動輪換臨時憑證、無需管理金鑰、遵循最小權限原則）
+     2. **絕對禁止**：**在 EC2 裡放 IAM User 的 Access Key**（洩露風險高、無自動輪換）
+     3. **記憶口訣**：**機器用 Role，人類用 User**
 110. 😇 MFA - 多因子驗證安全防護
-    1. **應用對象**：**系統管理員和人類使用者**（登入 AWS Console、使用 API 時）
-    2. **防護機制**：多一層驗證，防止帳號被盜用（類似銀行 App 的 OTP）
-    3. **記憶**：MFA = **Multi-Factor Authentication**（雙因子驗證）
+     1. **應用對象**：**系統管理員和人類使用者**（登入 AWS Console、使用 API 時）
+     2. **防護機制**：多一層驗證，防止帳號被盜用（類似銀行 App 的 OTP）
+     3. **記憶**：MFA = **Multi-Factor Authentication**（雙因子驗證）
 111. ★ MFA 對 Console 和 API 的不同驗證方式
-    1. **Console 登入**：輸入帳密 → 輸入 MFA code → 進入（直覺式流程）
-    2. **API 呼叫**：需要用**臨時憑證（STS）+ MFA token**（比 Console 複雜，通常只用於高權限操作如刪 RDS、改 IAM policy）
-    3. **考試重點**：題目說「MFA can control access to AWS service APIs」指的就是透過 STS 機制實現
+     1. **Console 登入**：輸入帳密 → 輸入 MFA code → 進入（直覺式流程）
+     2. **API 呼叫**：需要用**臨時憑證（STS）+ MFA token**（比 Console 複雜，通常只用於高權限操作如刪 RDS、改 IAM policy）
+     3. **考試重點**：題目說「MFA can control access to AWS service APIs」指的就是透過 STS 機制實現
 112. ★★ Auto Scaling Cooldown Period - 擴縮容間隔控制
-    1. **功能**：防止 Auto Scaling group 在前一次擴容/縮容完成前立即執行下一次擴縮容
-    2. **預設值**：300 秒
-    3. **特性**：可依需求調整配置
+     1. **功能**：防止 Auto Scaling group 在前一次擴容/縮容完成前立即執行下一次擴縮容
+     2. **預設值**：300 秒
+     3. **特性**：可依需求調整配置
 113. ★★ Snowball Edge - 邊緣運算與離線資料處理
-    1. **內建運算能力**：不只儲存，有 EC2、Lambda、S3 等服務；vs 普通 Snowball 只是搬運硬碟
-    2. **適用場景**：**無本地運算資源**（只有感測器、攝影機）、**斷網環境**（礦場、海上鑽油平台）、**資料量超大需先縮小**（原始 1PB→處理後 100TB）
+     1. **內建運算能力**：不只儲存，有 EC2、Lambda、S3 等服務；vs 普通 Snowball 只是搬運硬碟
+     2. **適用場景**：**無本地運算資源**（只有感測器、攝影機）、**斷網環境**（礦場、海上鑽油平台）、**資料量超大需先縮小**（原始 1PB→處理後 100TB）
 114. ★ Snowball Edge 考試判斷標準
-    1. **選 Snowball Edge**：看到「**離線 / 斷網 / 邊緣運算 / 本地處理 / 即時分析**」等關鍵字
-    2. **選普通 Snowball**：只說「**大量資料搬 AWS**」，沒提本地運算需求
+     1. **選 Snowball Edge**：看到「**離線 / 斷網 / 邊緣運算 / 本地處理 / 即時分析**」等關鍵字
+     2. **選普通 Snowball**：只說「**大量資料搬 AWS**」，沒提本地運算需求
 115. ★★ AWS Storage Gateway - 混合雲儲存統一存取
-    1. **核心概念**：**讓地端應用透過標準協定存取 AWS 雲端儲存**，就像存取本地儲存一樣
-    2. **三種模式**：**File Gateway**（NFS/SMB）、**Volume Gateway**（iSCSI）、**Tape Gateway**（磁帶庫）
+     1. **核心概念**：**讓地端應用透過標準協定存取 AWS 雲端儲存**，就像存取本地儲存一樣
+     2. **三種模式**：**File Gateway**（NFS/SMB）、**Volume Gateway**（iSCSI）、**Tape Gateway**（磁帶庫）
 116. ★ File Gateway 實務應用
-    1. **協定**：NFS / SMB
-    2. **後端**：Amazon S3
-    3. **適用場景**：檔案共享、內容分發、備份
+     1. **協定**：NFS / SMB
+     2. **後端**：Amazon S3
+     3. **適用場景**：檔案共享、內容分發、備份
 117. ★ Volume Gateway 深入對比 - Cached vs Stored
-    1. **協定**：iSCSI (區塊儲存)
-    2. **後端**：S3 + EBS Snapshots
-    3. **Cached 模式**：**主資料在雲端 S3，常用資料快取本地**（讀快、容量受限）
-    4. **Stored 模式**：**主資料在地端，非同步備份到 S3**（容量大但初次上傳慢）
+     1. **協定**：iSCSI (區塊儲存)
+     2. **後端**：S3 + EBS Snapshots
+     3. **Cached 模式**：**主資料在雲端 S3，常用資料快取本地**（讀快、容量受限）
+     4. **Stored 模式**：**主資料在地端，非同步備份到 S3**（容量大但初次上傳慢）
 118. 👀 Tape Gateway - 舊系統備份整合
-    1. **協定**：iSCSI VTL (虛擬磁帶庫)
-    2. **後端**：S3 / Glacier
-    3. **用途**：取代實體磁帶備份系統，適合長期歸檔需求
+     1. **協定**：iSCSI VTL (虛擬磁帶庫)
+     2. **後端**：S3 / Glacier
+     3. **用途**：取代實體磁帶備份系統，適合長期歸檔需求
 119. 😇 Storage Gateway 核心價值四要素
-    1. **無痛整合**：地端應用不需改寫程式碼
-    2. **混合雲資料同步**：資料自動同步到 AWS
-    3. **成本優化**：用 S3 取代昂貴的地端儲存設施
-    4. **災難復原**：雲端自動備份，提升 DR 能力
+     1. **無痛整合**：地端應用不需改寫程式碼
+     2. **混合雲資料同步**：資料自動同步到 AWS
+     3. **成本優化**：用 S3 取代昂貴的地端儲存設施
+     4. **災難復原**：雲端自動備份，提升 DR 能力
 120. ★★ Storage Gateway 考試判斷關鍵字
-    1. **看到「hybrid storage」或「on-premises 持續存取雲端」**→ **Storage Gateway**
-    2. **需要 NFS/SMB 檔案共享**→ **File Gateway**
-    3. **需要區塊儲存/磁碟介面**→ **Volume Gateway**
-    4. **需要磁帶介面/舊備份系統相容**→ **Tape Gateway**
+     1. **看到「hybrid storage」或「on-premises 持續存取雲端」**→ **Storage Gateway**
+     2. **需要 NFS/SMB 檔案共享**→ **File Gateway**
+     3. **需要區塊儲存/磁碟介面**→ **Volume Gateway**
+     4. **需要磁帶介面/舊備份系統相容**→ **Tape Gateway**
 121. ★★ Lambda VPC 存取原理 - ENI 自動建立機制
-    1. **預設行為**：Lambda **預設不在你的 VPC 內**，跑在 AWS 自己的網路環境
-    2. **VPC 存取方式**：當設定 Lambda 要存取 VPC 資源（例如 RDS）時，AWS 會**自動建立 ENI**（虛擬網卡）做為連線橋樑
-    3. **技術原理**：Lambda 透過 ENI 連進你的 VPC，就像**插網路線**讓 Lambda 能存取私有網路資源
+     1. **預設行為**：Lambda **預設不在你的 VPC 內**，跑在 AWS 自己的網路環境
+     2. **VPC 存取方式**：當設定 Lambda 要存取 VPC 資源（例如 RDS）時，AWS 會**自動建立 ENI**（虛擬網卡）做為連線橋樑
+     3. **技術原理**：Lambda 透過 ENI 連進你的 VPC，就像**插網路線**讓 Lambda 能存取私有網路資源
 122. ★★ Lambda 多組合 VPC 配置 - ENI 數量與 IP 消耗
-    1. **ENI 產生規則**：每個「**Subnet + Security Group**」組合產生一個 ENI，相同組合複用同一個 ENI⭐️
-    2. **配置範例**
-       - Subnet A + Security Group X → 1 個 ENI
-       - Subnet B + Security Group X → 另 1 個 ENI
-       - Subnet A + Security Group Y → 又 1 個 ENI
-    3. **IP 消耗影響**：Lambda 連 VPC 會消耗 subnet IP，若 CIDR 太小可能 **IP 不足導致 Lambda 無法冷啟**
+     1. **ENI 產生規則**：每個「**Subnet + Security Group**」組合產生一個 ENI，相同組合複用同一個 ENI⭐️
+     2. **配置範例**
+        - Subnet A + Security Group X → 1 個 ENI
+        - Subnet B + Security Group X → 另 1 個 ENI
+        - Subnet A + Security Group Y → 又 1 個 ENI
+     3. **IP 消耗影響**：Lambda 連 VPC 會消耗 subnet IP，若 CIDR 太小可能 **IP 不足導致 Lambda 無法冷啟**
 123. ★★ ENI 與 Private IP 的綁定關係 - IP 消耗機制
-    1. **IP 分配規則**：**每個 ENI = 至少 1 個 private IP**；ENI 會從 subnet 的 CIDR 中分配至少一個 private IP
-    2. **本質限制**：**ENI 本身一定會佔用 IP**，無論是否在使用中（每個 ENI 都會消耗 1 個 private IP）
+     1. **IP 分配規則**：**每個 ENI = 至少 1 個 private IP**；ENI 會從 subnet 的 CIDR 中分配至少一個 private IP
+     2. **本質限制**：**ENI 本身一定會佔用 IP**，無論是否在使用中（每個 ENI 都會消耗 1 個 private IP）
 124. ★★ NAT Gateway 保護機制核心原理
-    1. **Stateful Connection Tracking**：只允許「**內部發起的連線**」的回應封包通過
-    2. **運作流程**：出站（私有 EC2 → NAT → 外部，NAT 記錄連線）→ 回應（外部 → NAT → 私有 EC2，NAT 查表放行）→ 主動連入（外部 → NAT，查無連線紀錄直接丟棄）
+     1. **Stateful Connection Tracking**：只允許「**內部發起的連線**」的回應封包通過
+     2. **運作流程**：出站（私有 EC2 → NAT → 外部，NAT 記錄連線）→ 回應（外部 → NAT → 私有 EC2，NAT 查表放行）→ 主動連入（外部 → NAT，查無連線紀錄直接丟棄）
 125. ★★ NAT Gateway 安全防護原理分析
-    1. **私有 IP 不可路由**：10.x.x.x 在公網無效，外部根本不知道內部有哪些 IP
-    2. **只看到 NAT 公開 IP**：攻擊者掃描的是 NAT Gateway 的公開 IP
-    3. **無連線表 = 丟棄**：外部主動發起的封包沒有對應的連線紀錄
+     1. **私有 IP 不可路由**：10.x.x.x 在公網無效，外部根本不知道內部有哪些 IP
+     2. **只看到 NAT 公開 IP**：攻擊者掃描的是 NAT Gateway 的公開 IP
+     3. **無連線表 = 丟棄**：外部主動發起的封包沒有對應的連線紀錄
 126. ★ NAT Gateway 考試場景判斷標準
-    1. **✅ 通過場景**：私有 EC2 下載套件、呼叫 API（內部主動發起）
-    2. **❌ 阻擋場景**：外部掃描 NAT IP、從家裡 SSH 進私有 EC2（外部主動發起）
-    3. **記憶口訣**：「**內部主動我放行，外部主動我不理**」
+     1. **✅ 通過場景**：私有 EC2 下載套件、呼叫 API（內部主動發起）
+     2. **❌ 阻擋場景**：外部掃描 NAT IP、從家裡 SSH 進私有 EC2（外部主動發起）
+     3. **記憶口訣**：「**內部主動我放行，外部主動我不理**」
 127. ★★ NAT Gateway 部署位置限制 - 必須在 Public Subnet
-    1. **核心原因**：**NAT Gateway 自己需要公開 IP (Elastic IP) 才能對外通訊**
-    2. 如果放在 Private Subnet，它自己都出不去，無法幫其他機器上網
-    3. **Public Subnet 定義**：**Route Table 有 0.0.0.0/0 → Internet Gateway**、**裡面的資源有 Public IP 或 Elastic IP**
+     1. **核心原因**：**NAT Gateway 自己需要公開 IP (Elastic IP) 才能對外通訊**
+     2. 如果放在 Private Subnet，它自己都出不去，無法幫其他機器上網
+     3. **Public Subnet 定義**：**Route Table 有 0.0.0.0/0 → Internet Gateway**、**裡面的資源有 Public IP 或 Elastic IP**
 128. ★ NAT Gateway 部署配置與運作原理
-    1. **部署要求**：必須指定一個 **Elastic IP** 給 NAT Gateway
-    2. **網路配置**：它所在的 Public Subnet 的 **Route Table 會指向 IGW**
-    3. **運作結果**：因此 NAT Gateway 自己就能上網，才能幫助 Private Subnet 的資源對外通訊
+     1. **部署要求**：必須指定一個 **Elastic IP** 給 NAT Gateway
+     2. **網路配置**：它所在的 Public Subnet 的 **Route Table 會指向 IGW**
+     3. **運作結果**：因此 NAT Gateway 自己就能上網，才能幫助 Private Subnet 的資源對外通訊
+129. ★★ DynamoDB Gateway Endpoint - VPC 私有存取解決方案
+     1. **問題背景**：DynamoDB 是 **public service**，VPC 內的 EC2 預設要透過 **IGW 走公網存取**
+     2. **解決方案**：**Gateway Endpoint 讓流量走 AWS 內網**，用 private IP 存取
+130. 實作方式：
+     1. 在 VPC 建立 Gateway Endpoint
+     2. **關聯到 Route Table**（自動新增 DynamoDB prefix list 路由）⭐️
+     3. 完全免費，流量不出 AWS 網路
+131. ★★ AWS Backup vs DynamoDB 原生備份 - 跨帳號/區域災難恢復
+     1. **DynamoDB 原生 on-demand backup 限制**：無法跨帳號、無法跨區域、沒有進階功能（cost tags、cold storage）
+     2. **AWS Backup 優勢**：跨帳號/區域複製、統一管理多種 AWS 資源備份、支援 cost allocation tags、可轉 cold storage 降成本
+132. ★ DynamoDB 存取與備份考試判斷標準
+     1. **關鍵字判斷**：「disaster recovery + 跨帳號/區域」→ **AWS Backup**；「VPC private 存取 DynamoDB」→ **Gateway Endpoint**
+     2. **考試重點**：測試你知不知道這兩個服務的邊界和適用場景
