@@ -572,3 +572,13 @@
 153. 😇 Secrets Manager 考試判斷標準與應用場景
     1. **關鍵需求識別**：加密儲存 credentials、定期自動輪換、應用程式永遠用最新版本
     2. **考試判斷關鍵字**：看到「**自動輪換**」+ 「**RDS credentials**」→ 選 **Secrets Manager**
+154. ★★ AWS Glue - 全託管 ETL 服務與低成本資料轉換
+    1. **核心價值**：全託管的 ETL 服務，不用管理伺服器、自動擴展、按使用量付費
+    2. **標準流程**：S3 (.csv) → **Glue Crawler**（自動發現 schema）→ **Glue ETL Job**（轉換成 Parquet）→ S3 (Parquet 格式)
+    3. **Crawler 自動化**：自動掃描 S3 識別資料結構、建立 **Data Catalog**（無需手動定義 schema）
+155. ★★ Glue ETL Job - Parquet 轉換與排程執行
+    1. **ETL 能力**：支援 Parquet/ORC 格式轉換（內建）、可設定定時執行、Serverless 無需管理基礎設施
+    2. **低維運優勢**：全託管無伺服器維護、只在 job 執行時計費、相比自建 EMR 叢集成本更低
+156. ★ Parquet 格式優勢與 Glue 考試判斷
+    1. **Parquet 特性**：欄位式儲存（columnar）查詢效能優、高壓縮率降低儲存成本、與 Athena/Redshift Spectrum 整合
+    2. **考試判斷關鍵字**：看到「**ETL**」「**CSV → Parquet/ORC**」「**最少維運成本**」「**定期資料處理**」「**Schema discovery**」→ 選 **Glue**
