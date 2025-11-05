@@ -761,3 +761,19 @@ S3 Pre-Signed URL → 讓用戶「**上傳/下載**」但不給 AWS 憑證
 - ✅ 加密 → Parameter Store 可以
 - ✅ **定期自動輪換** → Parameter Store **做不到**
 - ✅ 應用程式用最新版 → Parameter Store 需額外開發
+
+## S3 Object Lock 保護模式比較
+
+Object Lock（功能開關）
+├── Retention Mode（保留模式 - 二選一）
+│   ├── Compliance Mode（最嚴格）
+│   └── Governance Mode（可特殊權限覆寫）
+└── Legal Hold（獨立開關，可搭配使用）
+
+| 配置                    | 說明                                  |
+| ----------------------- | ------------------------------------- |
+| Compliance Mode only    | 法規遵循，到期前完全不可刪            |
+| Governance Mode only    | 一般保護，緊急時可覆寫                |
+| Legal Hold only         | 訴訟保護，無期限                      |
+| Compliance + Legal Hold | **最強保護**：到期前不可刪 + 訴訟保護 |
+| Governance + Legal Hold | 一般保護 + 訴訟保護                   |

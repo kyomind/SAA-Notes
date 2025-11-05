@@ -1439,10 +1439,10 @@
         - **Cache Key** 建構方式
         - **TTL**（Time-to-Live）
      4. **管理功能**：可手動清除（**invalidate**）快取
-423. 😇 CloudFront vs API Gateway Cache 的核心差異○
+423. 😇 CloudFront vs API Gateway Cache 的核心差異
      1. **CloudFront**：在最前端快取，未命中請求仍會打到後端
      2. **API Gateway Cache + Throttling**：命中快取直接回應 + 超過限制直接擋掉，完全保護後端
-424. ★ 高流量場景的架構選擇判斷
+424. ★ 高流量場景的架構選擇判斷——重點在於限制後端負載
      1. **CloudFront 問題**：快取命中 ✅，但未命中請求仍會讓後端爆炸 ❌
      2. **API Gateway 解決方案**：命中快取直接回應 ✅ + 429 擋掉超量請求 ✅
 425. ★★ 考試關鍵字判斷（數據服務選型）
@@ -1451,7 +1451,7 @@
      3. 出現「**大數據處理**（Hadoop/Spark）」且要自己調參數 → **EMR**
 426. 😇 AWS Glue 架構定位
      1. **架構等價**：Glue = **Airflow** + **Spark** 的 AWS 託管版
-427. ★★ AWS Glue 的核心功能與特性
+427. ★ AWS Glue 的核心功能與特性
      1. **ETL 服務**：Extract、Transform、Load
      2. **Serverless**：無伺服器架構，自動擴展
      3. **資料目錄**：內建 **Data Catalog**，統一管理資料結構
@@ -1460,7 +1460,7 @@
      1. **DynamoDB Streams**
      2. **Kinesis Data Streams**
      3. **SQS**
-429. ★ Lambda Push 類事件來源
+429. ★ Lambda Push 類事件來源⭐️
      1. **SNS**
      2. **S3 Events**
      3. **EventBridge**
@@ -1471,14 +1471,14 @@
      3. **SNS/S3/EventBridge 出現**：→ 服務**主動 push** 事件給 Lambda
 431. 😇 S3 Events 為什麼是 Push 機制
      1. **S3 事件驅動特性**：物件上傳/刪除時，S3 立即知道發生了什麼
-     2. **主動發送通知**：S3 主動發送 event notification 給目標（Lambda/SNS/SQS）
+     2. **主動發送通知**：S3 主動發送 event notification 給目標（Lambda/SNS/SQS）⭐️
      3. **Lambda 被動接收**：完全被動等待，不需要去問「有沒有新檔案?」
 432. 😇 Streams（DynamoDB/Kinesis）為什麼是 Poll 機制
-     1. **Stream 本質**：只負責「存放」變更記錄，不知道誰想讀、何時讀
+     1. **Stream 本質**：只負責「**存放**」變更記錄，不知道誰想讀、何時讀
      2. **消費者主導**：消費者必須主動來問「我上次讀到哪？給我新的」
      3. **Lambda 主動輪詢**：Lambda 需要不斷偵測 stream 是否有新記錄
 433. 👀 Push vs Poll 的本質判斷方法
-     1. **Streams（DynamoDB/Kinesis/SQS）**：**被動日誌**，只管記錄，不管誰要讀 → **Poll**
+     1. **Streams（DynamoDB/Kinesis/SQS）**：**被動日誌**，只管**記錄**，不管誰要讀 → **Poll**
      2. **S3/SNS/EventBridge**：**主動通知者**，事件發生時主動告知訂閱者 → **Push**
      3. **快速判斷**：看服務的設計目的—儲存資料（Poll）vs 發送通知（Push）
 434. Database Migration Service (DMS) 可以使用 **change data capture (CDC)** 功能，在遷移過程中持續捕捉並複製來源資料庫的變更，實現最小停機時間的遷移方案。
@@ -1486,10 +1486,10 @@
 436. ★ 資料庫遷移場景判斷：同質 vs 異質
      1. **同質遷移**：只需 **DMS**
      2. **異質遷移**：先 **SCT** 翻譯 Schema，再用 **DMS** 遷移資料
-437. ★★ 最小停機時間的資料庫遷移方案
+437. ★ 最小停機時間的資料庫遷移方案
      1. **核心需求**：停機時間越短越好
      2. **解決方案**：使用 **DMS 的 CDC（Change Data Capture）功能**，支援**持續複製**
-438. S3 可以在特定事件發生時（如**檔案上傳、刪除**）推送通知到三個目的地
+438. S3 Event Notification 可以在特定事件發生時（如**檔案上傳、刪除**）推送通知到三個目的地⭐️
      1. **SNS Topic**：適合多個訂閱者接收通知
      2. **SQS Queue**：適合單一消費者處理
      3. **Lambda**：適合自動化處理
@@ -1497,31 +1497,31 @@
      1. **運作流程**：一個 **S3 事件** → 發到 **SNS** → SNS 自動複製並推送到**多個端點**
      2. **支援端點**：SQS、HTTP(S)、Lambda
      3. **核心優勢**：**並行非同步處理**
-440. ★★ S3 Event Notification 與 SNS Fanout 的強制組合
+440. ★ S3 Event Notification 與 SNS Fanout 的強制組合
      1. **限制**：同一事件類型只能設定**一個目標**
      2. **解決方案**：S3 事件發到 **SNS** → SNS 自動複製推送到**多個端點**（SQS、HTTP(S)、Lambda）
-     3. **核心記憶**：「**S3 事件一對多 = 必上 SNS**」
+     3. **核心記憶**：「**S3 事件一對多 = 必上 SNS**」⭐️
 441. 👀 S3 Event 直接多重目標的誤解
-     1. **常見錯誤**：試圖直接加第二個 SQS → ❌ 不能直接加第二個 SQS
+     1. **常見錯誤**：試圖直接加第二個 SQS → ❌ **不能**直接加第二個 SQS
      2. **正確做法**：✅ 必須用 **SNS Fanout** 作為中介
 442. ★ SNS 與 SQS 的根本概念區別
      1. **SNS**：**Push Model**（主動推送訊息到訂閱者）
      2. **SQS**：**被動接收**（接收 SNS 推過來的訊息，而非主動 poll SNS）
-     3. **常見誤解**：❌ 「SQS poll SNS」← 這是錯的
 443. ★★ Aurora Global Database 的 RPO/RTO 考試判斷
      1. **核心要求**：RPO < 1 秒 + RTO < 1 分鐘 的組合判斷
      2. **為什麼是 Aurora Global Database**：
         - **RPO < 1 秒**（通常幾百毫秒）→ 異步複製到其他 region 延遲極低
-        - **RTO < 1 分鐘** → 自動 failover 機制，提升 secondary region 為 primary 約 1 分鐘內完成
-        - **自動跨區域複製** → 最多支援 5 個 secondary regions，每個都有完整讀寫能力
-444. ★★ S3 Access Point VPC 隔離限制
+        - **RTO < 1 分鐘** → 手動提升(promote) secondary region 為 primary 約 1 分鐘內完成
+        - **跨區域複製** → 最多支援 **5 個** secondary regions
+        - **Secondary region 能力**：每個 secondary region 最多 16 個 read replicas，只能讀取
+444. ★ S3 Access Point VPC 隔離限制
      1. **問題場景**：限制特定 VPC 存取 S3
      2. **解決方案**：使用 **S3 Access Point** 並設定 VPC 限制
      3. **核心優勢**：可設定只接受來自特定 VPC 的請求，比修改 bucket policy 更靈活、不影響其他存取路徑
-     4. **實務記憶**：把 Access Point 想成「進入 S3 bucket 的專屬通道」，每個通道有獨立的門禁規則
+     4. **實務記憶**：把 Access Point 想成「**進入 S3 bucket 的專屬通道**」，每個通道有獨立的門禁規則
 445. ★★ S3 Object Lock + Legal Hold 不可變保護機制
      1. **核心功能**：Object Lock 啟用後強制 **WORM**（Write-Once-Read-Many）模式
-     2. **Legal Hold 特性**：可無限期鎖定物件，防止刪除/覆寫，一旦啟用就無法關閉
+     2. **Legal Hold 特性**：可**無限期**鎖定物件，防止刪除/覆寫，一旦啟用就無法關閉
      3. **Versioning 強制啟用**：Object Lock 啟用後 Versioning 會自動強制啟用且無法關閉
      4. **部署建議**：必須在新 bucket 建立時啟用（雖然既有 bucket 現在也能啟用，但新 bucket 是最佳做法）
 446. ★ Object Lock 強制綁定 Versioning 的技術原理

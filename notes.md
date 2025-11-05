@@ -582,3 +582,11 @@
 156. ★ Parquet 格式優勢與 Glue 考試判斷
     1. **Parquet 特性**：欄位式儲存（columnar）查詢效能優、高壓縮率降低儲存成本、與 Athena/Redshift Spectrum 整合
     2. **考試判斷關鍵字**：看到「**ETL**」「**CSV → Parquet/ORC**」「**最少維運成本**」「**定期資料處理**」「**Schema discovery**」→ 選 **Glue**
+157. ★★ S3 Object Lock 架構關係與模式組合
+    1. **Object Lock 功能開關**：整體控制機制，啟用後可使用 Retention Mode 或 Legal Hold
+    2. **Retention Mode（二選一）**：**Compliance Mode**（最嚴格，無法覆寫）、**Governance Mode**（可特殊權限覆寫）
+    3. **Legal Hold（獨立開關）**：可搭配任何 Retention Mode 使用，無期限限制
+158. ★ S3 Object Lock 考試判斷要點
+    1. **Retention Mode**：必選其一（或都不選），設定保留期限
+    2. **Legal Hold**：可選，獨立於 Retention Mode，無期限
+    3. **記憶技巧**：Legal Hold 是額外的鎖，可以疊加在任何 Retention Mode 上
