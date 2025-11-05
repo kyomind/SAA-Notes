@@ -472,3 +472,12 @@
 132. ★ DynamoDB 存取與備份考試判斷標準
      1. **關鍵字判斷**：「disaster recovery + 跨帳號/區域」→ **AWS Backup**；「VPC private 存取 DynamoDB」→ **Gateway Endpoint**
      2. **考試重點**：測試你知不知道這兩個服務的邊界和適用場景
+133. ★★ NACL vs Gateway Endpoint - 功能界限與常見考試陷阱
+     1. **NACL 功能限制**：只能控制「**允許/拒絕**」流量，**無法改變路由路徑**
+     2. **錯誤認知**：即使 NACL 允許到 `dynamodb.us-east-1.amazonaws.com`，流量依然會走 **IGW → Internet**
+     3. **正確做法**：必須用 **Gateway Endpoint** 才能改變路由，讓流量走 AWS 內網
+     4. **功能類比**：NACL = **門禁卡**（控制能不能進出）；Gateway Endpoint = **專用通道**（改變走的路線）
+134. ★★ DynamoDB 原生備份 vs AWS Backup - 跨帳號災難恢復限制
+     1. **原生備份限制**：DynamoDB **on-demand backup 不支援跨帳號/區域**，僅限本帳號內使用
+     2. **AWS Backup 優勢**：支援**跨帳號/區域備份**，提供完整的災難恢復方案
+     3. **記憶口訣**：「**NACL 管安全，Endpoint 改路徑**」- 看到題目說「用 NACL 走內網」直接排除
