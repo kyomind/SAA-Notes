@@ -564,3 +564,11 @@
        - **Bucket Policy**：逐個 bucket 設定，**時間成本高**
        - **Endpoint Policy**：單一 policy 設定，**效率高**
     3. **題目判斷**：看到「**trusted S3 buckets**」+ 「multiple buckets」→ 優先選 **Endpoint Policy**
+
+152. ★★ AWS Secrets Manager - 動態密碼管理與自動輪換
+    1. **核心價值**：API 動態取得最新密碼、自動輪換（auto rotation）、應用程式無需改 code
+    2. **解決的痛點**：密碼寫死在程式碼、要換密碼需改 code 重新部署、多個 app 共用密碼漏改爆炸
+    3. **輪換流程**：產生新密碼 → 更新 RDS → 更新 secret → 驗證連線
+153. 😇 Secrets Manager 考試判斷標準與應用場景
+    1. **關鍵需求識別**：加密儲存 credentials、定期自動輪換、應用程式永遠用最新版本
+    2. **考試判斷關鍵字**：看到「**自動輪換**」+ 「**RDS credentials**」→ 選 **Secrets Manager**

@@ -744,3 +744,20 @@ S3 Pre-Signed URL → 讓用戶「**上傳/下載**」但不給 AWS 憑證
 
 - 法規遵循、歷史資料、災難復原備份
 - 關鍵字：10 年、rarely accessed、once or twice a year
+
+## Systems Manager Parameter Store vs Secrets Manager
+
+| 功能         | Parameter Store | Secrets Manager |
+| ------------ | --------------- | --------------- |
+| 加密儲存     | ✅ SecureString  | ✅               |
+| **自動輪換** | ❌ 需自建 Lambda | ✅ 原生支援      |
+| RDS 整合     | ❌               | ✅               |
+| 成本         | 免費（標準層）  | 付費            |
+
+### 為什麼 Parameter Store 是錯的
+
+題目明確要求：
+
+- ✅ 加密 → Parameter Store 可以
+- ✅ **定期自動輪換** → Parameter Store **做不到**
+- ✅ 應用程式用最新版 → Parameter Store 需額外開發
