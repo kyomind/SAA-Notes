@@ -519,3 +519,7 @@
      1. **Failover 工作方式**：**RDS endpoint (CNAME)** 指向 primary 的 DNS 記錄，failover 時 CNAME 自動指向 standby，**應用程式無需改 connection string**
      2. **為何不是 IP 切換**：**IP 是綁定 subnet 的**，subnet 不能跨 AZ（Primary 在 AZ-A：IP `10.0.1.10`，Standby 在 AZ-B：IP `10.0.2.20`，無法搬遷）
      3. **記憶點**：**Multi-AZ Failover = DNS (CNAME) 切換，不是 IP 切換**，這也是為何 RDS endpoint 是 DNS 名稱而非 IP 的原因
+143. ★★ AWS Control Tower - 多帳號自動化管理中心⭐️
+     1. **核心定位**：**AWS Organizations** 的升級版，提供**自動化 baseline 部署和持續合規檢查**（而非只是帳戶管理）
+     2. **核心功能**：**自動建立 multi-account 架構**、**預設 security baseline**、**偵測和修復不合規配置**
+     3. **考試判斷關鍵字**：「**多帳號 + 標準化配置**」、「**治理策略 + 自動化建立**」、「**預設 baseline + 持續合規檢查**」 → 選 **Control Tower**
