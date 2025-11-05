@@ -510,3 +510,9 @@
 140. 😇 API Gateway 應用場景與架構定位
     1. **定位**：API 的「前門」，負責流量調度、安全驗證、轉換和限流
     2. **典型架構**：Clients → API Gateway（認證、限流、轉換）→ Lambda / EC2（商業邏輯）→ 資料庫
+141. S3 安全場景的服務分工：
+     1. GuardDuty：偵測異常存取、惡意行為
+     2. CloudTrail：記錄所有 API 操作（事後查帳，純記錄）
+     3. Macie：偵測 S3 內的敏感資料（PII、機密資訊）
+     4. Config：檢查 S3 設定是否符合規範
+     5. Amazon Inspector：掃描 EC2 上的 S3 存取程式碼漏洞
