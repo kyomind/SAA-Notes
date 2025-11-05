@@ -731,3 +731,16 @@ S3 Pre-Signed URL → 讓用戶「**上傳/下載**」但不給 AWS 憑證
 | **Cluster Endpoint** | 永遠指向 **Primary (Writer)**        | 寫入流量固定打主機 |
 | **Reader Endpoint**  | Round-robin 到**所有** read replicas | 讀取流量自動分散   |
 | **Custom Endpoint**  | Round-robin 到**你指定的** instances | 流量只打你選的機器 |
+
+## Glacier Deep Archive vs Glacier Flexible Retrieval
+
+| 比較項目 | Deep Archive       | Flexible Retrieval |
+| -------- | ------------------ | ------------------ |
+| 儲存成本 | 最低（~$1/TB/月）  | 較高（~$4/TB/月）  |
+| 取回時間 | 12-48 小時         | 分鐘-12 小時       |
+| 適用場景 | 極少存取（年度級） | 偶爾存取（季度級） |
+
+## 記憶公式：長期封存 + 極少存取 = Deep Archive
+
+- 法規遵循、歷史資料、災難復原備份
+- 關鍵字：10 年、rarely accessed、once or twice a year
