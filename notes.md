@@ -481,3 +481,13 @@
      1. **原生備份限制**：DynamoDB **on-demand backup 不支援跨帳號/區域**，僅限本帳號內使用
      2. **AWS Backup 優勢**：支援**跨帳號/區域備份**，提供完整的災難恢復方案
      3. **記憶口訣**：「**NACL 管安全，Endpoint 改路徑**」- 看到題目說「用 NACL 走內網」直接排除
+135. ★★ Kinesis Video Streams + Rekognition - 即時影像分析標準組合
+     1. **應用場景**：**即時監控、人臉辨識、物體偵測**
+     2. **服務組合**：**Kinesis Video Streams**（串流影像收集）+ **Amazon Rekognition**（AI 影像分析）
+     3. **Rekognition 分類**：**Image**（靜態圖片分析）和 **Video**（影片串流分析）兩種，考試時別搞混
+     4. **考試判斷**：看到「即時影像分析」或「人臉/物體偵測」→ 直接選這個組合
+136. ★ CloudFront Geo-restriction - 地理區域存取限制功能
+     1. **功能定位**：**限制特定地區存取內容**（黑名單概念），純粹的**存取控制工具**
+     2. **非路由功能**：**不是選擇性路由**，無法實現「歐洲去 Frankfurt，亞洲去 Singapore」的智慧導向
+     3. **核心區別**：**Restriction = 禁止存取**；**Routing = 智慧導向**（後者需要 Route 53 Geolocation/Geoproximity）
+     4. **考試應用**：題目提到「阻擋特定國家」→ **Geo-restriction**；提到「就近存取」→ **Route 53 地理路由**
