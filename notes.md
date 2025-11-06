@@ -639,7 +639,7 @@
     3. **記憶**：不要持有無用的 Reserved Instances，主動管理資源成本
 171. 😇 EC2 Placement Groups 放置策略概述
     1. **目的**：影響**相互依賴的 EC2 實例群組**的放置方式，最小化相關故障（correlated failures）
-    2. **核心邏輯**：EC2 預設將實例分散到不同硬體上；Placement Groups 可改變此預設行為以滿足工作負載需求
+    2. **核心邏輯**：EC2 預設將實例分散到不同硬體上；Placement Groups 可改變此預設行為以滿足工作負載需求⭐️
 172. ★ Cluster Placement Group - 低延遲緊湊策略
     1. **策略**：將實例**緊密打包**在同一個 Availability Zone 內
     2. **效果**：實現低延遲、高網路吞吐量的**緊耦合節點間通訊**
@@ -651,3 +651,14 @@
 174. 👀 Spread Placement Group - 硬體隔離策略
     1. **策略**：將**小型實例群組**嚴格分散到不同硬體，減少相關故障
     2. **特點**：硬體隔離程度最高，適合對可靠性要求極高的小規模部署
+175. ★ 各 Placement Group 類型的 AZ 和 Region 支援能力⭐️
+    1. **Cluster Placement Group**：限制在**單一 AZ**、**單一 Region**
+    2. **Partition Placement Group**：限制在**單一 Region**（可跨多個 AZ）
+    3. **Spread Placement Group**：限制在**單一 Region**（可跨多個 AZ）
+    4. **跨 Region 支援**：所有類型 Placement Groups 都**不支援跨 Region**
+176. ★ Placement Group 跨域限制的考試陷阱
+    1. **常見陷阱**：題目故意混淆「跨多個 AZ」與「跨 Regions」的概念
+    2. **考試技巧**：看到 "across multiple AZs in multiple Regions" → ❌ 錯誤，Placement Groups 不支援跨 Region
+177. 😇 Placement Group 三類型的設計原則與記憶技巧
+    1. **Cluster → 極致效能**：必須在**同一個機房（單一 AZ）**，追求最低延遲
+    2. **Partition / Spread → 容錯策略**：可以**分散到不同 AZ（但同 Region）**，追求高可用性
