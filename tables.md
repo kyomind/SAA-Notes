@@ -786,3 +786,28 @@ Object Lock（功能開關）
 | 非同步複製（Read Replica）               | 小 to 中（看延遲） | 中（需手動切換）   | 中       | 中       |
 | **同步複製 + 自動 Failover（Multi-AZ）** | **極小（接近 0）** | **小（1 分鐘內）** | 高       | 高       |
 | **跨區同步 + 全球複寫（企業級 DR）**     | **極小**           | **極小**           | **最高** | **最高** |
+
+## Aurora Serverless v2 vs 標準 Aurora (Provisioned)
+
+| 特性         | Aurora Provisioned            | Aurora Serverless v2  |
+| ------------ | ----------------------------- | --------------------- |
+| **容量管理** | 手動選擇 instance type        | 自動擴縮 (ACU)        |
+| **擴縮速度** | 需手動調整 (停機或加 replica) | 秒級自動調整          |
+| **計費方式** | 按 instance 小時計費          | 按實際 ACU 使用量計費 |
+| **成本**     | 固定成本,可預測               | 浮動成本,流量低時較省 |
+| **最低成本** | 持續運行的最小 instance       | 可縮到 0.5 ACU        |
+| **適用場景** | 穩定、可預測流量              | 波動大、難預測流量    |
+
+## 考試判斷標準
+
+### 選 Provisioned
+
+- "steady/predictable workload"
+- "需要特定 instance 規格" (如大記憶體)
+- "成本可預測性很重要"
+
+### 選 Serverless v2
+
+- "unpredictable/variable workload"
+- "cost optimization" + 流量波動
+- "automatically scale" 是關鍵字
