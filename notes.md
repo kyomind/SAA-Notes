@@ -686,3 +686,23 @@
     1. **常見誤解**：DocumentDB 可用，但選擇 AppFlow 是**服務定位錯誤**
     2. **AppFlow 真正用途**：SaaS 資料傳輸服務（連接 Salesforce、Slack 等），**完全不能** query database 或做即時更新
     3. **正確定義**：AppFlow = SaaS 之間搬資料（例：Salesforce → S3），**非即時資料庫查詢工具**
+184. ★★ 批量 IAM 用戶管理的最佳做法
+    1. **核心方案**：使用 **IAM Group** 而非逐一設定，新人加入時按部門分組
+    2. **實務優勢**：一次設定權限整組套用、維護效率高、符合 RBAC 原則
+    3. **避免陷阱**：❌ 每個 user 單獨設定（維護地獄）、❌ 用 Role 管理 User（Role 是給 AWS 服務用的）
+185. ★ IAM Policy Condition 實現 MFA 強制執行
+    1. **實作方式**：透過 IAM Policy 的 **Condition** 檢查 `aws:MultiFactorAuthPresent` 屬性
+    2. **Deny 規則示例**：未開啟 MFA 則拒絕所有操作（`"aws:MultiFactorAuthPresent": "false"` → Effect: Deny）
+    3. **執行邏輯**：MFA 就是「進門要刷卡」，沒刷卡（無 MFA）就進不來（Deny）
+186. 😇 IAM Group vs Role 的核心區別
+    1. **IAM Group**：給 IAM User 用的**權限集合**，用於用戶批量管理
+    2. **IAM Role**：給 AWS 服務或外部身份用的**臨時權限**，非用戶管理工具
+    3. **考試陷阱**：別被選項的 Role 誤導，**user 批量管理必用 Group**
+187. ★★ SCP vs IAM Policy 的本質差異與應用場景
+    1. **使用場景差異**：SCP 用於 AWS Organizations 多帳號管理、IAM Policy 用於單一帳號內的權限管理
+    2. **附加對象差異**：SCP 附加到 Organization Root / OU / Account、IAM Policy 附加到 User / Group / Role
+    3. **作用層級差異**：SCP 是帳號層級的**最大權限邊界**、IAM Policy 是實體層級的**權限授予/拒絕**
+188. ★ SCP 在考試中的判斷公式與陷阱
+    1. **快速判斷**：Single AWS Account → IAM Policy（❌ 排除任何 SCP 選項）、Multiple AWS Accounts (Organizations) → SCP
+    2. **常見陷阱**：SCP **不能直接附加到 IAM User**，Architecture 上就不符合
+    3. **記憶技巧**：SCP = 公司集團管理規則，一間公司（Single Account）用 IAM Policy 就夠了
