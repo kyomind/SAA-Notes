@@ -31,16 +31,16 @@
 9. 😇 AWS Systems Manager **Run Command** - 批次遠端指令執行
    1. **用途**：批次執行指令到多台 EC2（**同時更新 100 台機器**等場景）
    2. **優勢**：不用一台一台 SSH 連線
-10. 😇 AWS Systems Manager **Patch Manager** - 自動化系統更新管理○
+10. 😇 AWS Systems Manager **Patch Manager** - 自動化系統更新管理
     1. **功能**：自動化系統更新、安全補丁部署
     2. **配置**：可設定維護視窗（Maintenance Window）控制更新時機
 11. 😇 AWS Cost Explorer：視覺化分析 AWS 帳單的工具，讓你看懂錢花在哪、預測未來開銷。
-12. ★ AWS Cost Anomaly Detection - ML 自動異常偵測
+12. ★ AWS Cost Anomaly Detection - **ML 自動異常偵測**
     1. **功能**：用 ML 學習花費模式，**自動找出異常**（不用設定閾值）
     2. **運作方式**：系統自己判斷「這次不正常」，發現異常時發 SNS 通知
 13. ★ AWS Budgets vs Cost Anomaly Detection - 考試判斷關鍵
     1. **AWS Budgets**：**你主動設定**閾值（「alert when cost exceeds $X」），超過時發出通知
-    2. **Cost Anomaly Detection**：**AI 自動判斷**異常（「automatically detect unusual spending」），無需預設閾值
+    2. **Cost Anomaly Detection**：**AI 自動判斷**異常（「automatically detect unusual spending」），**無需**預設閾值
     3. **核心差異**：Budgets 是「**你說多少算超標**」，Anomaly Detection 是「**AI 說這次不對勁**」
 14. ★★ S3 One Zone-IA vs Standard-IA 核心對比
     1. **可用性區域差異**：Standard-IA 跨 ≥3 個 AZ（SLA 99.9%、貴）；One Zone-IA 單一 AZ（SLA 99.5%、便宜 20%）
@@ -591,3 +591,7 @@
     1. **Retention Mode**：必選其一（或都不選），設定保留期限
     2. **Legal Hold**：可選，獨立於 Retention Mode，無期限
     3. **記憶技巧**：Legal Hold 是額外的鎖，可以疊加在任何 Retention Mode 上
+159. ★★ Aurora Reader Endpoint 的自動負載均衡機制
+    1. **核心功能**：自動將所有 **read-only 查詢**負載均衡到 Read Replicas
+    2. **運作邏輯**：有 Replicas → 自動分散 SELECT 查詢到所有 Replicas；沒有 Replicas → 連到 Primary instance（可讀寫）
+    3. **考試關鍵**：Aurora 內建**自動讀取負載均衡**，無需自行架設 Load Balancer

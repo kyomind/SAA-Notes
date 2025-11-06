@@ -732,6 +732,8 @@ S3 Pre-Signed URL → 讓用戶「**上傳/下載**」但不給 AWS 憑證
 | **Reader Endpoint**  | Round-robin 到**所有** read replicas | 讀取流量自動分散   |
 | **Custom Endpoint**  | Round-robin 到**你指定的** instances | 流量只打你選的機器 |
 
+後二者都有**自動負載平衡**效果，但 Reader Endpoint 是打所有 read replica，Custom Endpoint 是只打你指定的那幾台。
+
 ## Glacier Deep Archive vs Glacier Flexible Retrieval
 
 | 比較項目 | Deep Archive       | Flexible Retrieval |
