@@ -706,3 +706,29 @@
     1. **快速判斷**：Single AWS Account → IAM Policy（❌ 排除任何 SCP 選項）、Multiple AWS Accounts (Organizations) → SCP
     2. **常見陷阱**：SCP **不能直接附加到 IAM User**，Architecture 上就不符合
     3. **記憶技巧**：SCP = 公司集團管理規則，一間公司（Single Account）用 IAM Policy 就夠了
+189. ★★ KMS Policy 與 IAM Policy 的雙層權限控制模型⭐️
+    1. **核心概念**：Lambda 解密 FSx 檔案需同時滿足 **IAM Policy** 和 **Key Policy** 兩層權限
+    2. **IAM 層**：Lambda **execution role** 必須具有 **kms:Decrypt** permission
+    3. **KMS 層**：Key policy 必須明確**允許該 role** 使用 **kms:Decrypt** 動作
+    4. **為何特別強調**：Customer-managed KMS key 預設 policy **不會自動允許** IAM policies 生效，必須明確設定
+190. 😇 AWS-managed Key vs Customer-managed Key 的 Policy 預設差異
+    1. **AWS-managed Key**：Policy 已預設開啟給同帳號的所有 IAM policies，**無需額外設定**
+    2. **Customer-managed Key**：Policy **需手動配置**以允許特定 IAM principal 使用，否則被拒絕⭐️
+    3. **記憶技巧**：managed = 懶人包（已設定好），customer-managed = 自己動手（要自己配）
+191. ★★ Lambda Resource Policy vs Execution Role 的權限控制對比⭐️
+    1. **Resource Policy 用途**：控制「**誰能呼叫**」Lambda（入場券）
+    2. **Execution Role 用途**：控制 Lambda「**能做什麼**」（工作證），決定其可存取的其他服務
+    3. **類比記憶**：Resource policy = 門禁系統、Execution role = 員工權限
+    4. **加 KMS 權限的位置**：❌ Resource policy（錯誤）、✅ Execution role（正確）
+192. ★ Lambda Resource Policy 常見誤用分析
+    1. **實際控制範圍**：Resource policy 僅管理「API Gateway 能否 invoke Lambda」、「S3 能否觸發 Lambda」等外部服務呼叫
+    2. **無法實現**：無法控制 Lambda **對其他服務**（如 KMS、DynamoDB）的操作權限
+    3. **考試陷阱**：不能把需要 KMS 權限的選項放在 resource policy，即使題目有此選項也要排除
+193. ★ Lambda Execution Role 與 KMS Key Policy 中的 Principal ARN 區別
+    1. **Principal 身份識別**：KMS key policy 的 Principal 必須指向 **execution role ARN**，**不能**使用 Lambda function ARN
+    2. **原因**：實際操作 KMS 的是 role，不是 function 本身；KMS 無法辨識 function ARN
+    3. **正確 ARN 格式**：`arn:aws:iam::ACCOUNT_ID:role/execution-role-name`
+194. 😇 Lambda 權限判斷的快速公式
+    1. **題目關鍵詞**：「Lambda needs to access XXX service」→ **Execution role**（執行時權限）
+    2. **題目關鍵詞**：「Who can invoke Lambda」或「trigger Lambda」→ **Resource policy**（呼叫權限）
+    3. **記憶技巧**：分清「進門」（resource）vs「工作」（execution），一秒快速選答案
