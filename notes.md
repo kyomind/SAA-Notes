@@ -42,7 +42,7 @@
     1. **AWS Budgets**：**你主動設定**閾值（「alert when cost exceeds $X」），超過時發出通知
     2. **Cost Anomaly Detection**：**AI 自動判斷**異常（「automatically detect unusual spending」），**無需**預設閾值
     3. **核心差異**：Budgets 是「**你說多少算超標**」，Anomaly Detection 是「**AI 說這次不對勁**」
-14. ★★ S3 One Zone-IA vs Standard-IA 核心對比
+14. ★★ S3 One Zone-IA vs Standard-IA 核心對比○
     1. **可用性區域差異**：Standard-IA 跨 ≥3 個 AZ（SLA 99.9%、貴）；One Zone-IA 單一 AZ（SLA 99.5%、便宜 20%）
     2. **耐久性**：兩者皆 **11 個 9**（99.999999999%），但 AZ 毀損時 One Zone-IA **資料全失**
     3. **最低儲存天數**：兩者均 30 天
@@ -595,3 +595,11 @@
     1. **核心功能**：自動將所有 **read-only 查詢**負載均衡到 Read Replicas
     2. **運作邏輯**：有 Replicas → 自動分散 SELECT 查詢到所有 Replicas；沒有 Replicas → 連到 Primary instance（可讀寫）
     3. **考試關鍵**：Aurora 內建**自動讀取負載均衡**，無需自行架設 Load Balancer
+160. ★ Aurora Parallel Query 的單一查詢加速機制
+    1. **目的**：加速**單一複雜查詢**（OLAP 分析）
+    2. **運作原理**：將一個查詢拆到**多個 CPU 平行處理**
+    3. **使用場景**：OLAP 分析查詢、複雜 JOIN/聚合運算
+161. ★ Parallel Query vs Reader Endpoint 考試陷阱
+    1. **核心差異**：Parallel Query 加速單一查詢、Reader Endpoint 負載均衡多個請求
+    2. **考試陷阱**：題目問「如何分散讀取流量到 Read Replicas」→ **必選 Reader Endpoint**（❌ 不是 Parallel Query）
+    3. **記憶技巧**：Parallel Query「一個人」跑得更快、Reader Endpoint「多個人」分工
