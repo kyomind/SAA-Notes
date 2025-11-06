@@ -813,3 +813,24 @@ Object Lock（功能開關）
 - "unpredictable/variable workload"
 - "cost optimization" + 流量波動
 - "automatically scale" 是關鍵字
+
+## EC2 Placement Groups 比較
+
+| 類型          | 用途              | 數量限制                   | 網路特性       |
+| ------------- | ----------------- | -------------------------- | -------------- |
+| **Spread**    | 高可用,分散風險   | 每 AZ 最多 7 個            | 一般           |
+| **Cluster**   | 高效能運算,低延遲 | 無硬性限制                 | 10 Gbps 高頻寬 |
+| **Partition** | 大規模分散式系統  | 每 AZ 最多 7 個 partitions | 一般           |
+
+## 考試重點
+
+### 關鍵字識別
+
+- "critical instances" + "kept separate" → Spread
+- "small number" → Spread (不是 Cluster 的大量部署)
+- "reduce simultaneous failures" → Spread
+
+### 常見陷阱
+
+- 看到 "high availability" 就選 Spread → 要看數量!超過 7 個用 Partition
+- 混淆 Spread 和 Cluster → Cluster 是為了效能,不是容錯

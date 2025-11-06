@@ -637,3 +637,17 @@
     1. **方案一**：前往 **AWS Reserved Instance Marketplace 銷售**未使用的 Reserved Instances
     2. **方案二**：**儘快終止 Reserved Instances**，避免到期時被以 on-demand 價格計費
     3. **記憶**：不要持有無用的 Reserved Instances，主動管理資源成本
+171. 😇 EC2 Placement Groups 放置策略概述
+    1. **目的**：影響**相互依賴的 EC2 實例群組**的放置方式，最小化相關故障（correlated failures）
+    2. **核心邏輯**：EC2 預設將實例分散到不同硬體上；Placement Groups 可改變此預設行為以滿足工作負載需求
+172. ★ Cluster Placement Group - 低延遲緊湊策略
+    1. **策略**：將實例**緊密打包**在同一個 Availability Zone 內
+    2. **效果**：實現低延遲、高網路吞吐量的**緊耦合節點間通訊**
+    3. **適用場景**：HPC（高性能運算）應用、需要低延遲的分散式系統
+    4. **最佳實踐**：選擇**支援 enhanced networking 的 instance 類型**以達到最低延遲和最高 packet-per-second 性能
+173. 😇 Partition Placement Group - 邏輯分割策略
+    1. **策略**：將實例分散到**邏輯分割（logical partitions）**，不同分割的實例不共享底層硬體
+    2. **適用場景**：大型分散式工作負載（Hadoop、Cassandra、Kafka）的自動容錯設計
+174. 👀 Spread Placement Group - 硬體隔離策略
+    1. **策略**：將**小型實例群組**嚴格分散到不同硬體，減少相關故障
+    2. **特點**：硬體隔離程度最高，適合對可靠性要求極高的小規模部署
