@@ -623,3 +623,17 @@
     1. **方案一**：VPC B 自己接 DX Gateway 連接
     2. **方案二**：透過 **Transit Gateway** 中轉（支援更複雜的網路拓撲）⭐️
     3. **記憶**：VPC Peering 是「VPC to VPC」，不涉及 on-premises 流量
+167. ★★ Public Subnet 連線的兩個必要條件（缺一不可）
+    1. **EC2 必須有 Public IP**：EIP 或自動分配的 public IP
+    2. **Route Table 必須有 IGW 路由**：0.0.0.0/0 → igw-xxx
+168. ★★ Route Table 的隱含邏輯與 Main Route Table 陷阱
+    1. **預設行為**：每個 subnet **必須關聯一個 route table**；無明確關聯 → **自動使用 main route table**⭐️
+    2. **常見陷阱**：新建 subnet 很可能用了 main route table，而 **main route table 可能沒有 IGW 路由**
+    3. **解決方案**：建立 subnet 時明確指定 route table 或檢查 main route table 的路由配置
+169. ★★ AWS Reserved Instance Marketplace - 閒置保留實例銷售平台
+    1. **平台功能**：支援第三方和 AWS 客戶銷售**未使用的 Standard Reserved Instances**（支援不同期限和定價選項）
+    2. **使用場景**：遷移到新 AWS 區域、變更 instance 類型、提前結束專案、業務需求改變、有多餘容量
+170. ★ Reserved Instance 閒置時的正確處置方案
+    1. **方案一**：前往 **AWS Reserved Instance Marketplace 銷售**未使用的 Reserved Instances
+    2. **方案二**：**儘快終止 Reserved Instances**，避免到期時被以 on-demand 價格計費
+    3. **記憶**：不要持有無用的 Reserved Instances，主動管理資源成本
