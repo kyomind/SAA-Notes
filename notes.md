@@ -662,3 +662,15 @@
 177. 😇 Placement Group 三類型的設計原則與記憶技巧
     1. **Cluster → 極致效能**：必須在**同一個機房（單一 AZ）**，追求最低延遲
     2. **Partition / Spread → 容錯策略**：可以**分散到不同 AZ（但同 Region）**，追求高可用性
+178. ★ AWS Config 用於 tag 管理與合規性檢查
+    1. **require-tags rule 功能**：自動掃描所有資源的 tags
+    2. **檢測能力**：檢測不符合命名規範的 tags（包括**大小寫**）
+    3. **合規性標記**：標記為 **non-compliant**，讓團隊快速找出問題資源
+179. ★★ CloudFormation CreationPolicy 核心概念
+    1. **問題場景**：SharePoint 需要 AD、SQL Server 等依賴服務都啟動完成，才能開始安裝
+    2. **預設行為限制**：CloudFormation 預設只確認 EC2 instance **創建成功**，不管裡面的應用程式是否安裝完成
+    3. **解決方案**：使用 **CreationPolicy** + **cfn-signal** 確保資源真正就緒
+180. ★★ CreationPolicy 運作流程與機制
+    1. **完整流程**：EC2 創建 → 執行 UserData 安裝軟體 → cfn-signal 發送成功信號 → CloudFormation 繼續下一步
+    2. **沒有 CreationPolicy**：EC2 一啟動就往下走，結果 SharePoint 開始裝時 SQL Server 還沒好 → **失敗**
+    3. **有 CreationPolicy**：CloudFormation 會等到收到 **cfn-signal** 才認為資源真正完成
