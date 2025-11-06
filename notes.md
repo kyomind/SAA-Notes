@@ -603,3 +603,23 @@
     1. **核心差異**：Parallel Query 加速單一查詢、Reader Endpoint 負載均衡多個請求
     2. **考試陷阱**：題目問「如何分散讀取流量到 Read Replicas」→ **必選 Reader Endpoint**（❌ 不是 Parallel Query）
     3. **記憶技巧**：Parallel Query「一個人」跑得更快、Reader Endpoint「多個人」分工
+162. ★ S3 上傳限制關鍵數字（考試必背）
+    1. **單一物件最大限制**：5 TB
+    2. **單次 PUT 最大限制**：5 GB（超過此限制必須用 Multipart Upload）⭐️
+    3. **Multipart Upload 建議閾值**：> 100 MB
+163. ★★ S3 Multipart Upload 的三步驟機制
+    1. **Initiate**：開始上傳，取得 upload ID
+    2. **Upload Parts**：分段上傳各個片段
+    3. **Complete**：通知 S3 組合所有片段
+164. ★★ AWS Direct Connect Gateway 多 VPC 連接能力
+    1. **核心價值**：一條 DX 連線 + 一個 DX Gateway，可直接連接**最多 10 個 VPC**
+    2. **跨域特性**：支援跨 Region 和跨 Account 連接
+    3. **考試意義**：多 VPC 環境下連接內部部署網路的首選方案
+165. ★★ VPC Peering 在 Direct Connect 架構中的限制（考試陷阱）
+    1. **核心限制**：VPC Peering **只負責 VPC 間的流量**，不會處理「VPC ↔ on-premises」的流量
+    2. **在 DX 場景下**：VPC Peering **完全無法**幫助多 VPC 連接 on-premises 網路⭐️
+    3. **考試陷阱**：看到「多 VPC 連接 on-premises」→ ❌ 不選 VPC Peering，應選 DX Gateway 或 Transit Gateway
+166. ★ VPC B 連接 on-premises 的解決方案
+    1. **方案一**：VPC B 自己接 DX Gateway 連接
+    2. **方案二**：透過 **Transit Gateway** 中轉（支援更複雜的網路拓撲）⭐️
+    3. **記憶**：VPC Peering 是「VPC to VPC」，不涉及 on-premises 流量
