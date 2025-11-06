@@ -674,3 +674,15 @@
     1. **完整流程**：EC2 創建 → 執行 UserData 安裝軟體 → cfn-signal 發送成功信號 → CloudFormation 繼續下一步
     2. **沒有 CreationPolicy**：EC2 一啟動就往下走，結果 SharePoint 開始裝時 SQL Server 還沒好 → **失敗**
     3. **有 CreationPolicy**：CloudFormation 會等到收到 **cfn-signal** 才認為資源真正完成
+181. ★ Launch Template 的不可變性與版本管理
+    1. **核心概念**：Launch Template 是**不可變的（immutable）**，不能直接修改現有版本
+    2. **換 AMI 的正確做法**：創建新版本 Launch Template（指定新 AMI）→ ASG 設定使用新版本 → 觸發 instance refresh 或等新 instance 啟動時自動套用
+    3. **為什麼不能修改**：AWS 設計為版本控制模式，確保配置追蹤性和穩定性
+182. ★ AppSync 的核心應用場景
+    1. **即時同步**：利用 GraphQL 訂閱功能，投票結果即時推送到所有裝置
+    2. **簡化開發**：自動處理 DynamoDB 查詢，無需自己撰寫 API
+    3. **協作應用**：多人同時投票時，排名自動更新給所有用戶
+183. ★ DocumentDB + AppFlow 的組合陷阱
+    1. **常見誤解**：DocumentDB 可用，但選擇 AppFlow 是**服務定位錯誤**
+    2. **AppFlow 真正用途**：SaaS 資料傳輸服務（連接 Salesforce、Slack 等），**完全不能** query database 或做即時更新
+    3. **正確定義**：AppFlow = SaaS 之間搬資料（例：Salesforce → S3），**非即時資料庫查詢工具**
