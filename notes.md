@@ -732,3 +732,10 @@
     1. **題目關鍵詞**：「Lambda needs to access XXX service」→ **Execution role**（執行時權限）
     2. **題目關鍵詞**：「Who can invoke Lambda」或「trigger Lambda」→ **Resource policy**（呼叫權限）
     3. **記憶技巧**：分清「進門」（resource）vs「工作」（execution），一秒快速選答案
+195. ★★ EBS 快照為何不自動匯出到 S3 的設計邏輯
+    1. **AWS 的設計哲學**：快照已存在 AWS 的 managed S3（帳戶看不到），再匯出到自己的 S3 bucket = **重複儲存浪費成本**
+    2. **替代方案**：需要跨區域 → **Snapshot Copy**；需要長期保留 → **AWS Backup**
+196. ★ 快照匯出相關的考試陷阱與真實機制
+    1. **常見陷阱**：看到「自動匯出快照到 S3」的選項 → ❌ **99% 是錯的**，沒有服務會自動匯出
+    2. **唯一相關服務**：**AWS Backup** 可設定備份存到指定位置，但這是「備份管理」而非「快照匯出」
+    3. **操作方式**：所有快照匯出都需要**手動操作**或透過 **AWS Backup 統一管理**
