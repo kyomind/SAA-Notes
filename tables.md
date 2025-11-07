@@ -879,3 +879,19 @@ Object Lock（功能開關）
 ### 3. Spot Instance 不會在 `stopping` 計費
 
 因為 Spot 是「用多少付多少」,準備關機時 AWS 已經不提供資源了
+
+## 自動備份：RDS vs EBS 快照機制比較
+
+| 項目                  | RDS                    | EBS                    |
+| --------------------- | ---------------------- | ---------------------- |
+| 自動備份              | 內建功能，開箱即用     | 需配置 DLM/AWS Backup  |
+| 保留期                | 0-35 天（可設 0 關閉） | 自訂，無上限           |
+| Point-in-time restore | ✅ 支援（5 分鐘粒度）   | ❌ 只能還原到快照時間點 |
+| 備份範圍              | 整個 DB instance       | 單一 EBS volume        |
+
+## 考試關鍵
+
+- 題目問「自動備份」→ RDS 直接內建
+- EBS 也能自動化，但需額外配置（**DLM**/EventBridge/AWS Backup）
+- 需要 point-in-time recovery → 只能選 RDS
+- RDS 需要**超過 35 天**的備份 → 用 AWS Backup 搭配 RDS
