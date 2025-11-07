@@ -834,3 +834,11 @@ Object Lock（功能開關）
 
 - 看到 "high availability" 就選 Spread → 要看數量!超過 7 個用 Partition
 - 混淆 Spread 和 Cluster → Cluster 是為了效能,不是容錯
+
+## DynamoDB On-Demand vs Provisioned 模式比較
+
+| 比較項目     | On-Demand      | Provisioned             |
+| ------------ | -------------- | ----------------------- |
+| 容量管理     | 自動調整       | 需手動設定 RCU/WCU      |
+| Auto Scaling | 不需要(已內建) | **預設關閉**,需手動啟用 |
+| 適用場景     | 流量不可預測   | 流量穩定可預測          |
