@@ -164,3 +164,7 @@ You can configure any access point to accept requests only from a virtual privat
 ## Direct Connect gateways and Transit Gateways
 
 ![圖 21](https://img.kyomind.tw/img-20251104-180235.png)
+
+## EC2 狀態表
+
+![圖 22](https://img.kyomind.tw/img-20251107-172210.png)
