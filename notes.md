@@ -783,3 +783,40 @@
     1. **關鍵字識別**：「啟動時間長 + 成本考量 + Windows/需狀態保存」→ **Hibernation**；「停機期間不收費 + 快速恢復」→ **Hibernation**
     2. **排除陷阱**：❌ Auto Scaling（目的完全不同，是動態擴展非快速啟動）、❌ Elastic IP（只解決 IP 綁定問題）
     3. **記憶口訣**：「**停機省錢 + 快速復工 = Hibernation**」
+209. ★★ SCP (Service Control Policy) 權限邊界核心概念
+    1. **本質定義**：**不是「授予」權限**，而是設定「**權限上限**」；即使開發者具有 Admin IAM 權限，只要 SCP 明確拒絕，就無法執行該動作⭐️
+    2. **運作原理**：**實際權限 = IAM Policy ∩ SCP**；開發者可能有 `config:*` 的 IAM 權限，但 SCP 若明確 Deny `config:DeleteConfigRule`，最終就無法刪除規則
+210. ★★ SCP vs IAM Policy - 權限控制方式的根本差異
+    1. **IAM Policy 限制**：開發者具有 Admin 可以**自己修改** IAM Policy，無法強制限制
+    2. **AWS Config Rules 限制**：本身**沒有**「防止修改」的機制，**只能檢查**不符合項但無法主動阻止⭐️
+    3. **SCP 優勢**：設定在組織層級，IAM Policy、Config Rules 都無法繞過
+211. ★★ SCP 三大特性與考試判斷標準
+    1. **組織層級控制**：適用於 **Organization 層級**或 **OU（Organization Unit）層級**，跨帳號統一管制
+    2. **權限天花板機制**：限制的是「**最大權限範圍**」，即使 Root User 也能限制其操作
+    3. **考試判斷關鍵字**：「prevent modification + across accounts」→ **SCP**；「centralized control」→ **SCP**；「限制 admin/root 行為」→ **只有 SCP 辦得到**
+212. 😇 SCP 企業應用場景與實務意義
+    1. **稽核合規需求**：Compliance 要求不能關閉特定監控（CloudTrail、AWS Config）
+    2. **安全基準套用**：Security Baseline 必須全組織強制套用，個別帳號無法繞過
+    3. **成本控管規則**：成本控管政策不能被個別帳號繞過（如禁用特定 Region、限制 Instance Type）
+213. ★★ AWS Config Rule vs SCP - Detective Control vs Preventive Control 的根本區別
+    1. **Config Rule 本質**：**事後檢查（detective control）**，只能「**偵測**」不符合項，無法「**阻止**」操作執行
+    2. **SCP 本質**：**事前阻止（preventive control）**，在操作發生前直接拒絕，物理上無法執行⭐️
+    3. **考試應用**：題目要求「**prevent deletion**」或「**block operations**」→ 必選 **SCP**；題目要求「**detect non-compliance**」→ 才選 **Config Rule**
+214. ★ Control Tower 的定位誤區與權限控制工具的邊界
+    1. **Control Tower 真正用途**：**建立多帳號治理框架**、自動化 baseline 部署、持續合規檢查，**不是權限控制工具**⭐️
+       - 多帳號管理框架
+       - 自動化安全基準部署
+       - 持續合規檢查
+    2. **常見陷阱**：Control Tower 能檢查配置但**無法直接阻止操作**，若配合 Trust Policy 更是雙重錯誤
+       - Control Tower 無法執行 preventive control
+       - Trust Policy 無法限制 root user
+       - 兩者結合 = 雙重無效
+215. ★★ SCP 在 Organizations 層級的唯一性地位與工具選擇決策表
+    1. **需求對應表**：限制帳號層級權限 → **SCP**（不是 IAM Policy）；阻止操作執行 → **SCP**（不是 Config Rule）；限制 root user → **SCP**（不是 IAM Role）
+       - 限制帳號層級權限 → **SCP**（IAM Policy 對 root user 無效）
+       - 阻止操作執行 → **SCP**（Config Rule 只能偵測）
+       - 限制 root user → **SCP**（IAM Role 無法限制直接登入）
+    2. **核心記憶**：**Organizations 層級的權限控制 = SCP，沒有替代方案**；其他工具各有其用但都無法在帳號層級限制 root user
+       - SCP 是帳號層級的權限天花板
+       - 其他工具適用於不同層級的不同場景
+       - 無一可替代 SCP 的核心功能
