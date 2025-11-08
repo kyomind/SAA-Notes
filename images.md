@@ -172,3 +172,7 @@ You can configure any access point to accept requests only from a virtual privat
 ## Network ACL 設定頁面
 
 ![圖 18](https://img.kyomind.tw/img-20251108-105540.png)
+
+## Amazon Data Firehose(原名 Kinesis Data Firehose)
+
+![圖 19](https://img.kyomind.tw/img-20251108-112000.png)

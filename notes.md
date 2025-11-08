@@ -538,285 +538,285 @@
      3. 題目提「**大量資料**」「**自動化遷移**」「**加速傳輸**」→ **DataSync**
      4. 題目提「**實體硬碟**」→ **Snowball**；題目提「**混合雲持續存取**」→ **Storage Gateway**
 147. ★★ Gateway Endpoint Policy - 集中式 S3 存取控制方案
-    1. **核心概念**：Gateway Endpoint 讓 VPC 內的資源**不透過網際網路**直接存取 S3/DynamoDB，想像成「**內網專線**」
-    2. **存取控制方式**：控制「**哪些 S3 buckets 可以被存取**」有兩種方式
-       - **Bucket Policy**：在每個 bucket 設定
-       - **Endpoint Policy**：在 Gateway Endpoint 設定
+     1. **核心概念**：Gateway Endpoint 讓 VPC 內的資源**不透過網際網路**直接存取 S3/DynamoDB，想像成「**內網專線**」
+     2. **存取控制方式**：控制「**哪些 S3 buckets 可以被存取**」有兩種方式
+        - **Bucket Policy**：在每個 bucket 設定
+        - **Endpoint Policy**：在 Gateway Endpoint 設定
 148. ★★ Endpoint Policy vs Bucket Policy - 集中管理優勢
-    1. **效率對比**
-       - **Bucket Policy**：10 個 trusted buckets = 設定 10 次
-       - **Endpoint Policy**：10 個 trusted buckets = 設定 1 次
-    2. **考試判斷**：AWS 考試偏好「**集中管理、簡化維運**」的方案
-       - **multiple buckets** + Gateway Endpoint 場景 → **Endpoint Policy**
-    3. **關鍵記憶**：Endpoint Policy **優先於 Bucket Policy**，是額外的限制層
+     1. **效率對比**
+        - **Bucket Policy**：10 個 trusted buckets = 設定 10 次
+        - **Endpoint Policy**：10 個 trusted buckets = 設定 1 次
+     2. **考試判斷**：AWS 考試偏好「**集中管理、簡化維運**」的方案
+        - **multiple buckets** + Gateway Endpoint 場景 → **Endpoint Policy**
+     3. **關鍵記憶**：Endpoint Policy **優先於 Bucket Policy**，是額外的限制層
 149. ★ 權限驗證三層模型 - IAM/Bucket/Endpoint Policy 共同作用
-    1. **驗證流程**：三層依序檢查
-       - **IAM Policy**：使用者有什麼權限
-       - **Bucket Policy**：bucket 允許誰存取
-       - **Endpoint Policy**：這條路徑允許存取哪些 bucket
-    2. **通過條件**：三者**都要 Allow** 才能成功存取，任一層 Deny 就無法通過
+     1. **驗證流程**：三層依序檢查
+        - **IAM Policy**：使用者有什麼權限
+        - **Bucket Policy**：bucket 允許誰存取
+        - **Endpoint Policy**：這條路徑允許存取哪些 bucket
+     2. **通過條件**：三者**都要 Allow** 才能成功存取，任一層 Deny 就無法通過
 150. ★★ Gateway Endpoint Policy 配置機制
-    1. **政策設定**：建立 Gateway endpoint 時可附加 **endpoint policy** 控制對服務的存取權限
-    2. **政策修改**：可修改附加到 endpoint 的政策、新增或移除 route tables
-    3. **政策關係**：Endpoint Policy **不會覆蓋或替代** IAM user policies 或服務專屬政策（如 S3 bucket policies），是**獨立的控制層**
+     1. **政策設定**：建立 Gateway endpoint 時可附加 **endpoint policy** 控制對服務的存取權限
+     2. **政策修改**：可修改附加到 endpoint 的政策、新增或移除 route tables
+     3. **政策關係**：Endpoint Policy **不會覆蓋或替代** IAM user policies 或服務專屬政策（如 S3 bucket policies），是**獨立的控制層**
 151. 😇 Bucket Policy vs Endpoint Policy 使用判斷
-    1. **技術可行性**：兩者都能控制流量到 trusted S3 buckets
-    2. **實務優勢**
-       - **Bucket Policy**：逐個 bucket 設定，**時間成本高**
-       - **Endpoint Policy**：單一 policy 設定，**效率高**
-    3. **題目判斷**：看到「**trusted S3 buckets**」+ 「multiple buckets」→ 優先選 **Endpoint Policy**
+     1. **技術可行性**：兩者都能控制流量到 trusted S3 buckets
+     2. **實務優勢**
+        - **Bucket Policy**：逐個 bucket 設定，**時間成本高**
+        - **Endpoint Policy**：單一 policy 設定，**效率高**
+     3. **題目判斷**：看到「**trusted S3 buckets**」+ 「multiple buckets」→ 優先選 **Endpoint Policy**
 
 152. ★★ AWS Secrets Manager - 動態密碼管理與自動輪換
-    1. **核心價值**：API 動態取得最新密碼、自動輪換（auto rotation）、應用程式無需改 code
-    2. **解決的痛點**：密碼寫死在程式碼、要換密碼需改 code 重新部署、多個 app 共用密碼漏改爆炸
-    3. **輪換流程**：產生新密碼 → 更新 RDS → 更新 secret → 驗證連線
+     1. **核心價值**：API 動態取得最新密碼、自動輪換（auto rotation）、應用程式無需改 code
+     2. **解決的痛點**：密碼寫死在程式碼、要換密碼需改 code 重新部署、多個 app 共用密碼漏改爆炸
+     3. **輪換流程**：產生新密碼 → 更新 RDS → 更新 secret → 驗證連線
 153. 😇 Secrets Manager 考試判斷標準與應用場景
-    1. **關鍵需求識別**：加密儲存 credentials、定期自動輪換、應用程式永遠用最新版本
-    2. **考試判斷關鍵字**：看到「**自動輪換**」+ 「**RDS credentials**」→ 選 **Secrets Manager**
+     1. **關鍵需求識別**：加密儲存 credentials、定期自動輪換、應用程式永遠用最新版本
+     2. **考試判斷關鍵字**：看到「**自動輪換**」+ 「**RDS credentials**」→ 選 **Secrets Manager**
 154. ★★ AWS Glue - 全託管 ETL 服務與低成本資料轉換
-    1. **核心價值**：全託管的 ETL 服務，不用管理伺服器、自動擴展、按使用量付費
-    2. **標準流程**：S3 (.csv) → **Glue Crawler**（自動發現 schema）→ **Glue ETL Job**（轉換成 Parquet）→ S3 (Parquet 格式)
-    3. **Crawler 自動化**：自動掃描 S3 識別資料結構、建立 **Data Catalog**（無需手動定義 schema）
+     1. **核心價值**：全託管的 ETL 服務，不用管理伺服器、自動擴展、按使用量付費
+     2. **標準流程**：S3 (.csv) → **Glue Crawler**（自動發現 schema）→ **Glue ETL Job**（轉換成 Parquet）→ S3 (Parquet 格式)
+     3. **Crawler 自動化**：自動掃描 S3 識別資料結構、建立 **Data Catalog**（無需手動定義 schema）
 155. ★★ Glue ETL Job - Parquet 轉換與排程執行
-    1. **ETL 能力**：支援 Parquet/ORC 格式轉換（內建）、可設定定時執行、Serverless 無需管理基礎設施
-    2. **低維運優勢**：全託管無伺服器維護、只在 job 執行時計費、相比自建 EMR 叢集成本更低
+     1. **ETL 能力**：支援 Parquet/ORC 格式轉換（內建）、可設定定時執行、Serverless 無需管理基礎設施
+     2. **低維運優勢**：全託管無伺服器維護、只在 job 執行時計費、相比自建 EMR 叢集成本更低
 156. ★ Parquet 格式優勢與 Glue 考試判斷
-    1. **Parquet 特性**：欄位式儲存（columnar）查詢效能優、高壓縮率降低儲存成本、與 Athena/Redshift Spectrum 整合
-    2. **考試判斷關鍵字**：看到「**ETL**」「**CSV → Parquet/ORC**」「**最少維運成本**」「**定期資料處理**」「**Schema discovery**」→ 選 **Glue**
+     1. **Parquet 特性**：欄位式儲存（columnar）查詢效能優、高壓縮率降低儲存成本、與 Athena/Redshift Spectrum 整合
+     2. **考試判斷關鍵字**：看到「**ETL**」「**CSV → Parquet/ORC**」「**最少維運成本**」「**定期資料處理**」「**Schema discovery**」→ 選 **Glue**
 157. ★★ S3 Object Lock 架構關係與模式組合
-    1. **Object Lock 功能開關**：整體控制機制，啟用後可使用 Retention Mode 或 Legal Hold
-    2. **Retention Mode（二選一）**：**Compliance Mode**（最嚴格，無法覆寫）、**Governance Mode**（可特殊權限覆寫）
-    3. **Legal Hold（獨立開關）**：可搭配任何 Retention Mode 使用，無期限限制
+     1. **Object Lock 功能開關**：整體控制機制，啟用後可使用 Retention Mode 或 Legal Hold
+     2. **Retention Mode（二選一）**：**Compliance Mode**（最嚴格，無法覆寫）、**Governance Mode**（可特殊權限覆寫）
+     3. **Legal Hold（獨立開關）**：可搭配任何 Retention Mode 使用，無期限限制
 158. ★ S3 Object Lock 考試判斷要點
-    1. **Retention Mode**：必選其一（或都不選），設定保留期限
-    2. **Legal Hold**：可選，獨立於 Retention Mode，無期限
-    3. **記憶技巧**：Legal Hold 是額外的鎖，可以疊加在任何 Retention Mode 上
+     1. **Retention Mode**：必選其一（或都不選），設定保留期限
+     2. **Legal Hold**：可選，獨立於 Retention Mode，無期限
+     3. **記憶技巧**：Legal Hold 是額外的鎖，可以疊加在任何 Retention Mode 上
 159. ★★ Aurora Reader Endpoint 的自動負載均衡機制
-    1. **核心功能**：自動將所有 **read-only 查詢**負載均衡到 Read Replicas
-    2. **運作邏輯**：有 Replicas → 自動分散 SELECT 查詢到所有 Replicas；沒有 Replicas → 連到 Primary instance（可讀寫）
-    3. **考試關鍵**：Aurora 內建**自動讀取負載均衡**，無需自行架設 Load Balancer
+     1. **核心功能**：自動將所有 **read-only 查詢**負載均衡到 Read Replicas
+     2. **運作邏輯**：有 Replicas → 自動分散 SELECT 查詢到所有 Replicas；沒有 Replicas → 連到 Primary instance（可讀寫）
+     3. **考試關鍵**：Aurora 內建**自動讀取負載均衡**，無需自行架設 Load Balancer
 160. ★ Aurora Parallel Query 的單一查詢加速機制
-    1. **目的**：加速**單一複雜查詢**（OLAP 分析）
-    2. **運作原理**：將一個查詢拆到**多個 CPU 平行處理**
-    3. **使用場景**：OLAP 分析查詢、複雜 JOIN/聚合運算
+     1. **目的**：加速**單一複雜查詢**（OLAP 分析）
+     2. **運作原理**：將一個查詢拆到**多個 CPU 平行處理**
+     3. **使用場景**：OLAP 分析查詢、複雜 JOIN/聚合運算
 161. ★ Parallel Query vs Reader Endpoint 考試陷阱
-    1. **核心差異**：Parallel Query 加速單一查詢、Reader Endpoint 負載均衡多個請求
-    2. **考試陷阱**：題目問「如何分散讀取流量到 Read Replicas」→ **必選 Reader Endpoint**（❌ 不是 Parallel Query）
-    3. **記憶技巧**：Parallel Query「一個人」跑得更快、Reader Endpoint「多個人」分工
+     1. **核心差異**：Parallel Query 加速單一查詢、Reader Endpoint 負載均衡多個請求
+     2. **考試陷阱**：題目問「如何分散讀取流量到 Read Replicas」→ **必選 Reader Endpoint**（❌ 不是 Parallel Query）
+     3. **記憶技巧**：Parallel Query「一個人」跑得更快、Reader Endpoint「多個人」分工
 162. ★ S3 上傳限制關鍵數字（考試必背）
-    1. **單一物件最大限制**：5 TB
-    2. **單次 PUT 最大限制**：5 GB（超過此限制必須用 Multipart Upload）⭐️
-    3. **Multipart Upload 建議閾值**：> 100 MB
+     1. **單一物件最大限制**：5 TB
+     2. **單次 PUT 最大限制**：5 GB（超過此限制必須用 Multipart Upload）⭐️
+     3. **Multipart Upload 建議閾值**：> 100 MB
 163. ★★ S3 Multipart Upload 的三步驟機制
-    1. **Initiate**：開始上傳，取得 upload ID
-    2. **Upload Parts**：分段上傳各個片段
-    3. **Complete**：通知 S3 組合所有片段
+     1. **Initiate**：開始上傳，取得 upload ID
+     2. **Upload Parts**：分段上傳各個片段
+     3. **Complete**：通知 S3 組合所有片段
 164. ★★ AWS Direct Connect Gateway 多 VPC 連接能力
-    1. **核心價值**：一條 DX 連線 + 一個 DX Gateway，可直接連接**最多 10 個 VPC**
-    2. **跨域特性**：支援跨 Region 和跨 Account 連接
-    3. **考試意義**：多 VPC 環境下連接內部部署網路的首選方案
+     1. **核心價值**：一條 DX 連線 + 一個 DX Gateway，可直接連接**最多 10 個 VPC**
+     2. **跨域特性**：支援跨 Region 和跨 Account 連接
+     3. **考試意義**：多 VPC 環境下連接內部部署網路的首選方案
 165. ★★ VPC Peering 在 Direct Connect 架構中的限制（考試陷阱）
-    1. **核心限制**：VPC Peering **只負責 VPC 間的流量**，不會處理「VPC ↔ on-premises」的流量
-    2. **在 DX 場景下**：VPC Peering **完全無法**幫助多 VPC 連接 on-premises 網路⭐️
-    3. **考試陷阱**：看到「多 VPC 連接 on-premises」→ ❌ 不選 VPC Peering，應選 DX Gateway 或 Transit Gateway
+     1. **核心限制**：VPC Peering **只負責 VPC 間的流量**，不會處理「VPC ↔ on-premises」的流量
+     2. **在 DX 場景下**：VPC Peering **完全無法**幫助多 VPC 連接 on-premises 網路⭐️
+     3. **考試陷阱**：看到「多 VPC 連接 on-premises」→ ❌ 不選 VPC Peering，應選 DX Gateway 或 Transit Gateway
 166. ★ VPC B 連接 on-premises 的解決方案
-    1. **方案一**：VPC B 自己接 DX Gateway 連接
-    2. **方案二**：透過 **Transit Gateway** 中轉（支援更複雜的網路拓撲）⭐️
-    3. **記憶**：VPC Peering 是「VPC to VPC」，不涉及 on-premises 流量
+     1. **方案一**：VPC B 自己接 DX Gateway 連接
+     2. **方案二**：透過 **Transit Gateway** 中轉（支援更複雜的網路拓撲）⭐️
+     3. **記憶**：VPC Peering 是「VPC to VPC」，不涉及 on-premises 流量
 167. ★★ Public Subnet 連線的兩個必要條件（缺一不可）
-    1. **EC2 必須有 Public IP**：EIP 或自動分配的 public IP
-    2. **Route Table 必須有 IGW 路由**：0.0.0.0/0 → igw-xxx
+     1. **EC2 必須有 Public IP**：EIP 或自動分配的 public IP
+     2. **Route Table 必須有 IGW 路由**：0.0.0.0/0 → igw-xxx
 168. ★★ Route Table 的隱含邏輯與 Main Route Table 陷阱
-    1. **預設行為**：每個 subnet **必須關聯一個 route table**；無明確關聯 → **自動使用 main route table**⭐️
-    2. **常見陷阱**：新建 subnet 很可能用了 main route table，而 **main route table 可能沒有 IGW 路由**
-    3. **解決方案**：建立 subnet 時明確指定 route table 或檢查 main route table 的路由配置
+     1. **預設行為**：每個 subnet **必須關聯一個 route table**；無明確關聯 → **自動使用 main route table**⭐️
+     2. **常見陷阱**：新建 subnet 很可能用了 main route table，而 **main route table 可能沒有 IGW 路由**
+     3. **解決方案**：建立 subnet 時明確指定 route table 或檢查 main route table 的路由配置
 169. ★★ AWS Reserved Instance Marketplace - 閒置保留實例銷售平台
-    1. **平台功能**：支援第三方和 AWS 客戶銷售**未使用的 Standard Reserved Instances**（支援不同期限和定價選項）
-    2. **使用場景**：遷移到新 AWS 區域、變更 instance 類型、提前結束專案、業務需求改變、有多餘容量
+     1. **平台功能**：支援第三方和 AWS 客戶銷售**未使用的 Standard Reserved Instances**（支援不同期限和定價選項）
+     2. **使用場景**：遷移到新 AWS 區域、變更 instance 類型、提前結束專案、業務需求改變、有多餘容量
 170. ★ Reserved Instance 閒置時的正確處置方案
-    1. **方案一**：前往 **AWS Reserved Instance Marketplace 銷售**未使用的 Reserved Instances
-    2. **方案二**：**儘快終止 Reserved Instances**，避免到期時被以 on-demand 價格計費
-    3. **記憶**：不要持有無用的 Reserved Instances，主動管理資源成本
+     1. **方案一**：前往 **AWS Reserved Instance Marketplace 銷售**未使用的 Reserved Instances
+     2. **方案二**：**儘快終止 Reserved Instances**，避免到期時被以 on-demand 價格計費
+     3. **記憶**：不要持有無用的 Reserved Instances，主動管理資源成本
 171. 😇 EC2 Placement Groups 放置策略概述
-    1. **目的**：影響**相互依賴的 EC2 實例群組**的放置方式，最小化相關故障（correlated failures）
-    2. **核心邏輯**：EC2 預設將實例分散到不同硬體上；Placement Groups 可改變此預設行為以滿足工作負載需求⭐️
+     1. **目的**：影響**相互依賴的 EC2 實例群組**的放置方式，最小化相關故障（correlated failures）
+     2. **核心邏輯**：EC2 預設將實例分散到不同硬體上；Placement Groups 可改變此預設行為以滿足工作負載需求⭐️
 172. ★ Cluster Placement Group - 低延遲緊湊策略
-    1. **策略**：將實例**緊密打包**在同一個 Availability Zone 內
-    2. **效果**：實現低延遲、高網路吞吐量的**緊耦合節點間通訊**
-    3. **適用場景**：HPC（高性能運算）應用、需要低延遲的分散式系統
-    4. **最佳實踐**：選擇**支援 enhanced networking 的 instance 類型**以達到最低延遲和最高 packet-per-second 性能
+     1. **策略**：將實例**緊密打包**在同一個 Availability Zone 內
+     2. **效果**：實現低延遲、高網路吞吐量的**緊耦合節點間通訊**
+     3. **適用場景**：HPC（高性能運算）應用、需要低延遲的分散式系統
+     4. **最佳實踐**：選擇**支援 enhanced networking 的 instance 類型**以達到最低延遲和最高 packet-per-second 性能
 173. 😇 Partition Placement Group - 邏輯分割策略
-    1. **策略**：將實例分散到**邏輯分割（logical partitions）**，不同分割的實例不共享底層硬體
-    2. **適用場景**：大型分散式工作負載（Hadoop、Cassandra、Kafka）的自動容錯設計
+     1. **策略**：將實例分散到**邏輯分割（logical partitions）**，不同分割的實例不共享底層硬體
+     2. **適用場景**：大型分散式工作負載（Hadoop、Cassandra、Kafka）的自動容錯設計
 174. 👀 Spread Placement Group - 硬體隔離策略
-    1. **策略**：將**小型實例群組**嚴格分散到不同硬體，減少相關故障
-    2. **特點**：硬體隔離程度最高，適合對可靠性要求極高的小規模部署
+     1. **策略**：將**小型實例群組**嚴格分散到不同硬體，減少相關故障
+     2. **特點**：硬體隔離程度最高，適合對可靠性要求極高的小規模部署
 175. ★ 各 Placement Group 類型的 AZ 和 Region 支援能力⭐️
-    1. **Cluster Placement Group**：限制在**單一 AZ**、**單一 Region**
-    2. **Partition Placement Group**：限制在**單一 Region**（可跨多個 AZ）
-    3. **Spread Placement Group**：限制在**單一 Region**（可跨多個 AZ）
-    4. **跨 Region 支援**：所有類型 Placement Groups 都**不支援跨 Region**
+     1. **Cluster Placement Group**：限制在**單一 AZ**、**單一 Region**
+     2. **Partition Placement Group**：限制在**單一 Region**（可跨多個 AZ）
+     3. **Spread Placement Group**：限制在**單一 Region**（可跨多個 AZ）
+     4. **跨 Region 支援**：所有類型 Placement Groups 都**不支援跨 Region**
 176. ★ Placement Group 跨域限制的考試陷阱
-    1. **常見陷阱**：題目故意混淆「跨多個 AZ」與「跨 Regions」的概念
-    2. **考試技巧**：看到 "across multiple AZs in multiple Regions" → ❌ 錯誤，Placement Groups 不支援跨 Region
+     1. **常見陷阱**：題目故意混淆「跨多個 AZ」與「跨 Regions」的概念
+     2. **考試技巧**：看到 "across multiple AZs in multiple Regions" → ❌ 錯誤，Placement Groups 不支援跨 Region
 177. 😇 Placement Group 三類型的設計原則與記憶技巧
-    1. **Cluster → 極致效能**：必須在**同一個機房（單一 AZ）**，追求最低延遲
-    2. **Partition / Spread → 容錯策略**：可以**分散到不同 AZ（但同 Region）**，追求高可用性
+     1. **Cluster → 極致效能**：必須在**同一個機房（單一 AZ）**，追求最低延遲
+     2. **Partition / Spread → 容錯策略**：可以**分散到不同 AZ（但同 Region）**，追求高可用性
 178. ★ AWS Config 用於 tag 管理與合規性檢查
-    1. **require-tags rule 功能**：自動掃描所有資源的 tags
-    2. **檢測能力**：檢測不符合命名規範的 tags（包括**大小寫**）
-    3. **合規性標記**：標記為 **non-compliant**，讓團隊快速找出問題資源
+     1. **require-tags rule 功能**：自動掃描所有資源的 tags
+     2. **檢測能力**：檢測不符合命名規範的 tags（包括**大小寫**）
+     3. **合規性標記**：標記為 **non-compliant**，讓團隊快速找出問題資源
 179. ★★ CloudFormation CreationPolicy 核心概念
-    1. **問題場景**：SharePoint 需要 AD、SQL Server 等依賴服務都啟動完成，才能開始安裝
-    2. **預設行為限制**：CloudFormation 預設只確認 EC2 instance **創建成功**，不管裡面的應用程式是否安裝完成
-    3. **解決方案**：使用 **CreationPolicy** + **cfn-signal** 確保資源真正就緒
+     1. **問題場景**：SharePoint 需要 AD、SQL Server 等依賴服務都啟動完成，才能開始安裝
+     2. **預設行為限制**：CloudFormation 預設只確認 EC2 instance **創建成功**，不管裡面的應用程式是否安裝完成
+     3. **解決方案**：使用 **CreationPolicy** + **cfn-signal** 確保資源真正就緒
 180. ★★ CreationPolicy 運作流程與機制
-    1. **完整流程**：EC2 創建 → 執行 UserData 安裝軟體 → cfn-signal 發送成功信號 → CloudFormation 繼續下一步
-    2. **沒有 CreationPolicy**：EC2 一啟動就往下走，結果 SharePoint 開始裝時 SQL Server 還沒好 → **失敗**
-    3. **有 CreationPolicy**：CloudFormation 會等到收到 **cfn-signal** 才認為資源真正完成
+     1. **完整流程**：EC2 創建 → 執行 UserData 安裝軟體 → cfn-signal 發送成功信號 → CloudFormation 繼續下一步
+     2. **沒有 CreationPolicy**：EC2 一啟動就往下走，結果 SharePoint 開始裝時 SQL Server 還沒好 → **失敗**
+     3. **有 CreationPolicy**：CloudFormation 會等到收到 **cfn-signal** 才認為資源真正完成
 181. ★ Launch Template 的不可變性與版本管理
-    1. **核心概念**：Launch Template 是**不可變的（immutable）**，不能直接修改現有版本
-    2. **換 AMI 的正確做法**：創建新版本 Launch Template（指定新 AMI）→ ASG 設定使用新版本 → 觸發 instance refresh 或等新 instance 啟動時自動套用
-    3. **為什麼不能修改**：AWS 設計為版本控制模式，確保配置追蹤性和穩定性
+     1. **核心概念**：Launch Template 是**不可變的（immutable）**，不能直接修改現有版本
+     2. **換 AMI 的正確做法**：創建新版本 Launch Template（指定新 AMI）→ ASG 設定使用新版本 → 觸發 instance refresh 或等新 instance 啟動時自動套用
+     3. **為什麼不能修改**：AWS 設計為版本控制模式，確保配置追蹤性和穩定性
 182. ★ AppSync 的核心應用場景
-    1. **即時同步**：利用 GraphQL 訂閱功能，投票結果即時推送到所有裝置
-    2. **簡化開發**：自動處理 DynamoDB 查詢，無需自己撰寫 API
-    3. **協作應用**：多人同時投票時，排名自動更新給所有用戶
+     1. **即時同步**：利用 GraphQL 訂閱功能，投票結果即時推送到所有裝置
+     2. **簡化開發**：自動處理 DynamoDB 查詢，無需自己撰寫 API
+     3. **協作應用**：多人同時投票時，排名自動更新給所有用戶
 183. ★ DocumentDB + AppFlow 的組合陷阱
-    1. **常見誤解**：DocumentDB 可用，但選擇 AppFlow 是**服務定位錯誤**
-    2. **AppFlow 真正用途**：SaaS 資料傳輸服務（連接 Salesforce、Slack 等），**完全不能** query database 或做即時更新
-    3. **正確定義**：AppFlow = SaaS 之間搬資料（例：Salesforce → S3），**非即時資料庫查詢工具**
+     1. **常見誤解**：DocumentDB 可用，但選擇 AppFlow 是**服務定位錯誤**
+     2. **AppFlow 真正用途**：SaaS 資料傳輸服務（連接 Salesforce、Slack 等），**完全不能** query database 或做即時更新
+     3. **正確定義**：AppFlow = SaaS 之間搬資料（例：Salesforce → S3），**非即時資料庫查詢工具**
 184. ★★ 批量 IAM 用戶管理的最佳做法
-    1. **核心方案**：使用 **IAM Group** 而非逐一設定，新人加入時按部門分組
-    2. **實務優勢**：一次設定權限整組套用、維護效率高、符合 RBAC 原則
-    3. **避免陷阱**：❌ 每個 user 單獨設定（維護地獄）、❌ 用 Role 管理 User（Role 是給 AWS 服務用的）
+     1. **核心方案**：使用 **IAM Group** 而非逐一設定，新人加入時按部門分組
+     2. **實務優勢**：一次設定權限整組套用、維護效率高、符合 RBAC 原則
+     3. **避免陷阱**：❌ 每個 user 單獨設定（維護地獄）、❌ 用 Role 管理 User（Role 是給 AWS 服務用的）
 185. ★ IAM Policy Condition 實現 MFA 強制執行
-    1. **實作方式**：透過 IAM Policy 的 **Condition** 檢查 `aws:MultiFactorAuthPresent` 屬性
-    2. **Deny 規則示例**：未開啟 MFA 則拒絕所有操作（`"aws:MultiFactorAuthPresent": "false"` → Effect: Deny）
-    3. **執行邏輯**：MFA 就是「進門要刷卡」，沒刷卡（無 MFA）就進不來（Deny）
+     1. **實作方式**：透過 IAM Policy 的 **Condition** 檢查 `aws:MultiFactorAuthPresent` 屬性
+     2. **Deny 規則示例**：未開啟 MFA 則拒絕所有操作（`"aws:MultiFactorAuthPresent": "false"` → Effect: Deny）
+     3. **執行邏輯**：MFA 就是「進門要刷卡」，沒刷卡（無 MFA）就進不來（Deny）
 186. 😇 IAM Group vs Role 的核心區別
-    1. **IAM Group**：給 IAM User 用的**權限集合**，用於用戶批量管理
-    2. **IAM Role**：給 AWS 服務或外部身份用的**臨時權限**，非用戶管理工具
-    3. **考試陷阱**：別被選項的 Role 誤導，**user 批量管理必用 Group**
+     1. **IAM Group**：給 IAM User 用的**權限集合**，用於用戶批量管理
+     2. **IAM Role**：給 AWS 服務或外部身份用的**臨時權限**，非用戶管理工具
+     3. **考試陷阱**：別被選項的 Role 誤導，**user 批量管理必用 Group**
 187. ★★ SCP vs IAM Policy 的本質差異與應用場景
-    1. **使用場景差異**：SCP 用於 AWS Organizations 多帳號管理、IAM Policy 用於單一帳號內的權限管理
-    2. **附加對象差異**：SCP 附加到 Organization Root / OU / Account、IAM Policy 附加到 User / Group / Role
-    3. **作用層級差異**：SCP 是帳號層級的**最大權限邊界**、IAM Policy 是實體層級的**權限授予/拒絕**
+     1. **使用場景差異**：SCP 用於 AWS Organizations 多帳號管理、IAM Policy 用於單一帳號內的權限管理
+     2. **附加對象差異**：SCP 附加到 Organization Root / OU / Account、IAM Policy 附加到 User / Group / Role
+     3. **作用層級差異**：SCP 是帳號層級的**最大權限邊界**、IAM Policy 是實體層級的**權限授予/拒絕**
 188. ★ SCP 在考試中的判斷公式與陷阱
-    1. **快速判斷**：Single AWS Account → IAM Policy（❌ 排除任何 SCP 選項）、Multiple AWS Accounts (Organizations) → SCP
-    2. **常見陷阱**：SCP **不能直接附加到 IAM User**，Architecture 上就不符合
-    3. **記憶技巧**：SCP = 公司集團管理規則，一間公司（Single Account）用 IAM Policy 就夠了
+     1. **快速判斷**：Single AWS Account → IAM Policy（❌ 排除任何 SCP 選項）、Multiple AWS Accounts (Organizations) → SCP
+     2. **常見陷阱**：SCP **不能直接附加到 IAM User**，Architecture 上就不符合
+     3. **記憶技巧**：SCP = 公司集團管理規則，一間公司（Single Account）用 IAM Policy 就夠了
 189. ★★ KMS Policy 與 IAM Policy 的雙層權限控制模型⭐️
-    1. **核心概念**：Lambda 解密 FSx 檔案需同時滿足 **IAM Policy** 和 **Key Policy** 兩層權限
-    2. **IAM 層**：Lambda **execution role** 必須具有 **kms:Decrypt** permission
-    3. **KMS 層**：Key policy 必須明確**允許該 role** 使用 **kms:Decrypt** 動作
-    4. **為何特別強調**：Customer-managed KMS key 預設 policy **不會自動允許** IAM policies 生效，必須明確設定
+     1. **核心概念**：Lambda 解密 FSx 檔案需同時滿足 **IAM Policy** 和 **Key Policy** 兩層權限
+     2. **IAM 層**：Lambda **execution role** 必須具有 **kms:Decrypt** permission
+     3. **KMS 層**：Key policy 必須明確**允許該 role** 使用 **kms:Decrypt** 動作
+     4. **為何特別強調**：Customer-managed KMS key 預設 policy **不會自動允許** IAM policies 生效，必須明確設定
 190. 😇 AWS-managed Key vs Customer-managed Key 的 Policy 預設差異
-    1. **AWS-managed Key**：Policy 已預設開啟給同帳號的所有 IAM policies，**無需額外設定**
-    2. **Customer-managed Key**：Policy **需手動配置**以允許特定 IAM principal 使用，否則被拒絕⭐️
-    3. **記憶技巧**：managed = 懶人包（已設定好），customer-managed = 自己動手（要自己配）
+     1. **AWS-managed Key**：Policy 已預設開啟給同帳號的所有 IAM policies，**無需額外設定**
+     2. **Customer-managed Key**：Policy **需手動配置**以允許特定 IAM principal 使用，否則被拒絕⭐️
+     3. **記憶技巧**：managed = 懶人包（已設定好），customer-managed = 自己動手（要自己配）
 191. ★★ Lambda Resource Policy vs Execution Role 的權限控制對比⭐️
-    1. **Resource Policy 用途**：控制「**誰能呼叫**」Lambda（入場券）
-    2. **Execution Role 用途**：控制 Lambda「**能做什麼**」（工作證），決定其可存取的其他服務
-    3. **類比記憶**：Resource policy = 門禁系統、Execution role = 員工權限
-    4. **加 KMS 權限的位置**：❌ Resource policy（錯誤）、✅ Execution role（正確）
+     1. **Resource Policy 用途**：控制「**誰能呼叫**」Lambda（入場券）
+     2. **Execution Role 用途**：控制 Lambda「**能做什麼**」（工作證），決定其可存取的其他服務
+     3. **類比記憶**：Resource policy = 門禁系統、Execution role = 員工權限
+     4. **加 KMS 權限的位置**：❌ Resource policy（錯誤）、✅ Execution role（正確）
 192. ★ Lambda Resource Policy 常見誤用分析
-    1. **實際控制範圍**：Resource policy 僅管理「API Gateway 能否 invoke Lambda」、「S3 能否觸發 Lambda」等外部服務呼叫
-    2. **無法實現**：無法控制 Lambda **對其他服務**（如 KMS、DynamoDB）的操作權限
-    3. **考試陷阱**：不能把需要 KMS 權限的選項放在 resource policy，即使題目有此選項也要排除
+     1. **實際控制範圍**：Resource policy 僅管理「API Gateway 能否 invoke Lambda」、「S3 能否觸發 Lambda」等外部服務呼叫
+     2. **無法實現**：無法控制 Lambda **對其他服務**（如 KMS、DynamoDB）的操作權限
+     3. **考試陷阱**：不能把需要 KMS 權限的選項放在 resource policy，即使題目有此選項也要排除
 193. ★ Lambda Execution Role 與 KMS Key Policy 中的 Principal ARN 區別
-    1. **Principal 身份識別**：KMS key policy 的 Principal 必須指向 **execution role ARN**，**不能**使用 Lambda function ARN
-    2. **原因**：實際操作 KMS 的是 role，不是 function 本身；KMS 無法辨識 function ARN
-    3. **正確 ARN 格式**：`arn:aws:iam::ACCOUNT_ID:role/execution-role-name`
+     1. **Principal 身份識別**：KMS key policy 的 Principal 必須指向 **execution role ARN**，**不能**使用 Lambda function ARN
+     2. **原因**：實際操作 KMS 的是 role，不是 function 本身；KMS 無法辨識 function ARN
+     3. **正確 ARN 格式**：`arn:aws:iam::ACCOUNT_ID:role/execution-role-name`
 194. 😇 Lambda 權限判斷的快速公式
-    1. **題目關鍵詞**：「Lambda needs to access XXX service」→ **Execution role**（執行時權限）
-    2. **題目關鍵詞**：「Who can invoke Lambda」或「trigger Lambda」→ **Resource policy**（呼叫權限）
-    3. **記憶技巧**：分清「進門」（resource）vs「工作」（execution），一秒快速選答案
+     1. **題目關鍵詞**：「Lambda needs to access XXX service」→ **Execution role**（執行時權限）
+     2. **題目關鍵詞**：「Who can invoke Lambda」或「trigger Lambda」→ **Resource policy**（呼叫權限）
+     3. **記憶技巧**：分清「進門」（resource）vs「工作」（execution），一秒快速選答案
 195. ★★ EBS 快照為何不自動匯出到 S3 的設計邏輯
-    1. **AWS 的設計哲學**：快照已存在 AWS 的 managed S3（帳戶看不到），再匯出到自己的 S3 bucket = **重複儲存浪費成本**
-    2. **替代方案**：需要跨區域 → **Snapshot Copy**；需要長期保留 → **AWS Backup**
+     1. **AWS 的設計哲學**：快照已存在 AWS 的 managed S3（帳戶看不到），再匯出到自己的 S3 bucket = **重複儲存浪費成本**
+     2. **替代方案**：需要跨區域 → **Snapshot Copy**；需要長期保留 → **AWS Backup**
 196. ★ 快照匯出相關的考試陷阱與真實機制
-    1. **常見陷阱**：看到「自動匯出快照到 S3」的選項 → ❌ **99% 是錯的**，沒有服務會自動匯出
-    2. **唯一相關服務**：**AWS Backup** 可設定備份存到指定位置，但這是「備份管理」而非「快照匯出」
-    3. **操作方式**：所有快照匯出都需要**手動操作**或透過 **AWS Backup 統一管理**
+     1. **常見陷阱**：看到「自動匯出快照到 S3」的選項 → ❌ **99% 是錯的**，沒有服務會自動匯出
+     2. **唯一相關服務**：**AWS Backup** 可設定備份存到指定位置，但這是「備份管理」而非「快照匯出」
+     3. **操作方式**：所有快照匯出都需要**手動操作**或透過 **AWS Backup 統一管理**
 197. ★ Secrets Manager 考試選項陷阱分析
-    1. **陷阱特徵**：題目會列出看起來很合理的選項
-    2. **表面優勢**：有加密（KMS）、有批次取得 API（BatchGetSecretValue）
-    3. **致命傷**：**成本不划算**是排除此選項的關鍵因素
+     1. **陷阱特徵**：題目會列出看起來很合理的選項
+     2. **表面優勢**：有加密（KMS）、有批次取得 API（BatchGetSecretValue）
+     3. **致命傷**：**成本不划算**是排除此選項的關鍵因素
 198. ★ Secrets Manager 與 Parameter Store 的選擇判斷
-    1. **Secrets Manager 適用**：**密碼會過期/自動輪轉** → 「Secrets Manager 專治會動的祕密」
-    2. **Parameter Store 適用**：**配置很少變化** → 靜態設定儲存
+     1. **Secrets Manager 適用**：**密碼會過期/自動輪轉** → 「Secrets Manager 專治會動的祕密」
+     2. **Parameter Store 適用**：**配置很少變化** → 靜態設定儲存
 199. ★ Systems Manager OpsCenter 的真實用途與考試陷阱
-    1. **OpsCenter 的定位**：**營運事件管理**（incidents/問題追蹤），**非資料儲存服務**
-    2. **常見陷阱**：題目用「OpsCenter 預設加密」混淆 → ✅ 確實有加密，❌ **但根本不是用來存配置的**
-    3. **考試記憶點**：見到 OpsCenter 選項用於存放 key-value 配置 → **直接排除**
+     1. **OpsCenter 的定位**：**營運事件管理**（incidents/問題追蹤），**非資料儲存服務**
+     2. **常見陷阱**：題目用「OpsCenter 預設加密」混淆 → ✅ 確實有加密，❌ **但根本不是用來存配置的**
+     3. **考試記憶點**：見到 OpsCenter 選項用於存放 key-value 配置 → **直接排除**
 200. ★★ SQS + Auto Scaling 解決請求遺失問題
-    1. **問題根源**：**Scaling Lag**（新 EC2 啟動需 2-3 分鐘），Auto Scaling 啟動後請求仍遺失
-    2. **解決架構**：User → API/ALB → EC2(接收) → **SQS Queue** → EC2 Workers(Auto Scaling)
-    3. **SQS 的三大優勢**：立即寫入 SQS（毫秒級，保證不遺失）、異步處理（用戶不等待，Worker 慢慢處理）、精準擴展（監控 `ApproximateNumberOfMessages` 自動擴展）
+     1. **問題根源**：**Scaling Lag**（新 EC2 啟動需 2-3 分鐘），Auto Scaling 啟動後請求仍遺失
+     2. **解決架構**：User → API/ALB → EC2(接收) → **SQS Queue** → EC2 Workers(Auto Scaling)
+     3. **SQS 的三大優勢**：立即寫入 SQS（毫秒級，保證不遺失）、異步處理（用戶不等待，Worker 慢慢處理）、精準擴展（監控 `ApproximateNumberOfMessages` 自動擴展）
 201. ★ Auto Scaling 監控指標與擴展配置
-    1. **監控指標**：`ApproximateNumberOfMessages`（SQS 中的訊息數量）
-    2. **擴展公式**：訊息數 / 可接受 Backlog per Instance
+     1. **監控指標**：`ApproximateNumberOfMessages`（SQS 中的訊息數量）
+     2. **擴展公式**：訊息數 / 可接受 Backlog per Instance
 202. ★★ NACL vs Security Group - 有狀態和無狀態的流量控管差異
-    1. **Security Group（Stateful，有狀態）**：只需開 inbound port 443，回應流量自動允許，無需額外設定 outbound rule
-    2. **NACL（Stateless，無狀態）**：必須明確定義雙向規則，Inbound 允許 port 443，Outbound 允許 ephemeral ports (32768-65535)
+     1. **Security Group（Stateful，有狀態）**：只需開 inbound port 443，回應流量自動允許，無需額外設定 outbound rule
+     2. **NACL（Stateless，無狀態）**：必須明確定義雙向規則，Inbound 允許 port 443，Outbound 允許 ephemeral ports (32768-65535)
 203. ★★ Ephemeral Ports 的角色與範圍 - TCP 連線回應機制
-    1. **運作原理**：客戶端建立 TCP 連線時**隨機選擇**一個 ephemeral port 作為 source port，server 的回應會送到此隨機 port
-    2. **系統範圍差異**：Linux/Amazon Linux (32768-61000)、Windows Server 2008+ (49152-65535)、ELB/NAT Gateway/Lambda (1024-65535)
-    3. **NACL 控制重點**：**必須允許此範圍的 outbound 流量**，否則回應封包會被擋掉⭐️
+     1. **運作原理**：客戶端建立 TCP 連線時**隨機選擇**一個 ephemeral port 作為 source port，server 的回應會送到此隨機 port
+     2. **系統範圍差異**：Linux/Amazon Linux (32768-61000)、Windows Server 2008+ (49152-65535)、ELB/NAT Gateway/Lambda (1024-65535)
+     3. **NACL 控制重點**：**必須允許此範圍的 outbound 流量**，否則回應封包會被擋掉⭐️
 204. ★ NACL 與 Security Group 設定的快速判斷
-    1. **口訣**：「**SG 管進，NACL 管進出**」- Security Group 只管進門（stateful），NACL 進出都要管（stateless）
-    2. **考試技巧**：看到 NACL → 立刻想到 **ephemeral ports outbound**；只提 Security Group → 不用管 ephemeral ports
+     1. **口訣**：「**SG 管進，NACL 管進出**」- Security Group 只管進門（stateful），NACL 進出都要管（stateless）
+     2. **考試技巧**：看到 NACL → 立刻想到 **ephemeral ports outbound**；只提 Security Group → 不用管 ephemeral ports
 205. ★★ NACL Outbound 規則的關鍵細節 - Destination Port vs Source Port
-    1. **核心差異**：Server outbound 流量的 **destination port 是 client 的 ephemeral port**（32768-65535），**不是 443**
-    2. **NACL Outbound 配置**：Source 任意（server IP）、**Destination port 32768-65535**（客戶隨機 port）、Destination IP 0.0.0.0/0
-    3. **記憶口訣**：「**Server 聽 443，但回答到客戶的隨機 port**」
+     1. **核心差異**：Server outbound 流量的 **destination port 是 client 的 ephemeral port**（32768-65535），**不是 443**
+     2. **NACL Outbound 配置**：Source 任意（server IP）、**Destination port 32768-65535**（客戶隨機 port）、Destination IP 0.0.0.0/0
+     3. **記憶口訣**：「**Server 聽 443，但回答到客戶的隨機 port**」
 206. ★★ EC2 Hibernation - 快速啟動與成本優化方案
-    1. **核心應用**：結合**低成本**與**快速啟動**，適用於需要快速恢復的 Windows 應用
-    2. **Stop/Start 限制**：Stop 後記憶體消失，Restart 需要數分鐘「warm up」重建狀態
-    3. **Hibernation 優勢**：將 **RAM 內容寫入 EBS root volume**，Resume 時直接從 EBS 載入記憶體狀態，應用接續上次狀態無需重新初始化
-    4. **費用分析**：Running 收全額（EC2 + EBS + EIP）、Stopped 不收 EC2 費用（EBS + EIP）、Hibernated **與 Stopped 相同**，故無額外成本但大幅減少啟動時間
+     1. **核心應用**：結合**低成本**與**快速啟動**，適用於需要快速恢復的 Windows 應用
+     2. **Stop/Start 限制**：Stop 後記憶體消失，Restart 需要數分鐘「warm up」重建狀態
+     3. **Hibernation 優勢**：將 **RAM 內容寫入 EBS root volume**，Resume 時直接從 EBS 載入記憶體狀態，應用接續上次狀態無需重新初始化
+     4. **費用分析**：Running 收全額（EC2 + EBS + EIP）、Stopped 不收 EC2 費用（EBS + EIP）、Hibernated **與 Stopped 相同**，故無額外成本但大幅減少啟動時間
 207. ★★ EC2 Hibernation 配置限制與陷阱
-    1. **必要條件**：**Hibernation 必須在啟動時設定**（不能後續啟用）、**Root volume 必須是 EBS 且容量足夠存放 RAM**、**RAM < 150GB**
-    2. **不可變更陷阱**：現有 instance **無法**改成 hibernation，違反條件的 instance 需要**重建**才能啟用此功能⭐️
+     1. **必要條件**：**Hibernation 必須在啟動時設定**（不能後續啟用）、**Root volume 必須是 EBS 且容量足夠存放 RAM**、**RAM < 150GB**
+     2. **不可變更陷阱**：現有 instance **無法**改成 hibernation，違反條件的 instance 需要**重建**才能啟用此功能⭐️
 208. ★ EC2 Hibernation 考試判斷與常見陷阱
-    1. **關鍵字識別**：「啟動時間長 + 成本考量 + Windows/需狀態保存」→ **Hibernation**；「停機期間不收費 + 快速恢復」→ **Hibernation**
-    2. **排除陷阱**：❌ Auto Scaling（目的完全不同，是動態擴展非快速啟動）、❌ Elastic IP（只解決 IP 綁定問題）
-    3. **記憶口訣**：「**停機省錢 + 快速復工 = Hibernation**」
+     1. **關鍵字識別**：「啟動時間長 + 成本考量 + Windows/需狀態保存」→ **Hibernation**；「停機期間不收費 + 快速恢復」→ **Hibernation**
+     2. **排除陷阱**：❌ Auto Scaling（目的完全不同，是動態擴展非快速啟動）、❌ Elastic IP（只解決 IP 綁定問題）
+     3. **記憶口訣**：「**停機省錢 + 快速復工 = Hibernation**」
 209. ★★ SCP (Service Control Policy) 權限邊界核心概念
-    1. **本質定義**：**不是「授予」權限**，而是設定「**權限上限**」；即使開發者具有 Admin IAM 權限，只要 SCP 明確拒絕，就無法執行該動作⭐️
-    2. **運作原理**：**實際權限 = IAM Policy ∩ SCP**；開發者可能有 `config:*` 的 IAM 權限，但 SCP 若明確 Deny `config:DeleteConfigRule`，最終就無法刪除規則
+     1. **本質定義**：**不是「授予」權限**，而是設定「**權限上限**」；即使開發者具有 Admin IAM 權限，只要 SCP 明確拒絕，就無法執行該動作⭐️
+     2. **運作原理**：**實際權限 = IAM Policy ∩ SCP**；開發者可能有 `config:*` 的 IAM 權限，但 SCP 若明確 Deny `config:DeleteConfigRule`，最終就無法刪除規則
 210. ★★ SCP vs IAM Policy - 權限控制方式的根本差異
-    1. **IAM Policy 限制**：開發者具有 Admin 可以**自己修改** IAM Policy，無法強制限制
-    2. **AWS Config Rules 限制**：本身**沒有**「防止修改」的機制，**只能檢查**不符合項但無法主動阻止⭐️
-    3. **SCP 優勢**：設定在組織層級，IAM Policy、Config Rules 都無法繞過
+     1. **IAM Policy 限制**：開發者具有 Admin 可以**自己修改** IAM Policy，無法強制限制
+     2. **AWS Config Rules 限制**：本身**沒有**「防止修改」的機制，**只能檢查**不符合項但無法主動阻止⭐️
+     3. **SCP 優勢**：設定在組織層級，IAM Policy、Config Rules 都無法繞過
 211. ★★ SCP 三大特性與考試判斷標準
-    1. **組織層級控制**：適用於 **Organization 層級**或 **OU（Organization Unit）層級**，跨帳號統一管制
-    2. **權限天花板機制**：限制的是「**最大權限範圍**」，即使 Root User 也能限制其操作
-    3. **考試判斷關鍵字**：「prevent modification + across accounts」→ **SCP**；「centralized control」→ **SCP**；「限制 admin/root 行為」→ **只有 SCP 辦得到**
+     1. **組織層級控制**：適用於 **Organization 層級**或 **OU（Organization Unit）層級**，跨帳號統一管制
+     2. **權限天花板機制**：限制的是「**最大權限範圍**」，即使 Root User 也能限制其操作
+     3. **考試判斷關鍵字**：「prevent modification + across accounts」→ **SCP**；「centralized control」→ **SCP**；「限制 admin/root 行為」→ **只有 SCP 辦得到**
 212. 😇 SCP 企業應用場景與實務意義
-    1. **稽核合規需求**：Compliance 要求不能關閉特定監控（CloudTrail、AWS Config）
-    2. **安全基準套用**：Security Baseline 必須全組織強制套用，個別帳號無法繞過
-    3. **成本控管規則**：成本控管政策不能被個別帳號繞過（如禁用特定 Region、限制 Instance Type）
+     1. **稽核合規需求**：Compliance 要求不能關閉特定監控（CloudTrail、AWS Config）
+     2. **安全基準套用**：Security Baseline 必須全組織強制套用，個別帳號無法繞過
+     3. **成本控管規則**：成本控管政策不能被個別帳號繞過（如禁用特定 Region、限制 Instance Type）
 213. ★★ AWS Config Rule vs SCP - Detective Control vs Preventive Control 的根本區別
-    1. **Config Rule 本質**：**事後檢查（detective control）**，只能「**偵測**」不符合項，無法「**阻止**」操作執行
-    2. **SCP 本質**：**事前阻止（preventive control）**，在操作發生前直接拒絕，物理上無法執行⭐️
-    3. **考試應用**：題目要求「**prevent deletion**」或「**block operations**」→ 必選 **SCP**；題目要求「**detect non-compliance**」→ 才選 **Config Rule**
+     1. **Config Rule 本質**：**事後檢查（detective control）**，只能「**偵測**」不符合項，無法「**阻止**」操作執行
+     2. **SCP 本質**：**事前阻止（preventive control）**，在操作發生前直接拒絕，物理上無法執行⭐️
+     3. **考試應用**：題目要求「**prevent deletion**」或「**block operations**」→ 必選 **SCP**；題目要求「**detect non-compliance**」→ 才選 **Config Rule**
 214. ★ Control Tower 的定位誤區與權限控制工具的邊界
-    1. **Control Tower 真正用途**：**建立多帳號治理框架**、自動化 baseline 部署、持續合規檢查，**不是權限控制工具**⭐️
-       - 多帳號管理框架
-       - 自動化安全基準部署
-       - 持續合規檢查
-    2. **常見陷阱**：Control Tower 能檢查配置但**無法直接阻止操作**，若配合 Trust Policy 更是雙重錯誤
-       - Control Tower 無法執行 preventive control
-       - Trust Policy 無法限制 root user
-       - 兩者結合 = 雙重無效
+     1. **Control Tower 真正用途**：**建立多帳號治理框架**、自動化 baseline 部署、持續合規檢查，**不是權限控制工具**⭐️
+        - 多帳號管理框架
+        - 自動化安全基準部署
+        - 持續合規檢查
+     2. **常見陷阱**：Control Tower 能檢查配置但**無法直接阻止操作**，若配合 Trust Policy 更是雙重錯誤
+        - Control Tower 無法執行 preventive control
+        - Trust Policy 無法限制 root user
+        - 兩者結合 = 雙重無效
 215. ★★ SCP 在 Organizations 層級的唯一性地位與工具選擇決策表
-    1. **需求對應表**：限制帳號層級權限 → **SCP**（不是 IAM Policy）；阻止操作執行 → **SCP**（不是 Config Rule）；限制 root user → **SCP**（不是 IAM Role）
-       - 限制帳號層級權限 → **SCP**（IAM Policy 對 root user 無效）
-       - 阻止操作執行 → **SCP**（Config Rule 只能偵測）
-       - 限制 root user → **SCP**（IAM Role 無法限制直接登入）
-    2. **核心記憶**：**Organizations 層級的權限控制 = SCP，沒有替代方案**；其他工具各有其用但都無法在帳號層級限制 root user
-       - SCP 是帳號層級的權限天花板
-       - 其他工具適用於不同層級的不同場景
-       - 無一可替代 SCP 的核心功能
+     1. **需求對應表**：限制帳號層級權限 → **SCP**（不是 IAM Policy）；阻止操作執行 → **SCP**（不是 Config Rule）；限制 root user → **SCP**（不是 IAM Role）
+        - 限制帳號層級權限 → **SCP**（IAM Policy 對 root user 無效）
+        - 阻止操作執行 → **SCP**（Config Rule 只能偵測）
+        - 限制 root user → **SCP**（IAM Role 無法限制直接登入）
+     2. **核心記憶**：**Organizations 層級的權限控制 = SCP，沒有替代方案**；其他工具各有其用但都無法在帳號層級限制 root user
+        - SCP 是帳號層級的權限天花板
+        - 其他工具適用於不同層級的不同場景
+        - 無一可替代 SCP 的核心功能
