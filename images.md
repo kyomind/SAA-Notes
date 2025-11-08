@@ -168,3 +168,7 @@ You can configure any access point to accept requests only from a virtual privat
 ## EC2 狀態表
 
 ![圖 22](https://img.kyomind.tw/img-20251107-172210.png)
+
+## Network ACL 設定頁面
+
+![圖 18](https://img.kyomind.tw/img-20251108-105540.png)

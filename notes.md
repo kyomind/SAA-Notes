@@ -750,3 +750,20 @@
     1. **OpsCenter 的定位**：**營運事件管理**（incidents/問題追蹤），**非資料儲存服務**
     2. **常見陷阱**：題目用「OpsCenter 預設加密」混淆 → ✅ 確實有加密，❌ **但根本不是用來存配置的**
     3. **考試記憶點**：見到 OpsCenter 選項用於存放 key-value 配置 → **直接排除**
+200. ★★ SQS + Auto Scaling 解決請求遺失問題
+    1. **問題根源**：**Scaling Lag**（新 EC2 啟動需 2-3 分鐘），Auto Scaling 啟動後請求仍遺失
+    2. **解決架構**：User → API/ALB → EC2(接收) → **SQS Queue** → EC2 Workers(Auto Scaling)
+    3. **SQS 的三大優勢**：立即寫入 SQS（毫秒級，保證不遺失）、異步處理（用戶不等待，Worker 慢慢處理）、精準擴展（監控 `ApproximateNumberOfMessages` 自動擴展）
+201. ★ Auto Scaling 監控指標與擴展配置
+    1. **監控指標**：`ApproximateNumberOfMessages`（SQS 中的訊息數量）
+    2. **擴展公式**：訊息數 / 可接受 Backlog per Instance
+202. ★★ NACL vs Security Group - 有狀態和無狀態的流量控管差異
+    1. **Security Group（Stateful，有狀態）**：只需開 inbound port 443，回應流量自動允許，無需額外設定 outbound rule
+    2. **NACL（Stateless，無狀態）**：必須明確定義雙向規則，Inbound 允許 port 443，Outbound 允許 ephemeral ports (32768-65535)
+203. ★★ Ephemeral Ports 的角色與範圍 - TCP 連線回應機制
+    1. **運作原理**：客戶端建立 TCP 連線時**隨機選擇**一個 ephemeral port 作為 source port，server 的回應會送到此隨機 port
+    2. **系統範圍差異**：Linux/Amazon Linux (32768-61000)、Windows Server 2008+ (49152-65535)、ELB/NAT Gateway/Lambda (1024-65535)
+    3. **NACL 控制重點**：**必須允許此範圍的 outbound 流量**，否則回應封包會被擋掉
+204. ★ NACL 與 Security Group 設定的快速判斷
+    1. **口訣**：「**SG 管進，NACL 管進出**」- Security Group 只管進門（stateful），NACL 進出都要管（stateless）
+    2. **考試技巧**：看到 NACL → 立刻想到 **ephemeral ports outbound**；只提 Security Group → 不用管 ephemeral ports
