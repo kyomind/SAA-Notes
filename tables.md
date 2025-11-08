@@ -923,3 +923,24 @@ Lambda 在 Firehose 中是 **data transformation function**:
 
 - **Streams** → Lambda 是主角(消費者)
 - **Firehose** → Lambda 是配角(轉換器)
+
+## Security Group vs Network ACL 比較
+
+| 項目             | Security Group (SG)                    | Network ACL (NACL)                            |
+| ---------------- | -------------------------------------- | --------------------------------------------- |
+| **規則評估方式** | **同時評估所有規則，沒有順序性**       | **依照 rule number 從小到大依序檢查**         |
+| **匹配邏輯**     | **OR 條件**：只要任一條符合就允許      | **第一個符合的 rule 就決定結果 (Allow/Deny)** |
+| **規則方向**     | Inbound / Outbound 各有一組 Allow 規則 | Inbound / Outbound 各有 Allow 與 Deny 規則    |
+| **預設行為**     | 預設 Deny all (沒有 match 就拒絕)      | 有明確的 Default rule (rule #32767 Deny all)  |
+
+### ✅ 小結論
+
+- SG **沒有順序概念**（考試常見陷阱）
+- SG 的每條規則都是 **獨立且平行評估**
+- 任何一條規則匹配 → **流量允許**
+- 沒有任何規則匹配 → **流量拒絕**
+
+### 🧠 記憶技巧
+
+- **NACL = 防火牆 (Firewall, 有順序，有 Deny)**
+- **SG = 白名單 (Whitelist, 無順序，全是 Allow)**

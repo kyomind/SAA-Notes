@@ -999,3 +999,14 @@
      1. **Amazon Transcribe**：**語音轉文字**服務，使用 ASR（Automatic Speech Recognition）技術，應用於客服通話轉錄、音頻/視頻字幕生成、內容分析
      2. **Amazon Translate**：**神經機器翻譯**（Neural Machine Translation, MT）服務，支援多語言間的文字翻譯
      3. **Amazon Comprehend**：**自然語言處理**（NLP）服務，使用機器學習從文字中提取意義和洞察
+262. ★★ NACL 規則順序處理邏輯 - 考試核心陷阱
+     1. **評估機制**：Rule 100 (允許所有) **先被評估**，一旦符合就立即執行
+     2. **後續規則忽略**：Rule 101 根本**不會被檢查**，即使 110.238.109.37 打 port 4000 也會被 Rule 100 放行
+     3. **考試陷阱**：用「看起來應該被擋」的情境，測試是否理解 NACL 順序邏輯而非「最嚴格優先」
+263. ★★ NACL 核心特性與規則編號策略
+     1. **三大特性**：**Stateless**（需要設定 inbound + outbound）、**順序處理**（不是最嚴格優先）、**Rule number 越小優先級越高**
+     2. **編號策略**：AWS 建議用 100、200、300 跳號，方便日後插入新規則
+264. ★ NACL 實務應用 - 正確的拒絕規則配置
+     1. **錯誤配置**：Rule 100 ALLOW ALL → Rule 101 DENY specific（無效，因為 Rule 100 已放行）
+     2. **正確配置**：Rule 90 DENY specific → Rule 100 ALLOW ALL（Rule 90 優先執行）
+     3. **記憶技巧**：想要拒絕特定流量，**DENY 規則必須排在 ALLOW 規則前面**
