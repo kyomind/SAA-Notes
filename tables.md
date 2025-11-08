@@ -895,3 +895,31 @@ Object Lock（功能開關）
 - EBS 也能自動化，但需額外配置（**DLM**/EventBridge/AWS Backup）
 - 需要 point-in-time recovery → 只能選 RDS
 - RDS 需要**超過 35 天**的備份 → 用 AWS Backup 搭配 RDS
+
+## Kinesis Data Streams vs Firehose
+
+| 特性        | Data Streams              | Firehose                          |
+| ----------- | ------------------------- | --------------------------------- |
+| 延遲        | 毫秒級(real-time)         | 60 秒+(near real-time)            |
+| Lambda 角色 | **消費者** - 讀取處理資料 | **處理器** - 轉換資料後寫入目的地 |
+| 目的地      | 自行處理                  | S3/Redshift/OpenSearch/HTTP       |
+
+## 為何 Firehose + Lambda 錯誤
+
+Lambda 在 Firehose 中是 **data transformation function**:
+
+- 僅用於資料轉換(如格式轉換、過濾)
+- 不是資料的最終消費者
+- 處理後必須寫入 Firehose 支援的目的地
+
+**題目要求:**
+
+- Real-time analytics service
+- Lambda 需要「讀取並處理」資料
+
+→ 只有 **Data Streams** 符合
+
+## 記憶口訣
+
+- **Streams** → Lambda 是主角(消費者)
+- **Firehose** → Lambda 是配角(轉換器)

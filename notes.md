@@ -934,3 +934,31 @@
      1. **ECS Fargate 限制**：雖然 Fargate 讓你無需管理底層 EC2 實例，但仍需**配置和管理 ECS services、task definitions 和 clusters**
      2. **非完全 Serverless**：ECS with Fargate **不是完全 serverless 解決方案**，需要更細緻的環境控制（網路配置、擴展設定）
      3. **主要用途**：適用於需要對環境有**更精細控制**的容器化應用程式
+245. ★★ Kinesis Data Streams + Lambda - 即時串流處理標準組合
+     1. **核心組合**：Kinesis Data Streams（資料收集與緩衝）+ Lambda（即時處理）
+     2. **適用場景**：需要**低延遲**、**高吞吐量**的即時資料處理
+     3. **實務應用**：日誌分析、即時監控、金融交易處理
+246. ★★ S3 Object Lambda 核心概念 - 動態資料轉換解決方案
+     1. **核心功能**：**動態資料轉換，無需建立副本**，在 S3 GET 請求時即時處理資料
+     2. **運作流程**：請求先到 **S3 Object Lambda Access Point** → 觸發 **Lambda function** 處理資料 → 回傳轉換後的結果
+     3. **Lambda 可取得**：Bucket name、Object key（檔案路徑）、請求參數⭐️
+247. ★ S3 Object Lambda 典型使用場景
+     1. **資料保護**：動態遮罩敏感資料（PII redaction）
+     2. **格式轉換**：JSON → CSV、圖片縮放/浮水印
+     3. **權限控制**：依使用者權限過濾內容
+248. ★ S3 Object Lambda vs 標準 Lambda 事件觸發差異
+     1. **S3 Event → Lambda**：**物件寫入/刪除時**觸發，用於**後台處理**（轉檔、備份）
+     2. **S3 Object Lambda**：**物件讀取時**觸發，用於**動態轉換回應內容**
+     3. **記憶重點**：Object Lambda 是在「**讀取時**」即時處理，不產生額外儲存成本
+249. 😇 S3 Object Lambda 考試陷阱分析 - metadata vs content 混淆
+     1. **常見錯誤選項**：「Use S3 Object Lambda with a Lambda function that processes the data based on object's metadata」
+     2. **陷阱原因**：**metadata 只提供物件的附加資訊**（大小、修改日期等），**不是檔案實際內容**
+     3. **正確理解**：S3 Object Lambda 是處理**物件內容本身**，而非 metadata
+250. ★★ Bastion Host 安全規則配置要點
+     1. **協定設定**：**TCP**（不是 UDP），因為 SSH 使用 TCP 協定
+     2. **埠號設定**：**Port 22**（SSH 標準埠號）
+     3. **來源限制**：**特定 IP/32**（不是 /0），遵循最小權限原則
+251. ★ CIDR 記憶技巧與安全應用
+     1. **CIDR 對照**：`/32` = 單一 IP（2^0 = 1 個 IP）、`/0` = 整個網路（所有 IP）
+     2. **安全原則**：Bastion Host **只開放給需要的人**，用 `/32` 限制來源 IP
+     3. **基礎知識**：SSH 使用 **TCP/22**，這是網路基礎概念
