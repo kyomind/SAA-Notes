@@ -771,3 +771,15 @@
     1. **核心差異**：Server outbound 流量的 **destination port 是 client 的 ephemeral port**（32768-65535），**不是 443**
     2. **NACL Outbound 配置**：Source 任意（server IP）、**Destination port 32768-65535**（客戶隨機 port）、Destination IP 0.0.0.0/0
     3. **記憶口訣**：「**Server 聽 443，但回答到客戶的隨機 port**」
+206. ★★ EC2 Hibernation - 快速啟動與成本優化方案
+    1. **核心應用**：結合**低成本**與**快速啟動**，適用於需要快速恢復的 Windows 應用
+    2. **Stop/Start 限制**：Stop 後記憶體消失，Restart 需要數分鐘「warm up」重建狀態
+    3. **Hibernation 優勢**：將 **RAM 內容寫入 EBS root volume**，Resume 時直接從 EBS 載入記憶體狀態，應用接續上次狀態無需重新初始化
+    4. **費用分析**：Running 收全額（EC2 + EBS + EIP）、Stopped 不收 EC2 費用（EBS + EIP）、Hibernated **與 Stopped 相同**，故無額外成本但大幅減少啟動時間
+207. ★★ EC2 Hibernation 配置限制與陷阱
+    1. **必要條件**：**Hibernation 必須在啟動時設定**（不能後續啟用）、**Root volume 必須是 EBS 且容量足夠存放 RAM**、**RAM < 150GB**
+    2. **不可變更陷阱**：現有 instance **無法**改成 hibernation，違反條件的 instance 需要**重建**才能啟用此功能⭐️
+208. ★ EC2 Hibernation 考試判斷與常見陷阱
+    1. **關鍵字識別**：「啟動時間長 + 成本考量 + Windows/需狀態保存」→ **Hibernation**；「停機期間不收費 + 快速恢復」→ **Hibernation**
+    2. **排除陷阱**：❌ Auto Scaling（目的完全不同，是動態擴展非快速啟動）、❌ Elastic IP（只解決 IP 綁定問題）
+    3. **記憶口訣**：「**停機省錢 + 快速復工 = Hibernation**」
