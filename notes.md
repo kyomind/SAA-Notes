@@ -999,14 +999,36 @@
      1. **Amazon Transcribe**：**語音轉文字**服務，使用 ASR（Automatic Speech Recognition）技術，應用於客服通話轉錄、音頻/視頻字幕生成、內容分析
      2. **Amazon Translate**：**神經機器翻譯**（Neural Machine Translation, MT）服務，支援多語言間的文字翻譯
      3. **Amazon Comprehend**：**自然語言處理**（NLP）服務，使用機器學習從文字中提取意義和洞察
-262. ★★ NACL 規則順序處理邏輯 - 考試核心陷阱
-     1. **評估機制**：Rule 100 (允許所有) **先被評估**，一旦符合就立即執行
-     2. **後續規則忽略**：Rule 101 根本**不會被檢查**，即使 110.238.109.37 打 port 4000 也會被 Rule 100 放行
-     3. **考試陷阱**：用「看起來應該被擋」的情境，測試是否理解 NACL 順序邏輯而非「最嚴格優先」
-263. ★★ NACL 核心特性與規則編號策略
-     1. **三大特性**：**Stateless**（需要設定 inbound + outbound）、**順序處理**（不是最嚴格優先）、**Rule number 越小優先級越高**
-     2. **編號策略**：AWS 建議用 100、200、300 跳號，方便日後插入新規則
-264. ★ NACL 實務應用 - 正確的拒絕規則配置
-     1. **錯誤配置**：Rule 100 ALLOW ALL → Rule 101 DENY specific（無效，因為 Rule 100 已放行）
-     2. **正確配置**：Rule 90 DENY specific → Rule 100 ALLOW ALL（Rule 90 優先執行）
-     3. **記憶技巧**：想要拒絕特定流量，**DENY 規則必須排在 ALLOW 規則前面**
+262. ★★ Route 53 Active-Active Failover with Weighted routing policy - 多 Region 高可用架構
+     1. **核心需求**：多 Region 部署、所有資源**盡可能同時可用**、自動偵測不健康資源並停止路由
+     2. **Active-Active Failover 特性**：所有 Region 資源**同時對外服務**、流量分散到多個 Region 充分利用所有資源
+     3. **Weighted routing policy 優勢**：按比例分配流量（如 50% 去 us-east-1, 50% 去 eu-west-1）、**結合健康檢查**自動停止路由到 unhealthy Region、流量自動轉向其他健康 Region
+263. ★ Route 53 Failover 模式對比 - Active-Active vs Active-Passive 資源利用差異
+     1. **Active-Active + Weighted**：3 家店同時營業，客人按比例分流，某家店打烊時自動引導客人去其他店（**充分利用所有資源**）
+     2. **Active-Passive 問題**：只有 Primary 對外服務，Secondary 閒置浪費資源，不符合「所有資源盡可能可用」
+     3. **常見錯誤選項**：Active-Active + One Primary/One Secondary（矛盾！Active-Active 應該有多個同等地位的 endpoint）
+264. 😇 Route 53 Routing Policy 策略選擇 - Weighted vs Failover 使用場景
+     1. **Weighted Policy**：多活架構流量分散、按比例分配、健康檢查失敗時自動調整權重
+     2. **Failover Policy**：主備架構災難恢復、Primary 掛了才切到 Secondary
+     3. **考試判斷關鍵字**：「盡可能所有資源可用」→ **Active-Active + Weighted**；「偵測不健康並停止路由」→ **Weighted + Health Check**
+
+265. ★★ Kinesis Data Streams 資料遺失問題 - Retention Period 設定關鍵
+     1. **資料遺失根本原因**：Kinesis Data Streams 預設 **retention period = 24 小時**，consumer 超過 24 小時沒讀取資料就被**自動刪除**
+     2. **Retention Period 範圍**：最短 24 小時（預設）、最長 8760 小時（365 天），可根據業務需求調整（如 7 天、30 天）
+     3. **類比理解**：Kinesis 像「會過期的郵局」，信件（資料）只保管 24 小時，超過時間沒領取就銷毀，需要更長保管期須付費延長
+266. 😇 Kinesis Data Streams 故障排除與考試陷阱
+     1. **實務判斷三步驟**：Consumer 處理速度夠快嗎？Consumer 有中斷或 lag 嗎？Retention period 設定多久？
+     2. **考試陷阱識別**：題目說「資料莫名消失」→ ❌ 不是系統 bug、✅ 是 **Retention period 太短**導致資料過期被刪除
+     3. **核心記憶**：**Kinesis 不是永久儲存，只是暫存緩衝**，超過保留期自動清理是正常設計
+267. ★★ S3 Glacier Expedited Retrieval + Provisioned Capacity - 快速資料取回解決方案
+     1. **Expedited Retrieval 特性**：**1-5 分鐘內取回**資料，符合緊急存取需求（如 15 分鐘內）
+     2. **Provisioned Capacity 保證機制**：購買預留容量保證 **Expedited 隨時可用**，提供 **150 MB/s** 穩定速度
+     3. **組合效果**：兩者搭配確保「**任何時候都能在 15 分鐘內拿到資料**」，Standard 取回（3-5 小時）無法滿足緊急需求
+268. ★ S3 Glacier 取回方式錯誤選項分析 - 常見考試陷阱
+     1. **Standard Retrieval 限制**：3-5 小時取回時間，不符合 15 分鐘緊急需求
+     2. **Bulk Retrieval 雙重問題**：5-12 小時取回時間且**不支援 Provisioned Capacity**，無法保證可用性
+     3. **Range Retrieval 誤解**：只是限縮取回範圍，**不增加取回容量或速度**，無法解決「保證可用性」問題
+269. 😇 S3 Glacier 考試判斷要點與核心概念
+     1. **Provisioned Capacity 適用限制**：**只適用於 Expedited Retrieval**，其他取回方式無法使用
+     2. **Range vs Speed 概念區分**：**Range retrieval ≠ Faster retrieval**，取回範圍與速度是不同概念
+     3. **需求拆解技巧**：「任何時候」+「15 分鐘內」= 必須購買 **Provisioned Capacity 保證 Expedited 可用**
