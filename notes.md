@@ -976,7 +976,14 @@
 255. ★★ MSK vs Kinesis 選擇策略
      1. **MSK (Managed Kafka) 適用場景**：需要 **Kafka 生態系統**（connect, streams API）、已有 Kafka 經驗的團隊、需要更細緻的分區控制
      2. **MSK 缺點**：管理負擔較重（cluster sizing, broker 維護）
-     3. **Kinesis Data Streams 優勢**：AWS 原生零管理、內建 **Enhanced Fan-out**（每個 consumer 獨立 2MB/s throughput）、更簡單的 scaling⭐️
+     3. **Kinesis Data Streams 優勢**：AWS 原生零管理、內建 **Enhanced Fan-out**（每個 consumer 獨立 2MB/s throughput）、更簡單的 scaling
 256. ★★ MSK vs Kinesis 考試判斷技巧
      1. **關鍵字識別**：題目出現 "**enhanced fan-out**" → 直接排除 MSK，選 **Kinesis**
      2. **記憶口訣**：MSK = 給 **Kafka 老手**用的；Kinesis = 給想**省事的人**用的
+257. ★★ Cost Explorer API vs AWS Budgets 選擇策略
+     1. **Cost Explorer API 適用場景**：需要 **程式化存取**（programmatic access）成本資料、內建 **forecast 功能**、AWS 託管服務零維運⭐️
+     2. **AWS Budgets 定位**：**監控 + 告警**工具，不是資料存取工具
+     3. **考試陷阱**：Budgets 跟成本有關但無法提供 API 資料存取
+258. ★ Cost Explorer API 考試判斷技巧
+     1. **關鍵字識別**：題目出現 "**programmatically access**" + "**forecast usage costs**" → 選 **Cost Explorer API**
+     2. **記憶口訣**：需要**拿資料、做分析** → Cost Explorer API；需要**設門檻、發通知** → AWS Budgets
