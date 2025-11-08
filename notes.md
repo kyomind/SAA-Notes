@@ -897,3 +897,18 @@
      1. **Instance Store 特性**：綁定在**實體主機的硬碟**上
      2. **資料遺失機制**：換主機 = 換硬碟 → 資料就沒了
      3. **EBS 不受影響**：EBS 是**網路儲存**，不在實體主機上，所以不受影響
+235. ★★ S3 資料加密方式分類 - Server-Side vs Client-Side
+     1. **兩大類別**：**Server-Side Encryption**（伺服器端加密）和 **Client-Side Encryption**（客戶端加密）
+     2. **核心差異**：資料在哪個階段進行加密處理
+236. ★★ S3 Server-Side Encryption (SSE) 三種變體
+     1. **SSE-S3**：AWS 全包，你不用管金鑰（最簡單）
+     2. **SSE-KMS**：使用 **AWS KMS** 管理金鑰（可追蹤誰存取、設定權限）
+     3. **SSE-C**：你自己提供金鑰給 AWS 使用（你要保管好金鑰）
+     4. **運作原理**：資料送到 S3 **之後**，由 AWS 負責加密/解密
+237. ★★ S3 Client-Side Encryption 預加密機制
+     1. **運作原理**：資料在你手上就先加密，**然後再上傳**到 S3
+     2. **金鑰選項**：使用 **KMS key** 或使用**你自己的 master key**⭐️
+238. ★★ Client-Side vs Server-Side 安全性差異 - 明文存取防護
+     1. **Server-Side 限制**：資料在傳輸過程中，AWS **看得到明文**（雖然只是短暫瞬間）
+     2. **Client-Side 優勢**：從頭到尾，連 AWS 都**看不到明文**，只能看到加密後的資料
+     3. **考試判斷**：要求「**prevent plain text access**」（防止明文存取）→ 選 **Client-Side Encryption**
