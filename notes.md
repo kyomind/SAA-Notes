@@ -843,3 +843,11 @@
      1. **判斷標準**：VPC peering 題目的正確答案必須同時包含「建立 peering connection」+「更新雙方 route table」
      2. **常見陷阱**：選項可能寫「Update route table to add PROD CIDR」→ 看起來對，但**少了建立 peering 這步**
      3. **記憶口訣**：單獨只提 route table = 不完整 = 錯誤答案
+223. ★★ EBS Volume 終止行為 - Root vs Additional Volume 差異
+     1. **Root Volume**：預設 `DeleteOnTermination = True` → **自動刪除**
+     2. **Additional Volume**：預設 `DeleteOnTermination = False` → **保留**
+     3. **考試記憶**：Root volume 預設會刪，additional volume 預設會留
+224. ★ EBS Root Volume 保留方法與時機
+     1. **保留方法**：設定 `DeleteOnTermination = False`
+     2. **修改時機**：Launch instance 時（Console/CLI）或 Instance 建立後透過 CLI/API
+     3. **靈活性**：此設定可隨時修改，不限於 launch 時
