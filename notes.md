@@ -763,7 +763,11 @@
 203. ★★ Ephemeral Ports 的角色與範圍 - TCP 連線回應機制
     1. **運作原理**：客戶端建立 TCP 連線時**隨機選擇**一個 ephemeral port 作為 source port，server 的回應會送到此隨機 port
     2. **系統範圍差異**：Linux/Amazon Linux (32768-61000)、Windows Server 2008+ (49152-65535)、ELB/NAT Gateway/Lambda (1024-65535)
-    3. **NACL 控制重點**：**必須允許此範圍的 outbound 流量**，否則回應封包會被擋掉
+    3. **NACL 控制重點**：**必須允許此範圍的 outbound 流量**，否則回應封包會被擋掉⭐️
 204. ★ NACL 與 Security Group 設定的快速判斷
     1. **口訣**：「**SG 管進，NACL 管進出**」- Security Group 只管進門（stateful），NACL 進出都要管（stateless）
     2. **考試技巧**：看到 NACL → 立刻想到 **ephemeral ports outbound**；只提 Security Group → 不用管 ephemeral ports
+205. ★★ NACL Outbound 規則的關鍵細節 - Destination Port vs Source Port
+    1. **核心差異**：Server outbound 流量的 **destination port 是 client 的 ephemeral port**（32768-65535），**不是 443**
+    2. **NACL Outbound 配置**：Source 任意（server IP）、**Destination port 32768-65535**（客戶隨機 port）、Destination IP 0.0.0.0/0
+    3. **記憶口訣**：「**Server 聽 443，但回答到客戶的隨機 port**」
