@@ -851,3 +851,22 @@
      1. **保留方法**：設定 `DeleteOnTermination = False`
      2. **修改時機**：Launch instance 時（Console/CLI）或 Instance 建立後透過 CLI/API
      3. **靈活性**：此設定可隨時修改，不限於 launch 時
+225. ★★ Aurora Provisioned to Serverless 遷移陷阱與解決方案
+     1. **錯誤方案**：Snapshot → Create new Aurora DB cluster（**不支援跨類型轉換**）⭐️
+     2. **正確方案**：DMS (Database Migration Service) - **線上遷移零停機**
+     3. **關鍵限制**：Aurora Provisioned 和 Serverless 是不同部署模式，無法直接轉換⭐️
+226. ★ DMS 在 Aurora 遷移中的優勢
+     1. **零停機**：支援 Aurora Provisioned → Aurora Serverless 的即時遷移
+     2. **持續同步**：遷移過程中持續複製資料變更，切換時幾乎無感
+     3. **專業工具**：專為跨資料庫類型/引擎遷移設計
+227. ★ Aurora 遷移常見錯誤選項分析
+     1. **Change Instance Class**：Provisioned 和 Serverless 是不同部署模式，非單純 instance class 差異
+     2. **Read Replica + Failover**：Read Replica 只能同類型（Provisioned → Provisioned），無法建立 Serverless replica
+     3. **Snapshot 方案**：
+        1. 有停機時間
+        2. 不支援跨類型轉換
+228. 😇 AWS 資料庫遷移工具選擇指南
+     1. **同類型遷移**（db.t3 → db.r5）：直接修改 instance class
+     2. **同引擎跨類型**（Provisioned ↔ Serverless）：**DMS**
+     3. **跨引擎遷移**（MySQL → PostgreSQL）：**DMS**
+     4. **可接受停機**：Snapshot + Restore
