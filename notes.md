@@ -973,3 +973,10 @@
 254. 😇 IAM Group 實務意義與最佳實踐
      1. **實戰價值**：這是 AWS 最基本的 best practice，實戰中絕對不會一個一個 user 去加 policy
      2. **效率考量**：批量管理避免重複操作，降低人為錯誤風險
+255. ★★ MSK vs Kinesis 選擇策略
+     1. **MSK (Managed Kafka) 適用場景**：需要 **Kafka 生態系統**（connect, streams API）、已有 Kafka 經驗的團隊、需要更細緻的分區控制
+     2. **MSK 缺點**：管理負擔較重（cluster sizing, broker 維護）
+     3. **Kinesis Data Streams 優勢**：AWS 原生零管理、內建 **Enhanced Fan-out**（每個 consumer 獨立 2MB/s throughput）、更簡單的 scaling⭐️
+256. ★★ MSK vs Kinesis 考試判斷技巧
+     1. **關鍵字識別**：題目出現 "**enhanced fan-out**" → 直接排除 MSK，選 **Kinesis**
+     2. **記憶口訣**：MSK = 給 **Kafka 老手**用的；Kinesis = 給想**省事的人**用的
