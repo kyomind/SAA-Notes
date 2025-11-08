@@ -176,3 +176,7 @@ You can configure any access point to accept requests only from a virtual privat
 ## Amazon Data Firehose(原名 Kinesis Data Firehose)
 
 ![圖 19](https://img.kyomind.tw/img-20251108-112000.png)
+
+## AWS Transcribe → AWS Translate → AWS Comprehend
+
+![圖 20](https://img.kyomind.tw/img-20251108-144632.png)

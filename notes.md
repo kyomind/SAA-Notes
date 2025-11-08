@@ -995,3 +995,7 @@
      1. **核心策略**：讓**目標帳號主動複製**（而非來源帳號推送）
      2. **實作步驟**：來源 Bucket（帳號 A）設定 bucket policy 允許帳號 B 讀取 → 目標帳號（帳號 B）的 IAM user/role 被賦予權限 → 由帳號 B 執行複製動作
      3. **所有權結果**：物件所有者自然是帳號 B
+261. ★ AWS AI/ML 三大文字處理服務
+     1. **Amazon Transcribe**：**語音轉文字**服務，使用 ASR（Automatic Speech Recognition）技術，應用於客服通話轉錄、音頻/視頻字幕生成、內容分析
+     2. **Amazon Translate**：**神經機器翻譯**（Neural Machine Translation, MT）服務，支援多語言間的文字翻譯
+     3. **Amazon Comprehend**：**自然語言處理**（NLP）服務，使用機器學習從文字中提取意義和洞察
