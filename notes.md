@@ -820,3 +820,26 @@
         - SCP 是帳號層級的權限天花板
         - 其他工具適用於不同層級的不同場景
         - 無一可替代 SCP 的核心功能
+216. ★★ Amazon Data Firehose - **全託管串流資料載入**解決方案（原名 Kinesis Data Firehose）
+     1. **核心特性**：**全託管串流 ETL**，自動擴展（無需管理基礎設施）、內建轉換/壓縮/加密、**Near real-time**（接近即時）傳送
+     2. **支援目的地**：S3（最常見，用於 **data lake**）、Redshift（資料倉儲）、OpenSearch（日誌分析）、Splunk（監控平台）
+217. 😇 Data Firehose 實務應用場景範例
+     1. **智慧冰箱場景**：收集感測器資料 → Firehose 批次處理 → S3 儲存 → 分析工具讀取
+     2. **架構特性**：典型的**資料湖架構**，適合大量感測器資料收集與分析
+218. ★★ S3 Server-Side Encryption (SSE) 三種變體對比 - 考試常考
+     1. **SSE-S3**：AWS 管理一切，最簡單（預設 **AES-256**）
+     2. **SSE-KMS**：透過 **AWS KMS** 管理金鑰，可**追蹤使用記錄**
+     3. **SSE-C**：客戶提供金鑰給 AWS，AWS 用完即丟棄
+219. ★ SSE 考試題目答案解析技巧
+     1. **正確選項 1**：Enable SSE on S3 bucket (AES-256) → 指的是 **SSE-S3**
+     2. **正確選項 2**：用自己的加密金鑰加密後透過 HTTPS 上傳 → 這是 **SSE-C**（不是 Client-Side Encryption）
+220. ★★ VPC Peering 考試陷阱 - Route Table 更新的不完整選項
+     1. **錯誤選項特徵**：只說「更新 DEV route table 加入 PROD 的 route」，但**沒提到要先建立 peering connection**
+     2. **題解邏輯**：如果只更新 route table 但沒先建立 peering connection，當然不會通
+221. ★★ VPC Peering 完整正確配置流程
+     1. **建立連線**：建立 DEV ↔ PROD **peering connection**
+     2. **雙向路由**：更新 **DEV** route table（加入 PROD CIDR → peering target）+ 更新 **PROD** route table（加入 DEV CIDR → peering target）
+222. ★ VPC Peering 考試判斷標準與常見陷阱
+     1. **判斷標準**：VPC peering 題目的正確答案必須同時包含「建立 peering connection」+「更新雙方 route table」
+     2. **常見陷阱**：選項可能寫「Update route table to add PROD CIDR」→ 看起來對，但**少了建立 peering 這步**
+     3. **記憶口訣**：單獨只提 route table = 不完整 = 錯誤答案
