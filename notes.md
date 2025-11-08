@@ -912,3 +912,25 @@
      1. **Server-Side 限制**：資料在傳輸過程中，AWS **看得到明文**（雖然只是短暫瞬間）
      2. **Client-Side 優勢**：從頭到尾，連 AWS 都**看不到明文**，只能看到加密後的資料
      3. **考試判斷**：要求「**prevent plain text access**」（防止明文存取）→ 選 **Client-Side Encryption**
+239. ★★ Lambda Container Image 解決方案 - Serverless 與容器結合
+     1. **核心組合**：**Lambda + Container Image + 5GB ephemeral storage**
+     2. **適用場景**：Fully managed serverless compute + Container image 從 ECR + 需要暫存空間
+240. ★★ Lambda Container Image 關鍵判斷點
+     1. **Serverless 要求**：Lambda 是唯一選項（ECS/EKS 雖然可以跑容器，但需要管理底層資源）
+     2. **Container 支援**：Lambda 從 **2020 年底**開始支援 container image，最大支援 **10 GB 映像檔**
+     3. **儲存空間**：5GB ephemeral storage（Lambda 預設 512 MB `/tmp` 空間，可設定 **512 MB ~ 10 GB**）
+241. ★ Lambda Container Image 技術特性與限制
+     1. **解決問題**：突破傳統 Lambda deployment package **250 MB 限制**
+     2. **執行限制**：最長執行時間 **15 分鐘**、Cold start 比傳統 Lambda 慢一些
+     3. **映像檔要求**：映像檔需要放 **ECR**（不能用其他 registry）
+242. 😇 Lambda Container 適用場景與實務考量
+     1. **適用場景**：需要複雜依賴或自訂 runtime、團隊已有容器化經驗、想在本地用 Docker 測試
+     2. **ephemeral storage 特性**：每次執行後清空，適合暫存處理
+243. ★ Lambda Container Image 考試判斷公式
+     1. **關鍵字識別**：看到「**serverless + container + 暫存空間**」→ **Lambda Container Image**
+     2. **排除陷阱**：Fargate 雖然也 serverless，但不是「fully managed compute」概念；ECS/EKS 需要管理 cluster
+     3. **記憶重點**：Lambda 才是真正的「**不管底層**」
+244. 😇 ECS Fargate 與 Lambda 的 Serverless 程度差異
+     1. **ECS Fargate 限制**：雖然 Fargate 讓你無需管理底層 EC2 實例，但仍需**配置和管理 ECS services、task definitions 和 clusters**
+     2. **非完全 Serverless**：ECS with Fargate **不是完全 serverless 解決方案**，需要更細緻的環境控制（網路配置、擴展設定）
+     3. **主要用途**：適用於需要對環境有**更精細控制**的容器化應用程式
