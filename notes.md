@@ -870,3 +870,30 @@
      2. **同引擎跨類型**（Provisioned ↔ Serverless）：**DMS**
      3. **跨引擎遷移**（MySQL → PostgreSQL）：**DMS**
      4. **可接受停機**：Snapshot + Restore
+229. ★★ AWS 考試邏輯 - 技術可行性 vs 營運開銷 (Operational Overhead)
+     1. **考試陷阱**：給予 2-3 個技術上都正確的選項，但只有一個符合特定限制條件
+     2. **解題策略**：先看限制條件（成本最低/維運最少/最快速），再選方案
+     3. **常見限制詞**：LEAST operational overhead、most cost-effective、fastest implementation
+230. ★ RDS Storage 管理方案比較 - Manual vs Autoscaling
+     1. **手動增加 Storage**：技術可行但維運成本高（需持續監控 + 重複操作）
+     2. **Storage Autoscaling**：技術可行且維運成本低（設定一次即可）
+     3. **考試重點**：遇到 "LEAST operational overhead" → 選擇自動化方案
+231. ★ ENI (Elastic Network Interface) 分離行為澄清
+     1. **EC2 Stop/Start**：ENI **不會被** detach，保持連接狀態
+     2. **真正分離情況**：手動 detach 或 terminate instance 時才會分離
+     3. **考試陷阱**：誤以為 stop/start 會導致 ENI detached
+232. ★★ EC2 Underlying Host 核心概念與實體機器關係
+     1. **定義**：**Underlying host = EC2 實例運行的實體伺服器**
+     2. **架構類比**：你的 EC2 就像跑在某台實體機器上的虛擬機
+        - 實體伺服器 (Underlying Host)
+        - ├── EC2 Instance A (你的)
+        - ├── EC2 Instance B
+        - └── EC2 Instance C
+233. ★★ EC2 Stop/Start 時 Underlying Host 切換機制
+     1. **Stop 時**：AWS 把你的 EC2 從實體機器 A 上移除
+     2. **Start 時**：AWS 可能把你的 EC2 放到實體機器 B 上（**不一定是原本那台**）
+     3. **主機切換原因**：原主機硬體維護、資源調度優化、原主機負載過高
+234. ★★ Instance Store 資料遺失原理 - Underlying Host 切換導致
+     1. **Instance Store 特性**：綁定在**實體主機的硬碟**上
+     2. **資料遺失機制**：換主機 = 換硬碟 → 資料就沒了
+     3. **EBS 不受影響**：EBS 是**網路儲存**，不在實體主機上，所以不受影響
