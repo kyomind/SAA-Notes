@@ -1032,3 +1032,42 @@
      1. **Provisioned Capacity 適用限制**：**只適用於 Expedited Retrieval**，其他取回方式無法使用
      2. **Range vs Speed 概念區分**：**Range retrieval ≠ Faster retrieval**，取回範圍與速度是不同概念
      3. **需求拆解技巧**：「任何時候」+「15 分鐘內」= 必須購買 **Provisioned Capacity 保證 Expedited 可用**
+
+270. ★★ Fargate 雙平台支援能力 - ECS 和 EKS 統一運算引擎
+     1. **重要更新**：Fargate 從 **2019 年開始支援 EKS**，不只是 ECS 專用
+     2. **核心定位**：**Fargate 是運算引擎**，不是編排工具，可搭配 **ECS** 或 **EKS** 使用
+     3. **考試判斷**：題目說 "Kubernetes" → 只能選 EKS；題目說 "不想管 server" → Fargate 是最佳選擇
+271. ★ ECS on Fargate vs EKS on Fargate 部署流程差異
+     1. **ECS on Fargate 流程**：AWS Console/CLI → ECS Task Definition（定義容器規格）→ ECS Service（指定用 Fargate launch type）→ Fargate 自動配置運算資源
+     2. **EKS on Fargate 流程**：kubectl/Helm/YAML → Kubernetes Pod spec（標準 K8s 配置）→ **Fargate Profile**（告訴 EKS 哪些 Pod 用 Fargate 跑）→ Fargate 自動配置運算資源
+272. ★★ Fargate Profile 配置機制 - EKS 中的 Pod 調度控制
+     1. **核心功能**：指定哪個 **namespace** 的 Pod 要用 Fargate、哪些 **label selector** 符合的 Pod 要用 Fargate
+     2. **調度邏輯**：符合條件的 Pod → Fargate 自動接手；不符合的 Pod → 還是跑在 EC2 node groups
+     3. **配置範例**：設定 namespace: production + labels: app: banking-platform，只有符合條件的 Pod 使用 Fargate
+273. 😇 EKS on Fargate 考試重點總結
+     1. **核心組合**：**EKS on Fargate** = 用 Kubernetes 編排 + Fargate 無伺服器運算
+     2. **技能要求**：使用 EKS on Fargate **需要懂 K8s** 概念和配置
+     3. **記憶要點**：Fargate 不限於 ECS，也完全支援 EKS 環境
+274. ★★ S3 事件通知配置 - ObjectRemoved:Delete vs DeleteMarkerCreated 選擇關鍵
+     1. **需求拆解**：Track new objects added → `s3:ObjectCreated:*`；Track removed ones → `s3:ObjectRemoved:Delete`；Track versioned object permanently deleted → `s3:ObjectRemoved:Delete`
+     2. **關鍵判斷**：題目說 **"permanently deleted"** 是關鍵字，必須選擇 `Delete`（真刪除）而非 `DeleteMarkerCreated`（軟刪除）
+275. ★ S3 刪除事件類型對比 - Delete vs DeleteMarkerCreated 差異
+     1. **Delete 事件**：捕捉永久刪除操作，包含刪除特定版本的真實刪除行為
+     2. **DeleteMarkerCreated 事件**：只捕捉軟刪除操作，即建立 delete marker 的行為
+     3. **使用場景**：permanently deleted → `Delete`；soft delete → `DeleteMarkerCreated`；兩種都要 → `s3:ObjectRemoved:*`
+276. 😇 S3 事件通知考試判斷技巧與記憶要點
+     1. **判斷公式**：看到 "permanently" → `Delete`；看到 "versioned" 但沒說 "permanently" → `DeleteMarkerCreated`
+     2. **考試陷阱**：DeleteMarkerCreated **不符合** "permanently deleted" 需求，這是常見錯誤選項
+     3. **記憶要點**：Delete 才能真正抓到永久刪除行為，DeleteMarkerCreated 只是標記而非實際刪除
+277. ★★ AWS Storage Gateway File Gateway 選型考點 - 混合雲檔案儲存解決方案
+     1. **核心定位**：**File Gateway = NFS/SMB 介面 + S3 儲存**，提供標準檔案協定存取 S3 的橋樑
+     2. **關鍵字識別**：**standard file storage protocols**（標準檔案協定）+ **quick recovery**（快速恢復）+ **on-premises → AWS** 混合雲架構
+     3. **運作機制**：前端（on-premises 系統看到普通的網路硬碟 NFS/SMB）+ 後端（資料實際存在 S3，便宜、耐用、11個9可靠性）
+278. ★ File Gateway vs 其他 AWS 儲存服務考試陷阱分析
+     1. **❌ S3 直接存取**：需要改程式用 AWS SDK，不符合 "standard file protocols" 需求
+     2. **❌ Volume Gateway**：雖然也能存檔，但使用 iSCSI（block 層級），不是 file protocols
+     3. **❌ EFS**：雖然支援 NFS，但題目要求 "store in S3"，File Gateway 才是連接橋樑
+279. 😇 File Gateway 考試記憶技巧與判斷要點
+     1. **概念類比**：**File Gateway = 檔案系統的雲端延伸**，像 NAS 硬碟空間不夠直接「插」一個 S3 當擴充儲存
+     2. **無感體驗**：on-premises 系統無感知，繼續用原本的 NFS/SMB 存檔，資料悄悄存到 S3
+     3. **考試公式**：看到 "**file protocols**" + "**S3**" → 直接選 **File Gateway**

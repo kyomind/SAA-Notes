@@ -944,3 +944,20 @@ Lambda 在 Firehose 中是 **data transformation function**:
 
 - **NACL = 防火牆 (Firewall, 有順序，有 Deny)**
 - **SG = 白名單 (Whitelist, 無順序，全是 Allow)**
+
+## ECS on Fargate vs EKS on Fargate 比較
+
+| 項目     | ECS on Fargate  | EKS on Fargate        |
+| -------- | --------------- | --------------------- |
+| 編排工具 | ECS (AWS 專屬)  | Kubernetes (業界標準) |
+| 配置方式 | Task Definition | K8s YAML/Helm         |
+| 適用場景 | AWS-native 應用 | 需要 K8s 生態系       |
+| 學習曲線 | 簡單            | 較陡峭，需要懂 K8s    |
+
+## Storage Gateway 三兄弟對照
+
+| 類型               | 協定      | 後端儲存             | 使用場景               |
+| ------------------ | --------- | -------------------- | ---------------------- |
+| **File Gateway**   | NFS/SMB   | S3                   | 檔案備份、檔案共享     |
+| **Volume Gateway** | iSCSI     | S3 (snapshot 到 EBS) | Block storage、VM 磁碟 |
+| **Tape Gateway**   | iSCSI VTL | S3/Glacier           | 磁帶備份系統替代       |
