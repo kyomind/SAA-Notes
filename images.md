@@ -190,3 +190,7 @@ You can configure any access point to accept requests only from a virtual privat
 ## VPC and Subnet Overview
 
 ![圖 22](https://img.kyomind.tw/img-20251116-173415.png)
+
+## Gateway Endpoint for S3
+
+![圖 23](https://img.kyomind.tw/img-20251116-232225.png)
