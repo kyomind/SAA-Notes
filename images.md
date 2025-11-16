@@ -180,3 +180,7 @@ You can configure any access point to accept requests only from a virtual privat
 ## AWS Transcribe → AWS Translate → AWS Comprehend
 
 ![圖 20](https://img.kyomind.tw/img-20251108-144632.png)
+
+## File Gateway with NFS and SMB Protocols
+
+![圖 21](https://img.kyomind.tw/img-20251116-173030.png)
