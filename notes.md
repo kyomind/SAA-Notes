@@ -30,3 +30,10 @@
 8. ★ **考試重點記憶**
    1. **VPC 是規則，Subnet 是實體位置**
    2. **規則可涵蓋全 region，實體資源必須選定一個 AZ 部署**
+9. ★★ **Private Subnet 核心定義**
+   1. **Private subnet = 沒有 public IP 的 subnet**
+   2. **EC2 在 private subnet 不能直接綁定 EIP**（綁定後就變成 public）
+   3. **對外通訊途徑**：只能透過 NAT Gateway/Instance 做轉發
+10. 👀 **Private Subnet 概念澄清**
+    1. **正確定義**：Private subnet 就是 instance 沒有 public IP
+    2. **常見誤解**：混淆 subnet 類型與 IP 分配的關係
