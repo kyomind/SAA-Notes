@@ -117,3 +117,23 @@
     1. **SCT**：看新房子格局，規劃東西要怎麼放（schema 規劃）
     2. **DMS**：搬家公司，實際搬東西（資料搬移）
     3. **Babelfish**：翻譯機，讓你繼續說中文，對方也能聽懂（語法相容性）
+32. ★★ **資料庫遷移完整解決方案架構**
+    1. **資料庫層面（SCT + DMS）**：SCT 轉換表格結構 + DMS 搬移資料
+    2. **應用程式層面（Babelfish）**：app 原本的 T-SQL 語法無需修改，Babelfish 負責翻譯
+    3. **最小化程式碼修改**：關鍵在於 Babelfish 讓既有程式碼保持不變
+33. ★ **資料庫遷移錯誤選項分析 - AWS AppConfig**
+    1. **實際用途**：管理 app 的 configuration（feature flags、參數設定）
+    2. **錯誤原因**：完全不處理資料庫遷移的核心問題（schema、資料、SQL 相容性）
+    3. **考試陷阱**：看到 "configuration" 就以為跟設定有關
+34. ★ **資料庫遷移錯誤選項分析 - Kinesis Data Streams**
+    1. **實際用途**：即時資料串流處理（logs、clickstream、IoT）
+    2. **錯誤原因**：確實能做資料複製，但那是「串流資料」不是「資料庫遷移」、不處理 schema 轉換、不處理 SQL 語法相容性
+    3. **考試陷阱**：看到 "real-time replication" 就以為是答案
+35. ★ **資料庫遷移錯誤選項分析 - AWS Glue**
+    1. **實際用途**：ETL service，抽取、轉換、載入資料（通常用於 data lake、分析）
+    2. **錯誤原因**：是轉換「資料」不是轉換「SQL 語法」、不是用來做 query 翻譯的
+    3. **考試陷阱**：看到 "transform" 就以為能轉換 SQL
+36. ★★ **資料庫遷移考試策略與判斷原則**
+    1. **關鍵字識別**："minimize application code modifications" → 必須使用 Babelfish
+    2. **錯誤方案特徵**：需要 code 改動的方案、不處理 SQL 相容性的方案、只處理資料不處理語法的方案
+    3. **標準答案記憶**：資料庫遷移 = **SCT + DMS + Babelfish**（最小化 code 改動）
