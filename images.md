@@ -186,3 +186,7 @@ You can configure any access point to accept requests only from a virtual privat
 ![圖 21](https://img.kyomind.tw/img-20251116-173030.png)
 
 注意 File Gateway 是部署在本地端的虛擬機器 (VM) 或硬體設備上，而不是在 AWS 雲端中。
+
+## VPC and Subnet Overview
+
+![圖 22](https://img.kyomind.tw/img-20251116-173415.png)
