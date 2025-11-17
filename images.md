@@ -198,3 +198,7 @@ You can configure any access point to accept requests only from a virtual privat
 ## AKS Cluster Autoscaler
 
 ![圖 23](https://img.kyomind.tw/img-20251117-154642.png)
+
+## Multi Region Failover Architecture and DynamoDB Global Tables
+
+![圖 24](https://img.kyomind.tw/img-20251117-170136.png)

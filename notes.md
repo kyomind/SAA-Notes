@@ -193,3 +193,27 @@
     1. **成本最低**：Magnetic（或新世代的 Cold HDD sc1 / Throughput Optimized HDD st1）
     2. **IOPS 要求高**：Provisioned IOPS
     3. **通用場景**：General Purpose SSD
+55. ★★ **DynamoDB Global Table 跨區域災難復原核心概念**
+    1. **定義**：跨區域 DR 的標準解決方案
+    2. **多主架構 (multi-master)**：每個區域都能讀寫，變更會自動同步到所有其他區域
+    3. **最終一致性**：各區域間的同步是異步的，會達到最終一致
+    4. **衝突解決**：使用 "**last writer wins**" 策略解決衝突
+    5. **技術特性**：毫秒級延遲、保持應用狀態
+56. ★★ **Route 53 DNS Failover 自動切換機制**
+    1. **核心功能**：主區域掛了，自動路由到次區域
+    2. **技術優勢**：**不需手動干預**，完全自動化故障轉移
+57. 😇 **Well-Architected Tool 最佳實踐檢查服務**
+    1. **功能**：自動掃描你的架構、給出改善建議
+    2. **成本**：**免費服務**
+58. ★★ **跨區域 DR 三要素核心架構**
+    1. **資料同步**：DynamoDB Global Table / S3 CRR / RDS Read Replica
+    2. **架構複製**：ASG + ALB 複製到次區域
+    3. **流量切換**：Route 53 Failover
+59. ★★ **DynamoDB Global Secondary Index (GSI) vs Global Table 考試陷阱**
+    1. **GSI 誤用問題**：GSI = 同一張表的額外查詢索引，**只存在於同一個 region**
+    2. **Global Table 正確用途**：跨 region 的資料複製，**多主架構同步**
+    3. **考試陷阱**：看到 "global" 就以為能跨區域 → 錯誤判斷
+60. ★★ **Well-Architected Tool vs Compute Optimizer 工具選擇**
+    1. **Well-Architected Tool**：檢查架構設計、給出最佳實踐建議、**免費服務**
+    2. **Compute Optimizer**：優化資源規格（EC2 type、EBS size、Lambda memory），**只管資源規格不管架構設計**
+    3. **考試判斷技巧**：題目要求 "架構最佳實踐" → Well-Architected Tool；題目要求 "省錢、調規格" → Compute Optimizer
