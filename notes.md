@@ -137,3 +137,17 @@
     1. **關鍵字識別**："minimize application code modifications" → 必須使用 Babelfish
     2. **錯誤方案特徵**：需要 code 改動的方案、不處理 SQL 相容性的方案、只處理資料不處理語法的方案
     3. **標準答案記憶**：資料庫遷移 = **SCT + DMS + Babelfish**（最小化 code 改動）
+37. ★★ **S3 Cross-Region Replication (CRR) 核心概念**
+    1. **定義**：自動將 S3 物件複製到不同 Region 的 bucket
+    2. **必備條件**：源和目標 bucket 都要開 **Versioning**、必須是不同 Region、需要 IAM role 授權
+38. ★★ **S3 CRR 複製行為特性**
+    1. **會複製**：啟用後的新物件、Metadata、tags、ACL
+    2. **不會複製**：舊物件（需手動用 S3 Batch Operations）、Delete markers（預設關閉，可開啟）、複製不會串連（A→B→C，A 的物件不會到 C）
+39. ★★ **S3 CRR 考試判斷標準**
+    1. **必選 CRR 場景**：Regional failure、Disaster recovery (跨 Region)、Compliance (異地儲存)、Lower latency (多地區用戶)
+    2. **不需要 CRR**：AZ failure（S3 預設跨 AZ）
+40. ★ **S3 CRR 記憶口訣與策略**
+    1. **核心記憶**：**S3 天生跨 AZ，想跨 Region 要 CRR**
+    2. **關鍵字識別**：看到「regional」、「disaster」、「compliance」→ 選 CRR
+41. 😇 **S3 CRR 成本考量因素**
+    1. **主要費用**：跨 Region 傳輸費（最貴）、目標 bucket 儲存費、每個物件的 PUT request 費用
