@@ -151,3 +151,34 @@
     2. **關鍵字識別**：看到「regional」、「disaster」、「compliance」→ 選 CRR
 41. 😇 **S3 CRR 成本考量因素**
     1. **主要費用**：跨 Region 傳輸費（最貴）、目標 bucket 儲存費、每個物件的 PUT request 費用
+42. ★★ **ALB HTTP → HTTPS redirect 核心功能**
+    1. **定義**：**ALB listener 可以直接設定 redirect rule**，把 port 80 (HTTP) 流量自動轉到 port 443 (HTTPS)
+    2. **設定概念**：ALB Listener (Port 80) → Rule: Redirect to https://#{host}:443/#{path}?#{query}
+43. ★★ **ALB redirect 方案優勢分析**
+    1. **技術優勢**：不需額外資源（直接在 ALB 設定）、零程式碼（listener rule 設定即可）、最少維運成本
+    2. **考試重點**：符合 "least operational overhead" 要求
+44. ★ **ALB redirect 考試記憶點與錯誤選項**
+    1. **正確方案**：Configure listener redirect rule
+    2. **錯誤選項**：不需要 EC2 跑 nginx redirect、不需要 Lambda 處理 redirect、不需要 CloudFront（雖然也能做，但題目已有 ALB）
+45. 👀 **ALB listener 配置陷阱與限制**
+    1. **考試陷阱**："Create a new HTTP listener on port 80" 聽起來正確，但如果已有 port 80 listener 就無法新建
+    2. **技術限制**：**同一 port 不能有多個 listener**，需要修改現有 listener 而非新建
+46. ★★ **EKS Autoscaling 雙層架構概念**
+    1. **Pod 層**：擴展 Pod 數量，使用 **HPA (Horizontal Pod Autoscaler)**
+    2. **Node 層**：擴展 EC2 node 數量，使用 **Cluster Autoscaler** 或 **Karpenter**
+47. ★★ **Cluster Autoscaler 核心功能與整合**
+    1. **題目判斷關鍵**：infrastructure 自動擴展 → 指的是 **node 層級**
+    2. **技術組合**：**Cluster Autoscaler** 搭配 **Metrics Server** 監控 pod 資源需求、自動增減 node 數量、與 Auto Scaling Groups 整合
+48. ★ **Karpenter vs Cluster Autoscaler 比較分析**
+    1. **Karpenter 優勢**：更快更靈活、直接選 instance type、較新技術
+    2. **Cluster Autoscaler 優勢**：傳統標準方案、需預先定義 ASG、Kubernetes 標準配置
+    3. **考試選擇**：通常選 **Cluster Autoscaler**，因為它是標準解法
+49. 😇 **EKS Autoscaling 考試記憶要點**
+    1. **功能分工**：**HPA** = 水平擴展 **Pods**、**Cluster Autoscaler** = 擴展 **Nodes**
+    2. **關鍵字識別**：題目說 "infrastructure scales" → 選 node 層級解法
+50. ★ EKS Autoscaling 錯誤選項分析 - EC2 Auto Scaling Groups
+    1. **錯誤原因**：能用但 **operational overhead 太高**、需要手動設定 scaling policies
+    2. **正確方案優勢**：Cluster Autoscaler 已與 Kubernetes 原生整合，更自動化
+51. ★ EKS Autoscaling 錯誤選項分析 - CloudWatch alarms alone
+    1. **致命缺陷**：**只監控，不執行 scaling**
+    2. **功能限制**：CloudWatch 可以觸發告警，但不會自動擴展 EKS nodes、需要搭配其他 autoscaling 機制才有用
