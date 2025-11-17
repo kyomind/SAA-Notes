@@ -179,6 +179,17 @@
 50. ★ EKS Autoscaling 錯誤選項分析 - EC2 Auto Scaling Groups
     1. **錯誤原因**：能用但 **operational overhead 太高**、需要手動設定 scaling policies
     2. **正確方案優勢**：Cluster Autoscaler 已與 Kubernetes 原生整合，更自動化
-51. ★ EKS Autoscaling 錯誤選項分析 - CloudWatch alarms alone
+51. ★ **EKS Autoscaling 錯誤選項分析 - CloudWatch alarms alone**
     1. **致命缺陷**：**只監控，不執行 scaling**
     2. **功能限制**：CloudWatch 可以觸發告警，但不會自動擴展 EKS nodes、需要搭配其他 autoscaling 機制才有用
+52. ★★ **EKS Autoscaling 考試判斷邏輯與方案比較**
+    1. **關鍵字識別**："LEAST operational overhead" → 優先選 Kubernetes 原生工具
+    2. **維運成本分析**：Cluster Autoscaler（低，Kubernetes 原生）vs EC2 ASG + custom policies（高，需手動管理）vs CloudWatch alone（無效，不會觸發 scaling）
+    3. **考試記憶**：**Kubernetes 原生工具（Cluster Autoscaler, HPA）永遠是最低維運成本的選擇**
+53. ★ **EBS Multi-Attach 功能限制**
+    1. **支援類型限制**：只支援 **Provisioned IOPS**（io1/io2 block express）
+    2. **地理位置限制**：只能在**同一個 AZ** 內多個 Instance 共用，不是跨 AZ⭐️
+54. 😇 **EBS 儲存類型選擇記憶要點**
+    1. **成本最低**：Magnetic（或新世代的 Cold HDD sc1 / Throughput Optimized HDD st1）
+    2. **IOPS 要求高**：Provisioned IOPS
+    3. **通用場景**：General Purpose SSD

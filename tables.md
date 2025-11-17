@@ -961,3 +961,11 @@ Lambda 在 Firehose 中是 **data transformation function**:
 | **File Gateway**   | NFS/SMB   | S3                   | 檔案備份、檔案共享     |
 | **Volume Gateway** | iSCSI     | S3 (snapshot 到 EBS) | Block storage、VM 磁碟 |
 | **Tape Gateway**   | iSCSI VTL | S3/Glacier           | 磁帶備份系統替代       |
+
+## EBS Volume Types 重點整理
+
+| Volume Type                        | 特點                 | 適用場景                              |
+| ---------------------------------- | -------------------- | ------------------------------------- |
+| **General Purpose SSD (gp2/gp3)**  | 預設選擇，平衡性價比 | 中小型資料庫、開發測試環境、開機磁碟  |
+| **Provisioned IOPS SSD (io1/io2)** | 穩定低延遲、高 IOPS  | I/O 密集應用，大型關聯式/NoSQL 資料庫 |
+| **Magnetic (舊世代)**              | 最低成本             | 低頻存取、成本敏感場景                |
