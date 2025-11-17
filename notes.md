@@ -217,3 +217,33 @@
     1. **Well-Architected Tool**：檢查架構設計、給出最佳實踐建議、**免費服務**
     2. **Compute Optimizer**：優化資源規格（EC2 type、EBS size、Lambda memory），**只管資源規格不管架構設計**
     3. **考試判斷技巧**：題目要求 "架構最佳實踐" → Well-Architected Tool；題目要求 "省錢、調規格" → Compute Optimizer
+61. ★★ **Predictive Scaling 核心機制與特性**
+    1. **運作原理**：使用 ML 分析 CloudWatch 歷史數據、**提前啟動** capacity 而非被動反應、持續學習預測更準確
+    2. **適用場景**：規律性流量高峰（每天、每週固定時間）、應用啟動慢（容器/服務需要時間 warm up）、成本優化需求（避免 over-provision）
+62. ★★ **Auto Scaling 策略考試判斷標準**
+    1. **Predictive Scaling 關鍵字**：predictable/regular pattern、long initialization time
+    2. **Dynamic Scaling 關鍵字**：sudden/unpredictable spike、threshold-based triggers
+    3. **Scheduled Scaling 關鍵字**：specific time schedule、定時排程
+63. ★★ **Dynamic vs Predictive Scaling 核心差異分析**
+    1. **Dynamic Scaling（反應式）**：CPU 到 threshold → 才開始加機器 → 等機器啟動 → 流量已經來了 → 結果：用戶體驗差 + 可能過載
+    2. **Predictive Scaling（預測式）**：看歷史數據 → 知道流量何時來 → **提前**準備好 capacity → 結果：流量來時已經 ready
+64. ★ **Auto Scaling 考試陷阱與判斷技巧**
+    1. **常見陷阱**：題目說 "based on **historical** data" → 容易誤以為是 dynamic scaling
+    2. **關鍵差異**：Dynamic 用歷史算 threshold，**觸發後才反應**；Predictive 用歷史**預測未來**，提前準備
+    3. **判斷口訣**：看到 "forecasted/in advance/before peak" → Predictive；看到 "threshold/when CPU reaches" → Dynamic
+65. ★★ **SSL/TLS 憑證匯入位置選擇**
+    1. **AWS Certificate Manager (ACM)**：首選方案，Region 支援時優先使用
+    2. **IAM Certificate Store**：備用方案，Region 不支援 ACM 時使用
+    3. **CLI 操作**：兩者皆可使用
+66. ★ **SSL/TLS 憑證管理考試重點**
+    1. **憑證匯入特性**：**第三方憑證**可匯入 ACM/IAM、**ACM 自己簽發**的憑證不能匯出
+    2. **服務整合**：ALB/CloudFront 都支援從 ACM/IAM 載入憑證
+    3. **實務建議**：優先用 ACM，有自動 renewal 提醒、整合更好
+67. ★★ **CloudFront vs ACM/IAM 憑證管理差異**
+    1. **CloudFront 限制**：憑證綁定單一 distribution、**不能匯出**重用於 EC2/ELB、不是憑證「儲存」位置
+    2. **ACM/IAM 定位**：憑證**管理/儲存**中心
+    3. **CloudFront 定位**：憑證**使用**端點
+68. ★ **SSL 憑證考試關鍵字判斷技巧**
+    1. **儲存管理類**：題目問 "import/store" → 選 ACM/IAM
+    2. **使用部署類**：題目問 "use/attach" → 選 ALB/CloudFront
+    3. **記憶類比**：ACM 是倉庫，CloudFront 是使用憑證的服務
