@@ -969,3 +969,28 @@ Lambda 在 Firehose 中是 **data transformation function**:
 | **General Purpose SSD (gp2/gp3)**  | 預設選擇，平衡性價比 | 中小型資料庫、開發測試環境、開機磁碟  |
 | **Provisioned IOPS SSD (io1/io2)** | 穩定低延遲、高 IOPS  | I/O 密集應用，大型關聯式/NoSQL 資料庫 |
 | **Magnetic (舊世代)**              | 最低成本             | 低頻存取、成本敏感場景                |
+
+「目錄管理」是指管理 **使用者帳號、群組、權限** 的集中式服務。
+
+## 核心概念
+
+**目錄 (Directory)** = 儲存使用者身份資訊的資料庫
+
+- 使用者名稱、密碼
+- 群組成員資格
+- 存取權限
+- 組織結構
+
+類比：就像公司的員工通訊錄系統，記錄每個人的職位、部門、權限
+
+## AWS Directory Service 的角色
+
+提供三種目錄服務：
+
+| 服務                     | 用途                                    |
+| ------------------------ | --------------------------------------- |
+| AWS Managed Microsoft AD | 完整的 Active Directory，可建立信任關係 |
+| AD Connector             | 代理服務，連接到地端的 AD               |
+| Simple AD                | 輕量版 AD，適合小型需求                 |
+
+**重點**：只負責「儲存和管理使用者資訊」，**不負責** 跨 AWS 帳戶的身份驗證

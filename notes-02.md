@@ -42,59 +42,81 @@
     1. **AWS Budgets**：**你主動設定**閾值（「alert when cost exceeds $X」），超過時發出通知
     2. **Cost Anomaly Detection**：**AI 自動判斷**異常（「automatically detect unusual spending」），**無需**預設閾值
     3. **核心差異**：Budgets 是「**你說多少算超標**」，Anomaly Detection 是「**AI 說這次不對勁**」
-14. ★★ S3 One Zone-IA vs Standard-IA 核心對比○
-    1. **可用性區域差異**：Standard-IA 跨 ≥3 個 AZ（SLA 99.9%、貴）；One Zone-IA 單一 AZ（SLA 99.5%、便宜 20%）
+14. ★★ S3 One Zone-IA vs Standard-IA 核心對比
+    1. **可用性區域差異**：Standard-IA 跨 ≥3 個 AZ（SLA 99.9%、貴）；One Zone-IA 單一 AZ（SLA 99.5%、便宜 20%）⭐️
     2. **耐久性**：兩者皆 **11 個 9**（99.999999999%），但 AZ 毀損時 One Zone-IA **資料全失**
     3. **最低儲存天數**：兩者均 30 天
     4. **記憶技巧**：One Zone = **單點故障風險**；Standard-IA = **跨 AZ 備援安全但貴一點**
+    5. **耐久性範圍限制**：One Zone-IA 的「耐久性」保證僅限於「**單一 AZ**」範圍內
+    6. **高可用性考試陷阱**：考試問「需要高可用性」時，One Zone-IA 一定是錯的
+    7. **災難級別差異**：One Zone-IA 的耐久性**不包含 AZ 級別災難**
+    8. **術語精確性**：AWS 術語定義精確，不是欺騙而是**範圍限定**
+    9. **考試核心重點**：測試你是否理解這些**細微但關鍵的差異**
 15. ★★ S3 One Zone-IA vs Standard-IA 考試選擇判斷標準
     1. **選 One Zone-IA**：資料**可重新產生**或**遺失可接受**，強調**成本最優化**（例：縮圖、暫存資料、可從其他來源重建的資料）
     2. **選 Standard-IA**：資料**重要且訪問頻率低**（每月或每季），需要**高可用性保證**（例：備份檔案、歷史紀錄、合規資料）
 16. ★★ Security Group vs NACL - 網路安全層級對比
-    1. **Security Group**：**EC2 instance 層級**，綁在**網卡 (ENI) 上**，精細控制單一主機的進出流量
-    2. **NACL**：**Subnet 層級**，控制**整個子網路的進出**，粗粒度的網路邊界防護
-17. ★★ AWS GuardDuty - 跨服務威脅偵測與異常監控
+    1. **Security Group**：綁定在 **ENI（網卡）層級**，控制**單一網卡**的進出流量⭐️
+    2. Security Group = 一份「**虛擬規則清單**」
+       - 不是實體防火牆設備
+       - 不是綁死在某台主機上
+       - 可以被多個 ENI「**引用**」
+       - 本質是「**邏輯上的策略集合**」
+    3. **重點**：一個 SG 可綁定**多個 ENI**（可跨 EC2），一個 ENI 也可綁定**多個 SG**（最多 5 個）
+    4. **NACL**：**Subnet 層級**，控制**整個子網路的進出**，所有進出 subnet 的流量都會經過⭐️
+    5. **記憶技巧**：SG = **個人防彈衣**（穿在身上）；NACL = **社區大門**（進出都要過）
+17. ★ AWS GuardDuty - **跨服務威脅偵測與異常監控**
     1. **監控範圍**：EC2/VPC（透過 VPC Flow Logs）、IAM/API（透過 CloudTrail）、S3（透過 CloudTrail S3 data events）、DNS 查詢
     2. **進階保護**：EKS/Lambda **執行時期威脅**（需額外啟用）
 18. ★★ Route 53 vs ELB - 負載均衡層級區分（考試重點）
     1. **看到「elasticity」**：首選 **ELB 系列**（ALB/NLB/CLB）
-    2. **Route 53 應用場景**：**多區域流量分配**（Latency-based、Geolocation）、**災難恢復**（Failover）、**藍綠部署**（Weighted）
-    3. **架構原則**：**不要把 Route 53 當成應用層的 Load Balancer 用**，這是錯誤的架構思維
+    2. Route 53 應用場景：⭐️
+       - **多區域流量分配**（Latency-based、Geolocation）
+       - **災難恢復**（Failover）
+       - **藍綠部署**（Weighted）
+    3. **不要把 Route 53 當成應用層的 Load Balancer 用**，這是錯誤的架構思維
 19. ★★ EMR + Redshift 大數據分析架構
     1. **情境判斷**：需要 **big data processing frameworks**（Apache Hadoop/Spark）+ **標準 SQL 和 BI 工具分析**
-    2. **服務角色**：EMR（**ETL 處理層** - 執行 Hadoop/Spark 做資料轉換和清洗） + Redshift（**分析層** - **支援 SQL 查詢和 BI 工具整合**）
+    2. EMR：**ETL 處理層**，執行 Hadoop/Spark 做資料轉換和清洗
+    3. Redshift：**分析層**，支援 SQL 查詢和 BI 工具整合
 20. ★★ Redshift 相比 S3+Athena 的優勢與應用場景
-    1. **Redshift 優勢**：**列式儲存**（查詢效能遠超 S3+Athena）、**BI 工具整合**（原生支援 Tableau、PowerBI）、**MPP 架構**（join/aggregation 極快）
-    2. **使用判斷**：S3+Athena 適合**偶爾查詢**；Redshift 適合**高頻分析**（無論用 EMR 或 Glue 處理，分析層都該用 Redshift）
-21. 題目出現這些關鍵字，直接選：
+    1. **Redshift 優勢**：
+       - **列式儲存**：查詢效能**遠超** S3+Athena
+       - **BI 工具整合**：原生支援 Tableau、PowerBI
+       - **MPP 架構**：join/aggregation 極快
+    2. S3 + Athena 適合**偶爾查詢**
+    3. Redshift 適合**高頻分析**
+    4. 無論用 EMR 或 Glue 處理，分析層都該用 Redshift⭐️
+21. Route 53 題目出現這些關鍵字，直接選：
     - 「最低延遲」但不限制地區 → Latency
-    - 「特定國家用戶必須連特定資源」→ Geolocation
-    - 「調整某地區流量偏向某資源」或「bias」→ Geoproximity
+    - 「**特定國家用戶**必須連特定資源」→ Geolocation⭐️
+    - 「調整某地區流量偏向某資源」或「bias」→ **Geoproximity**⭐️
     - 「藍綠部署」、「A/B 測試」、「流量分配比例」→ Weighted
 22. ★★ NLB Elastic IP - 客戶端白名單 IP 場景
     1. **問題**：客戶端只信任特定 IP，客戶端只信任特定 IP，你的服務必須用這些 IP 來接收請求
     2. **解法**：**NLB + Elastic IP**（將靜態 IP 綁定到每個 AZ 的 ENI 上）
-23. 😇 NLB + EIP 必要性情境分析
-    1. **客戶端白名單場景**：客戶發請求 → 目標是你的 NLB IP → 你提供固定 IP → 客戶設白名單
-    2. **IP 穩定性**：**NLB + EIP 確保 IP 不會變**（EIP 綁定到每個 AZ 的 ENI）
+    3. **IP 穩定性**：**NLB + EIP 確保 IP 不會變**
+23. 架構搭配：
+    - 正常：用戶 → Route 53 → Primary(ELB) → EC2
+    - 故障：用戶 → Route 53 → Failover(CloudFront) → S3 靜態頁
 24. ★★ Route 53 Failover - 災難恢復場景
     1. **問題**：主站掛了，要**快速自動切換**到備援站點
     2. **解法**：**Route 53 Failover routing + 健康檢查**（檢測主站不健康時自動轉向備援）
-    3. **適配服務**：搭配 **S3 靜態網站**或 **CloudFront** 作為備援端點
-25. **S3 Object Lock** (Compliance Mode)
-    1. 本質：強制 WORM 模式，連 root 帳號都不能刪/改
+    3. **適配服務**：搭配 **S3 靜態網站**或**CloudFront + S3** 作為備援端點⭐️
+25. S3 Object Lock (**Compliance Mode**)⭐️
+    1. 本質：強制 **WORM** 模式，**連 root 帳號都不能刪/改**
     2. 場景：法規遵循（例如金融業、醫療業需符合法規要求）
-    3. 考點：題目提到「regulatory compliance」、「prevent deletion by anyone including root」→ 選這個
+    3. 考點：題目提到「regulatory compliance」、「prevent deletion by **anyone** including root」→ 選這個
 26. ★★ VPC Peering 不支援**邊緣到邊緣路由** (Transitive Routing) - 考試頻考陷阱
     1. **核心限制**：VPC Peering 是「點對點」連接，不支援跨 VPC 傳遞流量
-    2. **實際案例**：VPC-1 有 Direct Connect 連到地端，VPC-1 和 VPC-2 有 Peering，但**地端無法透過 VPC-1 → VPC-2 的路徑存取 VPC-2 的資源**
+    2. **實際案例**：VPC-1 有 Direct Connect 連到地端，VPC-1 和 VPC-2 有 Peering，但**地端無法透過 VPC-1 → VPC-2 的路徑存取 VPC-2 的資源**⭐️
     3. **考試判斷關鍵**：看到「需要備援線路連結多個 VPC」且「提案用 Peering 傳遞」→ 立刻判斷為**錯誤**
 27. ★ VPC Peering 不支援的傳遞項目清單（必背）
     1. **VPN 連線、Direct Connect、Internet Gateway、NAT Gateway、VPC Endpoint、ClassicLink IPv6**
     2. **記憶技巧**：所有**邊界連接類型**都不支援 Peering 傳遞，Peering 只負責「兩個 VPC 之間」
 28. ★★ 跨 VPC 高可用備援方案 - 直接連線原則
-    1. **正確方案 1**：**在目標 VPC 建立第二條 Direct Connect**（兩條專線都直接連到同一 VPC，主線故障時備線接手）
-    2. **正確方案 2**：**VPN over Internet 作為備援**（直接連到目標 VPC，成本低於 Direct Connect）
+    1. **正確方案 1**：**在目標 VPC 建立第二條 Direct Connect**（兩條專線都直接連到同一 VPC，主線故障時備線接手）→ 但成本高，不切實際
+    2. **正確方案 2**：**VPN over Internet 作為備援**（直接連到目標 VPC，成本低於 Direct Connect）⭐️
     3. **判斷標準**：備援線路必須**直接連到目標 VPC**，不能透過 Peering 傳遞
 29. 👀 錯誤方案範例 - VPC Peering 傳遞路由的死路
     1. **❌ 在 VPC-2 建立 Direct Connect**：地端流量無法透過 VPC-1 ↔ VPC-2 Peering 轉傳到 VPC-2 的 Direct Connect
@@ -103,9 +125,14 @@
     1. **核心功能**：Transit Gateway **支援傳遞路由**，可以讓流量透過 TGW 在多個 VPC 間轉傳
     2. **使用場景**：需要複雜的 VPC 互聯且要支援流量轉傳時（比 Peering 更靈活但配置更複雜）
     3. **考試應用**：若題目提到「Transit Gateway」和「多個 VPC 備援」，則 TGW 路由方案可行
-31. ★★ AWS Cost Allocation Tags - 按部門追蹤成本的標準方案
-    1. **核心流程**：**打標籤** (Tag resources with department name) → **啟用** (Activate in Billing Console) → **自動分組** (AWS generates report)
-    2. **實作方式**：在資源上加標籤（例：`Department: Engineering`），然後在 Billing Console 啟用 Cost Allocation Tags
+31. ★★ **AWS Cost Allocation Tags** - 按部門追蹤成本的標準方案
+    1. **核心流程**：
+        - **打標籤**：Tag resources with department name
+        - **啟用**：Activate in Billing Console
+        - **自動分組**：AWS generates report
+    2. **實作方式**：
+        - **加標籤**：在資源上加標籤（例：`Department: Engineering`）
+        - **啟用標籤**：在 Billing Console 啟用 Cost Allocation Tags
     3. **產出成果**：AWS 自動按啟用的 tags 分組顯示成本，實現**跨部門成本追蹤**
 32. 😇 成本分配標籤 vs 一般標籤的區別
     1. **一般標籤**：用於資源管理、自動化等用途
@@ -113,40 +140,54 @@
     3. **考試判斷**：題目提「按部門分析成本」或「cost allocation」→ 選 Cost Allocation Tags（而非其他監控工具）
 33. ★ DMS 的搬遷模式選擇
     1. **Full Load**：**一次性全量搬遷**，適合初次遷移或資料量不大的情況
-    2. **CDC (Change Data Capture)**：**持續同步異動**，保持源系統和目標系統資料一致（zero-downtime migration）
+    2. **CDC (Change Data Capture)**：**持續同步異動**，保持源系統和目標系統資料一致（zero-downtime migration）⭐️
     3. **組合策略**：常見做法是先做 Full Load 打底，再啟動 CDC 同步增量變更
 34. ★ AWS DMS 搭配 S3 的格式最佳實踐
     1. **預設格式**：`.csv`（通用但體積大）
-    2. **優化格式**：**`.parquet`**（壓縮率高、查詢效能優）
+    2. **優化格式**：`.parquet`（壓縮率高、查詢效能優）
     3. **選擇判斷**：題目提「節省成本」或「提升查詢效能」→ 優先選擇 **Parquet 格式**
+    4. DMS 主要做資料遷移，但遷移後的資料要存在哪？常見目標:
+      - RDS/DynamoDB: 直接寫入資料庫
+      - S3: 先存檔案,再用其他服務分析(Athena/Redshift Spectrum)
 35. 遇到 DMS 的題目，記住三個判斷點：
-    1. 搬什麼：關聯式、NoSQL、Data Warehouse 都行
+    1. 搬什麼：關聯式、NoSQL、Data Warehouse **都行**
     2. 怎麼搬：一次性 (Full Load) 還是持續同步 (CDC)
-    3. 安全性：提到加密 → 想到 SSL + CA certificate
+    3. 安全性：提到加密 → 想到 **SSL + CA certificate**
 36. ★★ CloudWatch + SNS 監控告警標準組合
     1. **CloudWatch**：監控 **AWS 資源**（CPU、記憶體、磁碟等），設定**告警規則**
-    2. **SNS**：當告警觸發時，**自動發送通知**給訂閱者（email、SMS、HTTP endpoint 等）
-    3. **典型流程**：CloudWatch 偵測 → 告警觸發 → SNS 發送通知 → 人工或自動化回應
+    2. **SNS**：當告警觸發時，**自動發送通知**給訂閱者（email、SMS、HTTP endpoint 等）⭐️
+    3. **典型流程**：CloudWatch 偵測 → 告警觸發 → SNS 發送通知 → 人工或自動化回應⭐️
 37. ★ SNS vs SES 服務選擇判斷標準
     1. **SNS 用途**：系統通知、告警、**事件驅動**的消息分發（內部系統間通信）
-    2. **SES 用途**：**發送給終端使用者**的郵件（客戶、會員）、需要**退信管理、開信率追蹤、郵件信譽管理**
+    2. **SES 用途**：**發送給終端使用者**的郵件（客戶、會員）、需要**退信管理、開信率追蹤、郵件信譽管理**⭐️
     3. **記憶技巧**：SNS = Simple Notification Service (系統內告警)；SES = Simple Email Service (用戶外發郵件)
 38. ★★ EBS Volume AZ 限制與備份特性
-    1. **核心特性**：**AZ 內自動複製**防止硬體故障；只能掛載到**同一個 AZ** 的 EC2
-    2. **跨 AZ 使用方案**：先建 snapshot，再從 snapshot 在另一個 AZ 建立新 volume
+    1. **核心特性**：**AZ 內自動複製**防止硬體故障
+    2. 只能掛載到**同一個 AZ** 的 EC2⭐️
+    3. **跨 AZ 使用方案**：先建 snapshot，再從 snapshot 在另一個 AZ 建立新 volume⭐️
 39. ★★ EBS 高可用性限制 - 常見考試陷阱
-    1. **限制**：EBS **不提供跨 AZ 高可用性**
-    2. **解決方案**：需使用 **EFS** 或**多 AZ 架構**
+    1. **限制**：EBS **只能掛載在單一 AZ**,不提供跨 AZ 高可用性⭐️
+    2. **解決方案**：
+       - 改用 **EFS**(自動跨 AZ)
+       - 或設計**多 AZ 架構**(每個 AZ 各自部署 EC2 + EBS)
 40. 😇 EBS 核心概念記憶
     1. **本質**：EBS = **本地硬碟**概念，**綁定單一 AZ**
-41. ★★ AWS Organizations + IAM Identity Center - 多帳戶統一管理與認證方案
-    1. **AWS Organizations 解決的問題**：**多個帳戶統一管理**（帳單、資源控管）、用 **SCP (Service Control Policy)** 做權限邊界控管（連 root user 都受限）
+41. ★★ AWS Organizations + IAM Identity Center - 多帳戶統一管理與認證方案⭐️
+    1. **AWS Organizations 解決的問題**：**多個帳戶統一管理**（帳單、資源控管）、用 **SCP (Service Control Policy)** 做**權限邊界控管**（連 root user 都受限）⭐️
     2. **IAM Identity Center 解決的問題**：**一組帳密登所有帳戶**（類似 SSO）、可整合**企業 AD、Okta 等目錄服務**
-    3. **架構整合**：AWS Organizations + IAM Identity Center 組合達成**多帳戶統一身份驗證和權限管理**
-42. ★★ SCP vs IAM Policy - 權限管理層級對比
-    1. **SCP (Service Control Policy)**：作用於**整個 OU 或帳戶**層級、本質是**權限邊界（否決權）**、用於**組織層級限制**
-    2. **IAM Policy**：作用於**單一 user/role** 層級、本質是**賦予權限**、用於**個別使用者授權**
-    3. **記憶口訣**：SCP 是「**天花板**」（最高限制），IAM Policy 是「**地板**」（實際權限）
+    3. **架構整合**：AWS Organizations + IAM Identity Center 組合達成**多帳戶統一身份驗證和權限管理**⭐️
+42. ★★ SCP vs IAM Policy - 權限管理層級對比⭐️
+    1. **SCP (Service Control Policy)**：
+        - **作用範圍**：作用於**整個 OU 或帳戶**層級⭐️
+        - **本質特性**：本質是**權限邊界（否決權）**
+        - **使用場景**：用於**組織層級限制**
+    2. **IAM Policy**：
+        - **作用範圍**：作用於**單一 user/role** 層級
+        - **本質特性**：本質是**賦予權限**
+        - **使用場景**：用於**個別使用者授權**
+    3. **記憶口訣**：
+        - **SCP 比喻**：SCP 是「**天花板**」（最高限制）
+        - **IAM Policy 比喻**：IAM Policy 是「**地板**」（實際權限）
 43. ★ 多帳戶架構考試判斷技巧
     1. 「**多帳戶管理**」→ **AWS Organizations**
     2. 「**集中式認證 / 企業目錄**」→ **IAM Identity Center**
@@ -159,25 +200,36 @@
     2. **選項二**：**Implement AWS Organizations to create multi-account architecture**（建立**多帳戶架構**提供**整合檢視和集中管理**）
 46. ★ AWS Directory Service vs IAM Identity Center - 考試陷阱對比
     1. **AWS Directory Service 錯誤原因**：僅管理**目錄服務**（如 AD）、**不是做多帳戶認證**、缺少**跨帳戶身份聯邦功能**
-    2. **正確做法**：**IAM Identity Center 整合 Directory Service**（IAM Identity Center 提供多帳戶認證，Directory Service 提供目錄管理）
-47. ★ Amazon Pinpoint 服務識別關鍵字
-    1. **Marketing**：行銷用途
-    2. **Personalized**：個人化訊息（可帶入姓名、喜好等變數）
-    3. **Large number of customers**：大量客戶管理
+    2. **正確做法**：**IAM Identity Center 整合 Directory Service**（IAM Identity Center 提供多帳戶認證,Directory Service 提供目錄管理）
+    3. **目錄管理 (Directory Management)**
+       - **定義**：集中式管理使用者帳號、群組、權限的資料庫系統
+       - **內容**：使用者名稱、密碼、群組成員資格、組織結構
+       - **類比**：公司員工通訊錄系統
+    4. **角色分工**
+       - **Directory Service**：儲存「誰是誰」(目錄資料庫)
+       - **IAM Identity Center**：管理「誰能做什麼」(認證 + 授權)
+    5. **考試陷阱範例**
+       - ❌ 題目：整合地端 AD 並實現多帳戶 SSO → 只選 AWS Directory Service (缺 SSO)
+       - ✅ 正確：IAM Identity Center + Directory Service 組合⭐️
+47. ★ Amazon Pinpoint - 多管道行銷通訊服務
+    1. 就像企業版的 MailChimp + Twilio，但整合在 AWS 生態系
+    2. **用途**：發送個人化訊息給使用者（email、SMS、push notification、in-app、voice）
+    3. **Personalized**：個人化訊息（可帶入姓名、喜好等變數）
+    4. **Large number of customers**：大量客戶管理
 48. 😇 Amazon Pinpoint 核心功能
     1. **客戶分群**：Segmentation
     2. **測試優化**：A/B Testing
     3. **多管道發送**：SMS、Email、Push、Voice
     4. **效果追蹤**：開信率、點擊率
-49. ★★ Amazon AppFlow - SaaS 應用整合專用服務
+49. ★★ Amazon AppFlow - **SaaS 應用整合專用服務**⭐️
     1. **核心價值**：無需寫程式就能在 **AWS 和第三方 SaaS 之間傳輸資料**
-    2. **識別關鍵字**：**Salesforce/Slack 等 SaaS** → **AWS S3**、**歸檔 + 分析需求**
+    2. **識別關鍵字**：**Salesforce/Slack 等 SaaS** → AWS S3、歸檔 + 分析需求
 50. 😇 Amazon AppFlow 核心特性
     1. **原生支援**：50+ SaaS（Salesforce、Slack、Google Analytics、Zendesk 等）
-    2. **簡化設定**：點選設定，不用寫 API 串接
+    2. **簡化設定**：點選設定，**不用寫 API 串接**
     3. **彈性觸發**：支援排程或事件觸發
     4. **自動處理**：資料轉換和加密
-51. ★★ AWS Trusted Advisor - 最佳實踐檢查工具
+51. ★★ AWS Trusted Advisor - 最佳實踐檢查工具○
     1. **本質**：AWS 內建的**最佳實踐檢查工具**，自動掃描帳號並給建議
     2. **五大檢查類別**：Cost Optimization（閒置資源、低使用率 instances）、Performance（服務限制使用率、throughput 瓶頸）、Security（Security Group 開放規則、IAM 使用情況）、Fault Tolerance（EBS/RDS 快照、Multi-AZ 設定）、Service Limits（各服務配額使用情況）
 52. 應考三個小技巧
