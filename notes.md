@@ -297,3 +297,58 @@
     1. **安裝 Agent**：在每台 source VM 上裝 AWS Replication Agent
     2. **持續同步**：Agent 即時將資料複製到 AWS staging area
     3. **測試/Cutover**：在 AWS 啟動 EC2 instances，完成遷移切換
+79. ★★ **Regional API Gateway 自訂網域設定三步驟**⭐️
+    1. **ACM 憑證必須在同一個 Region**：API Gateway 在 us-east-2 → ACM 憑證也要在 us-east-2（Regional API 硬性規定）⭐️
+    2. **建立 API Gateway Domain Name**：把自訂網域綁定 ACM 憑證，API Gateway 提供實際網域名稱（如 `d-xxx.execute-api.us-east-2.amazonaws.com`）
+    3. **Route 53 建立 Alias Record**：讓自訂網域指向 API Gateway 的網域名稱
+80. ★★ **Regional vs Edge-Optimized API Gateway 差異比較**
+    1. **Regional API**：ACM 憑證同一個 Region、不使用 CloudFront、適合區域內客戶端（EC2、Lambda）
+    2. **Edge-Optimized API**：ACM 憑證必須在 `us-east-1`、自動建立 CloudFront、適合全球客戶端⭐️
+    3. **考試判斷關鍵**：題目說 "serve clients in the same AWS Region" → 選 Regional 設定
+81. 😇 **API Gateway 憑證配置記憶技巧**
+    1. **Regional = 就地取材**：API 在哪憑證就在哪、不繞 CloudFront 直達目標、如在台北開店向台北市政府申請執照
+    2. **Edge-Optimized = 全球配送**：憑證統一放 us-east-1（CloudFront 總部）、透過 CloudFront 分發全球、如做全球生意去總公司辦證照
+82. ★ **Regional API Gateway 考試重點與陷阱**
+    1. **核心規則**：**Regional API 的 ACM 憑證必須同 Region**（死規則）
+    2. **題目難點**：混合了 API Gateway、自訂網域、SSL 憑證、DNS 設定概念
+    3. **判斷原則**：考的是「細節規定」而非「架構判斷」
+83. ★★ **API Gateway Private Certificate 錯誤選項分析**
+    1. **Private Certificate (ACM PCA) 錯誤原因**：只能用於內部網路，不能對外公開、題目要求 public internet 的 HTTPS 連線 → 必須用 **Public Certificate**
+    2. **類比理解**：Private Certificate = 公司內部員工證（辦公室內使用）、Public Certificate = 政府核發營業執照（對外營業）
+84. ★★ **EFA vs ENA 高效能運算網路選擇**
+    1. **EFA (Elastic Fabric Adapter)**：**OS-bypass** 技術、直接與網路硬體溝通、適合 HPC、ML training、MPI、NCCL 應用
+    2. **ENA (Elastic Network Adapter)**：一般高速網卡、需經過作業系統處理封包、適合標準網路應用
+    3. **技術差異**：EFA = ENA + OS-bypass 功能，延遲更低、吞吐量更高
+85. ★★ **EFA 應用場景與考試關鍵字**
+    1. **核心關鍵字**：HPC（高效能運算）、Machine Learning training、OS-bypass、MPI、NCCL、Inter-instance communication performance
+    2. **典型應用**：自動駕駛 AI 訓練、基因定序分析、氣象模擬、財務風險建模、大量 EC2 實例互傳資料場景
+    3. **考試判斷**：看到 HPC + OS-bypass → 直接選 EFA
+86. 😇 **EFA 技術特性與限制**
+    1. **支援平台**：只支援 **Linux**，Windows 上 EFA 等於只有 ENA 功能
+    2. **包含關係**：**EFA 包含 ENA**，可執行所有 ENA 功能
+    3. **記憶技巧**：ENA = 高速公路、EFA = 高速公路 + 專用快車道（OS-bypass）
+87. ★ **AWS Systems Manager Fleet Manager 核心功能**
+    1. **定義**：**AWS Systems Manager 的統一 UI 管理介面**，用於遠端管理 EC2 實例
+    2. **適用範圍**：支援 AWS 雲端和 on-premises 的 nodes/EC2 instances
+    3. **功能定位**：Systems Manager 眾多功能中的其中一項管理工具
+88. ★ **AWS RAM 錯誤選項分析 - 軟體授權管理**
+    1. **實際用途**：**跨 AWS 帳戶安全共享資源**，在 AWS Organizations 內共享資源
+    2. **考試陷阱**：看到 "Resource Access Manager" 可能誤以為能管理所有類型資源
+89. ★ AWS Certificate Manager：**配置、管理和部署 SSL 憑證**
+90. ★★ **AWS License Manager 核心概念與 BYOL 場景**
+    1. **定義**：專門處理 **BYOL (Bring Your Own License)** 場景，將現有授權帶到 AWS 雲端使用
+    2. **核心功能**：追蹤授權使用（例如 50 個 Windows Server 授權，綁定 CPU 數量）、阻擋超額使用（授權用完就不能再開 EC2）、通知機制（授權快用完要發警告）
+91. ★★ **DynamoDB Auto Scaling 自動容量調整機制**
+    1. **核心服務**：使用 **AWS Application Auto Scaling** 根據實際流量模式動態調整 provisioned throughput capacity
+    2. **運作機制**：流量突增時自動提高讀寫容量避免 throttling、工作負載降低時自動減少容量避免浪費
+    3. **適用範圍**：支援 DynamoDB table 和 Global Secondary Index 的容量自動調整
+92. ★★ **DynamoDB Streams + Lambda 觸發機制核心概念**
+    1. **定義**：DynamoDB Streams 是變更日誌機制，記錄所有數據修改事件（新增/更新/刪除），可觸發 Lambda 自動執行特定動作
+    2. **工作流程**：DynamoDB 表格更新 → DynamoDB Streams 記錄變更 → Lambda 被自動觸發 → 執行你定義的邏輯
+93. ★★ **DynamoDB Streams + Lambda 考試重點機制**
+    1. **觸發方式**：**同步輪詢** (Lambda 主動 poll Streams，不是 push 模式)
+    2. **處理特性**：**批次處理**（可一次處理多筆變更記錄）、**保證順序**（同一個 partition key 的變更順序保證）
+94. ★★ **DynamoDB Streams + Lambda 方案選擇考試判斷**
+    1. **關鍵字識別**：題目強調 "**minimal configuration change**" → 優先選擇 Streams + Lambda
+    2. **技術優勢**：只需啟用 Streams + 綁定 Lambda（兩步驟）、無需額外基礎設施、Serverless 自動擴展
+    3. **考試陷阱**：相比之下，用 CloudWatch Events 需要更多設定

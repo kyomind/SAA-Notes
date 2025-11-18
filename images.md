@@ -202,3 +202,7 @@ You can configure any access point to accept requests only from a virtual privat
 ## Multi Region Failover Architecture and DynamoDB Global Tables
 
 ![圖 24](https://img.kyomind.tw/img-20251117-170136.png)
+
+## API Gateway Custom Domain with Regional Endpoint
+
+![圖 24](https://img.kyomind.tw/img-20251118-201549.png)

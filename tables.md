@@ -994,3 +994,13 @@ Lambda 在 Firehose 中是 **data transformation function**:
 | Simple AD                | 輕量版 AD，適合小型需求                 |
 
 **重點**：只負責「儲存和管理使用者資訊」，**不負責** 跨 AWS 帳戶的身份驗證
+
+## ENA vs EFA 比較
+
+| 特性           | ENA                | EFA           |
+| -------------- | ------------------ | ------------- |
+| 基本 VPC 網路  | ✅                  | ✅             |
+| OS-bypass      | ❌                  | ✅             |
+| HPC 加速       | ❌                  | ✅             |
+| 支援 MPI、NCCL | ❌                  | ✅             |
+| 適用場景       | 一般高網路效能需求 | HPC、機器學習 |
