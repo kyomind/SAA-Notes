@@ -375,3 +375,15 @@
     1. **雙層保護架構**：即使 Data Key 被竊取，沒有 KMS Master Key 也無法解密檔案；即使 KMS 被入侵，攻擊者也需要同時取得加密的 Data Key
     2. **效能與安全平衡**：大檔案用對稱加密（Data Key，速度快）；小金鑰用非對稱加密（KMS，安全性高）
     3. **考試記憶技巧**：**信封（Envelope）= 雙層包裝**，內層保護內容物，外層保護信封本身
+101. ★ **Amazon Redshift Spectrum 核心功能**
+    1. **定義**：**擴展 Redshift 查詢能力**，讓 Redshift cluster **直接查詢 S3 中的資料**⭐️
+    2. **資料支援**：支援結構化和半結構化資料（JSON、Parquet、ORC、Avro等）
+    3. **應用場景**：大規模資料分析，**無需將 S3 資料搬移到 Redshift** 即可執行複雜查詢⭐️
+102. ★★ **S3 資料傳輸費用最佳化策略**
+    1. **免費傳輸規則**：Internet → S3 (upload)、**S3 → EC2 (同 Region)**、S3 → CloudFront
+    2. **成本判斷原則**：**跨 Region = 收費，同 Region = 免費**
+    3. **考試公式**：minimize data transfer cost + 處理 S3 資料 → **EC2 same Region as S3**
+103. ★ **處理專有格式檔案的服務選擇**
+    1. **必選 EC2 場景**：vendor's proprietary software → 需要運算環境執行 → **EC2 是唯一選擇**
+    2. **不適用服務**：Lambda（15 分鐘限制 + 記憶體不足）、Glue（不支援 proprietary format）、本地處理（傳輸費用爆炸）
+    3. **核心考點**：特殊軟體需求 + 成本最佳化 → 選擇同 Region 的 EC2
