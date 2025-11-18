@@ -247,3 +247,36 @@
     1. **儲存管理類**：題目問 "import/store" → 選 ACM/IAM
     2. **使用部署類**：題目問 "use/attach" → 選 ALB/CloudFront
     3. **記憶類比**：ACM 是倉庫，CloudFront 是使用憑證的服務
+69. ★★ **Multi-AZ 高可用性容錯計算公式**
+    1. **題目要求**：最少 6 台持續運行 + 容許 1 個 AZ 掛掉 + 最經濟配置
+    2. **計算邏輯**：任一 AZ 掛掉後仍需 ≥ 6 台 → 剩餘 2 個 AZ 要能提供 6 台 → 每個 AZ 至少 3 台 → 3 個 AZ × 3 台 = **9 台**
+    3. **記憶公式**：每個 AZ 的數量 = 最少需求 ÷ (AZ總數 - 1) = 6 ÷ 2 = 3
+70. ★ **Multi-AZ 配置方案比較分析**
+    1. **2-2-2 配置（6台）**：正常運行 6台，1 AZ 掛掉剩 4台 → ❌ 不符合要求
+    2. **3-3-3 配置（9台）**：正常運行 9台，1 AZ 掛掉剩 6台 → ✅ 符合且最省
+    3. **4-4-4 配置（12台）**：正常運行 12台，1 AZ 掛掉剩 8台 → ✅ 符合但浪費錢
+71. 😇 **容錯架構設計核心概念與實務**
+    1. **DevOps 實務**：Auto Scaling Group 設定 MinSize=9，分散到 3 個 AZ，每個 AZ 最少 3 台
+    2. **設計本質**：**過度配置 (over-provisioning)** 來換取高可用性
+    3. **考試重點**：能算出「最剛好」的數字，平衡成本與容錯能力
+72. ★★ **AWS MGN (Application Migration Service) 核心定義**
+    1. **服務定位**：**Lift-and-shift 遷移的標準解法**，用於將 VM workloads 搬到 AWS
+    2. **關鍵字識別**：
+       - lift-and-shift（不改應用直接搬）
+       - minimize downtime（需要持續同步）
+       - legacy VM workloads（從 VM 搬到 AWS）
+73. ★★ **AWS MGN 運作機制與優勢**
+    1. **運作流程**：
+       - 在 on-premises VM 裝 **AWS Replication Agent**⭐️
+       - Agent 持續同步資料到 AWS (類似 real-time backup)
+       - 在 AWS 測試 (Test instances)
+       - 正式 Cutover（切換流量，停掉 on-premises）
+    2. **核心優勢**：
+       - **Continuous replication**：downtime 極小化，只有最後 cutover 那刻
+       - **自動轉換**：自動處理 OS、driver 等相容性問題
+       - **可以測試**：先測試再正式遷移，降低風險
+74. ★ **AWS 遷移服務選擇判斷標準**
+    1. **VM lift-and-shift 遷移**：**AWS MGN**
+    2. **Disaster Recovery (DR)**：AWS Elastic Disaster Recovery
+    3. **資料庫遷移**：AWS DMS
+    4. **Server 端應用遷移**：AWS Server Migration Service（舊，已被 MGN 取代）
