@@ -289,3 +289,11 @@
     2. **適用場景**：檔案系統、物件儲存的資料搬移（例如：NFS → EFS、S3，或 on-premises 檔案伺服器 → FSx）
     3. **功能限制**：不處理 VM、OS、應用程式
     4. **考試陷阱**：看到 "sync"、"replication" 就誤選
+77. ★★ **AWS Replication Agent 在 MGN 中的核心地位**
+    1. **必要步驟**：在每台 source VM 上安裝 **AWS Replication Agent** 是遷移的第一步
+    2. **技術原理**：沒有 Agent 就無法同步資料，這是 AWS MGN 的核心架構
+    3. **類比理解**：Agent 就像在你的 VM 裝一個「搬家工人」，負責持續把東西搬到 AWS
+78. 😇 **AWS MGN 遷移流程三階段詳解**
+    1. **安裝 Agent**：在每台 source VM 上裝 AWS Replication Agent
+    2. **持續同步**：Agent 即時將資料複製到 AWS staging area
+    3. **測試/Cutover**：在 AWS 啟動 EC2 instances，完成遷移切換
