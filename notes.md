@@ -356,3 +356,22 @@
     1. **CloudFront 定位**：**全球 CDN 服務**，將網站內容快取到全球各地 edge locations
     2. **ElastiCache 定位**：**網站 in-memory 資料儲存或快取**，適用於資料庫查詢結果快取
     3. **標準組合**：使用 CloudFront 以網站為 custom origin + 使用 ElastiCache 作為網站的 in-memory data store
+96. 😇 **CloudFormation 基本計費原則**
+    1. **服務本身免費**：CloudFormation 不收費
+    2. **資源照常計費**：透過 CloudFormation 建立的資源按正常費率收費
+97. ★★ **S3 + SSE-KMS 加密方案核心優勢**⭐️
+    1. **Envelope Encryption 支援**：只有 SSE-KMS 提供標準的 envelope encryption 實作
+    2. **自動金鑰輪替**：KMS 支援每年自動輪替，SSE-S3 無法控制，SSE-C 需自行管理
+    3. **完整審計追蹤**：KMS 完整整合 CloudTrail，可追蹤誰用了金鑰、什麼時候用、執行什麼操作
+98. ★★ **Envelope Encryption 運作機制解析**
+    1. **加密流程**：檔案用 Data Key 加密 → Data Key 用 Master Key(KMS) 加密 → 兩者都存在 S3
+    2. **技術原理**：KMS 單次只能加密 4KB，Data Key 負責大檔案加密（效能好），KMS 只加密 Data Key（安全性高）
+    3. **儲存結構**：S3 同時存放加密檔案（大）和加密的 Data Key（小）
+99. ★★ **S3 加密方案選擇考試判斷標準**
+    1. **選 SSE-KMS 關鍵字**：Envelope encryption、Key rotation、**Audit trail**、Compliance requirements、Customer managed keys
+    2. **不選 SSE-KMS 場景**：Lowest cost（SSE-S3 更便宜）、Simplest solution（SSE-S3 更簡單）、You manage keys outside AWS（SSE-C）
+    3. **核心記憶**：題目要求 **envelope encryption + 自動金鑰輪替 + 審計追蹤** 三條件 → 只有 SSE-KMS 符合
+100. ★★ **Envelope Encryption 詳細概念與安全優勢**
+    1. **雙層保護架構**：即使 Data Key 被竊取，沒有 KMS Master Key 也無法解密檔案；即使 KMS 被入侵，攻擊者也需要同時取得加密的 Data Key
+    2. **效能與安全平衡**：大檔案用對稱加密（Data Key，速度快）；小金鑰用非對稱加密（KMS，安全性高）
+    3. **考試記憶技巧**：**信封（Envelope）= 雙層包裝**，內層保護內容物，外層保護信封本身
