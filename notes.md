@@ -280,3 +280,12 @@
     2. **Disaster Recovery (DR)**：AWS Elastic Disaster Recovery
     3. **資料庫遷移**：AWS DMS
     4. **Server 端應用遷移**：AWS Server Migration Service（舊，已被 MGN 取代）
+75. ★ **AWS Application Discovery Service 錯誤選項分析**
+    1. **實際用途**：評估與追蹤，**不做遷移**
+    2. **功能範圍**：掃描 on-premises 環境，收集 VM、應用、相依性資料、在 Migration Hub 顯示遷移進度、不會複製資料、不會啟動 EC2
+    3. **考試陷阱**：名稱有 "Migration" 相關字眼，但只是評估工具
+76. ★ **AWS DataSync 錯誤選項分析**
+    1. **實際用途**：資料傳輸，**不是 VM 遷移**
+    2. **適用場景**：檔案系統、物件儲存的資料搬移（例如：NFS → EFS、S3，或 on-premises 檔案伺服器 → FSx）
+    3. **功能限制**：不處理 VM、OS、應用程式
+    4. **考試陷阱**：看到 "sync"、"replication" 就誤選
