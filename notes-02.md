@@ -229,67 +229,97 @@
     2. **簡化設定**：點選設定，**不用寫 API 串接**
     3. **彈性觸發**：支援排程或事件觸發
     4. **自動處理**：資料轉換和加密
-51. ★★ AWS Trusted Advisor - 最佳實踐檢查工具○
+51. ★★ AWS Trusted Advisor - 最佳實踐檢查工具
     1. **本質**：AWS 內建的**最佳實踐檢查工具**，自動掃描帳號並給建議
-    2. **五大檢查類別**：Cost Optimization（閒置資源、低使用率 instances）、Performance（服務限制使用率、throughput 瓶頸）、Security（Security Group 開放規則、IAM 使用情況）、Fault Tolerance（EBS/RDS 快照、Multi-AZ 設定）、Service Limits（各服務配額使用情況）
-52. 應考三個小技巧
+    2. **五大檢查類別**：
+       1. Cost Optimization（閒置資源、低使用率 instances）
+       2. Performance（服務限制使用率、throughput 瓶頸）
+       3. Security（Security Group 開放規則、IAM 使用情況）
+       4. Fault Tolerance（EBS/RDS 快照、Multi-AZ 設定）
+       5. Service Limits（各服務配額使用情況）
+    3. 只是建議工具，不會自動改設定
+52. 應考三個小技巧 by Udemy SAA 教練
     1. 陷阱題很少
-    2. 不要 overthink
+    2. 無須 overthink
     3. 如果一個方案看起來可行，但過於複雜，那可能是錯的
-53. Site-to-Site VPN 的兩個部分是：
-    1. Customer Gateway (CGW) - 客戶端的 VPN 設備
-    2. Virtual Private Gateway (VGW) - AWS 端的 VPN 閘道
+53. 連接 Site-to-Site VPN 的兩個部分是：
+    1. **Customer Gateway** (CGW) - 客戶端的 VPN 設備
+    2. **Virtual Private Gateway** (VGW) - AWS 端的 VPN 閘道
     3. 兩扇門對接，VPN 隧道才能建立
     4. 如果題目問「如何**讓本地機房連到 AWS**」→ 答案通常就是 Site-to-Site VPN
-    5. CGW 需要一個**固定的公網 IP**
+    5. CGW 需要一個**固定的公網 IP**⭐️
+       - AWS 的 VGW 需要主動發起連線到你的 CGW
+       - 沒有固定 IP，AWS 不知道該連到哪裡
 54. ★★ ENI (Elastic Network Interface) 故障轉移機制 - 高可用性架構
-    1. **核心概念**：ENI = 虛擬網卡，記憶 **Private IP、Elastic IP、MAC address**；**可從一台 EC2 拔下來插到另一台**
+    1. **核心概念**：
+       - ENI = 虛擬網卡
+       - 記憶 **Private IP、Elastic IP、MAC address**
+       - **可從一台 EC2 拔下來插到另一台**⭐️
     2. **使用場景**：資料庫 instance、NAT instance、需要固定 IP 的應用
     3. **運作流程**：主 instance 掛 ENI（綁定應用 Private IP）→ DNS 指向此 IP → 主 instance 掛時**拔下 ENI 插到備援機器** → **流量自動轉移，無需改 DNS、Route Table**
 55. ★★ ENI Detach/Attach 技術操作與限制條件
     1. **操作步驟**：**Detach**（解除故障 EC2 的 ENI 綁定）→ **Attach**（綁定 ENI 到備援 EC2）
-    2. **核心限制**：**Primary ENI (eth0) 不能拔**（只有 secondary ENI 能做 detach/attach）；兩台 EC2 必須**同一 AZ**；ENI 與目標 EC2 必須**同一 subnet**
-    3. **技術原因**：EC2 instance **必須至少有一張 ENI 才能運作**，eth0 是 launch 時自動建立的 primary ENI，所以 AWS 不允許 detach（故障轉移必須用 secondary ENI）
-56. 😇 ENI 自動故障轉移實務與範例
-    1. **實現方式**：通常寫成自動化腳本，**監控發現主機掛時自動執行 detach/attach**
-    2. **運作範例**：主機 (i-abc123) eth1 (10.0.1.50) → 故障後 detach eth1 → attach 到備援機 (i-xyz789) eth1 ← **同一 IP 自動轉移，無需改 DNS、Route Table**
-57. ★★ ENI HA 常見錯誤方案 - 考試陷阱（EIP + Transit Gateway）
-    1. **錯誤點 1：不需要 EIP**：題目說應用是 **private**（內網）；EIP 是給 **public** 訪問用的；內網通訊用 **Private IP 就好**
-    2. **錯誤點 2：Transit Gateway 用途錯誤**：**Transit Gateway 用來連接多個 VPC、VPC 和 on-premises，充當網路中心樞紐**；**不能做故障轉移**，不能「自動搬移 EIP」
-58. 😇 ENI vs EIP vs Transit Gateway 服務用途判斷標準
-    1. **Private 應用 HA**：用 **ENI detach/attach**（故障轉移用 secondary ENI + Private IP）
-    2. **考試陷阱提醒**：看到熟悉服務名稱（EIP、Transit Gateway）就選下去是錯的；EIP 解決 public 訪問問題、Transit Gateway 解決網路連接問題，都**不是 instance 故障轉移**工具
+    2. **核心限制**：
+       - **Primary ENI (eth0) 不能拔**（只有 secondary ENI 能做 detach/attach）
+       - 兩台 EC2 必須**同一 AZ**
+       - ENI 與目標 EC2 必須**同一 subnet**
+56. ★ ENI Primary vs Secondary 核心差異
+    1. **Primary ENI (eth0) 特性**：
+       - **自動建立**：EC2 launch 時自動建立
+       - **不可分離**：AWS 不允許 detach（與 instance 生命週期綁定）
+       - **必要性**：EC2 instance **必須至少有一張 ENI 才能運作**
+    2. **故障轉移限制**：
+       - **只能用 Secondary ENI**：Primary ENI 無法用於故障轉移
+       - **操作邏輯**：故障時 detach secondary ENI → attach 到備援 EC2
+57. ★ ENI 故障轉移常見錯誤 - EIP 誤用
+    1. **錯誤觀念**：以為內網應用需要 EIP
+    2. **正確理解**：
+       - **Private 應用**：只需要 **Private IP**
+       - **EIP 用途**：提供 **Public IP** 給需要網際網路存取的服務
+       - **內網通訊**：透過 **Private IP** 即可完成
+58. ★ ENI 故障轉移常見錯誤 - Transit Gateway 誤用
+    1. **錯誤觀念**：以為 Transit Gateway 可以做故障轉移
+    2. **正確理解**：
+       - **Transit Gateway 用途**：連接**多個 VPC** 與 **on-premises**，充當**網路中心樞紐**
+       - **不能做故障轉移**：無法「自動搬移 EIP」或處理 ENI 轉移
+       - **故障轉移方案**：使用 **ENI detach/attach** 或 **Route 53 健康檢查**
 59. ★★ CloudFront + Lambda@Edge - 動態內容處理能力
     1. **Lambda@Edge 執行時間點**：**Viewer Request**（用戶請求到達時）、**Origin Request**（轉發到源站前）、**Origin Response**（源站回應後）、**Viewer Response**（回傳給用戶前）
     2. **使用判斷**：需要「**看請求內容做決定**」→ **Lambda@Edge**；只是「加固定 headers」→ **Response Headers Policy**
 60. 😇 Lambda@Edge 核心概念
     1. **本質**：**CloudFront 的攔截器**，在邊緣節點執行程式碼
     2. **典型場景**：動態內容改寫、請求/回應處理、條件邏輯判斷
-61. ★★ Route 53 + S3 靜態網站託管 - 考試常見組合
-    1. **必要條件**：**S3 bucket 名稱必須完全等於 domain name**（例：bucket 名稱為 `example.com`）
-    2. **配置流程**：**Registered domain name**（已註冊域名）→ **Route 53 DNS 設定** → **S3 bucket（啟用靜態網站裝載）** → **ALIAS 記錄指向 S3**
+61. ★★ Route 53 + S3 靜態網站託管 - 考試常見組合⭐️
+    1. **必要條件**：S3 bucket 名稱必須**完全等於** domain name（例：bucket 名稱為 `example.com`）⭐️
+    2. **配置流程**：
+       1. 準備 **Registered domain name**（已註冊域名）
+       2. 設定 **Route 53 DNS**（建立 hosted zone）
+       3. 建立 **S3 bucket** 並啟用靜態網站裝載
+       4. 建立 **ALIAS 記錄指向 S3** endpoint
 62. 😇 ECS Task 基本特性
     1. **執行環境**：可以跑在 **EC2 或 Fargate**（無伺服器）
-    2. **權限與網路**：每個 Task 有**自己的 IAM Role**（Task Role）、每個 Task 有**獨立的 ENI**（網路介面）
-63. 😇 Task Definition vs Task - 藍圖與實例
+    2. **權限與網路**：每個 Task 有**自己的 IAM Role**（Task Role）、每個 Task 有**獨立的 ENI**（網路介面）⭐️
+63. 😇 ECS Task Definition vs Task - 藍圖與實例
     1. **Task Definition**：**藍圖**（定義要跑什麼 image、要多少 CPU/RAM）
     2. **Task**：**實例**（根據藍圖實際跑起來的容器）
     3. **類比**：**ECS Task ≈ Docker Compose 的一組容器**，是**容器化應用程式的執行單位**
-64. ★★ SQS vs Amazon MQ - 消息佇列服務對比
+64. ★★ SQS vs Amazon MQ - 訊息佇列服務對比
     1. **SQS**：**AWS 原生服務**，簡單便宜，適合新應用開發
     2. **Amazon MQ**：**相容 ActiveMQ/RabbitMQ**，用於遷移舊系統（已用 ActiveMQ/RabbitMQ 的應用無需改程式碼）
-65. ★★ Bastion Host 網路架構與安全設計
+65. ★★ Bastion Host 網路架構與安全設計⭐️
     1. **位置限制**：**必須在公有子網路（Public Subnet）**，才能從 internet 連線進來，是唯一的入口點
     2. **IP 配置**：需要 **Elastic IP 或 Public IP**；私有子網路的資源不需要也不該有
-66. ★ Elastic IP 安全最佳實踐 - 私有子網路資源的關鍵限制
-    1. **技術能力 vs 安全原則**：技術上可以在私有子網路的 EC2 附加 Elastic IP，但違反安全最佳實踐
-    2. **風險分析**：私有子網路 EC2 若附加 Elastic IP，就變成可從 internet 直接訪問，**破壞了「私有」的安全設計**
-    3. **設計原則**：**公網資源用 EIP，私網資源不該有**
-67. ★★ AWS DMS NoSQL 遷移能力 - 容易忽視的考試重點
+66. ★ Elastic IP 與 Subnet 類型的關係⭐️
+    1. **技術事實**：可以在 Private Subnet 的 EC2 附加 EIP（AWS 不會阻止）
+    2. **實際效果**：完全**無效**，因為 Private Subnet 的 Route Table 沒有 IGW 路由
+    3. **關鍵概念**：能否連外取決於 Route Table 是否指向 Internet Gateway，不是是否有 EIP
+    4. **Public Subnet**：Route Table 有 0.0.0.0/0 → IGW，資源需要公網 IP（EIP 或 Auto-assign）
+    5. **Private Subnet 連外**：使用 NAT Gateway（單向：內→外，資源本身不暴露）
+    6. **考試重點**：Private Subnet 的資源不應該有公網可訪問性，用 NAT Gateway 而非 EIP
+67. ★★ AWS DMS NoSQL 遷移能力 - 容易忽視的考試重點○
     1. **服務核心定位**：**DMS = 資料搬運工**，只要 AWS 支援的資料庫就幾乎都能搬（不限於關聯式）
     2. **NoSQL 遷移路線**：主要是 **MongoDB → DynamoDB** 這條路線
     3. **考試應用**：DMS 不是只給 RDB 用的，**NoSQL 遷移也是它的強項**，考試中會出現此場景
-
 68. ★★ AWS Network Firewall - VPC 層級 Layer 7 流量過濾
     1. **核心能力**：支援 **Layer 7 檢查**，可以基於 **URL、FQDN 進行過濾**（Security Group/NACL 只能基於 IP/Port）
     2. **應用場景**：自動阻擋惡意 URL、黑名單 FQDN、VPC 級別的入侵偵測
