@@ -352,3 +352,7 @@
     1. **關鍵字識別**：題目強調 "**minimal configuration change**" → 優先選擇 Streams + Lambda
     2. **技術優勢**：只需啟用 Streams + 綁定 Lambda（兩步驟）、無需額外基礎設施、Serverless 自動擴展
     3. **考試陷阱**：相比之下，用 CloudWatch Events 需要更多設定
+95. ★★ **CloudFront 與 ElastiCache 網站效能優化組合**
+    1. **CloudFront 定位**：**全球 CDN 服務**，將網站內容快取到全球各地 edge locations
+    2. **ElastiCache 定位**：**網站 in-memory 資料儲存或快取**，適用於資料庫查詢結果快取
+    3. **標準組合**：使用 CloudFront 以網站為 custom origin + 使用 ElastiCache 作為網站的 in-memory data store
