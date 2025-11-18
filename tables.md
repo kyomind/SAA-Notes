@@ -1004,3 +1004,13 @@ Lambda 在 Firehose 中是 **data transformation function**:
 | HPC 加速       | ❌                  | ✅             |
 | 支援 MPI、NCCL | ❌                  | ✅             |
 | 適用場景       | 一般高網路效能需求 | HPC、機器學習 |
+
+## 記憶口訣：審計追蹤 = 一定是 KMS
+
+| 加密方式 | Audit Trail           | 自動輪替   | 考試判斷       |
+| -------- | --------------------- | ---------- | -------------- |
+| SSE-KMS  | ✅ CloudTrail 完整記錄 | ✅ 自動     | 有合規需求必選 |
+| SSE-S3   | ❌ 只有 S3 操作紀錄    | ✅ 但看不見 | 最簡單/最便宜  |
+| SSE-C    | ❌ 無                  | ❌ 自己做   | 自己管金鑰     |
+
+題目說 "audit trail that shows **who used the encryption key**" → 直接鎖定 KMS。
