@@ -316,27 +316,29 @@
     4. **Public Subnet**：Route Table 有 0.0.0.0/0 → IGW，資源需要公網 IP（EIP 或 Auto-assign）
     5. **Private Subnet 連外**：使用 NAT Gateway（單向：內→外，資源本身不暴露）
     6. **考試重點**：Private Subnet 的資源不應該有公網可訪問性，用 NAT Gateway 而非 EIP
-67. ★★ AWS DMS NoSQL 遷移能力 - 容易忽視的考試重點○
+67. ★★ AWS DMS NoSQL 遷移能力 - 容易忽視的考試重點
     1. **服務核心定位**：**DMS = 資料搬運工**，只要 AWS 支援的資料庫就幾乎都能搬（不限於關聯式）
-    2. **NoSQL 遷移路線**：主要是 **MongoDB → DynamoDB** 這條路線
+    2. **NoSQL 遷移路線**：主要是 **MongoDB → DynamoDB** 這條路線⭐️
     3. **考試應用**：DMS 不是只給 RDB 用的，**NoSQL 遷移也是它的強項**，考試中會出現此場景
-68. ★★ AWS Network Firewall - VPC 層級 Layer 7 流量過濾
+68. ★★ AWS Network Firewall - **VPC 層級** Layer 7 流量過濾
     1. **核心能力**：支援 **Layer 7 檢查**，可以基於 **URL、FQDN 進行過濾**（Security Group/NACL 只能基於 IP/Port）
-    2. **應用場景**：自動阻擋惡意 URL、黑名單 FQDN、VPC 級別的入侵偵測
+    2. **應用場景**：**自動阻擋**惡意 URL、黑名單 FQDN、VPC 級別的入侵偵測
 69. ★★ 多層防禦架構 (Defense-in-Depth) 考試判斷技巧
     1. **關鍵字識別**：「malicious URLs」「blacklisted FQDNs」→ **Layer 7 過濾** → **Network Firewall**⭐️
     2. **架構設計**：「layered approach」「defense-in-depth」→ **公私有 subnet 分離** + **Network Firewall 在邊界**
     3. **成本控制**：「minimum resources」→ **只用 Network Firewall**（無需 WAF、Shield 等額外服務）
 70. 👀 多層防禦常見陷阱選項
-    1. **用 WAF**：WAF 主要保護應用層，**不是 VPC 級別過濾**
+    1. **用 WAF**：WAF 主要保護應用層，**不是 VPC 級別過濾**⭐️
     2. **只用 Security Group**：**無法識別 URL 或 FQDN**，僅能基於 IP/Port
     3. **複雜多 VPC 架構**：題目要求最小資源，不適用此方案
 71. 😇 Network Firewall 部署架構
-    1. **位置**：VPC 邊界（不掛在 ALB 上）
+    1. **位置**：**VPC 邊界**（不掛在 ALB 上）
     2. **流量必經**：所有進出流量 → Network Firewall（Layer 7 檢查）→ 應用層
 72. ★ CIDR Block 核心概念與 VPC 地址管理
     1. **Block 定義**：**一個完整的 IP 地址段**（例：Primary 10.0.0.0/16、Secondary 10.1.0.0/16）
-    2. **多 Block 支援**：VPC 最多 **5 個 CIDR blocks**（1 個 Primary + 4 個 Secondary），每個 block **獨立的地址池**
+    2. **多 Block 支援**
+        - **數量限制**：VPC 最多 **5 個 CIDR blocks**（1 個 Primary + 4 個 Secondary）
+        - **Block 特性**：每個 block **獨立的地址池**
     3. **Exhaustion 含義**：「blocks are nearing exhaustion」= **所有 CIDR blocks 加總的可用空間快用完**
 73. 😇 VPC CIDR Block 名詞釐清
     1. **複數用法**：AWS 文件習慣用複數「blocks」因為 VPC 支援多個 CIDR（題目可能只有 1 個 block，但「blocks」是通用說法）
@@ -344,18 +346,26 @@
 74. ★★ VPC IPv4 Exhaustion 擴展方案 - IPv6-Only Subnet
     1. **問題場景**：VPC 的 IPv4 CIDR blocks **加總快用完**（exhaustion）
     2. **正確解法**：建立 **IPv6-only subnet**（前提：VPC 已啟用 IPv6）
-    3. **核心優勢**：IPv6 **無限供應**，不佔用 IPv4 資源，實現**無限擴展性**
+    3. **核心優勢**：IPv6 **無限供應**，不佔用 IPv4 資源，實現**無限擴展**
 75. ★ IPv4 vs IPv6 架構分層 - VPC 設計原則
-    1. **VPC 層級**：IPv4 **強制存在、不可移除**（無法停用或完全遷移）
+    1. **VPC 層級**：IPv4 **強制存在、不可移除**（無法停用或完全遷移）⭐️
     2. **Subnet 層級**：可以 **IPv6-only**（純 IPv6，不需要 IPv4 CIDR）
     3. **架構設計**：VPC 保持雙棧（IPv4 + IPv6）；新 subnet 用 IPv6-only 擴展
 76. 👀 IPv4 Exhaustion 常見陷阱方案
     1. **❌ 移除/停用 VPC 的 IPv4**：**不可能**，IPv4 是強制的
-    2. **❌ 新增更大的 IPv4 subnet**：**不符合 scalability**，IPv4 本質有限
+    2. **❌ 新增更大的 IPv4 subnet**
+        - **不符合 scalability**
+        - IPv4 本質有限
     3. **✅ 建 IPv6-only subnet**：**符合題意**，實現長期擴展
 77. ★ VPC 和 Subnet 的 IPv4 層級差異 - 架構分層理解
-    1. **VPC 層級**：創建時**必須指定 IPv4 CIDR**（例：10.0.0.0/16）、**地址池總量**、**無法移除**
-    2. **Subnet 層級**：**從 VPC CIDR 切分**（例：10.0.1.0/24）、**實際配 IP 給資源的地方**、EC2/RDS 等的 IPv4 地址來自此層
+    1. **VPC 層級**
+        - **必須指定 IPv4 CIDR**（例：10.0.0.0/16）⭐️
+        - **地址池總量**
+        - **無法移除**⭐️
+    2. **Subnet 層級**
+        - **從 VPC CIDR 切分**（例：10.0.1.0/24）⭐️
+        - **實際配 IP 給資源的地方**⭐️
+        - EC2/RDS 等的 IPv4 地址來自此層
 78. 😇 IPv4 層級架構比喻與陷阱認知
     1. **層級比喻**：VPC = 倉庫總容量、Subnet = 具體貨架
     2. **陷阱認知**：「停用 VPC 的 IPv4」= 拆掉整個倉庫，**所有貨架（subnet）都會掛**，這是為什麼不可能移除 VPC 層級的 IPv4
@@ -363,29 +373,33 @@
     1. **VPC 建立**：**必須指定 IPv4 CIDR**（例：10.0.0.0/16）；IPv6 CIDR **可選、隨時可加**
     2. **IPv6-only Subnet 建立**：VPC **先有 IPv6 CIDR**（例：2001:db8::/56） → **Subnet 的 IPv6 範圍從 VPC 的 IPv6 CIDR 切分**（例：2001:db8::/64）
     3. **獨立性**：IPv6-only subnet **不佔用 IPv4 CIDR**，完全獨立運作
-80. 😇 VPC IPv6 實務配置範例
-    1. **雙棧 VPC**：VPC: 10.0.0.0/16（IPv4）+ 2001:db8::/56（IPv6）
-    2. **IPv6-only Subnet**：2001:db8::/64（純 IPv6，不需要 IPv4 CIDR 分配）
-    3. **應用場景**：IPv4 exhaustion 時直接建 IPv6-only subnet 擴展，VPC 已有 IPv6 CIDR 即可實現
+80. (刪除)
 81. ★★ RDS Proxy - Lambda 高併發連線池管理方案
     1. **問題核心**：Lambda 高併發時每個實例建立新連線，導致 RDS **連線數爆掉**
-    2. **解決方案**：**RDS Proxy 複用連線池**，Lambda 不直接連 RDS，改透過 Proxy 的 **warm connection pool** 分配連線，即使 Lambda 瞬間擴展數萬個也能穩定控制對 RDS 的實際連線數
+    2. **解決方案**
+        - **RDS Proxy 複用連線池**
+        - Lambda 不直接連 RDS，改透過 Proxy 的 **warm connection pool** 分配連線
+        - 即使 Lambda 瞬間擴展數萬個也能穩定控制對 RDS 的實際連線數
 82. 😇 RDS Proxy 支援範圍與額外好處
     1. **支援資料庫**：**MySQL、PostgreSQL、Aurora**
     2. **額外收益**：**降低 failover 時間**、**IAM 整合增強安全性**
-83. ★★ AWS Global Accelerator - 非 HTTP 協定與靜態 IP 場景
+83. ★★ AWS **Global Accelerator** - 非 HTTP 協定與靜態 IP 場景⭐️
     1. **典型使用場景**：**遊戲伺服器（UDP）、IoT（MQTT）、VoIP、需要靜態 IP 的應用、快速區域 failover**
     2. **核心特性**：**Anycast IP** 提供靜態全球 IP、支援**非 HTTP 協定**（相比 CloudFront 只支援 HTTP/HTTPS）
 84. 👀 CloudFront vs Global Accelerator 考試判斷陷阱
     1. **CloudFront**：S3 靜態網站、內容分發、**HTTP/HTTPS 協定**
-    2. **Global Accelerator**：**非 HTTP 協定或需要固定 IP**（UDP/MQTT/VoIP 等）
+    2. **Global Accelerator**：**非 HTTP 協定或需要固定 IP**（UDP/MQTT/VoIP 等）⭐️
     3. **記憶重點**：不要因為看到「全球加速」就選 Global Accelerator，要看**協定類型和後端服務特性**
 85. ★★ 解耦架構 (Decoupled Architecture) 服務判斷 - 系統間通訊與消息傳遞
     1. **核心概念**：**讓系統各組件獨立運作，透過中間層傳遞訊息/任務**，避免直接溝通
-    2. **標準解耦服務**：**SQS**（訊息佇列，A 系統 → 佇列 ← B 系統）、**SNS**（Pub/Sub 發佈/訂閱）、**EventBridge**（事件驅動）、**SWF**（複雜工作流協調）
+    2. **標準解耦服務**
+        - **SQS**（訊息佇列，A 系統 → 佇列 ← B 系統）
+        - **SNS**（Pub/Sub 發佈/訂閱）
+        - **EventBridge**（事件驅動）
+        - **SWF**（複雜工作流協調）
 86. 👀 解耦架構常見陷阱選項 - 錯誤原因分析
     1. **RDS/DynamoDB**：資料庫服務，存放資料但**不能解決系統間通訊問題**
-    2. **VPC Peering**：網路連線工具，讓 VPC 互通但**on-premises 根本無法使用**（Peering 只限 VPC 之間）
+    2. **VPC Peering**：網路連線工具，讓 VPC 互通但**on-premises 根本無法使用**（Peering **只限 VPC 之間**）⭐️
 87. ★ Amazon SWF (Simple Workflow Service) - 工作流程協調與長時間任務管理
     1. **核心功能**：**協調分散式應用中的工作流程**，確保任務按順序執行、追蹤狀態
     2. **關鍵特性**：**支援 human tasks（人工介入）**、**長時間工作流（最長 1 年）**、屬於**解耦架構工具**
@@ -396,13 +410,13 @@
     1. **核心定位**：**實體硬碟搬運服務**，AWS 寄硬碟 → 複製資料 → 寄回 → 上傳 S3
     2. **使用判斷標準**：**上傳超過 1 週**或**數十 TB 以上且網路慢/貴** → 選 Snowball
 90. ★ S3 Transfer Acceleration - 網路路由優化限制與應用場景
-    1. **本質**：**透過 CloudFront edge locations 加速上傳到 S3**，改善網路路由⭐️
-    2. **核心限制**：**只能優化網路路由，無法突破頻寬上限**（100 Mbps 上傳 250 TB ≈ 231 天，即使用 Acceleration 可能變 200 天）
+    1. **本質**：透過 CloudFront edge locations **加速上傳到 S3**，改善網路路由⭐️
+    2. **核心限制**：**只能優化網路路由，無法突破頻寬上限**（100 Mbps **上傳** 250 TB ≈ 231 天，即使用 Acceleration 可能變 200 天）
     3. **適用場景**：**網路好但距離遠**的情況
 91. ★★ AWS STS (Security Token Service) - 臨時憑證與身份授權
     1. **核心功能**：**產生臨時憑證**，讓使用者/服務跨帳號或提權存取資源
     2. **運作流程**：呼叫 AssumeRole → STS → 回傳**臨時憑證**（Access Key + Secret + Session Token）→ 用臨時憑證存取資源
-92. ★★ STS 主要使用場景與應用
+92. ★★ STS 主要使用場景與應用⭐️
     1. **跨帳號存取**：Dev 帳號存取 Prod 帳號資源
     2. **臨時提權**：EC2 需要短暫存取 S3
     3. **聯合身份**：公司 AD 使用者登入 AWS
@@ -416,28 +430,31 @@
        - **Data Tier**（資料層）：資料庫、儲存系統
 95. ★★ Site-to-Site VPN 連線必要元件
     1. **核心觀念**：要讓 AWS VPC 跟地端機房溝通，雙方都要有「門」（**Customer Gateway** 和 **Virtual Private Gateway**）
-    2. **VPC 外部配置**：**Customer Gateway**（你的 VPN 設備，硬體或軟體）+ **靜態公網 IP**（此設備必須有固定的公網 IP）
+    2. **VPC 外部配置**：**Customer Gateway**（你的 VPN 設備，硬體或軟體）+ **靜態公網 IP⭐️**（此設備必須有固定的公網 IP）
 96. 😇 Site-to-Site VPN 架構與實戰經驗
     1. **典型應用場景**：傳統企業有地端的 SAP、Oracle 等系統搬不動，用 Site-to-Site VPN 跟 AWS 打通
-    2. **架構示意**：你的機房 [Customer Gateway (需要 static IP)] ←--VPN Tunnel--→ AWS VPC [Virtual Private Gateway]
+    2. **架構示意**：你的機房 [Customer Gateway (需要 static IP)] ←--**VPN Tunnel**--→ AWS VPC [Virtual Private Gateway]
 97. ★★ Site-to-Site VPN 題目判斷標準
     1. **VPC 外部設定**：題目問「VPC 外部要設定什麼」→ 一定是 **Customer Gateway**
-    2. **VPC 內部配置**：題目問「VPC 內部要設定什麼」→ **Virtual Private Gateway + Route Table + Security Group**（三個都需要）
+    2. **VPC 內部配置**：題目問「VPC 內部要設定什麼」→ **Virtual Private Gateway + Route Table + Security Group**（三個都需要）⭐️
 98. ★★ Virtual Private Gateway (VPG) 架構與公網暴露原理
-    1. **VPG 公網特性**：**VPG 有 AWS 提供的公網 endpoint**；建立時 AWS 自動分配**兩個公網 IP**（用於 HA）
+    1. **VPG 公網特性**：**VPG 有 AWS 提供的公網 endpoint**；建立時 AWS 自動分配**兩個公網 IP**（用於 HA）⭐️
     2. **連線流程**：你的機房（公網 IP）→ Internet（加密通道）→ VPG（AWS 公網 endpoint）→ VPC 內部網路
 99. ★ Site-to-Site VPN 安全設計核心觀念
     1. **VPG 暴露vs內部資源私有**：**VPG 本身要能從公網存取**，但連線是**加密的 IPsec tunnel**；**VPC 內的資源（EC2、RDS）不需要公網 IP**，透過 VPG 就能跟機房溝通
     2. **架構區別**：Site-to-Site VPN ≠ 將 EC2 放在 public subnet；VPC **內部資源仍是私有的**，只是透過加密通道與地端溝通
 100. ★★ AWS Outposts - 邊界運算與本地處理方案
-     1. **核心本質**：**把 AWS 搬到你家機房**，在地端運行 AWS 服務（EC2、RDS、ECS 等），享受託管服務便利同時兼顧本地延遲和合規性
+     1. **核心本質**：**把 AWS 搬到你家機房**，在地端運行 AWS 服務（EC2、RDS、ECS 等），享受託管服務便利同時兼顧本地延遲和合規性⭐️
      2. **典型應用場景**：需要 **low latency（低延遲）**、**local data processing（本地資料處理）**、**regulatory compliance（法規遵循）** 的工作負載
-101. ★★ CloudFront + S3 全球軟體分發方案
-     1. **場景**：全球多個 Outposts 要從 us-west-2 S3 下載大型軟體更新檔
-     2. **延遲優勢**：**Edge locations 快取**，不用每次都從 us-west-2 拉⭐️
-     3. **成本優勢**：CloudFront 流量費比跨區 S3 傳輸便宜
-     4. **管理優勢**：設定一次就完成，自動全球分發
-102. ★★ CloudFront Signed URLs - S3 內容安全分發
+101. ★★ CloudFront + S3 全球軟體分發
+     1. **問題**：全球 Outposts 從 us-west-2 S3 下載大型軟體更新檔
+     2. **解法**：CloudFront + S3⭐️
+     3. **原因**：
+        - **Edge location 快取** → 第一次慢，之後快
+        - 流量費比跨區 S3 便宜
+        - 一次設定，自動全球分發
+     4. **考點**：全球分發 + 降低延遲/成本 → CloudFront
+102. ★★ CloudFront Signed URLs - S3 內容安全分發○
      1. **權限控制**：透過 Signed URLs 限制誰能下載軟體更新，不是誰都能存取
      2. **時效性管理**：URL 可設定過期時間，確保只有授權使用者在時間範圍內存取
      3. **考試陷阱**：題目出現「**secure distribution**」→ 直接選 **Signed URLs**
