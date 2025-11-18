@@ -372,18 +372,24 @@
     2. **不選 SSE-KMS 場景**：Lowest cost（SSE-S3 更便宜）、Simplest solution（SSE-S3 更簡單）、You manage keys outside AWS（SSE-C）
     3. **核心記憶**：題目要求 **envelope encryption + 自動金鑰輪替 + 審計追蹤** 三條件 → 只有 SSE-KMS 符合
 100. ★★ **Envelope Encryption 詳細概念與安全優勢**
-    1. **雙層保護架構**：即使 Data Key 被竊取，沒有 KMS Master Key 也無法解密檔案；即使 KMS 被入侵，攻擊者也需要同時取得加密的 Data Key
-    2. **效能與安全平衡**：大檔案用對稱加密（Data Key，速度快）；小金鑰用非對稱加密（KMS，安全性高）
-    3. **考試記憶技巧**：**信封（Envelope）= 雙層包裝**，內層保護內容物，外層保護信封本身
+     1. **雙層保護架構**：即使 Data Key 被竊取，沒有 KMS Master Key 也無法解密檔案；即使 KMS 被入侵，攻擊者也需要同時取得加密的 Data Key
+     2. **效能與安全平衡**：大檔案用對稱加密（Data Key，速度快）；小金鑰用非對稱加密（KMS，安全性高）
+     3. **考試記憶技巧**：**信封（Envelope）= 雙層包裝**，內層保護內容物，外層保護信封本身
 101. ★ **Amazon Redshift Spectrum 核心功能**
-    1. **定義**：**擴展 Redshift 查詢能力**，讓 Redshift cluster **直接查詢 S3 中的資料**⭐️
-    2. **資料支援**：支援結構化和半結構化資料（JSON、Parquet、ORC、Avro等）
-    3. **應用場景**：大規模資料分析，**無需將 S3 資料搬移到 Redshift** 即可執行複雜查詢⭐️
+     1. **定義**：**擴展 Redshift 查詢能力**，讓 Redshift cluster **直接查詢 S3 中的資料**⭐️
+     2. **資料支援**：支援結構化和半結構化資料（JSON、Parquet、ORC、Avro等）
+     3. **應用場景**：大規模資料分析，**無需將 S3 資料搬移到 Redshift** 即可執行複雜查詢⭐️
 102. ★★ **S3 資料傳輸費用最佳化策略**
-    1. **免費傳輸規則**：Internet → S3 (upload)、**S3 → EC2 (同 Region)**、S3 → CloudFront
-    2. **成本判斷原則**：**跨 Region = 收費，同 Region = 免費**
-    3. **考試公式**：minimize data transfer cost + 處理 S3 資料 → **EC2 same Region as S3**
+     1. **免費傳輸規則**：Internet → S3 (upload)、**S3 → EC2 (同 Region)**、S3 → CloudFront
+     2. **成本判斷原則**：**跨 Region = 收費，同 Region = 免費**
+     3. **考試公式**：minimize data transfer cost + 處理 S3 資料 → **EC2 same Region as S3**
 103. ★ **處理專有格式檔案的服務選擇**
-    1. **必選 EC2 場景**：vendor's proprietary software → 需要運算環境執行 → **EC2 是唯一選擇**
-    2. **不適用服務**：Lambda（15 分鐘限制 + 記憶體不足）、Glue（不支援 proprietary format）、本地處理（傳輸費用爆炸）
-    3. **核心考點**：特殊軟體需求 + 成本最佳化 → 選擇同 Region 的 EC2
+     1. **必選 EC2 場景**：vendor's proprietary software → 需要運算環境執行 → **EC2 是唯一選擇**
+     2. **不適用服務**：Lambda（15 分鐘限制 + 記憶體不足）、Glue（不支援 proprietary format）、本地處理（傳輸費用爆炸）
+     3. **核心考點**：特殊軟體需求 + 成本最佳化 → 選擇同 Region 的 EC2
+104. ★ **AWS Health Dashboard 服務差異比較**
+     1. **Personal Health Dashboard**：監控**你的 AWS 資源狀態**，針對特定帳號/資源，適用於「監控你的 EC2」場景
+     2. **Service Health Dashboard**：監控**AWS 服務整體狀態**，區域/全球性事件，適用於「看 AWS 是否當機」場景
+     3. **記憶口訣**：
+        - **Personal = 個人的 = 你的資源**
+        - **Service = 服務的 = AWS 整體**
