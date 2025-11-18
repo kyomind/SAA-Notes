@@ -391,5 +391,5 @@
      1. **Personal Health Dashboard**：監控**你的 AWS 資源狀態**，針對特定帳號/資源，適用於「監控你的 EC2」場景
      2. **Service Health Dashboard**：監控**AWS 服務整體狀態**，區域/全球性事件，適用於「看 AWS 是否當機」場景
      3. **記憶口訣**：
-        - **Personal = 個人的 = 你的資源**
-        - **Service = 服務的 = AWS 整體**
+        - Personal = 個人的 = 你的資源
+        - Service = 服務的 = AWS 整體
