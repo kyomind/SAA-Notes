@@ -456,3 +456,27 @@
 120. ★ **Athena 考試判斷標準**
      1. **關鍵字識別**：看到「分析 S3 資料」+「SQL 查詢」→ **Athena**
      2. **核心記憶**：**Athena = S3 + SQL**
+121. ★★ **CloudWatch Agent + Logs Insights** 日誌收集分析架構
+     1. **標準流程**：⭐️
+        - 在所有 EC2 安裝 **unified CloudWatch agent** 收集 logs
+        - Logs 自動送到 **CloudWatch Logs**
+        - 用 **CloudWatch Logs Insights** 查詢分析
+        - 結果匯出到 S3
+     2. **Unified CloudWatch Agent 優勢**：⭐️
+        - 同時支援 **Windows + Linux**
+        - 單一 agent 收集 logs 和 metrics
+        - 效能更好
+        - AWS 原生整合（零額外設定）
+     3. **CloudWatch Logs Insights 特性**：
+        - 內建 **SQL-like 查詢語言**⭐️
+        - 即時搜尋分析
+        - 有預設範本查詢
+        - 直接對接 CloudWatch Logs
+122. ★ **CloudWatch 日誌方案錯誤選項分析**
+     1. **手動 SSH 收集**：100+ instances 不可行
+     2. **自建 ELK Stack**：需管理基礎設施，工作量大
+     3. **SSM Run Command**：適合一次性指令，不適合持續收集 logs
+     4. **舊版 CloudWatch Logs agent**：不支援 Windows，效能較差
+123. ★ **CloudWatch 日誌收集考試判斷標準**
+     1. **關鍵字識別**："collect logs from instances" → **CloudWatch Agent**、"analyze logs" → **CloudWatch Logs Insights**、"minimal effort" → AWS 原生服務
+     2. **核心考點**：知道 AWS 有原生的 log 收集分析方案，別想著自己建
