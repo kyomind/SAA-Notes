@@ -497,3 +497,19 @@
 128. ★ **Requester Pays 錯誤方案分析 - Cross-Account Access**
      1. **為什麼錯**：只是開權限讓對方下載、**流量費還是 bucket owner 付**、沒解決成本問題
      2. **記憶技巧**：Cross-account = 開門讓人拿，你付運費
+129. ★★ **SQS Standard Queue 重複訊息根本問題**
+     1. **核心問題**：Standard Queue 的 **at-least-once delivery** 特性會造成重複訊息，這跟 visibility timeout 無關
+     2. **架構特性**：Standard Queue 就是會重複，這是設計特性，不是 bug
+     3. **錯誤認知**：調整 Visibility Timeout 無法防止 Standard Queue 本身產生重複訊息、無法保證訊息不會被發送兩次到 queue 裡
+130. ★★ **FIFO Queue 解決重複訊息的核心機制**
+     1. **Message Deduplication（去重）**：5 分鐘內相同的 `MessageDeduplicationId` 只會被接受一次、自動過濾重複訊息
+     2. **Exactly-once Processing（恰好一次處理）**：確保每個訊息只被消費一次，這才是解決「訂單被處理兩次」的關鍵
+     3. **從根本解決**：FIFO Queue 從根本上保證 exactly-once delivery
+131. ★ **Visibility Timeout 功能定位與限制**
+     1. **實際功能**：讓訊息在被某個 consumer 處理時「暫時隱藏」
+     2. **類比理解**：Visibility Timeout = 「這個訂單我先處理，其他人別碰」，但如果系統本來就會產生兩張一模一樣的訂單，調整這個參數根本沒用
+     3. **核心限制**：只是處理「同一訊息被多個 consumer 同時處理」的問題，不是解決「重複訊息」的問題
+132. ★★ **SQS 重複訊息考試判斷標準**
+     1. **必選 FIFO 場景**：看到「重複處理」、「duplicate messages」問題
+     2. **判斷邏輯**：如果「順序」很重要 → **必選 FIFO Queue**、如果只是「不能重複」→ **優先選 FIFO Queue**
+     3. **核心記憶**：Standard Queue 架構問題不是參數調整可以解決的，需要 FIFO Queue 從根本解決
