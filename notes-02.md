@@ -460,12 +460,12 @@
      3. **考試陷阱**：題目出現「**secure distribution**」→ 直接選 **Signed URLs**
      4. S3 (私有) → CloudFront (CDN) → Signed URLs → 授權使用者
      5. S3 要設為私有，然後透過 CloudFront 的 Signed URLs 控制誰能下載
-103. ★★ S3 Server-Side Encryption (SSE) 核心概念與實作方式
+103. ★ S3 Server-Side Encryption (SSE-S3) 核心概念與實作方式
      1. **技術特性**：使用 **256-bit AES-256 演算法**、每個物件用**獨立密鑰加密**、**密鑰本身也會加密**並定期輪替
-     2. **實作方式**：在 **bucket policy** 中要求所有上傳須帶 **x-amz-server-side-encryption header**
+     2. **實作方式**：在 **bucket policy** 中要求所有上傳須帶 `x-amz-server-side-encryption header`
 104. 😇 SSE-S3 vs SSE-C 加密方案選擇
      1. **SSE-S3**：AWS 託管密鑰，使用 `x-amz-server-side-encryption header` 啟用
-     2. **SSE-C**：客戶提供密鑰，需提供 `x-amz-server-side-encryption-customer-algorithm`、`x-amz-server-side-encryption-customer-key`、`x-amz-server-side-encryption-customer-key-MD5` 三個 headers
+     2. **SSE-C**：客戶提供密鑰，需提供 `x-amz-server-side-encryption-customer-algorithm`、`x-amz-server-side-encryption-customer-key`、`x-amz-server-side-encryption-customer-key-MD5` 三個 headers，缺一不可
 105. ★ SCP 常見陷阱 - 權限控管工具不是登入機制
      1. **SCP 的真正用途**：**限制子帳號的權限範圍**（禁止使用特定 region、禁止刪除 CloudTrail）
      2. **考試陷阱**：題目提 Organizations → 容易聯想 SCP；但若題目要的是**統一登入機制**（而非權限控管），SCP 就是**錯誤答案**
@@ -476,6 +476,10 @@
 107. ★★ AWS Config - 資源配置變更持續記錄與合規檢查
      1. **核心功能**：**持續記錄 AWS 資源配置狀態變化**、**自動檢查是否符合規範**（類似「配置的 Git history + 自動 linter」）
      2. **Config Rules**：自動檢查資源是否符合規則（例如：所有 S3 bucket 必須加密、EC2 必須在特定 VPC）
+     3. 注意：只負責查檢並通知，**無法自動修復**
+     4. 自動修復需要搭配:
+        - SSM Automation (Systems Manager)
+        - Lambda
 108. 😇 AWS Config vs CloudTrail - 配置記錄與稽核對比
      1. **CloudTrail**：記錄「**誰做了什麼操作**」（API calls）、誰在什麼時間改了什麼
      2. **Config**：記錄「**資源配置的狀態變化**」（configuration snapshots）、檢查配置是否符合規範
@@ -492,9 +496,9 @@
      1. **Console 登入**：輸入帳密 → 輸入 MFA code → 進入（直覺式流程）
      2. **API 呼叫**：需要用**臨時憑證（STS）+ MFA token**（比 Console 複雜，通常只用於高權限操作如刪 RDS、改 IAM policy）
      3. **考試重點**：題目說「MFA can control access to AWS service APIs」指的就是透過 STS 機制實現
-112. ★★ Auto Scaling Cooldown Period - 擴縮容間隔控制
+112. ★★ Auto Scaling **Cooldown Period** - 擴縮容間隔控制
      1. **功能**：防止 Auto Scaling group 在前一次擴容/縮容完成前立即執行下一次擴縮容
-     2. **預設值**：300 秒
+     2. **預設值**：300 秒⭐️
      3. **特性**：可依需求調整配置
 113. ★★ Snowball Edge - 邊緣運算與離線資料處理
      1. **內建運算能力**：不只儲存，有 EC2、Lambda、S3 等服務；vs 普通 Snowball 只是搬運硬碟
@@ -502,14 +506,14 @@
 114. ★ Snowball Edge 考試判斷標準
      1. **選 Snowball Edge**：看到「**離線 / 斷網 / 邊緣運算 / 本地處理 / 即時分析**」等關鍵字
      2. **選普通 Snowball**：只說「**大量資料搬 AWS**」，沒提本地運算需求
-115. ★★ AWS Storage Gateway - 混合雲儲存統一存取
-     1. **核心概念**：**讓地端應用透過標準協定存取 AWS 雲端儲存**，就像存取本地儲存一樣
+115. ★★ AWS Storage Gateway - **混合雲**儲存統一存取
+     1. **核心概念**：**讓地端應用透過標準協定存取 AWS 雲端儲存**，就像存取本地儲存一樣⭐️
      2. **三種模式**：**File Gateway**（NFS/SMB）、**Volume Gateway**（iSCSI）、**Tape Gateway**（磁帶庫）
 116. ★ File Gateway 實務應用
      1. **協定**：NFS / SMB
-     2. **後端**：Amazon S3
+     2. **後端**：Amazon S3⭐️
      3. **適用場景**：檔案共享、內容分發、備份
-117. ★ Volume Gateway 深入對比 - Cached vs Stored
+117. ★ Volume Gateway 深入對比 - Cached vs Stored○
      1. **協定**：iSCSI (區塊儲存)
      2. **後端**：S3 + EBS Snapshots
      3. **Cached 模式**：**主資料在雲端 S3，常用資料快取本地**（讀快、容量受限）

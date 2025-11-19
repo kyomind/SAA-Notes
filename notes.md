@@ -582,3 +582,11 @@
      1. **核心記憶**：Instance Store = 臨時儲存，關機就沒了
      2. **類比理解**：實體主機的硬碟，機器關了資料就不見
      3. **考試判斷**：題目問「終止後資料如何」→ 選「自動刪除」
+149. ★★ **SSE-S3 加密方案識別與特徵**
+     1. **判斷依據**：Header 是 `x-amz-server-side-encryption`（沒有指定 KMS）
+     2. **管理特性**：S3 自動管理密鑰、自動輪替
+     3. **方案定位**：最簡單的加密方式
+150. ★ **SSE-KMS vs SSE-S3 header 差異比較**
+     1. **SSE-KMS header**：`x-amz-server-side-encryption:aws:kms` 並需指定 KMS key ID
+     2. **SSE-S3 header**：`x-amz-server-side-encryption`（無需額外參數）
+     3. **考試判斷**：看 header 格式判斷加密方式
