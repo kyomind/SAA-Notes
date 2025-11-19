@@ -422,3 +422,27 @@
      1. **ACM 簽發證書**：免費、自動更新、只用於 AWS 服務、**不能匯出私鑰**⭐️可以自簽！本身就是一個 CA
      2. **導入第三方證書**：需手動更新、可用於任何地方、保留原 ARN
      3. **考試判斷**："issue certificate" → ACM 簽發；"import from third-party CA" → 導入外部；"export private key" → 不能用 ACM 簽發的
+112. ★★ **CloudWatch Agent + Parameter Store 監控架構**
+     1. **CloudWatch 預設不監控 memory**：只監控 CPU、Network、Disk performance
+     2. **監控 memory 需求**：安裝 CloudWatch Agent → 讀取 Parameter Store 配置 → 發送 custom metric
+     3. **考試判斷**："memory usage" + Auto Scaling → 必須用 CloudWatch Agent + Parameter Store
+113. ★★ **EC2 Instance Metadata 服務核心概念**
+     1. **定義**：EC2 提供的特殊端點 `169.254.169.254`，讓 instance 查詢自己的資訊（IP、Instance ID、IAM credentials 等）
+     2. **核心優勢**：無需安裝工具、無需設定權限、即時反映狀態、完全免費
+     3. **考試判斷**："running instance 內取得自己的資訊" → Instance Metadata
+114. 😇 **EC2 Instance Metadata 可查詢資訊類型**
+     1. **網路資訊**：Public/Private IP
+     2. **身份資訊**：Instance ID、Security Groups、IAM Role credentials
+**VPC 陷阱**: VPC 本身免費,但別被誤導 — VPC 內的服務該收多少還是收多少。
+115. ★ **AWS 會計費的項目**
+     1. **Running EC2 Instance**：只要在運行就計費（按小時）
+     2. **EBS Volumes**：無論 EC2 是否運行都計費（按儲存容量）
+116. ★ **AWS 不計費的項目**
+     1. **Stopped EC2 Instance**：停止後不計算運算費用
+     2. **VPC 本身**：建立和使用 VPC 免費（但 VPC 內的資源如 EC2、NAT Gateway 等仍照常計費）
+     3. **Public Data Set**：AWS 提供的公開資料集免費
+117. ★★ **EC2 計費核心原則與陷阱**
+     1. **計費區間**：**Boot 開始 → Terminate 結束**
+     2. **Stop 狀態**：Stop 不計算運算費用，但 **EBS 持續計費**
+     3. **Terminate 狀態**：才完全停止計費（EBS 也會刪除）
+     4. **VPC 計費陷阱**：VPC 本身免費，但別被誤導 — **VPC 內的服務該收多少還是收多少**
