@@ -554,3 +554,18 @@
      1. **方法一：上傳時設定 ACL**：在 **S3 Console** 上傳物件時，直接授予 public read access（適合個別物件）
      2. **方法二：Bucket Policy**：設定 bucket policy 讓所有物件預設為 public read（適合整個 bucket）
      3. **考試判斷**：題目要求「所有物件都能被公開讀取」→ 兩種方法都正確
+142. ★★ **Glacier Vault Lock 核心概念與合規保護**
+     1. **定義**：提供 **immutable（不可變更）** 的刪除保護機制，鎖定後無法修改
+     2. **用途**：合規要求（如保留期限）、強制保留期（例如保留 5 年才能刪除）
+     3. **關鍵字識別**：題目出現「保留 X 年才能刪除」→ 需要 **Vault Lock**
+143. ★★ **Glacier Vault Lock vs Vault Access Policy 差異比較**
+     1. **Vault Lock**：immutable（鎖定後不可改）、可強制保留期、用於合規要求
+     2. **Vault Access Policy**：可隨時修改、無法強制保留期、用於一般權限控制
+     3. **考試判斷**：**合規 + 保留期限** = Vault Lock
+144. 😇 **Glacier 特性與操作限制**
+     1. **Archive 特性**：上傳後 **immutable**（不可修改）
+     2. **支援操作**：只能 Upload、Download、Delete
+     3. **適用場景**：長期封存、不需修改的資料
+145. 😇 **Glacier Vault Lock 考試記憶口訣**
+     1. **核心記憶**：Lock = 鎖死 = 合規保證
+     2. **判斷標準**：看到保留期限要求 → 選 Vault Lock
