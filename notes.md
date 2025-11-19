@@ -530,3 +530,23 @@
      1. **識別原則**：看 ARN 最後一段 = Resource ID
      2. **格式記憶**：Directory ID (`d-xxx`)、Account ID (12位數字)、Sid (自訂標籤)
      3. **考試重點**：題目在考你識別 ARN 各個部分的能力
+136. ★★ **IAM Policy 核心結構與組成元素**
+     1. **基本結構**：`Version` (Policy 語法版本，固定值 `2012-10-17`) + `Statement` (權限規則陣列)
+     2. **Statement 核心元素**：`Sid` (Statement ID，可選識別標籤)、`Effect` (Allow/Deny)、`Action` (允許的操作)、`Resource` (資源範圍 ARN)
+     3. **Policy 定義**：定義 AWS 資源的存取權限
+137. ★★ **IAM Policy Statement 實例解析**
+     1. **Statement 1 範例**：Effect: Allow、Action: `ds:*` (Directory Service 所有操作)、Resource: 特定 Directory ARN → **只能管理指定的 AD 目錄**
+     2. **Statement 2 範例**：Effect: Allow、Action: `ec2:*` (EC2 所有操作)、Resource: `*` (所有資源) → **可對任何 EC2 實例做任何事**
+     3. **萬用字元 `*`**：代表「全部」，用於 Action 或 Resource
+138. ★★ **IAM Policy 考試重點與判斷原則**
+     1. **Effect 優先權**：`Deny` 優先權**高於** `Allow`
+     2. **Action 格式**：服務前綴 + 操作（例如 `s3:GetObject`、`ec2:*`）
+     3. **Resource 指定**：使用 ARN 格式指定資源範圍，`*` 表示所有資源
+139. ★ **IAM Policy 實務判斷標準與最佳實踐**
+     1. **Action 配置**：寬鬆 (`*` 所有操作) vs 嚴謹 (明確列出操作)
+     2. **Resource 配置**：寬鬆 (`*` 所有資源) vs 嚴謹 (指定特定 ARN)
+     3. **Effect 配置**：Allow (允許) vs Deny (明確禁止)
+140. 👀 **IAM Policy 考試陷阱與特殊情況**
+     1. **`Resource: "*"` 警覺點**：通常不是最佳實踐
+     2. **例外情況**：某些 EC2 API 不支援資源級權限，此時 `Resource: "*"` 是唯一選項
+     3. **考試判斷**：需要判斷是否為服務限制導致的必要配置
