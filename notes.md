@@ -513,3 +513,20 @@
      1. **必選 FIFO 場景**：看到「重複處理」、「duplicate messages」問題
      2. **判斷邏輯**：如果「順序」很重要 → **必選 FIFO Queue**、如果只是「不能重複」→ **優先選 FIFO Queue**
      3. **核心記憶**：Standard Queue 架構問題不是參數調整可以解決的，需要 FIFO Queue 從根本解決
+133. ★★ **ARN 結構解析與 Resource ID 識別**
+     1. **ARN 標準結構**：`arn:aws:service:region:account-id:resource-type/resource-id`
+     2. **結構拆解範例**：`arn:aws:ds:us-east-1:123456789012:directory/d-1234567890`
+        - Partition: `aws`
+        - Service: `ds` (Directory Service)
+        - Region: `us-east-1`
+        - Account ID: `123456789012`
+        - Resource ID: `d-1234567890` (Directory ID)
+     3. **核心記憶**：**ARN 從左到右越來越具體，最右邊就是 Resource ID**
+134. ★ **ARN 考試常見陷阱與錯誤選項**
+     1. **Statement ID (Sid) 混淆**：`DirectoryTutorialsDojo1234` 是 Policy 內的自訂標籤，不是 Directory ID 或 Directory name
+     2. **Account ID 誤選**：`987654321012` 是 12 位數字的帳號 ID，位於 ARN 中間位置
+     3. **Directory ID 格式**：正確格式通常是 `d-xxxxxxxxxx`
+135. 😇 **ARN 考試判斷技巧與記憶要點**
+     1. **識別原則**：看 ARN 最後一段 = Resource ID
+     2. **格式記憶**：Directory ID (`d-xxx`)、Account ID (12位數字)、Sid (自訂標籤)
+     3. **考試重點**：題目在考你識別 ARN 各個部分的能力

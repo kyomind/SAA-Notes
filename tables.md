@@ -1039,3 +1039,33 @@ Lambda 在 Firehose 中是 **data transformation function**:
 | OS processes         | Kernel、系統程序                        |
 | **Per-process CPU**  | 個別 process 的 CPU 使用率              |
 | **Memory breakdown** | 詳細記憶體分配(active/inactive/buffers) |
+
+## IAM Policy 解讀
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "VisualEditor0",
+      "Effect": "Allow",
+      "Action": ["ds:*"],
+{
+  "Version": "2012-10-17",  // Policy 語法版本(固定值)
+  "Statement": [             // 權限規則陣列
+    {
+      "Sid": "VisualEditor0", // Statement ID(可選,用於識別)
+      "Effect": "Allow",       // 允許或拒絕
+      "Action": ["ds:*"],     // 允許的操作
+      "Resource": "arn:aws:ds:us-east-1:123456789012:directory/d-1234567890"
+    },
+    {
+      "Effect": "Allow",
+      "Action": ["ec2:*"],
+      "Resource": "*"         // 所有資源
+    }
+  ]
+}
+```
+
+這是兩個獨立的 Statement，兩者**是累加的**，不會互相覆蓋。
