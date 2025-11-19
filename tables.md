@@ -1014,3 +1014,28 @@ Lambda 在 Firehose 中是 **data transformation function**:
 | SSE-C    | ❌ 無                  | ❌ 自己做   | 自己管金鑰     |
 
 題目說 "audit trail that shows **who used the encryption key**" → 直接鎖定 KMS。
+
+## RDS 自帶的(CloudWatch 基本指標)
+
+從 **hypervisor 層**收集,不需額外啟用:
+
+| 指標類別             | 說明                         |
+| -------------------- | ---------------------------- |
+| CPU Utilization      | Hypervisor 層面的 CPU 使用率 |
+| Database Connections | DB 連線數                    |
+| Freeable Memory      | 可用記憶體                   |
+| Read/Write IOPS      | 讀寫操作數                   |
+| Network Throughput   | 網路吞吐量                   |
+
+## 二、Enhanced Monitoring 才有的
+
+從 **DB instance OS 層的 agent** 收集,需手動啟用:
+
+| 指標類別             | 說明                                    |
+| -------------------- | --------------------------------------- |
+| **Process List**     | 顯示各 process/thread 的資源使用        |
+| RDS child processes  | DB 主程序(如 `mysqld`, `aurora`)        |
+| RDS processes        | RDS 管理 agent、診斷程序                |
+| OS processes         | Kernel、系統程序                        |
+| **Per-process CPU**  | 個別 process 的 CPU 使用率              |
+| **Memory breakdown** | 詳細記憶體分配(active/inactive/buffers) |
