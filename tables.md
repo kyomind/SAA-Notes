@@ -1068,4 +1068,19 @@ Lambda 在 Firehose 中是 **data transformation function**:
 }
 ```
 
+### **第一段 Policy（ds:*）**
+
+允許此 IAM 身分 **對指定的 AWS Directory Service 目錄做所有操作**（ds:*），但**只限特定 ARN 的那個 directory**。
+
+### **第二段 Policy（ec2:*）**
+
+允許此 IAM 身分 **對所有 EC2 資源執行所有操作**（ec2:\*），不限制資源範圍（Resource =*）。
+
 這是兩個獨立的 Statement，兩者**是累加的**，不會互相覆蓋。
+
+## AMI 兩種類型
+
+| 類型                      | Root Device    | 資料持久性               |
+| ------------------------- | -------------- | ------------------------ |
+| **EBS-backed**            | EBS Volume     | 終止後保留(除非設定刪除) |
+| **Instance Store-backed** | Instance Store | **終止後自動刪除**       |
