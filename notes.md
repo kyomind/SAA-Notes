@@ -393,3 +393,16 @@
      3. **記憶口訣**：
         - Personal = 個人的 = 你的資源
         - Service = 服務的 = AWS 整體
+105. ★★ **AWS DataSync 核心定位與功能**
+     1. **服務定位**：**資料搬運專用服務**，專門處理 on-premises ↔ AWS 的大量資料傳輸
+     2. **技術優勢**：全託管服務（無需自己寫 script 或購買商業軟體）、自動加速線上資料傳輸到 AWS 儲存服務
+     3. **架構組件**：在 on-premises 部署 **DataSync Agent**（加速資料傳輸）、透過 **Direct Connect service endpoint** 連接 AWS 服務
+106. ★★ **DataSync + Direct Connect 私有連線架構**
+     1. **標準架構流程**：On-premises DataSync Agent → AWS Direct Connect（專線）→ Direct Connect service endpoint → AWS 儲存服務（S3/EFS/FSx）
+     2. **核心優勢**：**私有連線**（不經過公網）、自動化傳輸管理、加速大量資料搬移
+     3. **程式化連接要求**：使用 **Direct Connect service endpoint** 進行 AWS 服務的程式化連接
+107. ★★ **DataSync 連接端點與傳輸方向限制**
+     1. **來源端支援**：On-premises（NFS/SMB/自建物件儲存）、AWS 內部（S3/EFS/FSx）、Snowcone（內建 agent）
+     2. **目標端限制**：只能是 AWS 儲存服務（**S3/EFS/FSx**）
+     3. **傳輸方向**：**單向往 AWS 推送**，不支援 AWS → On-premises
+     4. **不支援服務**：RDS/DynamoDB（非檔案系統）、直接連接 Glacier（需先到 S3）
