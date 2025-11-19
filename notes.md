@@ -406,3 +406,19 @@
      2. **目標端限制**：只能是 AWS 儲存服務（**S3/EFS/FSx**）
      3. **傳輸方向**：**單向往 AWS 推送**，不支援 AWS → On-premises
      4. **不支援服務**：RDS/DynamoDB（非檔案系統）、直接連接 Glacier（需先到 S3）
+108. ★★ **EBS io1 Queue Length 配置策略**
+     1. **Transaction-intensive 場景**：低延遲需求 → **低 queue length** + 高 IOPS
+     2. **Throughput-intensive 場景**：高吞吐量需求 → 高 queue length
+     3. **考試判斷**：看到 "transaction-intensive" / "low-latency" → 選低 queue length
+109. ★★ **EBS io1 IOPS 計算公式**
+     1. **計算公式**：最大 IOPS = Volume 大小(GiB) × 50
+     2. **範例計算**：10 GiB → 最多 500 IOPS
+     3. **記憶技巧**：io1 = **50:1 固定比率**
+110. ★★ **ACM vs ACM Private CA 憑證類型選擇**
+     1. **ACM (AWS Certificate Manager)**：Public certificate（公開信任）、對外服務使用、免費且自動更新
+     2. **ACM Private CA**：Private certificate（僅內部信任）、企業內部 PKI、需額外付費
+     3. **考試判斷**："publicly trusted" → ACM；"internal authentication" / "private PKI" → ACM Private CA
+111. ★★ **ACM 證書來源與管理方式**
+     1. **ACM 簽發證書**：免費、自動更新、只用於 AWS 服務、**不能匯出私鑰**⭐️可以自簽！本身就是一個 CA
+     2. **導入第三方證書**：需手動更新、可用於任何地方、保留原 ARN
+     3. **考試判斷**："issue certificate" → ACM 簽發；"import from third-party CA" → 導入外部；"export private key" → 不能用 ACM 簽發的
