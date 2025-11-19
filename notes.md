@@ -480,3 +480,20 @@
 123. ★ **CloudWatch 日誌收集考試判斷標準**
      1. **關鍵字識別**："collect logs from instances" → **CloudWatch Agent**、"analyze logs" → **CloudWatch Logs Insights**、"minimal effort" → AWS 原生服務
      2. **核心考點**：知道 AWS 有原生的 log 收集分析方案，別想著自己建
+124. ★★ **S3 Requester Pays 核心概念與計費轉嫁**
+     1. **定義**：下載者付費，而非 bucket owner 付費
+     2. **計費分工**：Bucket owner 只付 **storage** 費用、Requester 付 **request + data transfer** 費用
+     3. **適用場景**：分享大型 dataset（zip codes、地理資料、爬蟲數據等），避免 owner 被下載流量吃垮
+125. ★★ **Requester Pays 重要特性與技術要求**
+     1. **自動禁用匿名存取**：啟用後必須驗證身份才能收費（這是 feature 不是 bug，因為要知道跟誰收錢）
+     2. **API 要求**：必須在 header 加 `x-amz-request-payer`
+     3. **計費對象**：若 requester 用 IAM role，該 role 所屬 account 被收費
+126. ★★ **Requester Pays 考試判斷與關鍵字識別**
+     1. **題目關鍵字組合**："share data" + "lower transfer costs" + "disable anonymous access" → **Requester Pays 一次滿足三個需求**
+     2. **錯誤選項陷阱**：Cross-Region Replication（反而增加成本）、S3 Transfer Acceleration（加速但不降成本）、Pre-signed URL（無法轉嫁流量費用）
+127. ★ **Requester Pays 錯誤方案分析 - CRR**
+     1. **為什麼錯**：複製本身產生 **request fee + inter-region transfer fee**、相當於你先付一次流量費把資料搬到歐洲、**反而更貴**
+     2. **記憶技巧**：CRR = 主動搬家，你付搬家費
+128. ★ **Requester Pays 錯誤方案分析 - Cross-Account Access**
+     1. **為什麼錯**：只是開權限讓對方下載、**流量費還是 bucket owner 付**、沒解決成本問題
+     2. **記憶技巧**：Cross-account = 開門讓人拿，你付運費
