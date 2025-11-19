@@ -1084,3 +1084,11 @@ Lambda 在 Firehose 中是 **data transformation function**:
 | ------------------------- | -------------- | ------------------------ |
 | **EBS-backed**            | EBS Volume     | 終止後保留(除非設定刪除) |
 | **Instance Store-backed** | Instance Store | **終止後自動刪除**       |
+
+## S3 Presigned URLs vs CloudFront Signed URLs
+
+| 比較項目 | S3 Presigned URLs | CloudFront Signed URLs       |
+| -------- | ----------------- | ---------------------------- |
+| 效能     | 直連 S3,無快取    | 全球 CDN 加速                |
+| 成本     | 直接從 S3 傳輸    | 透過 CloudFront 節省頻寬成本 |
+| 使用場景 | 簡單的檔案下載    | 大規模、全球分發             |

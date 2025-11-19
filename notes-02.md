@@ -454,10 +454,12 @@
         - 流量費比跨區 S3 便宜
         - 一次設定，自動全球分發
      4. **考點**：全球分發 + 降低延遲/成本 → CloudFront
-102. ★★ CloudFront Signed URLs - S3 內容安全分發○
+102. ★★ CloudFront Signed URLs - S3 內容安全分發
      1. **權限控制**：透過 Signed URLs 限制誰能下載軟體更新，不是誰都能存取
      2. **時效性管理**：URL 可設定過期時間，確保只有授權使用者在時間範圍內存取
      3. **考試陷阱**：題目出現「**secure distribution**」→ 直接選 **Signed URLs**
+     4. S3 (私有) → CloudFront (CDN) → Signed URLs → 授權使用者
+     5. S3 要設為私有，然後透過 CloudFront 的 Signed URLs 控制誰能下載
 103. ★★ S3 Server-Side Encryption (SSE) 核心概念與實作方式
      1. **技術特性**：使用 **256-bit AES-256 演算法**、每個物件用**獨立密鑰加密**、**密鑰本身也會加密**並定期輪替
      2. **實作方式**：在 **bucket policy** 中要求所有上傳須帶 **x-amz-server-side-encryption header**
