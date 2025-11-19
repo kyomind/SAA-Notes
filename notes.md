@@ -590,3 +590,35 @@
      1. **SSE-KMS header**：`x-amz-server-side-encryption:aws:kms` 並需指定 KMS key ID
      2. **SSE-S3 header**：`x-amz-server-side-encryption`（無需額外參數）
      3. **考試判斷**：看 header 格式判斷加密方式
+151. ★★ **Storage Gateway 類型選擇核心差異**
+     1. **Volume Gateway (iSCSI)**：協定 iSCSI、作為**虛擬硬碟**掛載、適用於資料庫和需要格式化檔案系統的應用
+     2. **File Gateway (NFS/SMB)**：協定 NFS/SMB、作為**網路共享資料夾**、適用於檔案伺服器和檔案存取應用
+     3. **核心記憶**：Volume Gateway 給需要「硬碟」的程式，File Gateway 給需要「資料夾」的程式⭐️
+152. ★ **Storage Gateway 應用場景判斷標準**
+     1. **Volume Gateway 場景**：PostgreSQL 需要儲存空間（資料庫需要掛載虛擬硬碟）
+     2. **File Gateway 場景**：多台伺服器共享文件（NFS 本來就是給多台共享用）
+     3. **考試判斷關鍵字**：Database/Block Storage/iSCSI → Volume Gateway；File Share/NFS/SMB/共享資料夾 → File Gateway
+153. ★★ **Elastic IP (EIP) 綁定對象核心概念**
+     1. **可綁定對象**：只能綁定在 **EC2 的 ENI** 或 **NAT Gateway** 上
+     2. **不能綁定對象**：Internet Gateway (IGW) 不需要也不能綁定 EIP
+     3. **IGW 角色定位**：是路由器概念，負責 route table 中的 `0.0.0.0/0 → IGW` 轉送，不是 endpoint
+154. 😇 **IGW vs NAT Gateway vs EIP 記憶比喻**
+     1. **IGW**：像家社區的大門（本身沒有門牌地址，只是出口）
+     2. **EIP**：像家門號（綁在 NAT 或 EC2）
+     3. **NAT Gateway**：像家裡的 WiFi Router（對外只有一個公網 IP）
+155. ★★ **NAT Gateway 連接 Internet 的完整架構流程**
+     1. **核心流程**：Private Subnet EC2 (預設路由 0.0.0.0/0 → NAT Gateway) → NAT Gateway → Internet Gateway (IGW) → Internet
+     2. **關鍵事實**：NAT Gateway **不會直接連 Internet**，必須透過 IGW 中繼⭐️
+     3. **位置要求**：NAT Gateway 須位於 **公有子網（Public Subnet）**，才能透過 IGW 出站
+156. ★ **NAT Gateway 的 Route Table 配置規則**
+     1. **私有子網配置**：只需在 Private Subnet Route Table 填 `0.0.0.0/0 → NAT Gateway (nat-xxxx)`
+     2. **NAT Gateway 自動轉送**：NAT Gateway 背後的「去 Internet 的路由」是 AWS 內建的，**不需手動設定**
+     3. **內建行為**：NAT Gateway 會自動將出站流量遞送到 IGW
+157. ★★ **NAT Gateway 考試陷阱與常見錯誤**
+     1. **陷阱 1：混淆路由責任**：誤以為 NAT Gateway 直接 NAT 後就能出網（錯），實際上沒有 IGW 它根本出不了 VPC
+     2. **陷阱 2：私有子網指向 IGW**：私有子網的 Route Table 指向 NAT Gateway，**不是指向 IGW**
+     3. **考試公式**：**私有子網 → NAT Gateway → IGW → Internet**（題目會直接考這個順序）
+158. 😇 **NAT Gateway 快速記憶法與實務理解**
+     1. **記憶口訣**：NAT Gateway 是公有子網的服務，用 **EIP + IGW** 幫私有子網連外
+     2. **簡化版**：NAT 站在公有子網，IGW 是它的門⭐️
+     3. **架構理解**：NAT Gateway 只負責 NAT 轉換，不負責出 VPC，IGW 才負責對外連接

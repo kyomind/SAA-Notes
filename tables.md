@@ -1092,3 +1092,13 @@ Lambda 在 Firehose 中是 **data transformation function**:
 | 效能     | 直連 S3,無快取    | 全球 CDN 加速                |
 | 成本     | 直接從 S3 傳輸    | 透過 CloudFront 節省頻寬成本 |
 | 使用場景 | 簡單的檔案下載    | 大規模、全球分發             |
+
+## Elastic IP 是綁在哪？
+
+| AWS 元件                   | 能不能綁 EIP？ | 說明                                                                            |
+| -------------------------- | -------------- | ------------------------------------------------------------------------------- |
+| **NAT Gateway**            | ✅ 可以         | NAT Gateway 建立時就必須指定一個 EIP，這就是外部看到的 NAT 公網 IP。            |
+| **Internet Gateway (IGW)** | ❌ 不行         | IGW 是一個區域性的 VPC 出口，只負責「路由」，不是一個實體端點，沒有 IP 可以綁。 |
+| **EC2**（透過 ENI）        | ✅ 可以         | EIP 綁在 EC2 NIC（ENI）上。                                                     |
+
+👉 **所以答案：Elastic IP 是綁在 NAT Gateway（或 EC2），不是 IGW。**
