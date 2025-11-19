@@ -622,3 +622,18 @@
      1. **記憶口訣**：NAT Gateway 是公有子網的服務，用 **EIP + IGW** 幫私有子網連外
      2. **簡化版**：NAT 站在公有子網，IGW 是它的門⭐️
      3. **架構理解**：NAT Gateway 只負責 NAT 轉換，不負責出 VPC，IGW 才負責對外連接
+159. ★★ **Route Table 四種 Target 快速判別（必背）**
+     1. **igw-xxxx → 公網**：Internet Gateway，對外連接
+     2. **nat-xxxx → 私有網出公網**：NAT Gateway，私有子網存取公網
+     3. **vpce-xxxx → S3/DynamoDB**：Gateway Endpoint，VPC 內安全存取 AWS 服務
+     4. **tgw-xxxx → Transit Gateway**：跨 VPC / 混合網路連接
+160. ★★ **VPC 與 Subnet 的層級劃分（Region vs AZ）**
+     1. **VPC 層級**：**Region 級別**（建立時選定一個 region，無法跨 region）
+     2. **Subnet 層級**：**AZ 級別**（建立時必須指定一個 AZ，無法跨 AZ）
+161. ★ **Multi-AZ 架構的基礎設計**
+     1. 一個 VPC 可以有**多個 subnet 分散在不同 AZ**（這就是 Multi-AZ 架構的基礎）
+     2. 每個 subnet 只能屬於**一個 AZ**，但一個 AZ 可以有多個 subnet
+162. ★★ **跨 AZ 高可用部署的考試陷阱**
+     1. **常見錯誤**：建立多個 VPC 來實現跨 AZ 高可用
+     2. **正確答案**：在多個 AZ 的 subnet 部署 EC2（在同一個 VPC 內）
+     3. **記憶要點**：高可用需要的是跨 AZ 的 subnet，而不是多個 VPC

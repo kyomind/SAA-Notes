@@ -562,35 +562,34 @@
      2. 如果放在 Private Subnet，它自己都出不去，無法幫其他機器上網
      3. **Public Subnet 定義**：**Route Table 有 0.0.0.0/0 → Internet Gateway**、**裡面的資源有 Public IP 或 Elastic IP**
 128. ★ NAT Gateway 部署配置與運作原理
-     1. **部署要求**：必須指定一個 **Elastic IP** 給 NAT Gateway
+     1. **部署要求**：必須指定一個 **Elastic IP** 給 NAT Gateway⭐️
      2. **網路配置**：它所在的 Public Subnet 的 **Route Table 會指向 IGW**
-     3. **運作結果**：因此 NAT Gateway 自己就能上網，才能幫助 Private Subnet 的資源對外通訊
+     3. **運作結果**：因此 NAT Gateway 自己就能上網，才能幫助 Private Subnet 的資源對外通訊(還是需要 IGW)
 129. ★★ DynamoDB Gateway Endpoint - VPC 私有存取解決方案
      1. **問題背景**：DynamoDB 是 **public service**，VPC 內的 EC2 預設要透過 **IGW 走公網存取**
      2. **解決方案**：**Gateway Endpoint 讓流量走 AWS 內網**，用 private IP 存取
+     3. 另一種常見的 Gateway Endpoint 是 S3
 130. 實作方式：
      1. 在 VPC 建立 Gateway Endpoint
      2. **關聯到 Route Table**（自動新增 DynamoDB prefix list 路由）⭐️
      3. 完全免費，流量不出 AWS 網路
-131. ★★ AWS Backup vs DynamoDB 原生備份 - 跨帳號/區域災難恢復
-     1. **DynamoDB 原生 on-demand backup 限制**：無法跨帳號、無法跨區域、沒有進階功能（cost tags、cold storage）
-     2. **AWS Backup 優勢**：跨帳號/區域複製、統一管理多種 AWS 資源備份、支援 cost allocation tags、可轉 cold storage 降成本
-132. ★ DynamoDB 存取與備份考試判斷標準
-     1. **關鍵字判斷**：「disaster recovery + 跨帳號/區域」→ **AWS Backup**；「VPC private 存取 DynamoDB」→ **Gateway Endpoint**
-     2. **考試重點**：測試你知不知道這兩個服務的邊界和適用場景
+131. (刪除)
+132. (刪除)
 133. ★★ NACL vs Gateway Endpoint - 功能界限與常見考試陷阱
-     1. **NACL 功能限制**：只能控制「**允許/拒絕**」流量，**無法改變路由路徑**
+     1. **NACL 功能限制**：只能控制「**允許/拒絕**」流量，**無法改變路由路徑**⭐️
      2. **錯誤認知**：即使 NACL 允許到 `dynamodb.us-east-1.amazonaws.com`，流量依然會走 **IGW → Internet**
      3. **正確做法**：必須用 **Gateway Endpoint** 才能改變路由，讓流量走 AWS 內網
      4. **功能類比**：NACL = **門禁卡**（控制能不能進出）；Gateway Endpoint = **專用通道**（改變走的路線）
+     5. **記憶口訣**：**NACL 管安全，Endpoint 改路徑** - 看到題目說「用 NACL 走內網」直接排除
 134. ★★ DynamoDB 原生備份 vs AWS Backup - 跨帳號災難恢復限制
      1. **原生備份限制**：DynamoDB **on-demand backup 不支援跨帳號/區域**，僅限本帳號內使用
      2. **AWS Backup 優勢**：支援**跨帳號/區域備份**，提供完整的災難恢復方案
-     3. **記憶口訣**：「**NACL 管安全，Endpoint 改路徑**」- 看到題目說「用 NACL 走內網」直接排除
 135. ★★ Kinesis Video Streams + Rekognition - 即時影像分析標準組合
      1. **應用場景**：**即時監控、人臉辨識、物體偵測**
      2. **服務組合**：**Kinesis Video Streams**（串流影像收集）+ **Amazon Rekognition**（AI 影像分析）
-     3. **Rekognition 分類**：**Image**（靜態圖片分析）和 **Video**（影片串流分析）兩種，考試時別搞混
+     3. **Rekognition 分類**
+        1. **Image**：靜態圖片分析
+        2. **Video**：影片串流分析兩種，考試時別搞混
      4. **考試判斷**：看到「即時影像分析」或「人臉/物體偵測」→ 直接選這個組合
 136. ★ CloudFront Geo-restriction - 地理區域存取限制功能
      1. **功能定位**：**限制特定地區存取內容**（黑名單概念），純粹的**存取控制工具**
@@ -599,7 +598,7 @@
      4. **考試應用**：題目提到「阻擋特定國家」→ **Geo-restriction**；提到「就近存取」→ **Route 53 地理路由**
 137. ★★ Route 53 Failover Routing 配置 - Active-Passive 災難恢復
      1. **核心設定**：建立 Primary + Secondary 記錄，routing policy 選 Failover
-     2. **Health Check 運作**：監控 Primary endpoint，Route 53 定期發送 HTTP/HTTPS/TCP 檢查；**Evaluate Target Health = Yes** 檢查 ALB 背後的 targets 狀態
+     2. **Health Check 運作**：監控 Primary endpoint，Route 53 定期發送 HTTP/HTTPS/TCP 檢查；**Evaluate Target Health = Yes** 檢查 ALB 背後的 targets 狀態⭐️
      3. **網路開放**：NACL 和 Route Table 必須允許 Route 53 health checker 的 IP，否則 Health Check 永遠失敗
 138. 👀 Route 53 Failover 常見陷阱
      1. **只設 Failover Policy 沒設 Health Check**：不會自動切換
@@ -609,23 +608,23 @@
      1. **統一入口**：提供 **REST API 和 WebSocket API** 的中央存取點
      2. **流量管理**：**Throttling**（限速）和 **Quota**（配額管理）控制 API 使用量
      3. **請求/回應轉換**：支援 **HTTP Header、Body、Path 參數**的轉換與修改
-     4. **快取機制**：內建 **Response Caching**，減少後端呼叫
-     5. **認證授權**：支援 **IAM、Lambda authorizer、Cognito** 多種認證方式
-     6. **後端整合**：與 **Lambda、EC2、HTTP 端點、其他 AWS 服務**無縫整合
+     4. **快取機制**：內建 **Response Caching**，減少後端呼叫⭐️
+     5. **認證授權**：支援 **IAM、Lambda authorizer、Cognito** 多種認證方式⭐️
+     6. **後端整合**：與 **Lambda、EC2、HTTP 端點、其他 AWS 服務**無縫整合⭐️
 140. 😇 API Gateway 應用場景與架構定位
      1. **定位**：API 的「前門」，負責流量調度、安全驗證、轉換和限流
      2. **典型架構**：Clients → API Gateway（認證、限流、轉換）→ Lambda / EC2（商業邏輯）→ 資料庫
-141. S3 安全場景的服務分工：
+141. S3 相關安全場景的服務分工：
      1. GuardDuty：偵測異常存取、惡意行為
      2. CloudTrail：記錄所有 API 操作（事後查帳，純記錄）
-     3. Macie：偵測 S3 內的敏感資料（PII、機密資訊）
+     3. Macie：偵測 **S3 內的敏感資料**（PII、機密資訊）⭐️只有這個是 only for S3
      4. Config：檢查 S3 設定是否符合規範
      5. Amazon Inspector：掃描 EC2 上的 S3 存取程式碼漏洞
 142. ★★ RDS Multi-AZ Failover 機制 - DNS (CNAME) 切換原理
      1. **Failover 工作方式**：**RDS endpoint (CNAME)** 指向 primary 的 DNS 記錄，failover 時 CNAME 自動指向 standby，**應用程式無需改 connection string**
-     2. **為何不是 IP 切換**：**IP 是綁定 subnet 的**，subnet 不能跨 AZ（Primary 在 AZ-A：IP `10.0.1.10`，Standby 在 AZ-B：IP `10.0.2.20`，無法搬遷）
+     2. **為何不是 IP 切換**：**IP 是綁定 subnet 的**，subnet 不能跨 AZ（Primary 在 AZ-A：IP `10.0.1.10`，Standby 在 AZ-B：IP `10.0.2.20`，無法搬遷）⭐️⭐️⭐️
      3. **記憶點**：**Multi-AZ Failover = DNS (CNAME) 切換，不是 IP 切換**，這也是為何 RDS endpoint 是 DNS 名稱而非 IP 的原因
-143. ★★ AWS Control Tower - 多帳號自動化管理中心⭐️
+143. ★★ AWS Control Tower - 多帳號自動化管理中心⭐️○
      1. **核心定位**：**AWS Organizations** 的升級版，提供**自動化 baseline 部署和持續合規檢查**（而非只是帳戶管理）
      2. **核心功能**：**自動建立 multi-account 架構**、**預設 security baseline**、**偵測和修復不合規配置**
      3. **考試判斷關鍵字**：「**多帳號 + 標準化配置**」、「**治理策略 + 自動化建立**」、「**預設 baseline + 持續合規檢查**」 → 選 **Control Tower**
