@@ -741,3 +741,16 @@
 188. ★ **RDS 成本優化考試陷阱與判斷要點**
      1. **常見陷阱**：題目用「stop」當干擾選項，測試是否知道 **Stop ≠ 完全不收費**
      2. **正確判斷**：間歇性工作負載用 **snapshot pattern** 更划算
+
+189. ★★ **CloudWatch Logs 觸發 EC2 Action 自動化流程**
+     1. **核心流程**：CloudWatch Logs (文字) → Metric Filter (關鍵字匹配) → Custom Metric (數值) → Alarm (觸發) → EC2 Action (執行)
+     2. **關鍵角色**：Logs 本身是「啞巴」，必須透過 **Metric Filter** 轉換成 Metric 才能觸發 Alarm
+     3. **應用場景**：監控 Application Error（如 "Database connection timeout"）並自動重啟 EC2
+190. ★ **CloudWatch Alarm 的 EC2 Action 功能**⭐️
+     1. **內建動作**：支援 **Reboot**、Stop、Terminate、Recover 四種動作
+     2. **運作機制**：Alarm 進入 `ALARM` 狀態時，自動呼叫 EC2 API（如 `RebootInstances`），**無需 Lambda 或 SNS**
+     3. **考試判斷**：題目問「最簡單/原生」的自動重啟解法 → **CloudWatch Alarm EC2 Action**
+191. 😇 **CloudWatch EC2 Action 限制與實務**
+     1. **帳號限制**：只能操作 **同一個 AWS 帳號** 的 EC2
+     2. **實務建議**：這是 **Reactive (被動)** 作法，治標不治本；更可靠的做法是 Auto Scaling + Health Check
+     3. **多重動作**：一個 Alarm 可以設定多個 Action（例如：重啟 EC2 + 發送 SNS 通知）
