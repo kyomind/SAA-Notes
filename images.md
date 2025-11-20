@@ -214,3 +214,7 @@ You can configure any access point to accept requests only from a virtual privat
 ## Amazon RDS Read Replicas
 
 ![圖 25](https://img.kyomind.tw/img-20251120-213835.png)
+
+## AWS Transit Gateway Inter-Region Peering
+
+![圖 26](https://img.kyomind.tw/img-20251120-222317.png)

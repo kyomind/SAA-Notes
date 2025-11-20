@@ -783,3 +783,58 @@
      2. **Permission Sets**：預先打包好的權限集合，直接套用
      3. **Central Management**：跨 Organizations 集中管理
      4. **考試判別**：現代 AWS 多帳號架構最佳實務，傳統單一 Account 的 IAM 管理已不適用企業級場景
+199. ★★ **AWS Transit Gateway 集中式網路管理核心概念**
+     1. **考試重點**：**集中式網路管理**，解決大量 VPC 互連的管理複雜度
+     2. **傳統痛點**：VPC Peering（N 個 VPC 需要 N(N-1)/2 條連線管理地獄）、VPN（每個 VPC 都要建立獨立 VPN 重複工作）、跨 Region 無法統一管理
+     3. **核心架構**：**Hub-and-Spoke 模型**，每個 Region 建立一個 TGW，用 **TGW Peering** 串接跨 Region
+200. ★★ **Transit Gateway 四大核心優勢**
+     1. **單點連接**：每個 VPC/VPN 只需連到 TGW，不用管其他 VPC
+     2. **自動路由**：新增 VPC 時自動可達所有網路
+     3. **跨 Region 支援**：TGW Peering 支援跨 Region 互連
+     4. **高擴展性**：支援數千個 VPC 連接
+201. ★ **Transit Gateway Regional Service 限制與配置要求**
+     1. **Regional 限制**：每個 Region 需要獨立的 TGW
+     2. **跨 Region 方案**：必須用 **TGW Peering Connection**
+     3. **Peering 規則**：只能連接不同 Region 的 TGW
+202. ★★ **Transit Gateway vs VPC Peering 考試判斷標準**
+     1. **選 Transit Gateway 關鍵字**：大量 VPC 互連、VPN 集中管理、跨 Region 網路、"centrally manage"、"hub and spoke"
+     2. **VPC Peering 適用場景**：點對點連接，適合少量 VPC
+     3. **Transit Gateway 適用場景**：中心化管理，適合大規模網路架構
+203. ★★ **Direct Connect Gateway 錯誤選項分析與考試陷阱**
+     1. **錯誤選項設計**：巧妙混合三個概念混淆考生（Direct Connect Gateway + Public Virtual Interface + LAG）
+     2. **核心錯誤**：Direct Connect Gateway **不支援 Public Virtual Interface**，只能建立 **Private Virtual Interface**
+     3. **Public VIF 用途**：存取 AWS 公開服務（S3、DynamoDB），**不適合 VPC 互連**
+204. 😇 **LAG (Link Aggregation Group) 功能定位與場景無關性**
+     1. **LAG 實際用途**：把多條 Direct Connect 連線綁成一條，**增加頻寬**
+     2. **場景不符**：題目要解決「**連接拓撲**」問題，不是頻寬問題
+     3. **考試陷阱**：LAG 在此場景完全無關，純屬混淆選項
+205. ★ **Direct Connect Gateway 限制與適用場景**
+     1. **主要用途**：**on-premises → AWS** 的私有連線
+     2. **跨 Region 能力**：可連多個 Region 的 VPC，但不適合大規模 VPC 間互連
+     3. **VPN 整合限制**：無法處理 VPN connections 的集中管理
+206. ★★ **Direct Connect vs Transit Gateway 考試對比表**
+     1. **用途對比**：Direct Connect（On-premises 專線）vs Transit Gateway（VPC/VPN 集中管理）
+     2. **跨 Region 支援**：Direct Connect（透過 DX Gateway）vs Transit Gateway（透過 TGW Peering）
+     3. **整合能力**：Direct Connect（不支援 VPN 整合、間接支援 VPC 互連）vs Transit Gateway（原生支援 VPN、原生支援 VPC 互連）
+207. 😇 **考試陷阱識別技巧與判斷原則**
+     1. **混淆選項特徵**：提到不相關的技術細節（如本題的 LAG）通常是混淆選項
+     2. **核心判斷**：題目問「**網路拓撲架構**」，不是「**連線頻寬優化**」
+     3. **記憶要點**：Focus on 題目真正要解決的問題類型
+208. ★★ **AWS Direct Connect 專用私有網路專線核心特性**
+     1. **不走公網**：從企業機房直接拉專線到 AWS
+     2. **固定頻寬**：1Gbps 或 10Gbps 固定頻寬選項
+     3. **穩定延遲**：比 VPN over Internet 延遲更穩定
+     4. **安全性**：流量不經過公共網路，完全私有連線
+209. ★★ **AWS VPN CloudHub 多站點互連核心概念**
+     1. **服務定位**：讓多個 on-premises 站點透過 **AWS 當中繼站互連**
+     2. **架構特性**：基於 VPN 的 **hub-and-spoke** 架構，使用同一個 **Virtual Private Gateway**
+     3. **流量路徑**：Branch A ↔ Branch B 流量會經過 AWS（AWS 作為中繼點）
+     4. **成本優勢**：低成本的多站點互連方案
+210. ★ **VPN CloudHub 適用場景與限制**
+     1. **適用場景**：多個分公司/辦公室需要互連、預算有限不需要 Direct Connect、流量不大的分支機構網路
+     2. **技術限制**：只能連 VPN，基於 VGW（功能相對有限）
+     3. **考試關鍵字**：「multiple remote offices」+「low cost」→ **VPN CloudHub**
+211. 😇 **VPN CloudHub vs Transit Gateway 對比**
+     1. **VPN CloudHub**：只能連 VPN，基於 VGW，功能較簡單
+     2. **Transit Gateway**：可連 VPC + VPN，功能更強大，支援更複雜網路拓撲
+     3. **選擇依據**：簡單多站點 VPN 互連選 CloudHub，複雜混合網路選 Transit Gateway
