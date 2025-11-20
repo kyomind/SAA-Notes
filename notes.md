@@ -748,7 +748,7 @@
      3. **應用場景**：監控 Application Error（如 "Database connection timeout"）並自動重啟 EC2
 190. ★ **CloudWatch Alarm 的 EC2 Action 功能**⭐️
      1. **內建動作**：支援 **Reboot**、Stop、Terminate、Recover 四種動作
-     2. **運作機制**：Alarm 進入 `ALARM` 狀態時，自動呼叫 EC2 API（如 `RebootInstances`），**無需 Lambda 或 SNS**
+     2. **運作機制**：Alarm 進入 `ALARM` 狀態時，自動呼叫 EC2 API（如 `RebootInstances`），**無需 Lambda 或 SNS**⭐️
      3. **考試判斷**：題目問「最簡單/原生」的自動重啟解法 → **CloudWatch Alarm EC2 Action**
 191. 😇 **CloudWatch EC2 Action 限制與實務**
      1. **帳號限制**：只能操作 **同一個 AWS 帳號** 的 EC2
