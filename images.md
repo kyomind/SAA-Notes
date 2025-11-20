@@ -206,3 +206,7 @@ You can configure any access point to accept requests only from a virtual privat
 ## API Gateway Custom Domain with Regional Endpoint
 
 ![圖 24](https://img.kyomind.tw/img-20251118-201549.png)
+
+## 實用網路架構
+
+![圖 25](https://img.kyomind.tw/img-20251120-175722.png)

@@ -1108,5 +1108,28 @@ Lambda 在 Firehose 中是 **data transformation function**:
 | 服務                 | 用途                        | 位置          |
 | -------------------- | --------------------------- | ------------- |
 | **NAT Gateway**      | Private subnet 主動對外連線 | Public subnet |
-| **Internet Gateway** | 讓 Public subnet 雙向通訊   | VPC level⭐️     |
+| **Internet Gateway** | 讓 Public subnet 雙向通訊   | VPC level⭐️    |
 | **Bastion Host**     | 讓你 SSH 進 Private subnet  | Public subnet |
+
+以下整理成 **最精準、最考試向的 SG vs NACL 重點比較**，遇到題目就依這張表判斷即可（SAA 高命中率🔥）。
+
+---
+
+## ✅ Security Group（SG） vs Network ACL（NACL）
+
+| 項目         | **Security Group (SG)**                                                                       | **Network ACL (NACL)**                                                                        |
+| ------------ | --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| **層級**     | Instance level（綁 EC2、ENI）                                                                 | Subnet level（作用於整個 Subnet）                                                             |
+| **規則性質** | **Allow-only（白名單）**                                                                      | Allow + Deny                                                                                  |
+| **狀態性**   | **Stateful**（回程自動允許）                                                                  | **Stateless**（需 inbound + outbound 兩邊都設）                                               |
+| **用途定位** | **精準控制**：限制某 IP / 某 Port                                                             | **粗粒度過濾**：阻擋 CIDR、整段流量策略                                                       |
+| **常見考題** | - "Only allow XYZ IP" / - "Restrict SSH/FTP/RDP from specific IPs" / - "Tight access control" | - "Block a malicious IP range" / - "Subnet-wide allow/deny" / - "Additional layer of defense" |
+| **預設行為** | Deny all inbound, allow all outbound                                                          | Allow all inbound/outbound（Default VPC）                                                     |
+| **何時用？** | **要允許某人進來** → SG                                                                       | **要阻擋整段流量** → NACL                                                                     |
+
+### 一句話心法（超好用）
+
+> **SG 用來控制誰能進來（精準 Allow）**
+> **NACL 用來阻擋不該進來的（粗略 Deny）**
+
+NACL 完全不是**擋單一 IP** 的最佳工具。(可以做到但很麻煩且不直觀)
