@@ -1133,3 +1133,17 @@ Lambda 在 Firehose 中是 **data transformation function**:
 > **NACL 用來阻擋不該進來的（粗略 Deny）**
 
 NACL 完全不是**擋單一 IP** 的最佳工具。(可以做到但很麻煩且不直觀)
+
+## S3 Bucket Policy：強制所有上傳物件都要加密
+
+```json
+{
+  "Effect": "Deny",
+  "Action": "s3:PutObject",
+  "Condition": {
+    "StringNotEquals": {
+      "s3:x-amz-server-side-encryption": "AES256"
+    }
+  }
+}
+```

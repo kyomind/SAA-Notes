@@ -838,3 +838,24 @@
      1. **VPN CloudHub**：只能連 VPN，基於 VGW，功能較簡單
      2. **Transit Gateway**：可連 VPC + VPN，功能更強大，支援更複雜網路拓撲
      3. **選擇依據**：簡單多站點 VPN 互連選 CloudHub，複雜混合網路選 Transit Gateway
+212. ★★ **S3 強制加密的 Bucket Policy 實作機制**
+     1. **核心問題**：S3 加密是**物件層級**設定，每個物件上傳時可選擇是否加密
+     2. **強制方案**：用 **Bucket Policy 擋掉不符合條件的上傳請求**
+     3. **實作方式**：Policy 設定 `"Effect": "Deny"` + `"StringNotEquals": {"s3:x-amz-server-side-encryption": "AES256"}` 拒絕沒帶正確 header 的上傳
+213. ★★ **S3 加密方案選擇與金鑰自動輪替對比**
+     1. **SSE-S3**：AWS 管理、內建自動輪替（不可關閉）、**免費**
+     2. **SSE-KMS (AWS managed)**：AWS 管理、每年自動輪替、部分免費
+     3. **SSE-KMS (Customer managed)**：你管理、預設關閉需手動啟用、**付費**
+     4. **考試判斷**：題目要求**金鑰每年自動輪替**且未提及精細控制 → **SSE-S3 最佳解**
+214. ★ **SSE-S3 vs SSE-KMS 考試選擇標準**
+     1. **選 SSE-KMS 關鍵字**：自訂金鑰權限、精細控制、Customer managed keys、Compliance requirements
+     2. **選 SSE-S3 場景**：最低成本、最簡單方案、自動輪替需求、**無特殊控制要求**
+     3. **核心記憶**：沒明確要求複雜功能時，SSE-S3 是預設最佳解
+215. 😇 **S3 加密 Bucket Policy 實務開發建議**
+     1. **SDK 實作**：PUT 請求帶 `ServerSideEncryption: 'AES256'` 參數
+     2. **Fail-safe 設計**：設定 Bucket Policy 後，忘記帶參數的上傳直接失敗（403 Forbidden）
+     3. **開發原則**：寧願上傳失敗，也不存不加密的檔案
+216. ★★ **SSE-S3 金鑰輪替機制與限制**
+     1. **管理方式**：金鑰由 **AWS 完全管理**，用戶無法介入
+     2. **輪替特性**：**自動輪替是內建機制**，無法調整頻率或關閉
+     3. **控制需求**：想**控制輪替頻率**必須使用 **Customer-managed KMS key**⭐️
