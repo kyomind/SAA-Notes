@@ -666,3 +666,10 @@
      1. **記憶口訣**：要出網但不給人打進來 → **Private + NAT GW + IGW**
      2. **架構順序**：EC2 (Private) → NAT GW (Public) → IGW → Internet
      3. **關鍵字識別**：看到「主動連外」+「不被外界存取」→ NAT Gateway 架構
+170. ★★ **VPC Subnet 類型配置與路由設定**
+     1. **Public Subnet 配置**
+        - Route Table 設定 `0.0.0.0/0 → Internet Gateway`
+        - 放置 **NAT Gateway**（綁定 Elastic IP）
+     2. **Private Subnet 配置**
+        - **不直接指向 IGW**
+        - Route Table 設定 `0.0.0.0/0 → NAT Gateway`

@@ -1108,5 +1108,5 @@ Lambda 在 Firehose 中是 **data transformation function**:
 | 服務                 | 用途                        | 位置          |
 | -------------------- | --------------------------- | ------------- |
 | **NAT Gateway**      | Private subnet 主動對外連線 | Public subnet |
-| **Internet Gateway** | 讓 Public subnet 雙向通訊   | VPC level     |
+| **Internet Gateway** | 讓 Public subnet 雙向通訊   | VPC level⭐️     |
 | **Bastion Host**     | 讓你 SSH 進 Private subnet  | Public subnet |
