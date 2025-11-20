@@ -735,3 +735,9 @@
 186. ★ **Redshift Cross-Region Snapshot Copy 考試關鍵字與限制**
      1. **關鍵字識別**："copy Redshift data to another region"、"disaster recovery for data warehouse" → Cross-region snapshot
      2. **技術限制**：只複製 snapshot（不是即時同步），要從 snapshot restore 才能用（不是 active-active），會產生跨 region 數據傳輸費用
+187. ★★ **RDS Stop vs Snapshot + Terminate 成本策略差異**
+     1. **Stop instance 問題**：仍收 **storage 費用**（EBS volumes 持續計費）、7 天自動重啟限制（AWS 政策）、省不了多少（storage 是大頭成本之一）
+     2. **Snapshot 循環優勢**：Snapshot 通常比原始 volume 小（壓縮 + incremental）、Terminated 後不付 instance 也不付 storage、只在使用日付完整費用
+188. ★ **RDS 成本優化考試陷阱與判斷要點**
+     1. **常見陷阱**：題目用「stop」當干擾選項，測試是否知道 **Stop ≠ 完全不收費**
+     2. **正確判斷**：間歇性工作負載用 **snapshot pattern** 更划算
