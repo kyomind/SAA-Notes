@@ -210,3 +210,7 @@ You can configure any access point to accept requests only from a virtual privat
 ## 實用網路架構
 
 ![圖 25](https://img.kyomind.tw/img-20251120-175722.png)
+
+## Amazon RDS Read Replicas
+
+![圖 25](https://img.kyomind.tw/img-20251120-213835.png)

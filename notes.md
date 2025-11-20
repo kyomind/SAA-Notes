@@ -754,3 +754,15 @@
      1. **帳號限制**：只能操作 **同一個 AWS 帳號** 的 EC2
      2. **實務建議**：這是 **Reactive (被動)** 作法，治標不治本；更可靠的做法是 Auto Scaling + Health Check
      3. **多重動作**：一個 Alarm 可以設定多個 Action（例如：重啟 EC2 + 發送 SNS 通知）
+192. ★★ **Textract + Comprehend Medical 醫療文件處理組合**
+     1. **解題流程**：Amazon Textract（從 PDF 提取文字 OCR）→ Amazon Comprehend Medical（識別醫療敏感資訊 PHI）
+     2. **技術整合**：S3 存 PDF 報告 → Textract 轉文字 → Comprehend Medical 偵測 PHI → HIPAA 合規處理
+     3. **方案優勢**：兩者都是 API call（Lambda 直接呼叫無需重構）、Comprehend Medical 原生支援 HIPAA、最小改動實現合規
+193. 😇 **Textract + Comprehend Medical 考試重點**
+     1. **服務定位**：Textract = PDF/圖片文字提取標準答案、Comprehend Medical = AWS 唯一針對醫療文本的 NLP 服務
+     2. **關鍵字識別**：看到 HIPAA + PHI + 醫療文件 → 選 Comprehend Medical
+     3. **考試記憶**：醫療場景的文件處理必然是這兩個服務的組合
+194. ★★ **AWS 託管服務整合核心概念：Function 中呼叫兩個 API**
+     1. **整合實作**：在 Lambda function 中使用 AWS SDK 直接呼叫 **Textract API** 和 **Comprehend Medical API**
+     2. **「minimal changes」原理**：AWS 託管服務整合就是 API call，只需在現有程式碼中加幾行呼叫
+     3. **考試判斷**：看到「integrate」+ 託管服務 → 選擇 API 整合而非複雜部署方案
