@@ -637,3 +637,17 @@
      1. **常見錯誤**：建立多個 VPC 來實現跨 AZ 高可用
      2. **正確答案**：在多個 AZ 的 subnet 部署 EC2（在同一個 VPC 內）
      3. **記憶要點**：高可用需要的是跨 AZ 的 subnet，而不是多個 VPC
+163. ★★ **Kinesis Data Streams 選擇原因：訊息佇列的順序性與可靠性**
+     1. **不能遺失**：資料會**持久化儲存**（預設 24 小時，最長 365 天）⭐️
+     2. **不能重複**：每筆資料有**唯一的 Sequence Number**⭐️
+     3. **順序保證**：同一個 **shard 內的資料嚴格按順序處理**⭐️
+164. ★ **Kinesis Data Streams 核心概念與架構**
+     1. **基本流程**：訊息 → Kinesis Data Streams (多個 shards) → EMR 消費
+     2. **Shard**：Kinesis 的基本單位，每個 shard 保證順序
+     3. **Partition Key**：決定訊息分配到哪個 shard
+     4. **Sequence Number**：Kinesis 自動分配，確保順序
+165. ★ **Amazon Data Firehose 為何不適合順序保證場景**
+     1. **設計目的**：Firehose 主要用於**將實時流數據傳遞到數據湖、數據倉庫、分析服務**⭐️
+     2. **可靠性保證**：確保**可靠的數據傳遞**，但**不保證消息的順序性**
+     3. **考試判別**：需要嚴格的順序保證 → Kinesis；只需可靠傳遞 → Firehose
+
