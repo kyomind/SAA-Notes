@@ -673,3 +673,30 @@
      2. **Private Subnet 配置**
         - **不直接指向 IGW**
         - Route Table 設定 `0.0.0.0/0 → NAT Gateway`
+171. ★ **NACL Subnet 層級防禦策略**
+     1. **粗暴防禦**：擋整個 IP 段（例如封鎖某國家 IP range）
+     2. **DDoS 攻擊時快速封鎖來源網段**
+172. ★★ **NACL vs Security Group 規則差異**
+     1. **Security Group 限制**：只能 **allow**，無法明確 **deny**
+     2. **NACL 優勢**：可設定 **explicit deny** 規則優先於 allow
+     3. **考試重點**：題目強調「必須 deny」或「subnet 層級防護」→ **NACL**
+173. 😇 **NACL 合規需求與實務場景**
+     1. **合規需求**：某些產業要求「**網路層防禦**」
+     2. **Defense in Depth**：NACL 作為多層防禦的一環
+     3. **實務範例**：NACL 擋 `123.45.0.0/16`（整個惡意網段），Security Group 只允許 `10.0.1.5/32`（特定後端服務）
+174. ★★ **AWS 多帳戶治理關鍵字識別**
+     1. **題目關鍵字**：「multi-account AWS environment」→ 需要管理多個 AWS 帳戶
+     2. **監控需求**：「dashboard for continuous detection」→ 要有集中監控面板
+     3. **合規檢測**：「policy non-conformance」→ 要能檢測政策違規
+175. ★★ **AWS Control Tower 核心功能**
+     1. **Landing Zone**：自動建立符合最佳實踐的多帳戶環境架構
+     2. **Account Factory**：用標準化流程快速開新帳戶（工廠式生產）
+     3. **Guardrails 護欄**：兩種類型的治理機制
+176. ★★ **Guardrails 護欄機制詳解**
+     1. **Preventive**：直接**阻止違規操作**（例如禁止關閉 CloudTrail）
+     2. **Detective**：持續**監控並標記違規行為**
+     3. **核心概念**：如「公司規章制度」，套用在 **OU 層級**，OU 底下所有帳戶都受約束
+177. ★ **Control Tower vs Organizations 考試對比**
+     1. **AWS Organizations**：僅為「帳戶容器」，缺乏完整治理機制和儀表板
+     2. **AWS Control Tower**：完整的多帳戶治理解決方案，包含監控面板
+     3. **考試判別**：多帳戶管理 + 集中治理 + 合規監控 → **Control Tower**
