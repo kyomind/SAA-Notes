@@ -650,4 +650,19 @@
      1. **設計目的**：Firehose 主要用於**將實時流數據傳遞到數據湖、數據倉庫、分析服務**⭐️
      2. **可靠性保證**：確保**可靠的數據傳遞**，但**不保證消息的順序性**
      3. **考試判別**：需要嚴格的順序保證 → Kinesis；只需可靠傳遞 → Firehose
-
+166. ★★ **NAT Gateway 核心概念與架構需求**
+     1. **核心目的**：讓 **Private Subnet 的 EC2 能出網但不被外界直接存取**
+     2. **標準答案**：Deploy a NAT Gateway in a public subnet, and add a route from the private subnet to the NAT Gateway
+     3. **安全原則**：Internet 只能看到 NAT Gateway 的 Public IP，Private EC2 只能主動連出去，不能被動被打進來
+167. ★★ **NAT Gateway 完整架構流程與配置要求**
+     1. **架構流程**：Private EC2 → NAT Gateway（Public Subnet）→ Internet Gateway → Internet
+     2. **NAT Gateway 必要條件**：必須放在 **Public Subnet**、必須綁定 **Elastic IP (EIP)**
+     3. **Private Subnet 路由配置**：Route Table 設定 `0.0.0.0/0 → NAT Gateway`
+168. ★ **NAT Gateway 技術限制與費用考量**
+     1. **協定支援**：只支援 **IPv4**（IPv6 場景需使用 **Egress-only Internet Gateway**）
+     2. **費用結構**：每小時固定費用 + Data Processing 費用 + EC2 Data Transfer 費用
+     3. **考試對比**：題目常拿費用來比較「NAT Instance vs NAT Gateway」
+169. 😇 **NAT Gateway 考試記憶技巧與判斷要點**
+     1. **記憶口訣**：要出網但不給人打進來 → **Private + NAT GW + IGW**
+     2. **架構順序**：EC2 (Private) → NAT GW (Public) → IGW → Internet
+     3. **關鍵字識別**：看到「主動連外」+「不被外界存取」→ NAT Gateway 架構
