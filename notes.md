@@ -766,3 +766,20 @@
      1. **整合實作**：在 Lambda function 中使用 AWS SDK 直接呼叫 **Textract API** 和 **Comprehend Medical API**
      2. **「minimal changes」原理**：AWS 託管服務整合就是 API call，只需在現有程式碼中加幾行呼叫
      3. **考試判斷**：看到「integrate」+ 託管服務 → 選擇 API 整合而非複雜部署方案
+195. ★★ **IAM Identity Center 多帳戶統一身分管理核心概念**
+     1. **考試重點**：**統一身分管理 + 最小權限原則**的實作方式
+     2. **標準答案**：**IAM Identity Center + Permission Sets** 是現代企業多帳戶架構的正確解法
+     3. **核心優勢**：集中管理（一個地方管理所有團隊權限）、Permission Sets（預先定義的政策集合）、最小操作負擔（無需逐一設定 IAM policies）
+196. ★★ **IAM Identity Center 架構設計與權限指派機制**
+     1. **Groups 組織結構**：依團隊建立（Data Science Team、Engineering Team、Compliance Team）
+     2. **Permission Sets 權限模板**：依職責建立（AuroraReadOnly、EFSDataAccess、ComplianceAudit）
+     3. **指派機制**：Team Groups 綁定對應 Permission Sets，系統自動產生對應 IAM roles
+197. 😇 **傳統 IAM Users/Groups 方式的管理成本問題**
+     1. **重複設定問題**：每個 AWS Account 都要重複設定相同權限
+     2. **維護複雜度**：修改權限要改多個地方，無法跨 Account 統一管理
+     3. **管理成本**：人力成本高，容易出錯
+198. ★★ **IAM Identity Center 三大核心優勢與現代架構最佳實務**
+     1. **Single Sign-On**：一次登入，存取所有 AWS accounts
+     2. **Permission Sets**：預先打包好的權限集合，直接套用
+     3. **Central Management**：跨 Organizations 集中管理
+     4. **考試判別**：現代 AWS 多帳號架構最佳實務，傳統單一 Account 的 IAM 管理已不適用企業級場景
