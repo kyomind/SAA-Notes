@@ -1102,3 +1102,11 @@ Lambda 在 Firehose 中是 **data transformation function**:
 | **EC2**（透過 ENI）        | ✅ 可以         | EIP 綁在 EC2 NIC（ENI）上。                                                     |
 
 👉 **所以答案：Elastic IP 是綁在 NAT Gateway（或 EC2），不是 IGW。**
+
+## NAT Gateway vs Internet Gateway vs Bastion Host
+
+| 服務                 | 用途                        | 位置          |
+| -------------------- | --------------------------- | ------------- |
+| **NAT Gateway**      | Private subnet 主動對外連線 | Public subnet |
+| **Internet Gateway** | 讓 Public subnet 雙向通訊   | VPC level     |
+| **Bastion Host**     | 讓你 SSH 進 Private subnet  | Public subnet |
