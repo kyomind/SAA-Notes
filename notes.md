@@ -859,3 +859,31 @@
      1. **管理方式**：金鑰由 **AWS 完全管理**，用戶無法介入
      2. **輪替特性**：**自動輪替是內建機制**，無法調整頻率或關閉
      3. **控制需求**：想**控制輪替頻率**必須使用 **Customer-managed KMS key**⭐️
+217. ★★ **Custom Identity Broker 核心概念與應用場景**
+     1. **應用場景**：企業用 **LDAP 管理員工身份**，但 **LDAP 不支援 SAML 2.0**（無法直接跟 AWS IAM 整合）、員工需要存取 AWS 資源、不想在 AWS 重建一套身份系統
+     2. **解決方案**：寫一個中介程式（**Identity Broker**）當翻譯機
+     3. **考試判斷標準**：遇到「既有身份系統不支援 SAML，但要整合 AWS」→ 想到 **Custom Identity Broker + STS**
+218. ★★ **Custom Identity Broker 運作流程與技術架構**
+     1. **標準流程**：員工 → LDAP 驗證 → Identity Broker → STS API → 取得臨時憑證 → 存取 AWS
+     2. **詳細步驟**：員工透過公司內網登入（LDAP 驗證）、Identity Broker 確認員工身份後呼叫 STS 的 `AssumeRole` 或 `GetFederationToken`、STS 回傳臨時憑證（Access Key + Secret Key + Session Token）、員工拿這組臨時憑證存取 AWS 資源
+     3. **核心服務**：**STS (Security Token Service)** 專門發放有時效性的臨時憑證（15 分鐘到 12 小時）
+219. ★ **Custom Identity Broker 錯誤選項分析 - IAM Policy 引用 LDAP**
+     1. **錯誤原因**：IAM Policy 只能定義「誰可以做什麼」，**無法解決「如何驗證 LDAP 使用者身份」的問題**
+     2. **技術限制**：需要驗證機制（SAML/STS/Custom Broker）才能把 LDAP 身份轉成 AWS 認得的憑證
+     3. **核心問題**：缺乏身份驗證橋接機制
+220. ★ **Custom Identity Broker 錯誤選項分析 - IAM Identity Center 整合 LDAP**
+     1. **錯誤原因**：IAM Identity Center 主要支援 **SAML 2.0**，題目明確說 LDAP **不相容 SAML**
+     2. **技術衝突**：LDAP 不支援 SAML 協定，無法透過 IAM Identity Center 整合
+     3. **考試陷阱**：混淆 Identity Center 的支援協定範圍
+221. ★ **Custom Identity Broker 錯誤選項分析 - IAM Roles 手動輪替憑證**
+     1. **運維成本問題**：手動管理每個員工的 IAM 憑證，運維成本太高
+     2. **同步問題**：LDAP 更新 → 手動更新 AWS 憑證，容易出錯且不即時
+     3. **根本問題**：根本沒解決「驗證 LDAP 身份」的核心問題
+222. ★★ **SAML 支援與否的架構選擇差異**
+     1. **支援 SAML 2.0 場景**：如果支援 SAML 2.0，就用 **IAM Identity Center**（前身是 AWS SSO）直接整合，不需要寫 Custom Identity Broker
+     2. **不支援 SAML 場景**：必須使用 **Custom Identity Broker + STS** 的自行開發方案
+     3. **考試判斷核心**：有 SAML → IAM Identity Center；無 SAML → Custom Identity Broker + STS
+223. ★ **支援 SAML 2.0 的標準架構流程**
+     1. **架構流程**：員工 → LDAP (SAML IdP) → IAM Identity Center → AWS 資源
+     2. **技術特性**：透過 **SAML 聯合身份驗證 (Federation)**、IAM Identity Center 自動處理 **SAML 斷言 (Assertion)**
+     3. **實作優勢**：**零程式碼，純設定**即可完成整合
