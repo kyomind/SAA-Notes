@@ -724,3 +724,14 @@
      1. **IAM Password Policy**：**Preventive（預防型）**，在帳戶層級強制密碼規則
      2. **AWS Config**：**Detective（偵測型）**，持續驗證政策沒被改掉
      3. **最佳實務**：兩者搭配使用，預防 + 持續監控
+184. ★★ **Redshift Cross-Region Snapshot Copy** 核心機制與災難復原
+     1. 啟用後，所有新的 manual + automatic snapshots 都會自動複製到指定 region
+     2. 需要對每個 cluster 個別啟用，可設定 destination region 保留天數
+     3. **DR 場景標準問法**：如何在另一個 region 快速恢復 Redshift？ → **Cross-region snapshot copy**
+185. ★★ **Redshift vs 其他服務跨 Region 機制比較**
+     1. **RDS**：Automated backup 只能同 region，需用 read replica 或手動 copy snapshot
+     2. **Redshift**：內建 cross-region snapshot copy 功能
+     3. **S3**：Cross-Region Replication (CRR)
+186. ★ **Redshift Cross-Region Snapshot Copy 考試關鍵字與限制**
+     1. **關鍵字識別**："copy Redshift data to another region"、"disaster recovery for data warehouse" → Cross-region snapshot
+     2. **技術限制**：只複製 snapshot（不是即時同步），要從 snapshot restore 才能用（不是 active-active），會產生跨 region 數據傳輸費用
