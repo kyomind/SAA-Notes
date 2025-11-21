@@ -976,3 +976,7 @@
      2. **正確判斷標準**
         - EC2 ↔ EC2 → 用 **Peering**
         - EC2 ↔ AWS 服務 → 用 **Endpoint**
+244. ★★ **VPC Endpoint 成本差異與選擇策略**
+     1. **Gateway VPC Endpoint**：**免費**，適用於 S3 和 DynamoDB
+     2. **Interface VPC Endpoint**：**付費**（hourly usage + data processing charges），適用於其他 AWS 服務
+     3. **考試判斷**：題目要求「most cost-effective solution」且涉及 S3 → 選 **Gateway VPC Endpoint**
