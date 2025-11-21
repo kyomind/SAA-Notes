@@ -888,30 +888,41 @@
      2. **技術特性**：透過 **SAML 聯合身份驗證 (Federation)**、IAM Identity Center 自動處理 **SAML 斷言 (Assertion)**
      3. **實作優勢**：**零程式碼，純設定**即可完成整合
 224. ★★ **Security Group Tier-to-Tier 通訊最佳實務**
-    1. **核心原則**：Database tier inbound 必須**限制在 Application tier 的 Security Group**
-    2. **安全問題**：開放 `0.0.0.0/0` 讓任何人都能打到資料庫埠（如 1433）完全違反 least privilege
-    3. **AWS 最佳實務**：允許來自「某個 Security Group」的流量，而不是特定 IP 或任何來源
+     1. **核心原則**：Database tier inbound 必須**限制在 Application tier 的 Security Group**
+     2. **安全問題**：開放 `0.0.0.0/0` 讓任何人都能打到資料庫埠（如 1433）完全違反 least privilege
+     3. **AWS 最佳實務**：允許來自「某個 Security Group」的流量，而不是特定 IP 或任何來源
 225. ★★ **Security Group 引用機制核心優勢**
-    1. **動態 IP 適應**：Auto Scaling Group 的 EC2 會動態換 IP，無法寫死特定 IP
-    2. **SG 引用最佳實作**：`DB-SG inbound: MS SQL 1433 → source = App-SG`
-    3. **精準安全控制**：完全限制只有 App tier 可以連 DB，實現 **tier-to-tier communication**
+     1. **動態 IP 適應**：Auto Scaling Group 的 EC2 會動態換 IP，無法寫死特定 IP
+     2. **SG 引用最佳實作**：`DB-SG inbound: MS SQL 1433 → source = App-SG`
+     3. **精準安全控制**：完全限制只有 App tier 可以連 DB，實現 **tier-to-tier communication**
 226. ★ **Security Group 錯誤來源類型分析**
-    1. **不正確選項**：`0.0.0.0/0`（任何來源）、固定 IP、NACL ID、EC2 instance ID
-    2. **正確作法**：使用 **Security Group ID** 作為 source
-    3. **考試標準答案**："change the Source to the security group ID attached to the application tier"
+     1. **不正確選項**：`0.0.0.0/0`（任何來源）、固定 IP、NACL ID、EC2 instance ID
+     2. **正確作法**：使用 **Security Group ID** 作為 source
+     3. **考試標準答案**："change the Source to the security group ID attached to the application tier"
 227. ★★ **Security Group vs NACL 基礎知識定位**
-    1. **考試陷阱**：題目會提供大量 SG/NACL 基礎概念作為背景知識
-    2. **實際考點**：真正考的是 **Database SG inbound 限制到 App tier SG** 這個最佳實務
-    3. **核心記憶**：Database SG inbound = Application SG，永遠不要開 IP 尤其不要 `0.0.0.0/0`
+     1. **考試陷阱**：題目會提供大量 SG/NACL 基礎概念作為背景知識
+     2. **實際考點**：真正考的是 **Database SG inbound 限制到 App tier SG** 這個最佳實務
+     3. **核心記憶**：Database SG inbound = Application SG，永遠不要開 IP 尤其不要 `0.0.0.0/0`
 228. ★★ **Security Group 流量方向快速判斷法**
-    1. **核心問題**：「**誰要連誰？**」（最重要的判斷依據）
-    2. **流量分析範例**：App tier（EC2 ASG）→ DB（MS SQL 1433）
-    3. **規則設定原則**：流入誰，就改誰的 inbound
+     1. **核心問題**：「**誰要連誰？**」（最重要的判斷依據）
+     2. **流量分析範例**：App tier（EC2 ASG）→ DB（MS SQL 1433）
+     3. **規則設定原則**：流入誰，就改誰的 inbound
 229. 😇 **Security Group 規則配置實務要點**
-    1. **目標識別**：DB 接收 1433 埠流量 → 改 **DB Security Group inbound**
-    2. **來源設定**：Source 填入 **App tier 的 Security Group ID**
-    3. **記憶技巧**：接收方設定 inbound，來源方提供 Security Group ID
+     1. **目標識別**：DB 接收 1433 埠流量 → 改 **DB Security Group inbound**
+     2. **來源設定**：Source 填入 **App tier 的 Security Group ID**
+     3. **記憶技巧**：接收方設定 inbound，來源方提供 Security Group ID
 230. ★ **Security Group 錯誤選項分析：AnyCast IP 陷阱**
-    1. **錯誤選項**："change the Source to the static AnyCast IP address attached to the application tier"
-    2. **錯誤原因**：AnyCast IP 主要用於 **AWS Global Accelerator**，不適用於 Security Group 配置
-    3. **考試陷阱**：混淆不同 AWS 服務的 IP 類型用途
+     1. **錯誤選項**："change the Source to the static AnyCast IP address attached to the application tier"
+     2. **錯誤原因**：AnyCast IP 主要用於 **AWS Global Accelerator**，不適用於 Security Group 配置
+     3. **考試陷阱**：混淆不同 AWS 服務的 IP 類型用途
+231. ★★ **VPC DNS 設定核心概念與必要條件**
+     1. **EC2 獲得 public DNS hostname 的雙重條件**：VPC 層級（開啟 DNS resolution 和 DNS hostnames）、Instance 層級（有 public IPv4 address）
+     2. **Default VPC vs 自建 VPC 差異**：Default VPC 預設開啟兩項 DNS 設定、自建 VPC 預設關閉（需手動啟用）
+232. ★ **VPC DNS 設定功能解析與啟用方法**
+     1. **DNS resolution 功能**：讓 EC2 可以透過 AWS DNS server 解析域名
+     2. **DNS hostnames 功能**：讓 EC2 獲得 public DNS hostname
+     3. **啟用方法**：到 VPC 設定中手動啟用這兩個選項
+233. 😇 **VPC DNS 設定考試判斷技巧與常見陷阱**
+     1. **考試關鍵字組合**：「新建的 VPC」+ 「沒有 DNS hostname」→ 直接想到 DNS 設定問題
+     2. **實務陷阱**：很多人第一次自建 VPC 會踩的坑
+     3. **最佳實務**：生產環境建 VPC 時，在一開始就啟用這兩個設定
