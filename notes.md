@@ -1004,3 +1004,19 @@
     1. **流量路徑**：EC2 (private subnet) → S3 VPC Endpoint → S3 (直接透過 AWS 內網)
     2. **核心優勢**：流量**完全不離開 AWS 網路**、不經過公網、**免費且更安全**
     3. **考試重點**：這就是題目要求**成本最佳化**的核心原因
+251. ★★ **ALB Access Logs vs CloudWatch Application Insights 流量監控組合**
+     1. **ALB Access Logs**：捕捉 **HTTP 請求詳細資訊**（IP、latency、request path）、自動寫入 S3、零維護負擔
+     2. **CloudWatch Application Insights**：分析流量模式、**troubleshooting ECS 應用**、自動配置監控、自動分析異常
+     3. **核心優勢**：**LEAST amount of overhead** 的監控解決方案組合
+252. ★★ **CloudTrail vs ALB Access Logs 監控對象差異**⭐️
+     1. **CloudTrail 監控對象**：**AWS API 操作**（誰改了 ALB 設定），記錄資源變更（CreateLoadBalancer、ModifyListener）
+     2. **ALB Access Logs 監控對象**：**實際 HTTP 流量**（哪些請求打到 ALB），記錄 Client IP、latency、request path、response
+     3. **用途區分**：CloudTrail（稽核、合規、安全分析）vs ALB Access Logs（流量分析、應用 troubleshooting）
+253. ★ **CloudTrail 不適合 HTTP 流量分析的考試陷阱**
+     1. **題目要求**：「HTTP 請求詳細資訊、Client IP、網路延遲」
+     2. **錯誤選項**：CloudTrail → 只記錄「有人修改 ALB 設定」這類**管理操作**⭐️
+     3. **正確選項**：ALB Access Logs → 記錄每個 **HTTP request 的完整資訊**⭐️
+254. 😇 **CloudTrail vs Access Logs 記憶技巧與考試判斷**
+     1. **記憶口訣**：CloudTrail = 管理層面的「誰做了什麼」、Access Logs = 應用層面的「用戶請求了什麼」
+     2. **考試判斷**：CloudTrail Lake 也只能查 **API events**，跟應用流量無關
+     3. **核心區分**：管理操作監控 vs 應用流量監控
