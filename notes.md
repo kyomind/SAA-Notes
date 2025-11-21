@@ -996,3 +996,11 @@
      1. **AWS RAM 真正用途**：**跨 Account 或 Organization 內共享資源**（如 Transit Gateway、Subnets、License Manager）
      2. **不適用原因**：RAM 是跨帳號共享工具，**不是權限控管工具**，無法直接限制 EC2 操作權限
      3. **考試陷阱識別**：看到「access control」就選 RAM → **錯誤**，正確解法是 **Tags + IAM Policy Condition**
+249. ★★ **Private Subnet EC2 透過 NAT Gateway 存取 S3 的流量路徑**
+    1. **標準流程**：EC2 (private subnet) → NAT Gateway (public subnet) → Internet Gateway → **公網** → S3 (公開端點 s3.amazonaws.com)
+    2. **重要觀念**：即使 EC2 和 S3 在**同一個 region**，透過 NAT Gateway 存取 S3 時流量會**離開你的 VPC** 經過公網
+    3. **費用影響**：**依然收費**，因為經過 NAT Gateway 的 data processing 費用
+250. ★★ **VPC Endpoint 最佳化 S3 存取的核心優勢**
+    1. **流量路徑**：EC2 (private subnet) → S3 VPC Endpoint → S3 (直接透過 AWS 內網)
+    2. **核心優勢**：流量**完全不離開 AWS 網路**、不經過公網、**免費且更安全**
+    3. **考試重點**：這就是題目要求**成本最佳化**的核心原因
