@@ -950,3 +950,29 @@
      1. **協定支援**：原生 **SMB 協定**，Windows 檔案共享標準
      2. **管理模式**：**完全託管服務**，符合雲端最佳實踐
      3. **效能保證**：可達 **tens of GB/s throughput** + **millions IOPS**，滿足高效能需求
+239. ★★ **VPC Peering 跨 Region 連線核心機制**
+     1. **關鍵特性**：**VPC Peering 在跨 Region 時自動加密**，流量走 AWS 內網，不經公網
+     2. **標準實作**
+        - 建立 VPC Peering Connection (Ohio ↔ N.Virginia)
+        - 修改 Route Table 加路由規則指向對方 VPC CIDR
+240. ★★ **VPC Peering 路由設定必要性與技術原理**
+     1. **常見錯誤**：以為建立 Peering 就結束了，實際上只是「開通道路」，EC2 不知道怎麼走
+     2. **路由配置要求**
+        - 在各自 subnet 的 route table 加上目的地對方 VPC CIDR
+        - Target 設為 Peering Connection ID (pcx-xxxxx)
+     3. **核心記憶**：**Peering = 開道路，Route Table = 裝導航**，兩個都要設定才能通
+241. ★ **VPC Peering 考試錯誤選項分析**
+     - **用 VPN**：多此一舉，Peering 更簡單
+     - **用 Transit Gateway**：功能過剩，成本較高
+     - **只改 Security Group**：沒路由還是不通
+242. ★★ **VPC Endpoint 使用限制與適用範圍**
+     1. **核心限制**：VPC Endpoint **只能用於同 Region 內連接 AWS 服務**（如 S3、DynamoDB），不支援跨 Region 或 VPC 間通訊
+     2. **真正用途**
+        - 讓 EC2 私密連接 AWS 服務（不經 Internet Gateway）
+        - 分兩類：Gateway Endpoint（S3/DynamoDB）和 Interface Endpoint（其他服務）
+     3. **技術原理**：Endpoint 本質是在你的 VPC 內建立一個「服務入口」，只作用於該 VPC 所在 Region 的 AWS 服務
+243. ★ **VPC 連線方案考試判斷技巧**
+     1. **考試陷阱**：題目說「private connection」時，容易誤選 VPC Endpoint
+     2. **正確判斷標準**
+        - EC2 ↔ EC2 → 用 **Peering**
+        - EC2 ↔ AWS 服務 → 用 **Endpoint**
