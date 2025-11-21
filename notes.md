@@ -980,3 +980,10 @@
      1. **Gateway VPC Endpoint**：**免費**，適用於 S3 和 DynamoDB
      2. **Interface VPC Endpoint**：**付費**（hourly usage + data processing charges），適用於其他 AWS 服務
      3. **考試判斷**：題目要求「most cost-effective solution」且涉及 S3 → 選 **Gateway VPC Endpoint**
+245. 😇 **Route 53 Weighted Routing 權重設定機制**
+     1. **權重指定方式**：**完全人為手動指定**，在建立 record 時手動設定 weight 數值（**0-255**）
+     2. **設定位置**：Route 53 Console → Record → Routing policy 選 Weighted → 輸入 Weight 值
+     3. **動態調整**：可隨時修改 weight 改變流量分配比例，**無需停機**
+246. 😇 Route 53 Weighted Routing 等比例分配設定
+     1. **1:1 分配方法**：兩台都設 **weight=1** 即可實現等比例
+     2. **數值彈性**：50/50、100/100 都可以，**只要兩個數字相同就是 1:1**
