@@ -926,3 +926,23 @@
      1. **考試關鍵字組合**：「新建的 VPC」+ 「沒有 DNS hostname」→ 直接想到 DNS 設定問題
      2. **實務陷阱**：很多人第一次自建 VPC 會踩的坑
      3. **最佳實務**：生產環境建 VPC 時，在一開始就啟用這兩個設定
+234. ★★ **Amazon EFS 作業系統支援限制**
+     1. **核心限制**：EFS 只能處理 **Linux 工作負載**，不支援 Windows
+     2. **考試判斷**：看到 **Windows EC2 instance** → 直接排除 EFS 選項
+     3. **Windows 儲存方案**：應選擇 **EBS volumes** 或 **FSx for Windows File Server**
+235. ★★ **Windows EC2 共享檔案系統最佳選擇核心考點**
+     1. **決定性因素**：題目出現 **Active Directory 整合需求** → 只能選 **FSx for Windows File Server**
+     2. **技術要求組合**：Windows EC2 + SMB 協定 + 高效能 + AD 整合 → **FSx Windows 是標準解**
+     3. **考試記憶**：看到 `.NET`、`Windows EC2`、`Active Directory` → 直接選 **FSx for Windows File Server**
+236. ★★ **FSx for Windows File Server vs File Gateway 差異比較**
+     1. **AD 整合支援**：FSx Windows（**原生支援 AD**）vs File Gateway（**不支援 AD 整合**）
+     2. **效能規格**：FSx Windows（tens of GB/s + millions IOPS）vs File Gateway（混合雲導向，效能有限）
+     3. **適用場景**：FSx Windows（純 EC2 高效能）vs File Gateway（on-premises ↔ S3 混合雲）
+237. ★ **Windows 共享檔案系統服務選擇判斷表**
+     1. **Windows EC2 + AD 整合**：**FSx for Windows File Server**（唯一選項）
+     2. **Windows EC2 + 基本共享**：FSx Windows 或 File Gateway
+     3. **混合雲檔案同步**：File Gateway（主要用途）
+238. 😇 **FSx for Windows File Server 技術特性與優勢**
+     1. **協定支援**：原生 **SMB 協定**，Windows 檔案共享標準
+     2. **管理模式**：**完全託管服務**，符合雲端最佳實踐
+     3. **效能保證**：可達 **tens of GB/s throughput** + **millions IOPS**，滿足高效能需求
