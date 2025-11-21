@@ -913,11 +913,15 @@
      3. **記憶技巧**：接收方設定 inbound，來源方提供 Security Group ID
 230. ★ **Security Group 錯誤選項分析：AnyCast IP 陷阱**
      1. **錯誤選項**："change the Source to the static AnyCast IP address attached to the application tier"
-     2. **錯誤原因**：AnyCast IP 主要用於 **AWS Global Accelerator**，不適用於 Security Group 配置
+     2. **錯誤原因**：AnyCast IP 主要用於 **AWS Global Accelerator**，不適用於 Security Group 配置⭐️
      3. **考試陷阱**：混淆不同 AWS 服務的 IP 類型用途
 231. ★★ **VPC DNS 設定核心概念與必要條件**
-     1. **EC2 獲得 public DNS hostname 的雙重條件**：VPC 層級（開啟 DNS resolution 和 DNS hostnames）、Instance 層級（有 public IPv4 address）
-     2. **Default VPC vs 自建 VPC 差異**：Default VPC 預設開啟兩項 DNS 設定、自建 VPC 預設關閉（需手動啟用）
+     1. **EC2 獲得 public DNS hostname 的雙重條件**
+        - VPC 層級：開啟 DNS resolution 和 DNS hostnames
+        - Instance 層級：有 public IPv4 address
+     2. **Default VPC vs 自建 VPC 差異**
+        - Default VPC：預設開啟兩項 DNS 設定
+        - 自建 VPC：預設關閉（需手動啟用）
 232. ★ **VPC DNS 設定功能解析與啟用方法**
      1. **DNS resolution 功能**：讓 EC2 可以透過 AWS DNS server 解析域名
      2. **DNS hostnames 功能**：讓 EC2 獲得 public DNS hostname
