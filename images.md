@@ -218,3 +218,7 @@ You can configure any access point to accept requests only from a virtual privat
 ## AWS Transit Gateway Inter-Region Peering
 
 ![圖 26](https://img.kyomind.tw/img-20251120-222317.png)
+
+## VPC Endpoint for EC2 to S3
+
+![圖 26](https://img.kyomind.tw/img-20251121-174304.png)
