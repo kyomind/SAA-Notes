@@ -987,3 +987,12 @@
 246. 😇 Route 53 Weighted Routing 等比例分配設定
      1. **1:1 分配方法**：兩台都設 **weight=1** 即可實現等比例
      2. **數值彈性**：50/50、100/100 都可以，**只要兩個數字相同就是 1:1**
+
+247. ★★ **IAM Policy + Resource Tags 精細權限控管機制**
+     1. **核心做法**：打 Tag 區分環境（UAT 機器 `Environment=UAT`、Production 機器 `Environment=Production`）
+     2. **IAM Policy 條件設定**：使用 `StringEquals` 條件限制只能操作特定 tag 的資源
+     3. **權限隔離優勢**：**Tag + IAM Condition** 最靈活，一個 Account 就能精細控管
+248. ★★ **AWS RAM 誤區澄清與正確用途定位**
+     1. **AWS RAM 真正用途**：**跨 Account 或 Organization 內共享資源**（如 Transit Gateway、Subnets、License Manager）
+     2. **不適用原因**：RAM 是跨帳號共享工具，**不是權限控管工具**，無法直接限制 EC2 操作權限
+     3. **考試陷阱識別**：看到「access control」就選 RAM → **錯誤**，正確解法是 **Tags + IAM Policy Condition**
