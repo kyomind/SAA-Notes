@@ -222,3 +222,9 @@ You can configure any access point to accept requests only from a virtual privat
 ## VPC Endpoint for EC2 to S3
 
 ![圖 26](https://img.kyomind.tw/img-20251121-174304.png)
+
+## Egress-Only Internet Gateway
+
+注意：它是**直接附加在 VPC 上**，而不是附加在子網路 (Subnet) 上。
+
+![圖 27](https://img.kyomind.tw/img-20251122-153856.png)

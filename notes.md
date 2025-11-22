@@ -1028,3 +1028,13 @@
      1. **CloudTrail**：**內部人員的管理操作**（AWS 資源變更稽核）
      2. **Access Logs**：**外部用戶的應用請求**（實際流量分析）
      3. **理解技巧**：從不同角色視角記憶各服務用途
+
+257. ★★ S3 Transfer Acceleration + Multipart Upload 組合應用核心概念——僅用於大檔案加速**上傳** S3
+     1. **Transfer Acceleration 特性**
+        - 利用 CloudFront edge locations 加速遠距離傳輸
+        - 適合跨國跨大陸資料傳輸
+        - 透過 **AWS 骨幹網路傳輸比公網快 50-500%**
+     2. **Multipart Upload 特性**
+        - 將大檔案切分成多個部分平行上傳
+        - **單一檔案超過 100MB 建議使用，超過 5GB 必須使用**
+        - 失敗可重傳單一部分不用整個檔案重來

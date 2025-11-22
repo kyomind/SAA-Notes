@@ -1147,3 +1147,22 @@ NACL 完全不是**擋單一 IP** 的最佳工具。(可以做到但很麻煩且
   }
 }
 ```
+
+## NAT Gateway vs Egress-only Internet Gateway 比較
+
+**Egress-only Internet Gateway 直接附加在 VPC level**，不是掛在特定 subnet 上。
+
+| 項目     | NAT Gateway           | Egress-only IGW    |
+| -------- | --------------------- | ------------------ |
+| 掛載位置 | Public Subnet         | VPC level          |
+| 協定     | IPv4                  | **IPv6 only**      |
+| 路由設定 | Private Subnet 指向它 | IPv6 subnet 指向它 |
+| 費用     | 按小時 + 流量計費     | **完全免費**       |
+
+### 運作方式
+
+Egress-only IGW:
+
+- 允許 VPC 內的資源「主動發起」IPv6 連線到外部
+- 阻止外部「主動發起」IPv6 連線進來
+- 就像 IPv6 版的 NAT，但不做位址轉換（IPv6 夠用，不需要 NAT）
