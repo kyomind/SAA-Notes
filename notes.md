@@ -13,3 +13,14 @@
    3. **帳號層級管理** → Control Tower
    4. **Guardrails/合規** → Control Tower
    5. **快速記憶法**："data lake" + "query" → Lake Formation
+4. ★★ **企業級身份整合**：AD Connector + IAM Roles 解決方案
+   1. **題目關鍵**：已有 AD (Active Directory) + 需要 federation(聯合身份驗證) + 角色已在 AD 的 group 中定義
+   2. **正確架構**：Corporate AD (已有 groups & users) → AD Connector (橋接) → IAM Roles (權限對應) → AWS Console Access
+5. ★★ **IAM Groups vs AD Groups** 核心差異
+   1. **IAM Groups**：AWS 內部的權限分組機制（給 IAM Users 用）
+   2. **AD Groups**：企業 Active Directory 中的群組（已有權限管理）
+   3. **錯誤迷思**：選 IAM Groups 等於在 AWS 重新建群組，違反 federation 精神，造成權限管理雙軌制
+6. 😇 企業身份整合記憶技巧
+   1. **AD Connector**：串接現有身份來源
+   2. **IAM Roles**：對應權限（支援 federation）
+   3. **判斷法則**：看到「corporate AD」+「federation」→ 直接排除 IAM Groups
