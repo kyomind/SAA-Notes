@@ -1105,3 +1105,15 @@
      1. **Lambda**：輕量快速事件處理、微服務架構、API 後端
      2. **AWS Glue**：大規模資料轉換、ETL pipeline、資料湖處理
      3. **核心記憶**：Lambda = 事件處理，Glue = 資料轉換
+270. ★★ **ElastiCache Redis AUTH 認證機制核心要求**
+     1. **必要參數組合**：`--auth-token` + `--transit-encryption-enabled` **兩個參數缺一不可**
+     2. **安全設計邏輯**：AWS 強制 AUTH token 必須搭配 TLS 加密，避免密碼明文傳輸
+     3. **考試關鍵字識別**：看到「require password before Redis commands」→ **Redis AUTH**
+271. ★ **Redis AUTH vs IAM Authentication 差異對比**
+     1. **Redis AUTH**：**long-lived credentials**、Redis 內建機制、適用於 Redis protocol
+     2. **IAM Authentication**：短期憑證（12 小時過期）、適用於 AWS API、**不適用於 Redis 命令執行**
+     3. **考試判斷**：Redis 命令認證 → AUTH token，AWS API 操作 → IAM
+272. 😇 **ElastiCache Redis AUTH 實務應用**
+     1. **應用連線**：所有 client 連線都須帶 auth-token
+     2. **命令執行**：包括 MULTI/EXEC 等 Redis 命令都需先通過認證
+     3. **核心記憶**：類似 PostgreSQL 設密碼，只是 Redis 的實作方式
