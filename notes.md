@@ -1038,3 +1038,34 @@
         - 將大檔案切分成多個部分平行上傳
         - **單一檔案超過 100MB 建議使用，超過 5GB 必須使用**
         - 失敗可重傳單一部分不用整個檔案重來
+258. ★★ **Egress-only IGW 路由設定必要性與配置要求**
+     1. **核心要求**：雖然 **Egress-only IGW 掛在 VPC level**，但必須在 **Private Subnet 的 route table** 手動加路由規則
+     2. **路由配置**：目的地 `::/0`（所有 IPv6）→ Target: `eigw-xxxxx`（Egress-only IGW）
+     3. **架構理解**：掛在 VPC ≠ 自動生效，**route table 一定要設定**
+        - VPC 層級掛載只是建立 Gateway
+        - Route Table 設定才是實際生效的關鍵
+        - 兩步驟缺一不可
+259. 😇 **IGW vs Egress-only IGW 路由設定類比**
+     1. **Internet Gateway**：掛 VPC level，但 **Public Subnet** 要加路由 `0.0.0.0/0 → igw-xxx`
+     2. **Egress-only IGW**：掛 VPC level，但 **Private Subnet** 要加路由 `::/0 → eigw-xxx`
+     3. **記憶技巧**：兩者都需要在對應 subnet 的 route table 手動設定路由
+        - Gateway 掛載 = 提供能力
+        - Route Table = 實際使用
+        - 類比：裝了門但不裝把手，還是推不開門
+260. ★★ **NAT Gateway Multi-AZ 部署的路由設定陷阱**
+     1. **常見錯誤**：誤將路由設定在 **Public Subnet**（沒意義，Public Subnet 本來就能直接上網）⭐️
+     2. **正確原則**：**NAT Gateway 放置位置**在 Public Subnet，**Route Table 設定位置**在 Private Subnet⭐️
+        - NAT Gateway 本身需要公網 IP（Elastic IP）才能對外連線
+        - Private Subnet 透過路由指向 NAT Gateway 來實現出網
+        - 架構邏輯：Private → NAT GW → IGW → Internet
+     3. **核心記憶**：Private 要上網 → 查自己 subnet 的 route table → 找到同 AZ 的 NAT Gateway
+        - 位置：NAT GW 在 Public，路由在 Private
+        - 邏輯：誰要出網，誰設定路由
+        - 錯誤：在 Public 設路由完全沒用
+261. ★★ **Multi-AZ NAT Gateway 標準架構與高可用設計**
+     1. **AZ-A 配置**：Public Subnet A → NAT Gateway A，Private Subnet A route: `0.0.0.0/0 → NAT Gateway A`
+     2. **AZ-B 配置**：Public Subnet B → NAT Gateway B，Private Subnet B route: `0.0.0.0/0 → NAT Gateway B`
+     3. **高可用優勢**：每個 AZ 獨立運作，一個掛了不影響其他 AZ
+        - 每個 AZ 自成一套完整架構
+        - 故障隔離：AZ-A 掛了不影響 AZ-B
+        - 成本考量：需要建立多個 NAT Gateway
