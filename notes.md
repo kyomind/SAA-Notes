@@ -1117,3 +1117,15 @@
      1. **應用連線**：所有 client 連線都須帶 auth-token
      2. **命令執行**：包括 MULTI/EXEC 等 Redis 命令都需先通過認證
      3. **核心記憶**：類似 PostgreSQL 設密碼，只是 Redis 的實作方式
+273. ★★ **EKS etcd 資料庫層級加密核心概念**
+     1. **核心問題**：Kubernetes Secrets 在 etcd 預設是**明文儲存**，有安全風險
+     2. **解決方案**：**EKS + KMS encryption** 在資料寫入 etcd **之前**就加密
+     3. **考試關鍵字**：看到「encrypt data within etcd」→ **KMS encryption for EKS**
+274. ★ **EKS KMS vs Secrets Manager 用途差異**
+     1. **KMS encryption**：加密 **etcd 資料庫本身**，防止 etcd backup 洩露
+     2. **Secrets Manager**：**外部密碼管理服務**，無法加密 etcd 內部資料
+     3. **核心區分**：etcd 加密 vs 密碼管理，兩者可搭配使用但目的不同
+275. 😇 **EKS etcd 加密架構理解**
+     1. **資料流程**：應用程式 → Kubernetes Secret → etcd 資料庫（需加密此階段）
+     2. **實務意義**：即使攻擊者取得 etcd backup 也無法讀取 secrets
+     3. **記憶技巧**：etcd = K8s 後端資料庫，KMS = 資料庫檔案加密
