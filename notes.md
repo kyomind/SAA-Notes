@@ -1069,3 +1069,19 @@
         - 每個 AZ 自成一套完整架構
         - 故障隔離：AZ-A 掛了不影響 AZ-B
         - 成本考量：需要建立多個 NAT Gateway
+262. ★★ RDS Event Subscription 主要監控 db 實例層級事件，無法監控資料變化
+     1. **RDS Event Subscription 限制**：只能監控 **DB 實例層級的事件**（實例啟動/停止/重啟、備份完成、故障轉移、參數群組變更）⭐️
+     2. **核心問題**：**完全無法監控資料變化**（row-level changes），無法得知「哪一筆車輛資料被刪除」
+     3. **考試關鍵字識別**：看到「資料庫資料變化觸發後續處理」→ 排除 RDS event subscription
+263. ★★ **Aurora Native Function 直接觸發 Lambda 核心優勢**
+     1. **即時資料捕捉**：刪除發生時立即觸發（row-level trigger）
+     2. 可監控特定操作：`INSERT`、`UPDATE`、`DELETE`⭐️
+     3. **完整資料傳遞**：可把被刪除的車輛完整資訊傳給 Lambda
+     4. **精確控制**：可只在特定操作（DELETE）時觸發
+264. ★★ **Aurora Native Function 服務定位與技術實作**
+     1. **服務定位**：**Aurora MySQL/PostgreSQL 的原生功能**，不是獨立服務
+     2. **呼叫方式**：提供 Native Function 和 Stored Procedure 兩種方式
+     3. **技術整合**：直接在 SQL 語法中呼叫 Lambda 函式
+     4. **考試關鍵字**：「database 資料變化要觸發處理」→ 首選 **Aurora + Lambda integration**
+     5. **服務支援範圍**：只有 **Aurora MySQL/PostgreSQL** 支援，一般 RDS 沒有此功能
+     6. **架構優勢**：資料變化即時觸發，無需額外的 polling 機制
