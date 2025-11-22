@@ -1267,7 +1267,7 @@
      2. **標準 CloudWatch metrics**：只有**整體** CPU utilization，不會顯示「each database process」
      3. **必要啟動**：要看 per-process 的 CPU%/MEM%，**必須主動啟用 Enhanced Monitoring**
 378. 題目需要 AD 整合：Set up SAML 2.0-Based Federation by using a **Microsoft Active Directory Federation Service**.
-379. ★ Web Identity Federation 支援的身份提供者限制
+379. ★ Web Identity Federation 支援的身份提供者限制⭐️
      1. **支援清單**：Amazon Cognito、Login with Amazon、Facebook、Google、任何支援 **OpenID Connect (OIDC)** 的提供者
      2. **核心限制**：**只支援公開的身份提供者**，無法與私有企業系統整合（如公司內部 Active Directory）
 380. ★★ Web Identity Federation 與 Active Directory 不相容性分析
