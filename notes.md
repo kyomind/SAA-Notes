@@ -1097,3 +1097,11 @@
      1. **KEYS_ONLY**：只記錄 primary key（最小資料量）
      2. **NEW_AND_OLD_IMAGES**：記錄變更前後完整資料（稽核常用）
      3. **考試重點**：依據後續處理需求選擇適當的 view type
+268. ★★ **Lambda vs Glue 大檔案處理選擇標準**
+     1. **Lambda 限制**：執行時間最多 15 分鐘、記憶體最多 10GB，**不適合 ETL 工作負載**⭐️
+     2. **AWS Glue 優勢**：專為 ETL 設計、TB 級資料處理、自動擴展、無時間限制
+     3. **考試判斷**：看到「大量資料轉換」或「ETL」→ **AWS Glue**
+269. 😇 **Lambda vs Glue 服務定位差異**
+     1. **Lambda**：輕量快速事件處理、微服務架構、API 後端
+     2. **AWS Glue**：大規模資料轉換、ETL pipeline、資料湖處理
+     3. **核心記憶**：Lambda = 事件處理，Glue = 資料轉換
