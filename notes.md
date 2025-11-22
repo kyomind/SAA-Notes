@@ -1085,3 +1085,7 @@
      4. **考試關鍵字**：「database 資料變化要觸發處理」→ 首選 **Aurora + Lambda integration**
      5. **服務支援範圍**：只有 **Aurora MySQL/PostgreSQL** 支援，一般 RDS 沒有此功能
      6. **架構優勢**：資料變化即時觸發，無需額外的 polling 機制
+265. ★★ **SAML Federation 核心架構與流程**
+     1. **問題解決**：on-premises AD 帳號直接存取 AWS 資源，無需在 AWS 重建帳號
+     2. **技術組合**：AD FS + SAML 2.0 + AWS STS，透過信任關係建立身份聯邦
+     3. **運作流程**：使用者 → AD FS 登入 → 取得 SAML assertion → 換取 AWS temporary credentials → 存取 AWS 資源
