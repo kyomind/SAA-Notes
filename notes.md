@@ -1089,3 +1089,11 @@
      1. **問題解決**：on-premises AD 帳號直接存取 AWS 資源，無需在 AWS 重建帳號
      2. **技術組合**：AD FS + SAML 2.0 + AWS STS，透過信任關係建立身份聯邦
      3. **運作流程**：使用者 → AD FS 登入 → 取得 SAML assertion → 換取 AWS temporary credentials → 存取 AWS 資源
+266. ★★ **DynamoDB Streams 資料變化監控核心機制**
+     1. **監控範圍**：記錄 **INSERT、MODIFY、REMOVE** 三種資料變更事件
+     2. **資料保留**：Stream 資料保留 **24 小時**
+     3. **觸發用途**：Lambda 後續處理、稽核紀錄、跨 region 複製
+267. ★ **DynamoDB Streams View Type 選擇**
+     1. **KEYS_ONLY**：只記錄 primary key（最小資料量）
+     2. **NEW_AND_OLD_IMAGES**：記錄變更前後完整資料（稽核常用）
+     3. **考試重點**：依據後續處理需求選擇適當的 view type
