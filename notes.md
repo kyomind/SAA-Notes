@@ -37,3 +37,15 @@
    1. **Shield = 盾牌 = 全方位保護**
    2. **WAF = 應用層防火牆 = 只管 HTTP**
    3. **判斷原則**：看到「DDoS」且沒有成本限制 → 先考慮 Shield Advanced
+10. ★★ **Scheduled Scaling vs Predictive Scaling** 核心差異
+    1. **Predictive Scaling 限制**：需要歷史數據訓練，不適用於固定模式
+    2. **題目陷阱**：start of the day 問題每天發生 = 可預測的固定模式
+    3. **反應速度差異**：Scheduled 提前準備好 vs Predictive 預測後才擴展
+11. ★ **Auto Scaling 選擇邏輯**
+    1. **Scheduled Scaling**：時間點觸發(cron)、固定規律(上班時間)、設定簡單
+    2. **Predictive Scaling**：ML 預測流量、不規則波動、需歷史數據
+    3. **關鍵判斷**：8:50 先開機器 → 9:00 用戶來時已 ready（Scheduled 優勢）
+12. ★★ **Predictive Scaling 致命限制**：異質實例容量計算錯誤
+    1. **核心問題**：假設**實例同質化**(homogenous)，題目說 different instance types and sizes → 會算錯容量
+    2. **錯誤邏輯**：預測需要 100 單位容量，當前 10 台機器 → 誤以為每台 10 單位 → 建議擴展數量不準
+    3. **實例場景**：5台 t3.large (各4單位) + 5台 t3.xlarge (各12單位) = 80單位，但 Predictive 誤判為每台8單位
