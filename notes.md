@@ -24,3 +24,16 @@
    1. **AD Connector**：串接現有身份來源
    2. **IAM Roles**：對應權限（支援 federation）
    3. **判斷法則**：看到「corporate AD」+「federation」→ 直接排除 IAM Groups
+7. ★★ **Shield Advanced vs WAF** DDoS 防護差異
+   1. **題目關鍵**：DDoS attacks(複數) + fortify infrastructure + protect data（要求全面防護）
+   2. **攻擊分層**：Layer 7 (應用層 HTTP flood) vs Layer 3/4 (網路層 SYN flood, UDP flood)
+   3. **WAF 限制**：只防 Layer 7 (HTTP/HTTPS)
+   4. **Shield Advanced 優勢**：防 Layer 3/4/7 全層級 + 整合 WAF + DDoS Response Team + 成本保護
+8. ★ **DDoS 防護選擇邏輯**
+   1. **WAF 適用**：單純應用層攻擊、成本考量、filter HTTP traffic
+   2. **Shield Advanced 適用**：嚴重 DDoS、高價值系統、需專家支援、series of attacks
+   3. **關鍵字觸發**：fortify/series of attacks → Shield Advanced
+9. 😇 DDoS 防護記憶技巧
+   1. **Shield = 盾牌 = 全方位保護**
+   2. **WAF = 應用層防火牆 = 只管 HTTP**
+   3. **判斷原則**：看到「DDoS」且**沒有成本限制** → 先考慮 Shield Advanced
