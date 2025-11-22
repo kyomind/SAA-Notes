@@ -36,4 +36,4 @@
 9. 😇 DDoS 防護記憶技巧
    1. **Shield = 盾牌 = 全方位保護**
    2. **WAF = 應用層防火牆 = 只管 HTTP**
-   3. **判斷原則**：看到「DDoS」且**沒有成本限制** → 先考慮 Shield Advanced
+   3. **判斷原則**：看到「DDoS」且沒有成本限制 → 先考慮 Shield Advanced
