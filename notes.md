@@ -181,3 +181,25 @@
     1. **S3 Event Notification**：只能觸發 **Lambda/SQS/SNS**（限制較多）
     2. **EventBridge**：可觸發**更多目標服務** (ECS/Step Functions/跨帳號...)
     3. **關鍵記憶**：題目要觸發 **ECS task** → 用 EventBridge，不是 S3 Event Notification
+37. ★★ **KMS Custom Key Store + CloudHSM** 完全掌控加密金鑰解決方案
+    1. **題目關鍵需求**
+       - **完全控制金鑰** (full control over encryption keys)
+       - **立即移除金鑰** (immediately remove key material from KMS)
+       - **獨立稽核** (audit independently of CloudTrail)
+    2. **一般 KMS 的限制**：金鑰存在 AWS 的 HSM 中（多租戶共享）、刪除金鑰有 7-30 天等待期、稽核只能靠 CloudTrail
+38. ★★ **Custom Key Store 核心架構與運作原理**
+    1. **架構設計**：KMS Custom Key Store → 關聯你自己的 CloudHSM cluster → 金鑰材料「只」存在你的 HSM 中 → 直接控制 HSM 可立即移除金鑰
+    2. **實際運作流程**
+       - 創建 KMS key 時，金鑰材料生成在「你的 CloudHSM」
+       - 金鑰永不以明文離開你的 HSM
+       - 所有加密操作都在你的 HSM 上執行
+       - 可直接管理 CloudHSM → 立即刪除金鑰
+39. ★ **Custom Key Store 考試判斷關鍵字**
+    1. **觸發關鍵字**
+       - "full control over keys"
+       - "immediately remove"（不是 schedule deletion）
+       - "audit independently"（不只靠 CloudTrail）
+    2. **其他識別詞**
+       - "dedicated HSM"
+       - "single-tenant"
+       - "compliance" + "hardware control"

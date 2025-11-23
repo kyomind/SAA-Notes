@@ -1284,3 +1284,15 @@ conn = psycopg2.connect(
     sslmode='require'
 )
 ```
+
+## 標準 KMS 與 Custom Key Store 比較
+
+| 特性     | 標準 KMS    | Custom Key Store            |
+| -------- | ----------- | --------------------------- |
+| HSM      | AWS 多租戶  | 你的專屬 CloudHSM           |
+| 金鑰刪除 | 7-30 天等待 | 立即移除                    |
+| 稽核     | CloudTrail  | CloudTrail + 你自己的監控   |
+| 成本     | 低          | 高(需維護 CloudHSM cluster) |
+| 適用     | 一般場景    | 嚴格合規需求                |
+
+**成本提醒**: CloudHSM 很貴,一個 cluster 至少需要 2 個 HSM instance,每個約 $1.45/hr。考試不會考價格,但實務上要知道這是「必要時才用」的方案。
