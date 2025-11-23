@@ -208,3 +208,21 @@
     2. **災難恢復優勢**：**RPO < 1 秒**（幾乎零資料遺失）、**RTO < 1 分鐘**（快速故障切換）
     3. **適用場景**：全球化應用需要各地低延遲讀取、對區域級災難 (region-wide outage) 有嚴格容錯要求
     4. **考試關鍵字**："global"、"cross-region DR"、"RTO/RPO 極致要求"
+41. ★★ **AWS RAM vs Control Tower** 跨帳戶管理服務差異
+    1. **AWS RAM (Resource Access Manager)**：**專門用途**跨帳戶資源共享、**可共享**Transit Gateway、子網路、Route 53 Resolver 規則、License Manager 配置等具體資源、**使用場景**多帳戶環境下共享特定 AWS 資源
+    2. **AWS Control Tower**：**專門用途**多帳戶治理與管理、**核心功能**建立 landing zone、設定 guardrails(護欄政策)、帳戶自動化配置、**使用場景**大規模多帳戶的集中管理與治理
+42. ★★ **題目陷阱分析**：Control Tower vs RAM 選擇邏輯
+    1. **題目關鍵字**："centrally manages" + "share resources"
+    2. **核心差別**：Control Tower 負責**管理帳戶本身**，但不負責**共享具體資源**
+    3. **判斷原則**：題目明確提到要共享 Transit Gateway、License Manager、Route 53 Resolver 規則 → 這正是 **RAM 的專屬功能**
+    4. **類比記憶**：Control Tower 像是「帳戶管理員」，RAM 才是「資源共享平台」
+43. 😇 **RAM vs Control Tower** 記憶技巧與判斷法則
+    1. **RAM** = Resource **Access** Manager → 想到「訪問」→ 跨帳戶**共享資源**
+    2. **Control Tower** = **Control**(控制) → 帳戶層級的**治理與政策**
+    3. **快速判斷**：看到「share resources such as Transit Gateway, License Manager」→ 直接選 **RAM**
+44. ★★ **Organizations vs RAM** 核心功能區別
+    1. **AWS Organizations**：**管理帳戶**建立、組織、套用政策、**不共享資源**只管理帳戶結構與權限政策
+    2. **AWS RAM**：**共享資源**Transit Gateway、子網路等實體資源、**不管帳戶**只負責資源共享機制
+45. 😇 **實務組合使用**：大型企業多帳戶管理策略
+    1. **同時使用**：Organizations 管理帳戶架構（OU、SCP 政策）+ RAM 在這些帳戶間共享資源
+    2. **分工明確**：Organizations = 帳戶治理；RAM = 資源共享
