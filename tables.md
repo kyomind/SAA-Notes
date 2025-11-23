@@ -1176,3 +1176,30 @@ Egress-only IGW:
 | **延遲**     | 毫秒級 (同區域)            | 次秒級 (跨區域複製延遲 < 1秒)   |
 | **成本**     | 只付使用的 replica         | 跨區域資料傳輸 + 多區域儲存成本 |
 | **使用場景** | 流量波動大的應用           | 全球化業務、DR 需求             |
+
+## AWS 儲存服務考試重點對照表
+
+| 服務                     | 類型         | 協定            | 考試關鍵字                       | 適用場景                             |
+| ------------------------ | ------------ | --------------- | -------------------------------- | ------------------------------------ |
+| **EBS**                  | Block        | iSCSI (隱藏)    | EC2 root volume、snapshot        | 單一 EC2 專用，高效能                |
+| **Instance Store**       | Block        | 直接附加        | 暫時性、ephemeral、highest IOPS  | 臨時資料、快取                       |
+| **FSx for NetApp ONTAP** | Block + File | iSCSI + SMB/NFS | 交易系統、Multi-AZ block storage | 需要 block 的 Windows/Linux 混合環境 |
+| **EFS**                  | File         | NFS             | Linux、shared access、serverless | 多 EC2 共享，自動擴展                |
+| **FSx for Windows**      | File         | SMB             | Active Directory、user shares    | Windows 檔案共享                     |
+| **FSx for Lustre**       | File         | Lustre          | HPC、ML training、S3 integration | 高效能運算                           |
+| **S3**                   | Object       | HTTP/HTTPS      | 靜態網站、備份、lifecycle        | 幾乎所有非即時存取需求               |
+
+## 考試判斷樹
+
+```bash
+需要共享存取？
+├─ NO → EBS (單一 EC2)
+└─ YES
+    ├─ Block storage？
+    │   └─ YES → FSx for NetApp ONTAP (iSCSI)
+    └─ File storage？
+        ├─ Linux → EFS (NFS)
+        ├─ Windows → FSx for Windows (SMB)
+        ├─ HPC/ML → FSx for Lustre
+        └─ 備份/靜態 → S3
+```
