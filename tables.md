@@ -780,6 +780,17 @@ Object Lock（功能開關）
 | Compliance + Legal Hold | **最強保護**：到期前不可刪 + 訴訟保護 |
 | Governance + Legal Hold | 一般保護 + 訴訟保護                   |
 
+## S3 Object Lock: Legal Hold vs Retention Period
+
+| 比較項目     | Retention Period            | Legal Hold                        |
+| ------------ | --------------------------- | --------------------------------- |
+| **期限設定** | 固定時間(如 1 年)           | 無期限                            |
+| **自動解除** | ✅ 到期自動解除              | ❌ 必須手動移除                    |
+| **誰能解除** | 無人能解除(Compliance mode) | 有 `s3:PutObjectLegalHold` 權限者 |
+| **適用場景** | 合規要求有明確期限          | 法律訴訟/調查(期限未定)           |
+| **可否共存** | ✅ 可與 Legal Hold 同時存在  | ✅ 可與 Retention Period 同時存在  |
+| **保護機制** | 期限內 WORM 保護            | 手動移除前持續 WORM 保護          |
+
 ## 災難復原 (DR) 策略比較
 
 | 設計策略                                 | RPO（資料損失）    | RTO（停機時間）    | 成本     | 複雜度   |
