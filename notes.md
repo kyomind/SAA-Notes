@@ -226,3 +226,20 @@
 45. 😇 **實務組合使用**：大型企業多帳戶管理策略
     1. **同時使用**：Organizations 管理帳戶架構（OU、SCP 政策）+ RAM 在這些帳戶間共享資源
     2. **分工明確**：Organizations = 帳戶治理；RAM = 資源共享
+46. ★★ **企業身份聯合 (Enterprise Identity Federation)** 大量用戶存取解決方案
+    1. **題目場景**：企業現有 AD/LDAP 使用者需存取 AWS S3，而不需要為每個人建立 IAM user
+    2. **核心挑戰**：1200 個使用者 → 避免建立 1200 個 IAM user
+47. ★★ **Federation + STS** 身份轉換機制
+    1. **Federation Proxy/Identity Provider + STS**：**目的**將企業 AD/LDAP 身份轉換成 AWS 臨時憑證
+    2. **運作流程**：使用者登入 AD → Identity Provider 驗證 → **STS 發放臨時 token**
+    3. **關鍵優勢**：STS (Security Token Service) 產生**臨時憑證**，避免建立大量 IAM user
+48. ★★ **IAM Role + Policy** 權限控制機制
+    1. **IAM Role**：定義 STS 臨時憑證要扮演的角色
+    2. **IAM Policy**：限制每個使用者只能存取自己的 folder
+    3. **動態權限**：Policy 使用 `${aws:username}` 變數動態對應資料夾
+49. ★ **Federation 雙元件設計**原理與記憶技巧
+    1. **為什麼需要兩個元件**：單獨 STS 只能產生臨時憑證，但沒定義**權限範圍** → 需要 IAM Role + Policy 告訴 AWS「這個臨時憑證能做什麼」
+    2. **記憶口訣**
+       - **企業現有帳號系統 + AWS** → Federation + STS
+       - **限制個別使用者權限** → IAM Role + Policy with variables
+       - **大量使用者** → 絕對不是建立 1200 個 IAM user
