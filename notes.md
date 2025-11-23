@@ -138,3 +138,13 @@
     1. **加密傳輸**：強制使用 **SSL/TLS**
     2. **集中管理**：用 IAM 統一控制誰能存取資料庫，不用在每個 RDS instance 上管理帳密
     3. **EC2 無需密碼**：直接用 EC2 的 **instance profile** 拿 token，**15 分鐘有效期**後自動失效
+29. ★★ **IAM DB Authentication 設定流程**：RDS 功能配置要點
+    1. **服務歸屬**：**RDS 的功能**，不是 EC2 的功能
+    2. **RDS 端設定**：RDS Console → Database → Modify → 勾選 "Password and IAM database authentication"
+    3. **EC2 端權限**：IAM role 需要 **rds-db:connect** 權限，指向特定 RDS resource ARN
+    4. **資料庫內部**：建立對應的 IAM user (如: `CREATE USER iam_user; GRANT rds_iam TO iam_user;`)
+30. ★ **IAM DB Authentication 完整流程**
+    1. **步驟一**：RDS 啟用 IAM Authentication（在 RDS console）
+    2. **步驟二**：EC2 附加 IAM role（有 rds-db:connect 權限，在 IAM console）
+    3. **步驟三**：在資料庫內建立 IAM user（用 SQL）
+    4. **步驟四**：程式用 boto3 拿 token 連線（在 code 中）
