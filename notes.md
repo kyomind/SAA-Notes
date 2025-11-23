@@ -258,3 +258,13 @@
     1. **核心概念**：**CloudFront 已存在 = 全球分發已搞定**
     2. **問題判斷**：login 慢 → 可能是 origin 慢；504 錯誤 → 一定是 origin 問題
     3. **診斷順序**：先看是不是 origin 端問題 → 再考慮是不是快取策略問題 → 最後才考慮架構大改(multi-region)
+54. ★★ **Amazon Inspector** 資源安全掃描工具
+    1. **功能定位**：掃描**你的資源**找漏洞
+    2. **檢查範圍**：EC2/container 的安全弱點、網路暴露風險、給你修復建議
+    3. **核心重點**：**不是**拿來下載 AWS 合規文件的
+55. ★★ **AWS Artifact** 合規文件中心
+    1. **服務定位**：下載 **AWS 的**合規證明文件
+    2. **提供內容**：SOC 報告、PCI DSS 證書、ISO 認證、HIPAA BAA 協議、各種合規文件
+    3. **使用特色**：**完全免費，隨時下載**
+    4. **考試關鍵字**："compliance reports" → Artifact、"security assessment" → Inspector、"regulatory documents" → Artifact、"vulnerability scan" → Inspector
+    5. **記憶技巧**：Inspector → 檢查「你的」資源；Artifact → 下載「AWS 的」合規證明
