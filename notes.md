@@ -129,3 +129,12 @@
     1. **Block**：資料庫⭐️/交易系統 = **iSCSI**
     2. **File**：檔案共享/使用者目錄 = **SMB/NFS**
     3. **Object**：其它都能用 = **S3**
+27. ★★ **IAM DB Authentication** EC2 安全連接 RDS 解決方案
+    1. **題目關鍵**：如何讓 EC2 安全地連接 RDS
+    2. **核心概念**：用 **IAM role** 取代傳統的帳號密碼登入資料庫
+    3. **傳統方式問題**：EC2 → (username/password) → RDS ❌ 密碼外洩風險
+    4. **IAM 方式優勢**：EC2 → (temporary token from IAM role) → RDS ✅ 無需管理密碼
+28. ★ **IAM DB Authentication 三大優勢**
+    1. **加密傳輸**：強制使用 **SSL/TLS**
+    2. **集中管理**：用 IAM 統一控制誰能存取資料庫，不用在每個 RDS instance 上管理帳密
+    3. **EC2 無需密碼**：直接用 EC2 的 **instance profile** 拿 token，**15 分鐘有效期**後自動失效
