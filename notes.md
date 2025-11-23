@@ -116,3 +116,16 @@
     1. **考試陷阱識別**：看到 "Windows" + "high performance" 需求，別被 "Windows File Server" 名字誤導
     2. **判斷關鍵字**："trading application" + "block storage" → 需要 **iSCSI 協定** → 只有 **FSx for NetApp ONTAP**
     3. **服務定位記憶**：FSx for Windows = **檔案共享專用**（SharePoint、Home Directories）；FSx for NetApp ONTAP = **全功能儲存**（檔案 + 區塊）
+24. ★★ **FSx 服務選擇陷阱**：Windows 平台需求分析
+    1. **錯誤判斷**："Windows" ≠ 一定選 FSx for Windows
+    2. **正確分析**：看需求是 **block** 還是 **file**
+    3. **Trading/Database**：需要 **NetApp ONTAP (iSCSI)** 而非 Windows File Server
+25. ★★ **共享存取陷阱**：跨平台儲存選擇邏輯
+    1. **錯誤判斷**："共享存取" ≠ 一定是 EFS
+    2. **正確選擇**：**Windows** → FSx for Windows；**Linux** → EFS
+    3. **跨 AZ 區塊儲存**：只有 **FSx for NetApp ONTAP** 支援⭐️
+    4. **EBS 限制**：不支援跨 AZ 共享
+26. 😇 **儲存類型記憶口訣**
+    1. **Block**：資料庫⭐️/交易系統 = **iSCSI**
+    2. **File**：檔案共享/使用者目錄 = **SMB/NFS**
+    3. **Object**：其它都能用 = **S3**
