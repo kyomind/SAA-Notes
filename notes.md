@@ -101,3 +101,18 @@
     3. **考試陷阱**：避免選擇自建解決方案
        - 題目說「partners use SFTP」→ 別想用 **EC2 自建 SFTP server**
        - 優先考慮託管服務而非自建服務
+21. ★★ **FSx for Windows vs NetApp ONTAP** 儲存協定差異
+    1. **協定支援差異**
+       - **FSx for Windows**：僅支援 **SMB (檔案層級)**
+       - **FSx for NetApp ONTAP**：支援 **SMB + iSCSI (區塊層級)**⭐️
+    2. **適用場景**：FSx for Windows 限於檔案共享、使用者目錄；FSx for NetApp ONTAP 適合區塊儲存 + 檔案儲存
+    3. **交易應用支援**：FSx for Windows ❌ 不適合；FSx for NetApp ONTAP ✅ 適合
+22. ★★ **交易系統需要 block storage** 的技術原因
+    1. **效能要求**：**sub-millisecond latency**（檔案系統無法達成）
+    2. **存取方式**：透過 **iSCSI 協定**像本地磁碟一樣直接操作
+    3. **I/O 最佳化**：交易系統對 I/O 效能極度敏感，需要區塊層級存取
+    4. **關鍵限制**：FSx for Windows File Server 只提供 SMB 檔案共享（**檔案層級存取**），不符合交易應用效能需求
+23. ★ **FSx 系列選擇陷阱與記憶技巧**
+    1. **考試陷阱識別**：看到 "Windows" + "high performance" 需求，別被 "Windows File Server" 名字誤導
+    2. **判斷關鍵字**："trading application" + "block storage" → 需要 **iSCSI 協定** → 只有 **FSx for NetApp ONTAP**
+    3. **服務定位記憶**：FSx for Windows = **檔案共享專用**（SharePoint、Home Directories）；FSx for NetApp ONTAP = **全功能儲存**（檔案 + 區塊）
