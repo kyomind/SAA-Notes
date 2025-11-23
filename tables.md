@@ -1203,3 +1203,59 @@ Egress-only IGW:
         ├─ HPC/ML → FSx for Lustre
         └─ 備份/靜態 → S3
 ```
+
+## File vs Block vs Object 儲存差異
+
+| 特性         | Block Storage       | File Storage    | Object Storage         |
+| ------------ | ------------------- | --------------- | ---------------------- |
+| **存取單位** | 固定大小區塊 (4KB)  | 檔案 + 目錄結構 | 物件 (檔案 + metadata) |
+| **存取方式** | 直接讀寫磁碟區塊    | 檔案路徑        | HTTP API / URL         |
+| **效能**     | 最快 (sub-ms)       | 快 (ms)         | 較慢 (100ms+)          |
+| **使用情境** | OS、資料庫          | 共享檔案        | 備份、靜態內容         |
+| **AWS 服務** | EBS、Instance Store | EFS、FSx        | S3、Glacier            |
+
+## 技術差異
+
+### Block Storage (區塊儲存)
+
+```bash
+原始磁碟 → 作業系統格式化 → 應用程式直接讀寫
+特點: 像本地硬碟，需要格式化 (ext4/NTFS)
+```
+
+### File Storage (檔案儲存)
+
+```bash
+已有檔案系統 → 透過 NFS/SMB 掛載 → 多台共享
+特點: 不用格式化，直接使用
+```
+
+### Object Storage (物件儲存)
+
+```bash
+無階層結構 → 透過 API 存取 → key-value 模式
+特點: 平面命名空間，URL 存取
+```
+
+## 考試判斷關鍵字
+
+| 需求描述                        | 選擇類型   | AWS 服務     |
+| ------------------------------- | ---------- | ------------ |
+| Database、OS boot、low latency  | **Block**  | EBS          |
+| Shared files、multi-EC2 access  | **File**   | EFS/FSx      |
+| Backup、archive、static website | **Object** | S3           |
+| "iSCSI protocol"                | **Block**  | NetApp ONTAP |
+| "mount point"、"directory"      | **File**   | EFS/FSx      |
+| "REST API"、"lifecycle policy"  | **Object** | S3           |
+
+## 實際類比
+
+- **Block** = 你插一顆新硬碟到電腦
+- **File** = 你掛載一個網路磁碟 (NAS)
+- **Object** = 你用網址下載檔案 (Google Drive)
+
+## 記憶重點
+
+**需要最快速度 → Block**
+**需要共享檔案 → File**
+**需要便宜備份 → Object**
