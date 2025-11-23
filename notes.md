@@ -148,3 +148,26 @@
     2. **步驟二**：EC2 附加 IAM role（有 rds-db:connect 權限，在 IAM console）⭐️
     3. **步驟三**：在資料庫內建立 IAM user（用 SQL）
     4. **步驟四**：程式用 boto3 拿 token 連線（在 code 中）
+31. ★★ **S3 Access Points** 多應用權限管理解決方案
+    1. **問題場景**：一個 S3 bucket 被多個應用/團隊共用，每個都需要不同權限，bucket policy 會變得超複雜
+    2. **解決方案**：Access Point = bucket 的**命名入口**，每個入口有自己的權限政策
+    3. **架構設計**
+       - Application A → Access Point A (read-only)
+       - Application B → Access Point B (write)
+       - Application C → Access Point C (VPC-only)
+       - 所有 Access Points → Same S3 Bucket
+32. ★★ **S3 Access Points** 權限管理優勢
+    1. **簡化權限管理**：避免寫超長的 bucket policy（❌ 難維護），每個 app 有自己的 policy（✅ 清楚）
+    2. **關鍵字識別**："multiple applications with different permissions" → S3 Access Points
+    3. **權限協同機制**：最終權限 = **Access Point Policy AND Bucket Policy**（兩者都要允許才行）
+33. ★ **VPC-only Access Points** 內網安全存取
+    1. **用途**：強制流量只能從特定 VPC 進來，不走公網
+    2. **關鍵字**："restrict S3 access to private network" / "VPC endpoint"
+    3. **考試重點**：內部應用安全存取 S3 的首選方案
+34. 😇 **S3 Access Points** 典型考題場景
+    1. **題目模式**："公司有多個部門共用 S3 bucket，財務部只能讀 `/finance/*`，工程部能讀寫 `/engineering/*`，如何簡化管理？"
+    2. **標準答案**：建立兩個 Access Points，各自設定不同的 prefix 和權限，比單一 bucket policy 更好維護
+    3. **記憶要點**
+       - Access Point = **bucket 的別名 + 專屬權限**
+       - 主要用於**多租戶/多應用**場景
+       - 可設定 **VPC-only** 強化安全
