@@ -144,7 +144,7 @@
     3. **EC2 端權限**：IAM role 需要 **rds-db:connect** 權限，指向特定 RDS resource ARN
     4. **資料庫內部**：建立對應的 IAM user (如: `CREATE USER iam_user; GRANT rds_iam TO iam_user;`)
 30. ★ **IAM DB Authentication 完整流程**
-    1. **步驟一**：RDS 啟用 IAM Authentication（在 RDS console）
-    2. **步驟二**：EC2 附加 IAM role（有 rds-db:connect 權限，在 IAM console）
+    1. **步驟一**：RDS 啟用 IAM Authentication（在 RDS console）⭐️
+    2. **步驟二**：EC2 附加 IAM role（有 rds-db:connect 權限，在 IAM console）⭐️
     3. **步驟三**：在資料庫內建立 IAM user（用 SQL）
     4. **步驟四**：程式用 boto3 拿 token 連線（在 code 中）
