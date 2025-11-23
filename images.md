@@ -234,3 +234,7 @@ You can configure any access point to accept requests only from a virtual privat
 可防禦**所有層級的 DDoS 攻擊** (Layer 3, 4, 7)，並提供專業的 DDoS Response Team 支援。
 
 ![圖 28](https://img.kyomind.tw/img-20251122-163202.png)
+
+## CloudHSM vs KMS Comparison
+
+![圖 30](https://img.kyomind.tw/img-20251123-105739.png)
