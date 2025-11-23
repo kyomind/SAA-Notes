@@ -49,3 +49,17 @@
     1. **核心問題**：假設**實例同質化**(homogenous)，題目說 different instance types and sizes → 會算錯容量
     2. **錯誤邏輯**：預測需要 100 單位容量，當前 10 台機器 → 誤以為每台 10 單位 → 建議擴展數量不準
     3. **實例場景**：5台 t3.large (各4單位) + 5台 t3.xlarge (各12單位) = 80單位，但 Predictive 誤判為每台8單位
+13. ★★ **Aurora Auto Scaling vs Global Database** 選擇邏輯
+    1. **Auto Scaling 適用**：單一區域讀取擴展、突發流量處理、read replica 跟不上流量
+    2. **Global Database 適用**：跨區域災難復原、全球用戶低延遲讀取、多區域部署
+    3. **關鍵判斷**：題目有提「全球用戶」、「跨區域」、「災難復原」嗎？**沒有** → Auto Scaling
+    4. Hence, the correct answer is: Use automatic scaling for the Aurora read replica using Aurora Auto Scaling.
+14. ★ **Aurora 流量高峰應對策略**判斷技巧
+    1. **看到關鍵字**：peak periods、fluctuating workload → 需要彈性擴展
+    2. **確認範圍**：題目有提跨區域嗎？沒有 → Auto Scaling；有 → Global Database
+    3. **記憶口訣**：Auto Scaling = 應付**流量高峰**；Global Database = 服務**全球用戶**
+15. 😇 **Aurora 讀取擴展的完整選項**比較
+    1. **Aurora Auto Scaling**：自動管理 read replica 數量、基於 CPU/連線數等指標（最適合突發流量）
+    2. **手動增加 read replica**：最多 15 個 read replica、無法應對突發流量
+    3. **Aurora Global Database**：跨區域複製、適合全球業務
+    4. **Aurora Serverless v2**：連 writer 也能自動擴展、適合不可預測的極端波動
