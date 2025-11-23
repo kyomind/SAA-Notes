@@ -63,3 +63,15 @@
     2. **手動增加 read replica**：最多 15 個 read replica、無法應對突發流量
     3. **Aurora Global Database**：跨區域複製、適合全球業務
     4. **Aurora Serverless v2**：連 writer 也能自動擴展、適合不可預測的極端波動
+16. ★ **Elastic Beanstalk for .NET** 企業應用遷移策略
+    1. **適用場景**：deploy、manage、scale **ASP.NET web applications**，使用 IIS 的 web application
+    2. **遷移組合**：Oracle DB → **RDS for Oracle** (Multi-AZ) + **.NET app** → **Elastic Beanstalk** (Multi-AZ)
+17. ★★ **MGN (Migration Service) vs Managed Services** 選擇原則
+    1. **MGN 適合場景**：大規模批次遷移（數百台 VM）、遷移後逐步現代化、沒有對應 AWS 託管服務
+    2. **本題不適用原因**：只有 1 個資料庫 + 1 個應用、Oracle 有 RDS 版本、.NET 有 Beanstalk
+    3. **考試核心**：偏好 **managed service over self-managed**，除非題目明確限制
+18. ★★ **MGN vs DMS** 資料庫遷移工具選擇
+    1. **錯誤選項分析**：Use **AWS MGN** to migrate Oracle database server to **EC2 instance** (不正確)
+    2. **正確做法**：**Amazon RDS** 支援標準 Oracle databases，應使用 **AWS DMS** 進行資料庫遷移
+    3. **核心差異**：MGN = 整台伺服器遷移；DMS = 專門的資料庫遷移工具
+    4. 本選項的核心錯誤是，**誤用 MGN 去遷移資料庫——其實應該要用 DMS**。它和 DMS 的選項應該是二選一的關係，而不是同時使用。
