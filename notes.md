@@ -171,3 +171,13 @@
        - Access Point = **bucket 的別名 + 專屬權限**
        - 主要用於**多租戶/多應用**場景
        - 可設定 **VPC-only** 強化安全
+35. ★★ **EventBridge** 關鍵字識別與考試重點
+    1. **典型關鍵字**："when X happens, do Y"、"automatically trigger"、"event-driven"
+    2. **常考場景**
+       - S3 事件觸發 Lambda/ECS/Step Functions
+       - 定時任務 (cron 排程)
+       - 跨服務整合 (EC2 狀態變化 → SNS 通知)
+36. ★★ **EventBridge vs S3 Event Notification** 目標服務差異
+    1. **S3 Event Notification**：只能觸發 **Lambda/SQS/SNS**（限制較多）
+    2. **EventBridge**：可觸發**更多目標服務** (ECS/Step Functions/跨帳號...)
+    3. **關鍵記憶**：題目要觸發 **ECS task** → 用 EventBridge，不是 S3 Event Notification
