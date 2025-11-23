@@ -203,3 +203,8 @@
        - "dedicated HSM"
        - "single-tenant"
        - "compliance" + "hardware control"
+40. ★★ **Aurora Global Database** 跨區域資料庫複製解決方案
+    1. **技術特性**：使用 **storage-based 技術**實現 < 1 秒的資料同步延遲
+    2. **災難恢復優勢**：**RPO < 1 秒**（幾乎零資料遺失）、**RTO < 1 分鐘**（快速故障切換）
+    3. **適用場景**：全球化應用需要各地低延遲讀取、對區域級災難 (region-wide outage) 有嚴格容錯要求
+    4. **考試關鍵字**："global"、"cross-region DR"、"RTO/RPO 極致要求"

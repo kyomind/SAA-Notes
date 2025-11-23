@@ -1331,3 +1331,25 @@ conn = psycopg2.connect(
 - 題目要「process-level metrics」→ Enhanced Monitoring
 - 題目要「1 秒監控間隔」→ Enhanced Monitoring
 - 題目只要基本 CPU/memory → CloudWatch Metrics 就夠
+
+## Amazon Aurora Global Database 考試重點整理
+
+**跨區域災難恢復 + 全球讀取加速**的終極解決方案
+
+## 關鍵數字(必背)
+
+| 指標           | 數值                        | 意義                          |
+| -------------- | --------------------------- | ----------------------------- |
+| **RPO**        | < 1 秒                      | 資料複製延遲,幾乎不會遺失資料 |
+| **RTO**        | < 1 分鐘                    | 故障時切換到備用區域的時間    |
+| **複製延遲**   | < 1 秒                      | Storage-based 自動複製        |
+| **支援區域數** | 最多 5 個 secondary regions | 1 primary + 5 secondary       |
+
+### ⚠️ 容易混淆的選項
+
+| 需求             | Aurora Global DB | Multi-AZ     | Read Replica   |
+| ---------------- | ---------------- | ------------ | -------------- |
+| 區域級災難恢復   | ✅                | ❌            | ❌              |
+| 全球低延遲讀取   | ✅                | ❌            | 部分(需手動建) |
+| 自動故障切換     | ✅ (跨區域)       | ✅ (單區域內) | ❌              |
+| RTO/RPO 要求極致 | ✅                | 一般         | 不適用         |
