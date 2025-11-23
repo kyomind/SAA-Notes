@@ -243,3 +243,18 @@
        - **企業現有帳號系統 + AWS** → Federation + STS
        - **限制個別使用者權限** → IAM Role + Policy with variables
        - **大量使用者** → 絕對不是建立 1200 個 IAM user
+50. ★★ **過度設計陷阱**：CloudFront + 504 錯誤處理
+    1. **核心錯誤**：被 "global users" 誤導，題目真正在測**你會不會過度設計(over-engineering)**
+    2. **考試重點**：看似合理的大方案(Multi-region) ❌ vs 直接解決問題的小方案(**Origin Failover**) ✅
+51. ★★ **Multi-region 方案錯誤分析**
+    1. **成本高**：多區域部署、跨區資料同步、維護複雜度
+    2. **沒必要**：CloudFront 已經是全球 CDN，用戶延遲問題它已解決
+    3. **沒解決 504**：origin 掛了，換區域一樣掛
+52. ★★ **考試陷阱模式識別**：關鍵字判斷技巧
+    1. **"cost-effective"** → 排除複雜方案
+    2. **"CloudFront 已部署"** → 不需要 multi-region
+    3. **"504 錯誤"** → origin 可用性問題，不是地理位置問題
+53. ★ **CloudFront 效能問題**診斷與記憶技巧
+    1. **核心概念**：**CloudFront 已存在 = 全球分發已搞定**
+    2. **問題判斷**：login 慢 → 可能是 origin 慢；504 錯誤 → 一定是 origin 問題
+    3. **診斷順序**：先看是不是 origin 端問題 → 再考慮是不是快取策略問題 → 最後才考慮架構大改(multi-region)
