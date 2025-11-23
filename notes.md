@@ -74,4 +74,30 @@
     1. **錯誤選項分析**：Use **AWS MGN** to migrate Oracle database server to **EC2 instance** (不正確)
     2. **正確做法**：**Amazon RDS** 支援標準 Oracle databases，應使用 **AWS DMS** 進行資料庫遷移
     3. **核心差異**：MGN = 整台伺服器遷移；DMS = 專門的資料庫遷移工具
-    4. 本選項的核心錯誤是，**誤用 MGN 去遷移資料庫——其實應該要用 DMS**。它和 DMS 的選項應該是二選一的關係，而不是同時使用。
+19. ★★ **AWS Transfer Family** 檔案傳輸服務核心概念
+    1. **服務定位**：**託管的檔案傳輸服務**
+       - 支援協定：SFTP、FTPS、FTP、AS2
+       - 後端儲存：S3 或 EFS
+       - 無需管理伺服器
+    2. **題目關鍵字識別**：快速判斷是否使用 Transfer Family
+       - existing SFTP clients
+       - third-party partners upload files
+       - legacy file transfer workflow
+       - minimal changes to existing process
+       - B2B file exchange
+    3. **核心優勢**：保留舊有傳輸方式 + 搬到雲端儲存
+       - 不用改客戶端程式
+       - 不用自己管 SFTP server
+       - 檔案自動進 S3
+20. ★ **Transfer Family vs 其他服務**選擇邏輯
+    1. **Transfer Family 適用場景**
+       - 合作夥伴用 SFTP 傳檔
+       - legacy file transfer workflow
+       - B2B 檔案交換
+    2. **其他服務選擇**：根據不同需求選擇對應服務
+       - 應用程式用 SDK 上傳 → 直接用 S3 API
+       - 大量資料遷移 → DataSync / Snow Family
+       - 資料庫遷移 → DMS
+    3. **考試陷阱**：避免選擇自建解決方案
+       - 題目說「partners use SFTP」→ 別想用 **EC2 自建 SFTP server**
+       - 優先考慮託管服務而非自建服務
