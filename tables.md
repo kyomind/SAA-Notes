@@ -1259,3 +1259,28 @@ Egress-only IGW:
 **需要最快速度 → Block**
 **需要共享檔案 → File**
 **需要便宜備份 → Object**
+
+## IAM Database Authentication 與傳統密碼認證比較
+
+```python
+# 傳統方式
+conn = psycopg2.connect(
+    host="xxx.rds.amazonaws.com",
+    user="admin",
+    password="hardcoded_password"  # 💀 危險
+)
+
+# IAM Authentication 方式
+import boto3
+token = boto3.client('rds').generate_db_auth_token(
+    DBHostname="xxx.rds.amazonaws.com",
+    Port=5432,
+    DBUsername="iam_user"
+)
+conn = psycopg2.connect(
+    host="xxx.rds.amazonaws.com",
+    user="iam_user",
+    password=token,  # ✅ 15 分鐘後自動失效
+    sslmode='require'
+)
+```
