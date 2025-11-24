@@ -1504,3 +1504,13 @@ One Zone-IA = 能接受資料遺失風險 + 要省錢
 
 - ELB = 標準解法
 - Route 53 Weighted = 也能做到
+
+## S3 Lifecycle Policy vs DLM 比較表
+
+| 特性         | S3 Lifecycle Policy                | DLM (Data Lifecycle Manager)   |
+| ------------ | ---------------------------------- | ------------------------------ |
+| **管理對象** | S3 objects                         | EBS snapshots, EBS-backed AMIs |
+| **主要用途** | 自動轉換 storage class、刪除舊物件 | 自動建立、保留、刪除 snapshots |
+| **典型場景** | 日誌歸檔、冷資料轉 Glacier         | EC2 備份自動化                 |
+| **設定位置** | S3 bucket level                    | EC2 Console / Tag-based        |
+| **觸發條件** | 天數、版本數                       | 排程(每 X 小時/天)             |
