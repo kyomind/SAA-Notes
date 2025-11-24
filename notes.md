@@ -302,3 +302,7 @@
     2. **服務定位**：**不是完整的 PKI 管理系統**，更像是讓你把 cert 放進去，DMS 幫你在連線時使用
     3. **實務應用**：On-premises DB 需要 SSL 連線時上傳 **CA cert** 到 DMS；RDS 預設有 AWS 提供的 cert
     4. **考試重點**：知道「**DMS 支援 SSL 加密傳輸**」即可，不會深入考憑證管理細節
+65. 😇 **AWS Directory Service 功能定位**：使用者目錄管理服務
+    1. **主要功能**：管理使用者目錄，例如 **Microsoft Active Directory**
+    2. **服務限制**：**不適合**直接用於多帳戶身份驗證目的
+    3. **記憶要點**：Directory Service = 管理目錄，不是多帳戶認證解決方案
