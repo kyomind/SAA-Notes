@@ -1364,3 +1364,15 @@ conn = psycopg2.connect(
 | 全球低延遲讀取   | ✅                | ❌            | 部分(需手動建) |
 | 自動故障切換     | ✅ (跨區域)       | ✅ (單區域內) | ❌              |
 | RTO/RPO 要求極致 | ✅                | 一般         | 不適用         |
+
+## RDP vs SSH:AWS SAA 考試比較表
+
+| 比較項目           | RDP                                        | SSH                                |
+| ------------------ | ------------------------------------------ | ---------------------------------- |
+| **Port 號碼**      | 3389                                       | 22                                 |
+| **作業系統**       | Windows Server                             | Linux/Unix                         |
+| **關鍵字提示**     | Active Directory / SMB / Windows app / GUI | Linux instance / CLI / 自動化腳本  |
+| **Security Group** | Inbound 3389                               | Inbound 22                         |
+| **常見場景**       | AD Domain / Windows FSx / .NET 部署        | EC2 管理 / 腳本執行 / 伺服器維護   |
+| **身份驗證**       | Username + Password                        | Key Pair (推薦) / Password         |
+| **安全性考點**     | 限制來源 IP / Bastion Host / 啟用 NLA      | Key Pair / 禁用密碼 / Bastion Host |
