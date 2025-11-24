@@ -33,6 +33,7 @@
         "ONTAP",
         "Preemptible",
         "RDSOS",
+        "recreatable",
         "Remediations",
         "RMAN",
         "Snowcone",

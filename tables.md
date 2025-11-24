@@ -1400,7 +1400,7 @@ conn = psycopg2.connect(
 
 ### Step 2: 看存取頻率 + 檢索需求
 
-```
+```bash
 頻繁存取 → Standard
 不常存取 + 立即需要 → Standard-IA
 不常存取 + 可等幾分鐘 → Glacier Flexible
@@ -1416,7 +1416,7 @@ conn = psycopg2.connect(
 
 ### 1️⃣ 最小存儲時間陷阱
 
-```
+```bash
 IA 系列 = 30天
 Glacier Instant = 90天
 Glacier Flexible = 90天
@@ -1427,7 +1427,7 @@ Glacier Deep Archive = 180天
 
 ### 2️⃣ 檢索時間記憶法
 
-```
+```bash
 毫秒級 = Standard 到 Glacier Instant(名字有 Instant)
 分鐘到小時 = Glacier Flexible(有彈性,可以選)
 12 小時 = Deep Archive(埋很深,挖很久)
@@ -1435,7 +1435,7 @@ Glacier Deep Archive = 180天
 
 ### 3️⃣ One Zone-IA 的判斷公式
 
-```
+```bash
 One Zone-IA = 能接受資料遺失風險 + 要省錢
 ```
 
