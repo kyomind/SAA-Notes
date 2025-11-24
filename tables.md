@@ -1376,3 +1376,67 @@ conn = psycopg2.connect(
 | **常見場景**       | AD Domain / Windows FSx / .NET 部署        | EC2 管理 / 腳本執行 / 伺服器維護   |
 | **身份驗證**       | Username + Password                        | Key Pair (推薦) / Password         |
 | **安全性考點**     | 限制來源 IP / Bastion Host / 啟用 NLA      | Key Pair / 禁用密碼 / Bastion Host |
+
+## S3 存儲等級考試重點對照表
+
+| 存儲等級                          | 適用場景(關鍵字)         | 成本特性                | 可用性 | 最小存儲時間 | 檢索時間       | 考試陷阱/記憶點                                               |
+| --------------------------------- | ------------------------ | ----------------------- | ------ | ------------ | -------------- | ------------------------------------------------------------- |
+| **S3 Standard**                   | 頻繁存取、關鍵數據       | 最貴                    | 99.99% | 無           | 毫秒級         | **預設選項**,看到「frequently accessed」就選它                |
+| **S3 Intelligent-Tiering**        | 存取模式不確定、自動優化 | 有監控費用              | 99.9%  | 無           | 毫秒級         | 關鍵字「**unpredictable access**」、「**changing patterns**」 |
+| **S3 Standard-IA**                | 不常存取但需快速取回     | 便宜但有檢索費          | 99.9%  | **30天**     | 毫秒級         | 看到「**infrequent**」+「**immediate access**」               |
+| **S3 One Zone-IA**                | 可重建的非關鍵數據       | 比 Standard-IA 便宜 20% | 99.5%  | **30天**     | 毫秒級         | 關鍵字「**single AZ**」、「**can be recreated**」             |
+| **S3 Glacier Instant Retrieval**  | 季度存取的歸檔數據       | 更便宜                  | 99.9%  | **90天**     | **毫秒級**     | 「**quarterly access**」+「需要**立即取回**」                 |
+| **S3 Glacier Flexible Retrieval** | 歸檔數據、可接受等待     | 很便宜                  | 99.99% | **90天**     | **分鐘到小時** | 「**archive**」+「**不急著拿**」,有加速選項                   |
+| **S3 Glacier Deep Archive**       | 長期保存、合規需求       | 最便宜                  | 99.99% | **180天**    | **12小時**     | 「**7-10 years**」、「**compliance**」、「**cheapest**」      |
+
+## 考試判斷邏輯(從上到下檢查)
+
+### Step 1: 看關鍵字直接秒殺
+
+- **unpredictable/changing** → Intelligent-Tiering
+- **recreatable/non-critical** + cost → One Zone-IA
+- **compliance/7+ years** → Glacier Deep Archive
+- **quarterly** → Glacier Instant Retrieval
+
+### Step 2: 看存取頻率 + 檢索需求
+
+```
+頻繁存取 → Standard
+不常存取 + 立即需要 → Standard-IA
+不常存取 + 可等幾分鐘 → Glacier Flexible
+不常存取 + 可等12小時 → Glacier Deep Archive
+```
+
+### Step 3: 看成本要求
+
+- 題目強調「**most cost-effective**」→ 往下選(Glacier 方向)
+- 題目強調「**performance**」→ 往上選(Standard 方向)
+
+## 實戰記憶技巧
+
+### 1️⃣ 最小存儲時間陷阱
+
+```
+IA 系列 = 30天
+Glacier Instant = 90天
+Glacier Flexible = 90天
+Glacier Deep Archive = 180天
+```
+
+**陷阱**：如果你只存 15 天就刪除,照樣收 30/90/180 天的費用!
+
+### 2️⃣ 檢索時間記憶法
+
+```
+毫秒級 = Standard 到 Glacier Instant(名字有 Instant)
+分鐘到小時 = Glacier Flexible(有彈性,可以選)
+12 小時 = Deep Archive(埋很深,挖很久)
+```
+
+### 3️⃣ One Zone-IA 的判斷公式
+
+```
+One Zone-IA = 能接受資料遺失風險 + 要省錢
+```
+
+**常見場景**：縮圖、可重新生成的數據、非關鍵備份
