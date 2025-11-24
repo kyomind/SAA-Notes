@@ -1517,11 +1517,21 @@ One Zone-IA = 能接受資料遺失風險 + 要省錢
 
 ## 想到 Blacklist FQDN 就想到這兩個服務
 
-| 服務                  | 用途                      | 能否封鎖 FQDN       |
-| --------------------- | ------------------------- | ------------------- |
-| Route 53 DNS Firewall | 封鎖惡意網域              | ✅ 核心功能          |
+| 服務                  | 用途                      | 能否封鎖 FQDN        |
+| --------------------- | ------------------------- | -------------------- |
+| Route 53 DNS Firewall | 封鎖惡意網域              | ✅ 核心功能           |
 | Network Firewall      | Layer 3-7 網路流量過濾    | ✅ 可以，但非主要用途 |
-| WAF                   | HTTP/HTTPS 應用層攻擊防護 | ❌ 不處理 DNS        |
-| Security Group        | IP/Port 控制              | ❌ 不認識 domain     |
+| WAF                   | HTTP/HTTPS 應用層攻擊防護 | ❌ 不處理 DNS         |
+| Security Group        | IP/Port 控制              | ❌ 不認識 domain      |
 
 dojo 中出現的就是 AWS Network Firewall。
+
+## Geolocation vs Geoproximity Routing 比較表
+
+| 特性           | Geolocation Routing                                    | Geoproximity Routing                         |
+| -------------- | ------------------------------------------------------ | -------------------------------------------- |
+| **判斷依據**   | 用戶的地理位置(國家/州/大陸)                           | 用戶與資源的地理距離                         |
+| **路由邏輯**   | 固定規則:歐洲 → EU server                              | 動態計算:選最近的 server                     |
+| **Bias 調整**  | ❌ 不支援                                               | ✅ 可用 bias 擴大/縮小涵蓋範圍                |
+| **典型場景**   | 內容在地化、法規遵循                                   | 延遲優化、負載分散                           |
+| **考試關鍵字** | "based on user location", "restrict content by region" | "route to nearest", "bias", "distance-based" |
