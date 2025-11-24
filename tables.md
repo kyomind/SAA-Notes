@@ -1514,3 +1514,14 @@ One Zone-IA = 能接受資料遺失風險 + 要省錢
 | **典型場景** | 日誌歸檔、冷資料轉 Glacier         | EC2 備份自動化                 |
 | **設定位置** | S3 bucket level                    | EC2 Console / Tag-based        |
 | **觸發條件** | 天數、版本數                       | 排程(每 X 小時/天)             |
+
+## 想到 Blacklist FQDN 就想到這兩個服務
+
+| 服務                  | 用途                      | 能否封鎖 FQDN       |
+| --------------------- | ------------------------- | ------------------- |
+| Route 53 DNS Firewall | 封鎖惡意網域              | ✅ 核心功能          |
+| Network Firewall      | Layer 3-7 網路流量過濾    | ✅ 可以，但非主要用途 |
+| WAF                   | HTTP/HTTPS 應用層攻擊防護 | ❌ 不處理 DNS        |
+| Security Group        | IP/Port 控制              | ❌ 不認識 domain     |
+
+dojo 中出現的就是 AWS Network Firewall。
