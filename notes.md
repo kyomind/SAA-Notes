@@ -268,3 +268,6 @@
     3. **使用特色**：**完全免費，隨時下載**
     4. **考試關鍵字**："compliance reports" → Artifact、"security assessment" → Inspector、"regulatory documents" → Artifact、"vulnerability scan" → Inspector
     5. **記憶技巧**：Inspector → 檢查「你的」資源；Artifact → 下載「AWS 的」合規證明
+56. ★ **ALB 支援協定**：現代化負載均衡器協定支援
+    1. **支援協定**：**HTTP/1.1**、**HTTP/2**、**gRPC**
+    2. **關鍵優勢**：支援現代微服務架構（gRPC）、提升效能（HTTP/2 多路復用）
