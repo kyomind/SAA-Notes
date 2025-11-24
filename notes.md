@@ -315,3 +315,7 @@
     2. **必要條件二**：S3 bucket 必須**啟用靜態網站託管功能**（開啟 "Static website hosting" + 設定 index document）
     3. **常見錯誤**：S3 bucket **不需要**與 hosted zone 在同一個 region（Route 53 是全球服務）
     4. **記憶技巧**：「**名稱對應 + 靜態開關**」- 這兩個是必要條件，region 不重要
+68. 😇 **AWS Storage Gateway vs S3 Glacier 成本陷阱**：備份儲存類別選擇
+    1. **錯誤選項分析**：使用 **AWS Storage Gateway** 備份資料到 **S3 Glacier Flexible Retrieval** 雖然有效，但成本通常比直接備份到 **Glacier Deep Archive** 更昂貴
+    2. **成本考量**：Glacier Deep Archive 比 Glacier Flexible Retrieval 更便宜（適合長期封存）
+    3. **考試重點**：備份解決方案要考慮**成本效益**，選擇最便宜的合適選項
