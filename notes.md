@@ -277,4 +277,16 @@
 58. 😇 **Route 53 健康檢查網路配置**：確保檢查正常運作
     1. **NACL 設定**：設定網路存取控制清單允許 Route 53 請求
     2. **路由表配置**：確保路由表允許健康檢查流量到達端點
-    3. `Evaluate Target Health`：設定為 **Yes** 啟用目標健康評估
+    3. **Evaluate Target Health**：設定為 **Yes** 啟用目標健康評估
+59. ★★ **Lambda 呼叫方式**：同步 vs 非同步處理機制
+    1. **Synchronous（同步）**：API Gateway、ALB 直接呼叫，等待回應
+    2. **Asynchronous（非同步）**：S3、SNS 觸發後就離開，Lambda 自己處理
+60. ★★ **Kinesis + Lambda 特殊機制**：Event Source Mapping 架構
+    1. **核心機制**：Lambda 使用 **Event Source Mapping** 主動 poll Kinesis stream
+    2. **資料流向**：不是 Kinesis push 給 Lambda，是 **Lambda pull from Kinesis**
+    3. **自動管理**：Lambda 自動管理 **checkpoint** 和 **retry**
+61. ★ **Kinesis + Lambda 架構優勢**：高效能非同步處理
+    1. **立即回應**：Kinesis 收到資料就回 success，不用等處理完成
+    2. **自動擴展**：Lambda 根據 **shard 數量和資料量**自動調整
+    3. **成本優化**：只付 Kinesis shard 費用 + Lambda 執行時間
+    4. **處理流程**：User upload → Kinesis Stream（立即回應）→ Lambda poll（非同步處理）→ S3 儲存
