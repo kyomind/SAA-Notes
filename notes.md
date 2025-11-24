@@ -319,3 +319,8 @@
     1. **錯誤選項分析**：使用 **AWS Storage Gateway** 備份資料到 **S3 Glacier Flexible Retrieval** 雖然有效，但成本通常比直接備份到 **Glacier Deep Archive** 更昂貴
     2. **成本考量**：Glacier Deep Archive 比 Glacier Flexible Retrieval 更便宜（適合長期封存）
     3. **考試重點**：備份解決方案要考慮**成本效益**，選擇最便宜的合適選項
+69. ★ **SNS Fan-out 架構錯誤選項分析**：單一 topic vs 多 topic 設計
+    1. **錯誤想法**：為每種訊息類型建立獨立的 SNS topic + 對應的 SQS queue
+    2. **正確架構**：**單一 SNS topic** + **多個 SQS queue** + **Filter Policy** 實現訊息分流
+    3. **Filter Policy 機制**：在 SQS subscription 設定過濾條件，只接收符合條件的訊息，避免所有 subscriber 收到全部訊息
+    4. 沒有過濾的話，就是典型的 fan-out 架構——所有 subscriber 都會收到所有訊息
