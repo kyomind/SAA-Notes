@@ -297,3 +297,8 @@
     1. **加密方式**：使用 **Secure Sockets Layer (SSL)** 加密來源和目標端點連接
     2. **設定方法**：透過 **AWS DMS Management Console** 或 **AWS DMS API** 分配憑證給端點
     3. **憑證管理**：可使用 **AWS DMS console** 管理憑證
+64. 👀 **DMS Certificate 管理功能**：基本憑證儲存機制
+    1. **核心功能**：上傳 certificate 到 DMS、指定給 endpoint 用於 SSL 連線、驗證 source/target 身份
+    2. **服務定位**：**不是完整的 PKI 管理系統**，更像是讓你把 cert 放進去，DMS 幫你在連線時使用
+    3. **實務應用**：On-premises DB 需要 SSL 連線時上傳 **CA cert** 到 DMS；RDS 預設有 AWS 提供的 cert
+    4. **考試重點**：知道「**DMS 支援 SSL 加密傳輸**」即可，不會深入考憑證管理細節

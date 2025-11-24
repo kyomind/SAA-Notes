@@ -1449,3 +1449,44 @@ One Zone-IA = 能接受資料遺失風險 + 要省錢
 | 異質資料庫 (Oracle→PostgreSQL) | DMS + Schema Conversion Tool |
 | 需要加密傳輸                   | DMS + SSL                    |
 | 大量資料                       | DMS + Snowball Edge          |
+
+## AWS 憑證/金鑰管理服務比較表
+
+| 服務                                | 主要用途                         | 能否儲存憑證        | 自動輪換       | 考試判斷關鍵字                                         |
+| ----------------------------------- | -------------------------------- | ------------------- | -------------- | ------------------------------------------------------ |
+| **Secrets Manager**                 | **儲存、管理、自動輪換機密資料** | ✅ 核心功能          | ✅ 原生支援     | "rotate credentials", "database passwords", "API keys" |
+| **Systems Manager Parameter Store** | 儲存配置參數與機密               | ✅ 可用 SecureString | ❌ 需手動實作   | "configuration data", "cheaper alternative"            |
+| **AWS Certificate Manager (ACM)**   | 管理 SSL/TLS 憑證                | ❌ 只管理憑證        | ✅ 憑證自動續期 | "SSL/TLS", "HTTPS", "certificate"                      |
+| **AWS KMS**                         | 加密金鑰管理                     | ❌ 不儲存憑證        | N/A            | "encryption keys", "encrypt data", "CMK"               |
+
+### 考試必記判斷邏輯
+
+看到這些關鍵字 → 選 Secrets Manager:
+
+- "automatically rotate" + "database credentials/API keys"
+- "securely store secrets"
+- 題目強調「自動輪換」
+
+選 Parameter Store vs Secrets Manager:
+
+- Parameter Store = 便宜、簡單配置、**不需自動輪換**
+- Secrets Manager = 貴一點、**需要自動輪換功能**
+
+### ACM 陷阱
+
+- 只要題目不是在講 HTTPS/SSL 憑證，**ACM 100% 是錯誤選項**
+- ACM 管理的是「網站憑證」,不是「應用程式密碼」
+
+### KMS 陷阱
+
+- KMS 是「加密工具」,不是「保險箱」
+- KMS 提供加密金鑰,但**不負責儲存你的應用程式憑證**
+- Secrets Manager 底層會用 KMS 加密,但你不直接用 KMS 存密碼
+
+### 考試記憶口訣
+
+**"Secrets Manager = 自動輪換專家"**
+需要 rotate → Secrets Manager，不需要 → Parameter Store
+
+**"ACM = 網站鎖頭，KMS = 加密工廠"**
+都不是存密碼的地方
