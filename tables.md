@@ -1440,3 +1440,12 @@ One Zone-IA = 能接受資料遺失風險 + 要省錢
 ```
 
 **常見場景**：縮圖、可重新生成的數據、非關鍵備份
+
+## DMS 常見組合
+
+| 遷移場景                       | 工具選擇                     |
+| ------------------------------ | ---------------------------- |
+| 同質資料庫 (MySQL→MySQL)       | DMS 或 native tools          |
+| 異質資料庫 (Oracle→PostgreSQL) | DMS + Schema Conversion Tool |
+| 需要加密傳輸                   | DMS + SSL                    |
+| 大量資料                       | DMS + Snowball Edge          |

@@ -290,3 +290,10 @@
     2. **自動擴展**：Lambda 根據 **shard 數量和資料量**自動調整
     3. **成本優化**：只付 Kinesis shard 費用 + Lambda 執行時間
     4. **處理流程**：User upload → Kinesis Stream（立即回應）→ Lambda poll（非同步處理）→ S3 儲存
+62. ★★ **ECS + SQS Batch Job 架構**：容器化批次處理解決方案
+    1. **架構流程**：S3 upload → **S3 Event** → **SQS Queue** → **ECS Task (Docker)** → 處理後上傳 S3
+    2. **SQS 中介層優勢**：解耦 S3 event 和 ECS task、根據 **queue 訊息數量**調整 ECS task 數量、訊息不會遺失（可設定 retention 時間）、處理失敗的訊息會回到 queue
+63. 😇 **AWS DMS SSL 加密**：端點安全連接配置
+    1. **加密方式**：使用 **Secure Sockets Layer (SSL)** 加密來源和目標端點連接
+    2. **設定方法**：透過 **AWS DMS Management Console** 或 **AWS DMS API** 分配憑證給端點
+    3. **憑證管理**：可使用 **AWS DMS console** 管理憑證
