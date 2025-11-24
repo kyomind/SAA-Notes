@@ -307,6 +307,11 @@
     2. **服務限制**：**不適合**直接用於多帳戶身份驗證目的
     3. **記憶要點**：Directory Service = 管理目錄，不是多帳戶認證解決方案
 66. ★★ **多帳戶身份認證解決方案**：IAM Identity Center + AD Connector 組合
-    1. **關鍵字識別**："**existing** directory service" → **已有** AD/LDAP；"user authentication" → SSO 需求
+    1. **關鍵字識別**："existing directory service" → 已有 AD/LDAP；"user authentication" → SSO 需求
     2. **正確答案組合**：**IAM Identity Center**（舊名 AWS SSO）負責中央化管理多帳號存取 + **AD Connector** 連接現有 AD（不用複製用戶到 AWS）
     3. **考試重點**：多帳戶環境下的身份管理，優先考慮現有身份來源整合
+67. ★★ **Route 53 + S3 靜態網站**：前置條件配置
+    1. **必要條件一**：**S3 bucket 名稱**必須與網域名稱完全相同（如 `www.example.com` bucket 對應 `www.example.com` 網域）
+    2. **必要條件二**：S3 bucket 必須**啟用靜態網站託管功能**（開啟 "Static website hosting" + 設定 index document）
+    3. **常見錯誤**：S3 bucket **不需要**與 hosted zone 在同一個 region（Route 53 是全球服務）
+    4. **記憶技巧**：「**名稱對應 + 靜態開關**」- 這兩個是必要條件，region 不重要
