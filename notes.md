@@ -421,3 +421,6 @@
 94. 😇 **CloudTrail 進階功能**：日誌檔案管理與通知設定
     1. **儲存管理**：可在 S3 bucket 中長期儲存日誌檔案、定義 **S3 lifecycle 規則**自動封存或刪除日誌檔案
     2. **通知機制**：設定 **Amazon SNS 通知**，在日誌檔案傳送和驗證時接收通知
+95. ★★ **Security Groups vs NACL** SSH 連線配置差異
+    1. **Security Groups**：只需設定 **Inbound Rule** 允許 SSH 流量（**stateful**）
+    2. **NACL**：需設定 **Inbound 和 Outbound Rules** 都允許 SSH 流量（**stateless**）
