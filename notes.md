@@ -465,3 +465,11 @@
      2. **EventBridge**：事件捕捉與路由
      3. **SNS**：當配額接近上限時發送通知
      4. **Lambda**：自動化刷新或處理邏輯
+105. 👀 **AWS Wavelength** 5G 邊緣運算解決方案
+     1. **服務定位**：5G 邊緣運算，提供超低延遲應用
+     2. **部署位置**：電信商機房內（不是一般 AWS Region）
+     3. **目標場景**：AR/VR、即時遊戲、自駕車、工業 IoT
+106. 👀 **Wavelength 考試策略**
+     1. **出現機率**：極低，1-2 題最多
+     2. **判斷關鍵字**：「5G」、「ultra-low latency」+「mobile network」、「edge of telecom network」
+     3. **應對策略**：知道它存在、記住關鍵字就夠了，考試 CP 值太低
