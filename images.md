@@ -242,3 +242,7 @@ You can configure any access point to accept requests only from a virtual privat
 ## Direct Connect with Private VIF
 
 ![圖 27](https://img.kyomind.tw/img-20251125-120323.png)
+
+## Volume Gateway: Cached vs Stored
+
+![圖 28](https://img.kyomind.tw/img-20251125-172013.png)
