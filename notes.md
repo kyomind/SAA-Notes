@@ -473,3 +473,20 @@
      1. **出現機率**：極低，1-2 題最多
      2. **判斷關鍵字**：「5G」、「ultra-low latency」+「mobile network」、「edge of telecom network」
      3. **應對策略**：知道它存在、記住關鍵字就夠了，考試 CP 值太低
+107. ★★ **Storage Gateway Hardware Appliance** 混合雲存儲解決方案
+     1. **適用場景**：on-premises 環境需要 **NFS 存儲**並備份到雲端
+     2. **關鍵限制**：dedicated physical server + **不使用虛擬化** → 只能選 **Hardware Appliance**
+     3. **服務定位**：AWS 賣的**實體 1U 伺服器**，預裝 Storage Gateway 軟體
+108. ★★ **Storage Gateway 三種模式選擇**
+     1. **File Gateway**：提供 **NFS/SMB 介面**，背後自動存到 S3，本地有快取
+     2. **Volume Gateway**：提供 **iSCSI block storage**，適合區塊層級存取
+     3. **Tape Gateway**：提供**備份磁帶**功能，替代傳統磁帶庫
+109. ★★ **Storage Gateway 考試判斷邏輯**
+     1. **不能用 VM** → Storage Gateway **Hardware Appliance**
+     2. **需要 NFS/SMB** → **File Gateway**
+     3. **需要 iSCSI block storage** → **Volume Gateway**
+     4. **需要備份磁帶** → **Tape Gateway**
+110. ★ **Storage Gateway 架構運作流程**
+     1. **混合雲橋接器**：讓 on-premises 環境透過標準協定存取 AWS 雲端存儲
+     2. **資料流向**：Application Server → NFS → Storage Gateway Hardware Appliance → 自動同步 → Amazon S3
+     3. **效能優化**：常用資料在本地快取，提供低延遲存取
