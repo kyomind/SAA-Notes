@@ -363,3 +363,10 @@
     1. **正確選項**：RDS/Aurora (managed)、DynamoDB (serverless)
     2. **錯誤選項**：「在 ECS/EKS 跑 MySQL container」（絕不會是正確答案）
     3. **記憶口訣**：**容器跑 app，資料庫用 managed service**
+79. ★★ **DynamoDB 計費模式選擇**
+    1. **On-Demand 模式**：按實際請求付費、自動擴展、無需容量規劃（**純 serverless**）
+    2. **Provisioned Capacity 模式**：預設 **RCU/WCU**、可啟用 Auto Scaling、成本可預測
+80. ★★ **DynamoDB RCU/WCU 考試重點**
+    1. **限定關係**：RCU/WCU **只和 Provisioned Capacity** 有關
+    2. **考試規律**：題目提到 RCU/WCU，答案必是 **Provisioned Capacity**
+    3. **On-Demand 特性**：無需設定容量單位，按實際用量計費
