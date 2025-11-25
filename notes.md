@@ -385,3 +385,25 @@
     1. **Private VIF = VPC 內部**：EC2、RDS、內部應用程式
     2. **Public VIF = AWS 公開服務**：S3、DynamoDB、公開 API
     3. **關鍵差別**：Private VIF 訪問 **VPC 內部**，Public VIF 訪問 **AWS 公開服務**
+85. ★★ **ENA vs EFA** HPC 網路需求與考試陷阱
+    1. **題目關鍵**：HPC 高效能運算的網路需求 + **Windows servers**
+    2. **真正考點**：ENA vs EFA 的差異，以及 **Windows 的限制**
+    3. **邏輯推演**：題目要求「higher bandwidth + higher PPS + lower latency」→ 直覺想到 EFA（因為 HPC 場景）→ **但關鍵字是 Windows servers** → EFA 的 OS-bypass 功能不支援 Windows → 只能退而求其次選 ENA
+86. ★★ **ENA vs EFA 技術差異**表格比較
+    1. **ENA**：支援 Windows + Linux、核心優勢 SR-IOV 最高 100 Gbps、適用一般 HPC 大頻寬需求
+    2. **EFA**：**僅 Linux**、核心優勢 ENA + OS-bypass、適用極致低延遲（MPI、ML）
+87. ★ **ENA vs EFA 選擇邏輯**與記憶技巧
+    1. **記憶口訣**：**EFA = ENA + OS-bypass = Linux Only**
+    2. **判斷規則**：Windows → 直接排除 EFA，選 ENA；Linux + HPC/ML → 考慮 EFA；一般高頻寬需求 → ENA 就夠
+88. ★★ **SAA 典型陷阱設計**：情境 + 限制條件組合題
+    1. **陷阱設計**：AWS 故意在 HPC 情境下放 **Windows**，讓你以為要選「最強的 EFA」，但實際上 Windows 根本用不了 EFA 的核心功能（OS-bypass）
+    2. **考試重點**：看似完美的高階方案，但藏了一個限制條件讓它不可行
+    3. **應對策略**：看到 HPC 不要反射性選 EFA → 先檢查 OS；Windows 在 AWS 的限制比 Linux 多 → 遇到 Windows 要多留意
+89. ★★ **Kinesis Data Streams** 實時日誌處理架構解決方案
+    1. **題目關鍵**：實時分析 + 多來源日誌合併 + 12 小時內數據回溯
+    2. **核心需求分析**：需要 streaming 服務 + 接收多個 stream + 短期數據保留
+90. ★★ **Kinesis 技術優勢**：完美符合實時日誌處理需求
+    1. **實時數據攝取和處理**：支援高吞吐量數據流
+    2. **數據保留特性**：預設保留數據 **24 小時**（可延長到 365 天）
+    3. **多消費者支援**：支援多消費者同時讀取同一份數據
+    4. **數據重播功能**：可以「重播」過去 12 小時的數據做驗證
