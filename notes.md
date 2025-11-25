@@ -350,3 +350,16 @@
     1. **ECS = Easy Container Service**（AWS 簡化版）
     2. **EKS = Elastic Kubernetes Service**（業界標準）
     3. **選擇原則**：優先考慮 AWS 原生整合需求，再考慮 Kubernetes 相容性需求
+76. ★★ **容器中不運行資料庫的技術原因**
+    1. **狀態管理複雜**：需要 StatefulSets + Persistent Volumes，增加架構複雜度
+    2. **資料一致性風險**：pod 重啟可能遺失資料，無法保證資料安全性
+    3. **備份/恢復困難**：需自己實作備份機制，缺乏自動化保護
+    4. **效能不穩定**：容器 I/O 效能不如實體機/VM，影響資料庫效能
+77. ★★ **AWS 容器與資料庫最佳實踐分離原則**
+    1. **Container (ECS/EKS)**：專門運行**無狀態服務**（應用程式、API、微服務）
+    2. **Managed Service**：專門處理**有狀態資源**（RDS、Aurora、ElastiCache）
+    3. **關鍵優勢**：各司其職，容器負責運算，託管服務負責資料持久化
+78. ★★ **容器資料庫考試陷阱識別**
+    1. **正確選項**：RDS/Aurora (managed)、DynamoDB (serverless)
+    2. **錯誤選項**：「在 ECS/EKS 跑 MySQL container」（絕不會是正確答案）
+    3. **記憶口訣**：**容器跑 app，資料庫用 managed service**
