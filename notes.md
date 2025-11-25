@@ -434,28 +434,19 @@
     3. **考試關鍵字**："retrieve from multiple DynamoDB tables" + "single API call" + "serverless data aggregation" → AppSync Pipeline Resolvers
     4. **支援資料來源**：DynamoDB（最常見）、RDS/Aurora、Lambda（自訂邏輯）、HTTP endpoints、OpenSearch、EventBridge
     5. **Pipeline 混合使用**：可在單次 GraphQL request 中組合多種資料來源（如：DynamoDB 讀取 → Lambda 處理 → Aurora 寫入），題目聚焦 **DynamoDB** 因其 **serverless + NoSQL** 的典型組合特性
-
-
-## 為什麼是 A Record Alias，不是 CNAME Alias？
-
-關鍵在 **Zone Apex（裸域名）** 的限制：
-
-                        |
-
----
-
-## 核心概念
-
-1. **CNAME 的 DNS 限制**：根據 RFC 規範，Zone Apex 不能有 CNAME，因為 CNAME 會「獨佔」該名稱，與必須存在的 SOA、NS 記錄衝突。
-
-2. **Route 53 Alias 的解法**：AWS 發明了 Alias Record，它「看起來」像 A Record，但背後會自動解析目標（如 ALB）的 IP。這繞過了 CNAME 的限制。
-
-3. **ALB 沒有固定 IP**：所以你不能直接用傳統 A Record 指定 IP，必須用 Alias 讓 Route 53 動態解析。
-
----
-
-## 考試記憶點
-
-> **Zone Apex + Load Balancer = A Record Alias**
-
-看到題目問「apex」或「裸域名」指向 ALB/NLB/CloudFront，答案就是 **Alias A Record**，永遠不會是 CNAME。
+98. ★★ **Route 53 Alias A Record vs CNAME Alias** Zone Apex 限制解析
+    1. **CNAME 的 DNS 限制**：根據 RFC 規範，Zone Apex 不能有 CNAME，因為 CNAME 會「獨佔」該名稱，與必須存在的 SOA、NS 記錄衝突
+    2. **Route 53 Alias 的解法**：AWS 發明了 Alias Record，它「看起來」像 A Record，但背後會自動解析目標（如 ALB）的 IP，這繞過了 CNAME 的限制
+    3. **ALB 沒有固定 IP**：不能直接用傳統 A Record 指定 IP，必須用 Alias 讓 Route 53 動態解析
+99. ★ **Zone Apex DNS 考試記憶點**：Load Balancer 指向規則
+    1. **考試核心規則**：**Zone Apex + Load Balancer = A Record Alias**
+    2. **關鍵字識別**：看到「apex」或「裸域名」指向 ALB/NLB/CloudFront → 答案就是 **Alias A Record**，永遠不會是 CNAME
+100. 😇 **Alias A Record 實際設定步驟**：Route 53 Console 操作細節
+     1. **Name（記錄名稱）**：`tutorialsdojo.com`（空白或 `@`，取決於 DNS 介面）
+     2. **Type**：A
+     3. **Alias**：Yes
+     4. **Alias Target（值）**：`elbtutorialsdojo123.us-east-1.elb.amazonaws.com`
+101. 👀 **Route 53 Alias Target 選擇機制**：Console 便利功能
+     1. **界面操作**：不會看到 IP，而是選擇 ALB 的 DNS name
+     2. **下拉選單**：Route 53 Console 裡會有下拉選單讓你直接選 AWS 資源（ALB、CloudFront、S3 等），不用手打
+     3. **背後運作**：Route 53 會在背後把這個 DNS name 解析成當下的 IP 回給查詢者
