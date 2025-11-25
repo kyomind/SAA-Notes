@@ -246,3 +246,7 @@ You can configure any access point to accept requests only from a virtual privat
 ## Volume Gateway: Cached vs Stored
 
 ![圖 28](https://img.kyomind.tw/img-20251125-172013.png)
+
+## S3 Storage Classes Overview
+
+![圖 31](https://img.kyomind.tw/img-20251125-221248.png)

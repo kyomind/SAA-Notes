@@ -450,3 +450,8 @@
      1. **界面操作**：不會看到 IP，而是選擇 ALB 的 DNS name
      2. **下拉選單**：Route 53 Console 裡會有下拉選單讓你直接選 AWS 資源（ALB、CloudFront、S3 等），不用手打
      3. **背後運作**：Route 53 會在背後把這個 DNS name 解析成當下的 IP 回給查詢者
+102. ★★ **Auto Scaling Cooldown Period** 抖動問題解決方案
+     1. **問題情境**：Auto Scaling 在短時間內反覆 scale up/down（抖動），導致不穩定或成本浪費
+     2. **解決方案**：延長 **cooldown period** + 提高 **CloudWatch 觸發閾值**
+     3. **考試判斷點**：看到「頻繁 scaling」、「抖動」、「scale up/down 太快」→ 想到 cooldown period 太短
+     4. **雙重調整策略**：提高 CloudWatch threshold 讓指標不要太敏感，兩者搭配才能穩定 scaling 行為
