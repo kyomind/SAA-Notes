@@ -1612,3 +1612,14 @@ File Gateway 是**獨立的模式**,不屬於那三種 Volume Gateway。
 - 資料以 EBS snapshots 形式存 S3
 
 **考試判斷**: 題目提到 "file share" 或 "NFS/SMB" → File Gateway
+
+## Route 53 的 A Record Alias
+
+這是一個 Route 53 特有的功能,讓你可以在 Zone Apex 使用類似 CNAME 的功能。(但本質是 A Record)
+
+| 記錄類型             | Zone Apex (`tutorialsdojo.com`) | 子網域 (`www.tutorialsdojo.com`) |
+| -------------------- | ------------------------------- | -------------------------------- |
+| **CNAME**            | ❌ DNS 規範禁止                  | ✅ 可以                           |
+| **A Record (Alias)** | ✅ Route 53 特有功能             | ✅ 可以                           |
+
+原則上，CNAME 只能用在子網域，不能用在 Zone Apex。但 Route 53 的 A Record Alias 可以解決這個限制。

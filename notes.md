@@ -434,3 +434,28 @@
     3. **考試關鍵字**："retrieve from multiple DynamoDB tables" + "single API call" + "serverless data aggregation" → AppSync Pipeline Resolvers
     4. **支援資料來源**：DynamoDB（最常見）、RDS/Aurora、Lambda（自訂邏輯）、HTTP endpoints、OpenSearch、EventBridge
     5. **Pipeline 混合使用**：可在單次 GraphQL request 中組合多種資料來源（如：DynamoDB 讀取 → Lambda 處理 → Aurora 寫入），題目聚焦 **DynamoDB** 因其 **serverless + NoSQL** 的典型組合特性
+
+
+## 為什麼是 A Record Alias，不是 CNAME Alias？
+
+關鍵在 **Zone Apex（裸域名）** 的限制：
+
+                        |
+
+---
+
+## 核心概念
+
+1. **CNAME 的 DNS 限制**：根據 RFC 規範，Zone Apex 不能有 CNAME，因為 CNAME 會「獨佔」該名稱，與必須存在的 SOA、NS 記錄衝突。
+
+2. **Route 53 Alias 的解法**：AWS 發明了 Alias Record，它「看起來」像 A Record，但背後會自動解析目標（如 ALB）的 IP。這繞過了 CNAME 的限制。
+
+3. **ALB 沒有固定 IP**：所以你不能直接用傳統 A Record 指定 IP，必須用 Alias 讓 Route 53 動態解析。
+
+---
+
+## 考試記憶點
+
+> **Zone Apex + Load Balancer = A Record Alias**
+
+看到題目問「apex」或「裸域名」指向 ALB/NLB/CloudFront，答案就是 **Alias A Record**，永遠不會是 CNAME。
