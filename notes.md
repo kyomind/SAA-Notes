@@ -490,3 +490,15 @@
      1. **混合雲橋接器**：讓 on-premises 環境透過標準協定存取 AWS 雲端存儲
      2. **資料流向**：Application Server → NFS → Storage Gateway Hardware Appliance → 自動同步 → Amazon S3
      3. **效能優化**：常用資料在本地快取，提供低延遲存取
+111. ★★ **File Gateway vs Volume Gateway** 協定差異解析
+     1. **File Gateway**：**NFS/SMB 協定**，檔案存取，資料存到 S3
+     2. **Volume Gateway**：**iSCSI 協定**，Block storage，像掛載硬碟
+     3. **Tape Gateway**：**iSCSI-VTL 協定**，模擬磁帶庫，備份用
+112. ★★ **NFS vs iSCSI** 協定層級差異
+     1. **NFS 特性**：網路共享資料夾，存取的是「**檔案**」
+     2. **iSCSI 特性**：網路硬碟，存取的是「**磁區/block**」
+     3. **互不相容性**：應用程式設計用 NFS 存取，就不能換成 iSCSI
+113. ★★ **Storage Gateway 考試判斷法則**
+     1. **關鍵字對應**：看到 **NFS/SMB** → 只有 **File Gateway**
+     2. **陷阱識別**：題目要求 **NFS protocol**，Volume Gateway 只支援 **iSCSI**
+     3. **記憶技巧**：協定決定 Gateway 類型，別被其他選項混淆
