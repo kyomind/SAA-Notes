@@ -411,3 +411,11 @@
     1. **題目關鍵**：low latency access to **frequently accessed data subsets** locally
     2. **Cached Volumes 優勢**：只有**熱點資料**快取在本地，適合部分資料集的低延遲存取
     3. **Stored Volumes 限制**：需要低延遲存取**整個資料集**，不適合只存取部分資料的場景
+92. ★★ **CloudTrail** AWS API 操作記錄與審計服務
+    1. **服務定位**：專門記錄 **AWS API 呼叫歷史**
+    2. **記錄範圍**：誰做了什麼操作、何時做的、對哪個資源操作、操作結果
+93. ★ **CloudTrail 加密機制**：預設安全保護配置
+    1. **預設加密**：**S3 SSE 加密**（免費）
+    2. **進階加密**：**AWS KMS 加密**（更嚴格的金鑰管理）
+    3. **考試重點**：CloudTrail **預設就有加密**，不需要額外設定
+

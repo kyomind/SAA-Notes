@@ -1554,3 +1554,34 @@ VGW 是 AWS 管理的服務，AWS 會自動分配 IP 給它。
 3. 你用這個 config 設定你的 CGW 設備,裡面會包含 VGW 的 IP
 
 **記憶點**: Customer side 要準備 IP，AWS side 全自動。
+
+## CloudTrail vs Config 比較
+
+| 特性         | CloudTrail     | Config       |
+| ------------ | -------------- | ------------ |
+| **記錄內容** | API 呼叫動作   | 資源配置狀態 |
+| **關注點**   | 誰做了什麼     | 資源長什麼樣 |
+| **時間維度** | 事件發生時間點 | 配置變更歷史 |
+| **合規性**   | 操作審計       | 配置合規檢查 |
+
+## 實際例子
+
+假設你刪除了一個 S3 bucket:
+
+**CloudTrail 記錄**:
+
+```bash
+User: john@company.com
+Action: DeleteBucket
+Time: 2025-01-15 10:30:00
+Bucket: my-important-data
+Result: Success
+```
+
+**Config 記錄**:
+
+```bash
+Before: Bucket existed with versioning enabled
+After: Bucket does not exist
+Compliance: Non-compliant (violated retention policy)
+```
