@@ -407,3 +407,7 @@
     2. **數據保留特性**：預設保留數據 **24 小時**（可延長到 365 天）
     3. **多消費者支援**：支援多消費者同時讀取同一份數據
     4. **數據重播功能**：可以「重播」過去 12 小時的數據做驗證
+91. ★★ **Storage Gateway Cached vs Stored Volumes** 存取模式選擇
+    1. **題目關鍵**：low latency access to **frequently accessed data subsets** locally
+    2. **Cached Volumes 優勢**：只有**熱點資料**快取在本地，適合部分資料集的低延遲存取
+    3. **Stored Volumes 限制**：需要低延遲存取**整個資料集**，不適合只存取部分資料的場景
