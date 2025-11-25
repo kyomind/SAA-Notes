@@ -428,3 +428,9 @@
     1. **資料儲存架構**：主要資料存放在 **Amazon S3**，僅在 on-premises 保留 **熱點資料快取**
     2. **成本優勢**：大幅節省主要儲存成本、最小化 on-premises 儲存擴展需求
     3. **效能保證**：對**常用資料子集**保持**低延遲存取**，適合部分資料集的高頻存取場景
+97. 😇 **AppSync Pipeline Resolvers** 多資料來源聚合解決方案
+    1. **服務定位**：**託管式 GraphQL API 服務**，適合需要聚合多個 DynamoDB tables 的資料
+    2. **核心優勢**：**單次 API 呼叫**讀取多個資料來源、**伺服器端資料聚合**、避免多次往返網路延遲
+    3. **考試關鍵字**："retrieve from multiple DynamoDB tables" + "single API call" + "serverless data aggregation" → AppSync Pipeline Resolvers
+    4. **支援資料來源**：DynamoDB（最常見）、RDS/Aurora、Lambda（自訂邏輯）、HTTP endpoints、OpenSearch、EventBridge
+    5. **Pipeline 混合使用**：可在單次 GraphQL request 中組合多種資料來源（如：DynamoDB 讀取 → Lambda 處理 → Aurora 寫入），題目聚焦 **DynamoDB** 因其 **serverless + NoSQL** 的典型組合特性
