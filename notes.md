@@ -455,3 +455,13 @@
      2. **解決方案**：延長 **cooldown period** + 提高 **CloudWatch 觸發閾值**
      3. **考試判斷點**：看到「頻繁 scaling」、「抖動」、「scale up/down 太快」→ 想到 cooldown period 太短
      4. **雙重調整策略**：提高 CloudWatch threshold 讓指標不要太敏感，兩者搭配才能穩定 scaling 行為
+
+103. 👀 **AWS Service Quotas 監控架構**：事件驅動的配額檢查解決方案
+     1. **核心流程**：Trusted Advisor (檢查配額) → EventBridge (捕捉事件) → SNS (發通知)
+     2. **Lambda 角色**：每 24 小時定期 refresh Trusted Advisor 的配額檢查數據（因為不是即時更新）
+     3. **關鍵字識別**：Service Quotas/Service Limits 監控 → AWS 推薦的「Quota Monitor」解決方案架構
+104. 👀 **Service Quotas 監控元件功能**分析
+     1. **Trusted Advisor**：配額檢查的資料來源
+     2. **EventBridge**：事件捕捉與路由
+     3. **SNS**：當配額接近上限時發送通知
+     4. **Lambda**：自動化刷新或處理邏輯
