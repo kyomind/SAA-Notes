@@ -324,3 +324,29 @@
     2. **正確架構**：**單一 SNS topic** + **多個 SQS queue** + **Filter Policy** 實現訊息分流
     3. **Filter Policy 機制**：在 SQS subscription 設定過濾條件，只接收符合條件的訊息，避免所有 subscriber 收到全部訊息
     4. 沒有過濾的話，就是典型的 fan-out 架構——所有 subscriber 都會收到所有訊息
+70. ★★ **ECS 容器編排服務定位**：AWS 特色的容器管理解決方案
+    1. **核心定位**：AWS 原生容器編排服務，深度整合 AWS 生態系統
+    2. **與競爭對手對比**
+       - **Kubernetes (EKS)**：業界標準但複雜
+       - **ECS**：AWS 簡化版但整合性強
+       - **Docker Swarm**：已式微不考
+71. ★★ **ECS 的 AWS 原生整合優勢**
+    1. **身份權限整合**：直接連接 IAM Role (Task Role/Execution Role)
+    2. **監控日誌整合**：自動整合 CloudWatch Logs/Metrics
+    3. **配置管理整合**：原生支援 Secrets Manager/Parameter Store
+    4. **網路整合**：直接整合 ALB/NLB Target Groups、VPC/Security Groups
+72. ★★ **ECS vs EKS 管理模式差異**
+    1. **ECS 優勢**：AWS 全管控制平面，使用者只需管理 tasks
+    2. **EKS 限制**：需要管理 Kubernetes control plane 或付費給 EKS
+    3. **學習曲線**：ECS 平緩，EKS 需要 Kubernetes 專業知識
+73. ★★ **ECS 兩種運行模式選擇**
+    1. **EC2 Launch Type**：使用者管理底層 EC2 實例，適合需要控制底層資源
+    2. **Fargate**：完全 serverless，連 EC2 都不用管，適合簡化營運
+74. ★★ **容器服務考試選擇邏輯**
+    1. **ECS 適用關鍵字**："AWS-native"、"tight AWS integration"
+    2. **EKS 適用關鍵字**："Kubernetes workloads"、"migrate from on-premises K8s"
+    3. **Fargate 適用關鍵字**："serverless containers"、"no cluster management"
+75. ★ **容器服務記憶技巧**
+    1. **ECS = Easy Container Service**（AWS 簡化版）
+    2. **EKS = Elastic Kubernetes Service**（業界標準）
+    3. **選擇原則**：優先考慮 AWS 原生整合需求，再考慮 Kubernetes 相容性需求
