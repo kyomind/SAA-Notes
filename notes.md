@@ -370,3 +370,18 @@
     1. **限定關係**：RCU/WCU **只和 Provisioned Capacity** 有關
     2. **考試規律**：題目提到 RCU/WCU，答案必是 **Provisioned Capacity**
     3. **On-Demand 特性**：無需設定容量單位，按實際用量計費
+81. ★★ **CloudHSM 密鑰恢復限制**
+    1. **AWS 無法恢復密鑰**：遺失 HSM 憑證 = 密鑰永久遺失
+    2. **考試陷阱**：題目問「如何恢復？」→ 答案：**無法恢復**
+82. ★★ **CloudHSM 生產環境部署要求**
+    1. **最少 2 個 HSM**：分散不同 AZ
+    2. **避免單點故障**：防止單一 AZ 故障導致密鑰遺失
+    3. **考試記憶口訣**：CloudHSM = **高安全性換來高責任**
+83. ★★ **Direct Connect Virtual Interface (VIF) 類型選擇**
+    1. **Private VIF**：存取 **VPC 內部私有資源**
+    2. **Public VIF**：存取 **AWS 公開服務**（S3、DynamoDB 等）
+    3. **考試關鍵字判斷**："on-premises to VPC" + "dedicated connection" → **Direct Connect + Private VIF**
+84. ★ **Direct Connect VIF 使用場景記憶技巧**
+    1. **Private VIF = VPC 內部**：EC2、RDS、內部應用程式
+    2. **Public VIF = AWS 公開服務**：S3、DynamoDB、公開 API
+    3. **關鍵差別**：Private VIF 訪問 **VPC 內部**，Public VIF 訪問 **AWS 公開服務**
