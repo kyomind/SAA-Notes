@@ -1585,3 +1585,30 @@ Before: Bucket existed with versioning enabled
 After: Bucket does not exist
 Compliance: Non-compliant (violated retention policy)
 ```
+
+## Storage Gateway 完整分類
+
+File Gateway 是**獨立的模式**,不屬於那三種 Volume Gateway。
+
+| 類型               | 模式   | 協定      | 用途               |
+| ------------------ | ------ | --------- | ------------------ |
+| **File Gateway**   | -      | NFS/SMB   | 檔案共享,直接存 S3 |
+| **Volume Gateway** | Cached | iSCSI     | 區塊儲存,快取模式  |
+| **Volume Gateway** | Stored | iSCSI     | 區塊儲存,完整本地  |
+| **Tape Gateway**   | -      | iSCSI-VTL | 虛擬磁帶備份       |
+
+## File Gateway vs Volume Gateway
+
+**File Gateway**:
+
+- 檔案介面 (NFS/SMB)
+- **直接映射到 S3 objects**
+- 每個檔案 = 一個 S3 object
+
+**Volume Gateway**:
+
+- 區塊介面 (iSCSI)
+- 像是虛擬硬碟
+- 資料以 EBS snapshots 形式存 S3
+
+**考試判斷**: 題目提到 "file share" 或 "NFS/SMB" → File Gateway

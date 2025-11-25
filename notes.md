@@ -424,3 +424,7 @@
 95. ★★ **Security Groups vs NACL** SSH 連線配置差異
     1. **Security Groups**：只需設定 **Inbound Rule** 允許 SSH 流量（**stateful**）
     2. **NACL**：需設定 **Inbound 和 Outbound Rules** 都允許 SSH 流量（**stateless**）
+96. ★ **Storage Gateway Cached Volumes** 混合雲儲存最佳化解決方案
+    1. **資料儲存架構**：主要資料存放在 **Amazon S3**，僅在 on-premises 保留 **熱點資料快取**
+    2. **成本優勢**：大幅節省主要儲存成本、最小化 on-premises 儲存擴展需求
+    3. **效能保證**：對**常用資料子集**保持**低延遲存取**，適合部分資料集的高頻存取場景
