@@ -510,3 +510,4 @@
 115. 題目問「如何防止重複處理」，答案通常是：
      1. 使用 FIFO Queue（有 exactly-once processing）
      2. 在應用層實作 idempotency（冪等性）
+     3. FIFO 犧牲吞吐量換取 exactly-once 和順序保證
