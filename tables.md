@@ -1623,3 +1623,23 @@ File Gateway 是**獨立的模式**,不屬於那三種 Volume Gateway。
 | **A Record (Alias)** | ✅ Route 53 特有功能             | ✅ 可以                           |
 
 原則上，CNAME 只能用在子網域，不能用在 Zone Apex。但 Route 53 的 A Record Alias 可以解決這個限制。
+
+## AWS Cost Explorer vs. Budgets 比較表
+
+| 面向           | **Cost Explorer**                                               | **AWS Budgets**                                      |
+| -------------- | --------------------------------------------------------------- | ---------------------------------------------------- |
+| **核心功能**   | 分析與視覺化**過去**的成本數據                                  | 設定預算並**預警未來**支出                           |
+| **時間導向**   | 回顧型（看歷史帳單）                                            | 前瞻型（設定門檻、觸發警報）                         |
+| **主要用途**   | 找出花費在哪、趨勢分析、成本歸因                                | 控制預算、超支通知、自動化動作                       |
+| **警報功能**   | ❌ 無原生警報                                                    | ✅ 支援 Email、SNS、自動化動作                        |
+| **預測功能**   | ✅ 可預測未來成本（基於歷史）                                    | ✅ 可基於預測值設定警報                               |
+| **自動化動作** | ❌                                                               | ✅ 可觸發 Lambda、停止 EC2 等                         |
+| **報表/圖表**  | ✅ 強大的視覺化與篩選                                            | 基本圖表，重點在預算追蹤                             |
+| **考試關鍵字** | "analyze costs"、"identify spending patterns"、"cost breakdown" | "alert"、"notification"、"threshold"、"budget limit" |
+
+### 考試判斷口訣
+
+- **看過去 → Cost Explorer**（分析、報表、哪裡花最多錢）
+- **管未來 → Budgets**（設預算、超支警報、自動停機）
+
+題目出現「**notify when cost exceeds**」或「**alert before overspending**」→ 選 **Budgets**
