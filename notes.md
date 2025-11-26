@@ -511,3 +511,7 @@
      1. 使用 FIFO Queue（有 exactly-once processing）
      2. 在應用層實作 idempotency（冪等性）
      3. FIFO 犧牲吞吐量換取 exactly-once 和順序保證
+116. ★ **File Gateway 部署位置**：為什麼畫在 On-Prem
+     1. **核心原因**：File Gateway 本體是部署在使用者環境的 **Appliance（VM 或硬體）**，必須靠近應用程式才能提供**低延遲的 NFS/SMB 存取**
+     2. **運作原理**：Server 以為在存 NAS → File Gateway 將寫入動作轉成 **S3 API** 上傳到 AWS
+     3. **架構定位**：AWS 官方白皮書的**標準畫法**，也是 SAA 考題預設的 mental model
