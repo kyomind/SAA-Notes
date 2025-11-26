@@ -2,6 +2,8 @@
 
 ## Auto Scaling 與 ELB 範圍
 
+ASG 和 ELB 都是區域性服務 (Regional Services)，它們的運作範圍涵蓋整個區域 (Region) 內的多個可用區 (Availability Zones, AZs)。
+
 ![01](https://img.kyomind.tw/img-20251015-230427.png)
 
 ## Amazon Kinesis Data Streams Integrations
@@ -10,13 +12,19 @@
 
 ## DynamoDB Streams 觸發 Lambda 與 SNS 通知流程
 
+Lambda 是以 poll 的方式來讀取 DynamoDB Streams 的資料。因為 DynamoDB Streams 並不會主動推送資料給 Lambda。
+
 ![03](https://img.kyomind.tw/img-20251016-115523.png)
 
 ## EFS Performance Mode and Throughput Mode
 
+注意，兩者並非二選一，而是可以**同時設定**的兩個不同層面的參數。
+
 ![04](https://img.kyomind.tw/img-20251017-100010.png)
 
 ## AWS ELB Health Check 設定
+
+健康檢查是 ELB 重要的功能，說明它不只可以 proxy，還可以偵測目標的健康狀態
 
 ![05](https://img.kyomind.tw/img-20251017-165046.png)
 
@@ -34,6 +42,8 @@
 
 ## API Gateway + Lambda = Scalable Serverless API
 
+注意 Lambda 後面接 DynamoDB，也是很常見的組合
+
 ![圖 3](https://img.kyomind.tw/img-20251019-170542.png)
 
 ## S3 加密
@@ -45,6 +55,8 @@
 ![圖 5](https://img.kyomind.tw/img-20251022-172146.png)
 
 ## AWS WAF 運作機制
+
+注意 WAF 常附著的三個服務：CloudFront、API Gateway、Application Load Balancer
 
 ![圖 6](https://img.kyomind.tw/img-20251022-175903.png)
 
@@ -61,6 +73,8 @@
 ![圖 9](https://img.kyomind.tw/img-20251023-135019.png)
 
 ## CloudFront Origin Access Control (OAC)
+
+強制只能透過 CloudFront 存取 S3，避免直接從 S3 存取內容。
 
 ![圖 10](https://img.kyomind.tw/img-20251023-154415.png)
 
@@ -80,9 +94,41 @@
 
 ![圖 5](https://img.kyomind.tw/img-20251024-113633.png)
 
-## File Gateway and Storage Gateway
+## 使用 AWS Storage Gateway（File Gateway）將本地檔案透明上傳至 S3 並自動歸檔到 Glacier
 
 ![圖 6](https://img.kyomind.tw/img-20251024-152412.png)
+
+這張圖展示了 **File Gateway** 如何讓本地應用程式像存 NAS 一樣存放檔案，但實際資料會被上傳到 **Amazon S3**，並可透過 **Lifecycle Policy** 自動轉存到 **S3 Glacier** 做長期歸檔。
+
+### 1. File Gateway = On-Prem NFS/SMB → S3 的橋樑
+
+* 本地端(Server) 透過 **NFS/SMB 存取 File Gateway**
+* 寫入的檔案會被當成 **objects** 放到 S3
+
+**記住：File Gateway 是把「檔案」轉成「S3 Object」，不是 block volume。**
+
+### 2. S3 是真正的儲存位置（不是 File Gateway 裝置）⭐️
+
+File Gateway 本身不儲存資料，只做：⭐️
+
+* Metadata / Cache
+* 上傳 S3
+* 提供本地 SMB/NFS 介面
+
+所以容量擴展完全靠 S3，這也是為什麼考試常問你：
+
+> 本地檔案庫要無限擴充 → 用 File Gateway + S3
+
+你的圖中流程是：**On-Prem Server → File Gateway（VM/Appliance） → S3 Bucket → Glacier**
+
+其中：
+
+| 元件                    | 角色                                   | 是否存放資料？             |
+| ----------------------- | -------------------------------------- | -------------------------- |
+| File Gateway Appliance  | 協議轉換（NFS/SMB → S3 API），含 cache | ⚠️ 少量 cache（非真實儲存） |
+| Storage Gateway service | 控制平面、管理、設定                   | ❌ 不存資料                 |
+| S3 Bucket               | 真正儲存檔案                           | ✔️ 主要儲存                 |
+| Glacier                 | 便宜的長期存放                         | ✔️ 歸檔儲存                 |
 
 ## AWS Shield Advanced Architecture
 
