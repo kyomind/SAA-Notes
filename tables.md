@@ -1599,6 +1599,13 @@ File Gateway 是**獨立的模式**,不屬於那三種 Volume Gateway。
 
 ## File Gateway vs Volume Gateway
 
+| File Gateway                        | Volume Gateway                         |
+| ----------------------------------- | -------------------------------------- |
+| 協議：NFS/SMB                       | 協議：iSCSI（block）                   |
+| 資料落點：S3 object                 | 資料落點：S3 + EBS Snapshots           |
+| 用途：檔案上雲                      | 用途：Block Storage + 本地 Volume 備援 |
+| 常見用途：檔案伺服器替代、NAS、備份 | 常見用途：VM backup、DB volumes、災備  |
+
 **File Gateway**:
 
 - 檔案介面 (NFS/SMB)
