@@ -502,3 +502,13 @@
      1. **關鍵字對應**：看到 **NFS/SMB** → 只有 **File Gateway**
      2. **陷阱識別**：題目要求 **NFS protocol**，Volume Gateway 只支援 **iSCSI**
      3. **記憶技巧**：協定決定 Gateway 類型，別被其他選項混淆
+114. ★★ **SQS 重複處理常見原因**
+     1. **Visibility Timeout 太短**：Consumer 還沒處理完，訊息就重新出現在 queue 中（最常見）
+     2. **Consumer 未刪除訊息**：處理完但忘記呼叫 **DeleteMessage**
+     3. **At-Least-Once Delivery 特性**：Standard Queue 本身設計就不保證 exactly-once
+     4. **Consumer 處理失敗**：crash 或 exception 後訊息沒被刪除，重新進入 queue
+115. ★★ **SQS 重複處理解決方式**
+     1. **調整 Timeout**：增加 visibility timeout 或呼叫 **ChangeMessageVisibility** 延長時間
+     2. **使用 FIFO Queue**：保證 exactly-once processing（架構層面）
+     3. **實作 Idempotency**：應用層面實作冪等性機制
+     4. **考試關鍵字判斷**："processing takes longer" → Timeout 問題；"duplicate processing" → 改用 FIFO 或冪等性
