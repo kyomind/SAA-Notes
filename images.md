@@ -165,7 +165,10 @@ File Gateway 本身不儲存資料，只做：⭐️
 ## S3 Access Point - VPC Only
 
 You can configure any access point to accept requests only from a virtual private cloud (VPC) to restrict Amazon S3 data access to a private network.
+
 ![圖 15](https://img.kyomind.tw/img-20251028-173912.png)
+
+注意：公開和私有存取點 (Public and Private Access Points) 只能二選一，無法同時存在於同一個存取點中。
 
 ## S3 Object Lock
 

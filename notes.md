@@ -515,3 +515,15 @@
      1. **核心原因**：File Gateway 本體是部署在使用者環境的 **Appliance（VM 或硬體）**，必須靠近應用程式才能提供**低延遲的 NFS/SMB 存取**
      2. **運作原理**：Server 以為在存 NAS → File Gateway 將寫入動作轉成 **S3 API** 上傳到 AWS
      3. **架構定位**：AWS 官方白皮書的**標準畫法**，也是 SAA 考題預設的 mental model
+117. ★★ **S3 Access Point – VPC Only** 私有化存取解決方案
+     1. **核心概念**：只能從**指定 VPC** 透過 **VPC Endpoint** 存取的 S3 專屬入口
+     2. **安全限制**：❌ 不允許 Public Internet、❌ 不允許其他 VPC、✅ 只能從指定 VPC 進入
+     3. **必要條件**：必須搭配 **VPC Endpoint**（Gateway 或 Interface）才能連線
+118. ★★ **VPC Only Access Point 考試判斷**
+     1. **題目關鍵字**：「S3 必須只能從特定 VPC 存取」+「不能暴露 Public Endpoint」
+     2. **標準答案**：**S3 Access Point（VPC Only）+ VPC Endpoint**
+     3. **適用場景**：EC2/Lambda/ECS 在 VPC 裡用私人流量打 S3、多團隊共用 bucket 但要做 VPC 隔離
+119. ★ **普通 Access Point vs VPC Only** 差異比較
+     1. **Public Internet 存取**：普通 ✅ 可以、VPC Only ❌ 不可
+     2. **VPC Endpoint 要求**：普通 ❌ 非必須、VPC Only ✅ 必須
+     3. **記憶口訣**：**VPC Only = S3 完全私有化，不再是公共服務**
