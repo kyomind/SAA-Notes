@@ -7,40 +7,54 @@
 | API Gateway | 可啟用 stage-level caching，暫存 API 回應內容（TTL 可調整）⭐️ |
 | DynamoDB    | 有 DAX (DynamoDB Accelerator)，提供 in-memory cache          |
 | CloudFront  | 本質就是 CDN，核心功能就是 edge caching                      |
+| RDS         | 可搭配 ElastiCache 作為資料庫查詢快取                        |
 
 ## RDS Read Replica 按位置分類
 
-| 位置              | 用途                        | 說明                                 |
-| ----------------- | --------------------------- | ------------------------------------ |
-| 同 Region 不同 AZ | ✅ 分散讀取 + 手動故障恢復   | 標準做法，AZ 掛了可手動提升為 Master |
-| 同 AZ             | ⚠️ 分散讀取（不建議）        | 無 AZ 容錯，實務上不使用             |
-| 跨 Region         | ✅ 分散讀取 + 跨區域災難恢復 | 全球化應用、Region 級災難恢復        |
+最常見的是**同 Region 不同 AZ**。
+這是 RDS Read Replica 的**標準配置**，原因：
+
+**成本效益**：同 Region 內 Read Replica 的資料傳輸是免費的
+**低延遲**：同 Region 內 AZ 間延遲極低（通常 < 1ms）
+**基本容錯**：至少有 AZ 級別的容錯能力
+
+跨 Region Read Replica 雖然提供更強的災難恢復能力，但有額外的**跨 Region**資料傳輸費用**，通常只有全球化應用或有嚴格 DR 要求時才會用。
+
+| 位置              | 用途                        | 說明                                     |
+| ----------------- | --------------------------- | ---------------------------------------- |
+| 同 Region 不同 AZ | ✅ 分散讀取 + 手動故障恢復   | 標準做法，AZ 掛了可**手動**提升為 Master |
+| 同 AZ             | ⚠️ 分散讀取（不建議）        | 無 AZ 容錯，實務上不使用                 |
+| 跨 Region         | ✅ 分散讀取 + 跨區域災難恢復 | 全球化應用、Region 級災難恢復            |
 
 **重點**：Read Replica 不提供自動故障轉移，真正的自動容錯用 **Multi-AZ**
 
 ## Read Replica vs Multi-AZ
 
-| 功能     | Read Replica           | Multi-AZ                     |
-| -------- | ---------------------- | ---------------------------- |
-| 目的     | 讀取分流、擴展效能     | 高可用性、自動容錯           |
-| 是否可讀 | ✅ 可以讀取             | ❌ Standby 不可讀（同步備援） |
-| 故障切換 | ❌ 需手動提升為主庫     | ✅ 自動切換，無需人工介入     |
-| 延遲     | 非同步複製（秒級延遲） | 同步複製（零資料遺失）       |
+注意：Multi-AZ 解決 HA，Read Replica 解決讀取效能，它們是**互補關係**，不是替代關係。
+
+| 功能     | Read Replica           | Multi-AZ                      |
+| -------- | ---------------------- | ----------------------------- |
+| 目的     | 讀取分流、擴展效能     | 高可用性、自動容錯            |
+| 是否可讀 | ✅ 可以讀取             | ❌ Standby 不可讀（同步備援）⭐️ |
+| 故障切換 | ❌ 需手動提升為主庫     | ✅ 自動切換，無需人工介入  ⭐️   |
+| 延遲  ⭐️  | 非同步複製（秒級延遲） | 同步複製（零資料遺失）        |
 
 ## RDS 備份保留期限
 
-| 備份類型 | 保留期限   | 用途                             |
-| -------- | ---------- | -------------------------------- |
-| 自動備份 | 最多 35 天 | 短期恢復、Point-in-Time Recovery |
-| 手動快照 | 無限期保留 | 長期保存、合規需求、重大版本備份 |
+| 備份類型 | 保留期限    | 用途                             |
+| -------- | ----------- | -------------------------------- |
+| 自動備份 | 最多 35 天⭐️ | 短期恢復、Point-in-Time Recovery |
+| 手動快照 | 無限期保留  | 長期保存、合規需求、重大版本備份 |
+
+自動備份設計為最多 35 天，是因為它的用途是「短期操作失誤恢復」（如誤刪資料），這類問題通常幾天內就會發現。若允許無限保留，儲存成本會失控，用戶也可能忘記清理。AWS 的設計哲學是：**自動備份顧短期、手動快照顧長期**，需要長期保留就該有意識地建立手動快照並自行管理。
 
 ## 儲存服務對比 (EBS、EFS、S3)
 
-| 服務 | 連接方式    | 適用場景                       | 考試重點                                  |
-| ---- | ----------- | ------------------------------ | ----------------------------------------- |
-| EBS  | 單 EC2 獨佔 | 1 個 instance 的本地高效存儲   | Block storage、低延遲                     |
-| EFS  | 多 EC2 共享 | 1000+ instances 共用同份數據   | POSIX filesystem、concurrently accessible |
-| S3   | 應用層連接  | 物件存儲、web accessible、歸檔 | Eventually consistent、web-based          |
+| 服務 | 連接方式    | 適用場景                       | 考試重點                                   |
+| ---- | ----------- | ------------------------------ | ------------------------------------------ |
+| EBS  | 單 EC2 獨佔 | 1 個 instance 的本地高效存儲   | Block storage、低延遲                      |
+| EFS  | 多 EC2 共享 | 1000+ instances 共用同份數據   | POSIX filesystem⭐️、concurrently accessible |
+| S3   | 應用層連接  | 物件存儲、web accessible、歸檔 | Eventually consistent、web-based           |
 
 ## EBS Multi-Attach 與標準 EBS 比較
 
@@ -51,6 +65,8 @@
 | 適用場景   | 普通應用 | 高可用叢集 (如 Oracle RAC) |
 | 考試出現率 | 常見     | 罕見                       |
 
+EBS Multi-Attach 只支援 **io1 和 io2 Block Express**（Provisioned IOPS SSD 系列），最多可附加 16 個實例。gp2、gp3、st1、sc1 都不支援。原因是只有高效能 IO 場景（如 clustered database）才需要多實例共享磁碟。
+
 ## EFS Performance Mode 選擇比較
 
 | 特性         | General Purpose | Max I/O                   |
@@ -60,7 +76,9 @@
 | **併發連線** | 適中            | **無限制**                |
 | **判斷關鍵** | 少量 tasks      | **數百個 tasks 同時存取** |
 
-**記憶口訣**：
+Max I/O 模式延遲較高是分散式系統的固有權衡：當併發量暴增，系統需要更多協調開銷（locking、synchronization），請求排隊等待時間也會拉長。Max I/O 的設計是**優先保證 throughput 不崩，代價是延遲變高**；General Purpose 則**優先保證低延遲，但併發量有上限**。
+
+### 記憶口訣
 
 - 題目出現「hundreds of tasks」→ Max I/O
 - 題目強調「low latency」→ General Purpose
@@ -75,34 +93,38 @@
 
 記法：**健康檢查**跟**流量轉發**是兩回事，NLB 可以「L4 轉發 + L7 檢查」。
 
-## 考試判斷公式：題目關鍵字對應解答
+## WAF vs Shield 功能對比
 
 | 關鍵字                    | 正確答案                |
 | :------------------------ | :---------------------- |
 | 限制請求頻率 / Rate limit | **WAF Rate-Based Rule** |
 | 封鎖特定 IP/地區          | WAF Regular Rule        |
-| Layer 4 DDoS 防護         | **AWS Shield**          |
-| 整合 ALB ⭐️                | 用 WAF（可直接關聯）    |
-| 整合 CloudFront ⭐️         | 用 WAF（可直接關聯）    |
+| Layer 4 DDoS 防護⭐️        | **AWS Shield**          |
+| 整合 ALB                  | 用 WAF（可直接關聯）    |
+| 整合 CloudFront           | 用 WAF（可直接關聯）    |
+
+WAF 是 **Web** Application Firewall，專門檢查 HTTP/HTTPS 內容（URL、headers、body），這些都是 Layer 7 的東西。Layer 4（TCP/UDP）封包還沒解析成 HTTP，WAF 根本看不懂，所以 Layer 4 DDoS（如 SYN flood）要靠 **Shield** 在網路層處理。
 
 ## ALB vs NLB
 
-| 特性        | ALB          | NLB            |
-| ----------- | ------------ | -------------- |
-| OSI Layer   | Layer 7      | Layer 4        |
-| 適用協定    | HTTP/HTTPS   | TCP/UDP/TLS    |
-| 路由能力    | **內容路由** | 無 (只看 port) |
-| 效能        | 高           | **極高**       |
-| 靜態 IP     | ❌            | ✅              |
-| WebSocket   | ✅            | ✅              |
-| Lambda 支援 | ✅            | ❌              |
-| 價格        | 中           | 低             |
+| 特性        | ALB          | NLB             |
+| ----------- | ------------ | --------------- |
+| OSI Layer   | Layer 7      | Layer 4         |
+| 適用協定    | HTTP/HTTPS   | TCP/UDP/TLS     |
+| 路由能力    | **內容路由** | 無 (只看 port)⭐️ |
+| 效能        | 高           | **極高**        |
+| 靜態 IP     | ❌            | ✅               |
+| WebSocket   | ✅            | ✅               |
+| Lambda 支援 | ✅            | ❌               |
+| 價格        | 中           | 低              |
 
 **判斷標準**:
 
 - 題目提到「**根據 URL path 路由**」→ ALB
 - 題目提到「**需要靜態 IP**」或「**極致效能**」→ NLB
 - 題目提到「**WebSocket**」→ ALB 或 NLB 都可以，但通常選 ALB
+
+WebSocket 握手用 HTTP，但建立後就是普通的 **TCP 長連線**。NLB 處理 Layer 4，不在乎連線內容是什麼，只負責轉發 TCP 封包，所以天然支援 WebSocket——它根本不需要「理解」WebSocket，照轉就對了。
 
 ## WAF 支援的服務
 
@@ -112,7 +134,7 @@
 | **ALB**         | 負載均衡器 | 保護後端 API/應用程式      |
 | **API Gateway** | API 管理   | 保護 RESTful/WebSocket API |
 
-WAF 只能掛 ALB 是因為它需要檢查 HTTP/HTTPS 內容（Layer 7），而 NLB 工作在 Layer 4，根本看不到 HTTP 內容。
+WAF **只能掛 ALB** 是因為它需要檢查 HTTP/HTTPS 內容（Layer 7），而 NLB 工作在 Layer 4，根本看不到 HTTP 內容。
 
 ## WAF 規則類型與用途
 
@@ -127,12 +149,22 @@ WAF 只能掛 ALB 是因為它需要檢查 HTTP/HTTPS 內容（Layer 7），而 
 
 ## 安全服務防護層級對比
 
-| 服務               | 防護層級         | 用途                   | 能否阻擋 HTTP 內容？       |
-| :----------------- | :--------------- | :--------------------- | :------------------------- |
-| **Security Group** | Layer 4 (傳輸層) | 控制 EC2 的進出流量    | ❌ 只能看 IP + Port         |
-| **NACL**           | Layer 4 (傳輸層) | 控制 Subnet 的進出流量 | ❌ 只能看 IP + Port         |
-| **AWS WAF**        | Layer 7 (應用層) | 檢查 HTTP/HTTPS 內容   | ✅ 可以看 URL、Header、Body |
-| **AWS Shield**     | Layer 3/4        | 自動防 DDoS            | ❌ 不看內容，只擋大流量     |
+| 服務               | 防護層級           | 用途                   | 能否阻擋 HTTP 內容？       |
+| :----------------- | :----------------- | :--------------------- | :------------------------- |
+| **Security Group** | Layer 4 ⭐️          | 控制 EC2 的進出流量    | ❌ 只能看 IP + Port         |
+| **NACL**           | Layer 4 (傳輸層) ⭐️ | 控制 Subnet 的進出流量 | ❌ 只能看 IP + Port         |
+| **AWS WAF**        | Layer 7 (應用層)   | 檢查 HTTP/HTTPS 內容   | ✅ 可以看 URL、Header、Body |
+| **AWS Shield**     | Layer 3/4 ⭐️        | 自動防 DDoS            | ❌ 不看內容，只擋大流量     |
+
+幾個言外之意：
+
+1. **Security Group 和 NACL 功能重疊但層級不同**：SG 在 instance 層、NACL 在 subnet 層，兩者都只看 IP + Port，所以防護能力相同，差別在於作用範圍和規則邏輯（SG 是 stateful、NACL 是 stateless）
+
+2. **Layer 4 服務無法防禦應用層攻擊**：SQL Injection、XSS、惡意 request body 這些都需要 WAF，SG/NACL/Shield 完全擋不住
+
+3. **Shield 和 WAF 是互補關係**：Shield 擋大流量（Layer 3/4 DDoS），WAF 擋惡意內容（Layer 7 攻擊），不是二選一
+
+4. **考試陷阱題型**：題目說「防止惡意 SQL 查詢」，答案一定是 WAF，不管選項有沒有 Security Group 看起來很誘人
 
 ## WAF vs Security Group 選擇指南
 
@@ -148,11 +180,21 @@ WAF 只能掛 ALB 是因為它需要檢查 HTTP/HTTPS 內容（Layer 7），而 
 
 | 功能              | 用途                           | 對應題目需求      |
 | ----------------- | ------------------------------ | ----------------- |
-| **Config Rules**  | 偵測達規（檢查 SG 是否開 SSH） | ✅ 偵測問題        |
-| **Remediations**  | 自動修復達規組態               | ✅ 自動重新組態 SG |
+| **Config Rules**  | 偵測合規（檢查 SG 是否開 SSH） | ✅ 偵測問題        |
+| **Remediations**  | 自動修復為合規組態             | ✅ 自動重新組態 SG |
 | **Notifications** | 發送通知                       | ❌ 只通知，不修復  |
 
-**題目關鍵字**：「automatically re-configure」= 自動修復 = **Remediations**
+**AWS Config 兩種都能做到**，取決於你怎麼設定：
+
+- **僅通知**：Config Rules 偵測違規 → 觸發 SNS Notification
+- **自動修復**：Config Rules 偵測違規 → 觸發 **Remediation Action**（透過 SSM Automation）
+
+關鍵差異是你設定的「下游動作」是什麼，Config Rules **本身只負責偵測**。
+
+所以題目看到：
+
+- 「偵測 / 檢查 / 監控」→ Config Rules
+- 「自動修復 / 自動重新設定」→ Config Rules + Remediations
 
 ## IAM 身份驗證方案常見混淆
 
@@ -171,7 +213,7 @@ WAF 只能掛 ALB 是因為它需要檢查 HTTP/HTTPS 內容（Layer 7），而 
 | **流量方向** | 雙向（進+出）             | 只能出，不能進            |
 | **使用場景** | Web server、Load Balancer | Database、後端服務        |
 | **安全性**   | 直接暴露在網路上          | 隱藏 private IP           |
-| **成本**     | 免費                      | 按小時+流量收費           |
+| **成本**     | 免費                      | 按小時+流量收費 ⭐️         |
 
 **記憶點**：
 
@@ -188,7 +230,7 @@ WAF 只能掛 ALB 是因為它需要檢查 HTTP/HTTPS 內容（Layer 7），而 
 | **Stateful** | 是（回程自動放行）      | 否（必須明確設定進出規則） |
 | **規則**     | 只有 Allow              | Allow + Deny               |
 | **預設**     | 全關閉                  | 全開放                     |
-| **評估順序** | 全部規則都看            | 依編號順序，碰到就停       |
+| **評估順序** | 全部規則都看 ⭐️          | 依編號順序，碰到就停 ⭐️     |
 
 **記憶點**：
 
@@ -201,7 +243,20 @@ WAF 只能掛 ALB 是因為它需要檢查 HTTP/HTTPS 內容（Layer 7），而 
 - 看到「stateless」→ NACL
 - 大部分情況用 SG 就夠了，NACL 是額外防護層
 
-## RDS Multi-AZ 核心重點解析
+### Security Group 不會有衝突，因為它只有 Allow 規則
+
+評估邏輯是：**所有規則取聯集⭐️**。只要任一條規則允許，流量就放行。
+
+例如：
+
+- 規則 A：允許 port 22 from 10.0.0.0/24
+- 規則 B：允許 port 22 from 192.168.0.0/16
+
+結果：兩個來源都能進 port 22，沒有衝突問題。
+
+因為沒有 Deny，所以不存在「一條說允許、另一條說拒絕」的情況。**沒被任何規則允許 = 拒絕**（implicit deny）。
+
+## RDS Multi-AZ 核心重點解析○
 
 | 特性             | 說明                                                  | 考試常見陷阱                         |
 | ---------------- | ----------------------------------------------------- | ------------------------------------ |
@@ -930,7 +985,7 @@ Lambda 在 Firehose 中是 **data transformation function**:
 
 → 只有 **Data Streams** 符合
 
-## 記憶口訣
+## 兩者記憶口訣
 
 - **Streams** → Lambda 是主角(消費者)
 - **Firehose** → Lambda 是配角(轉換器)
