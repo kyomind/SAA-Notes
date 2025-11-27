@@ -588,3 +588,10 @@
      1. **題目關鍵字**：**rapidly changing data** + **多台 Linux servers** 共用
      2. **EFS 適用原因**：**共享檔案系統**，專為多 instance 同時存取設計，支援 **NFS 協定**
      3. **排除其他選項**：EBS 只能掛**單一 instance**、S3 不適合頻繁覆寫、EBS snapshot 不適合頻繁變動的資料
+136. ★★ **混合雲虛擬桌面三件套**：VPN + Directory Services + WorkSpaces
+     1. **VPN Connection**：建立 on-premises ↔ AWS VPC 的**安全通道**
+     2. **AWS Directory Services**：讓 AWS 資源能用既有的 **Active Directory 驗證**（AD Connector 或 Managed AD with trust）
+     3. **Amazon WorkSpaces**：AWS 託管的**虛擬桌面服務**（DaaS）
+137. ★ **混合雲虛擬桌面考試判斷技巧**
+     1. **關鍵字識別**：「on-premises Active Directory」→ **Directory Services**、「virtual desktops」→ **WorkSpaces**、「communicate with on-premises」→ **VPN** 或 **Direct Connect**
+     2. **錯誤選項排除**：ClassicLink（過時的 EC2-Classic 功能）、IAM（無法整合 AD）、S3（儲存服務，與虛擬桌面無關）
