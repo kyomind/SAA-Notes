@@ -616,3 +616,12 @@
      1. **架構範例**：用戶 → ALB → Weighted Target Groups（50% AWS EC2 + 50% On-premises IP）
      2. **關鍵限制**：Target Group 必須用 **IP type**（不能用 instance type）+ 網路必須連通
      3. **考試記憶**：**ALB + IP target type + Direct Connect/VPN** = 混合雲負載平衡
+143. ★★ **S3 Prefix 效能限制** 現代化效能規格
+     1. **效能上限**：每個 prefix 支援 **3,500 PUT/POST/DELETE** + **5,500 GET/HEAD** per second
+     2. **歷史背景**：2018 年前需用隨機 prefix 分散請求，現在 AWS 已自動處理
+     3. **考試判斷**：請求量在上限內 → **Do nothing**；超過 → 多 prefix 分散或加 CloudFront
+144. ★ **S3 效能擴展方案**：超過 Prefix 限制的處理方式
+     1. **多 prefix 分散**：將物件分到不同 prefix（如 `/images/01/`、`/images/02/`），每個各享獨立額度，效能 = **N 倍**
+     2. **CloudFront 快取**：適合 **GET 請求為主**，減少直接打 S3
+     3. **S3 Transfer Acceleration**：適合**上傳為主**、跨區域傳輸場景
+
