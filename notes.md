@@ -608,3 +608,11 @@
      2. **實際頻寬**：仍是 **1.25 Gbps**（不是 2.5 Gbps）
      3. **ECMP 差異**：Transit Gateway + ECMP 才是 **Active/Active**，頻寬才能疊加
      4. **記憶口訣**：VGW 的 2 tunnels = **備援用**；TGW + ECMP = **聚合用**
+141. ★★ **ALB + IP Target Type** 混合雲負載平衡解決方案
+     1. **核心概念**：ALB 可透過 **IP target type** 導向 on-premises 服務
+     2. **Target Type 差異**：**instance** 只能指向 AWS EC2；**ip** 可指向任何可路由 IP（含 on-premises）
+     3. **必要條件**：需有 **Direct Connect 或 VPN** 連接 VPC 與 on-premises
+142. ★ **ALB 混合雲架構**：Weighted Target Groups 應用
+     1. **架構範例**：用戶 → ALB → Weighted Target Groups（50% AWS EC2 + 50% On-premises IP）
+     2. **關鍵限制**：Target Group 必須用 **IP type**（不能用 instance type）+ 網路必須連通
+     3. **考試記憶**：**ALB + IP target type + Direct Connect/VPN** = 混合雲負載平衡
