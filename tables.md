@@ -421,39 +421,75 @@ Layer 3/4 常見 DDoS 攻擊類型：
 | **雙向連線** | Internet Gateway | Internet Gateway    |
 | **私有 IP**  | ✅ 有             | ❌（都是公開 IP）    |
 
+你的理解**正確**。
+
+關鍵差異在於：
+
+| Gateway 類型        | Route Table 設定                          | 原因                                                    |
+| ------------------- | ----------------------------------------- | ------------------------------------------------------- |
+| **NAT Gateway**     | 需指向 `nat-gw-xxx`                       | NAT GW 是獨立資源，放在 public subnet，流量要明確導過去 |
+| **Egress-only IGW** | 指向 `eigw-xxx`（**它本身就是一種 IGW**） | 它是 IGW 的變體，直接附加到 VPC                         |
+
+**本質差異**：
+
+- NAT GW = 中介轉發器，需要兩段路由（private → NAT → IGW → 外網）
+- Egress-only IGW = 單向 IGW，一段路由直達（private → EIGW → 外網）
+
+所以你說「不需要指向 IGW」是對的 — 因為 **EIGW 本身就扮演了 IGW 的角色**，只是限制成只出不進。
+
 ## Blue-Green vs Canary 的關鍵差異
 
-| 比較項目     | Blue-Green                           | Canary                       |
-| ------------ | ------------------------------------ | ---------------------------- |
-| **環境數量** | 需要兩套完整環境                     | 單一環境，部分流量導向新版本 |
-| **成本**     | 高（雙倍資源）                       | 低（共用資源）               |
-| **切換方式** | 一次性全切                           | 漸進式調整流量比例           |
-| **風險控制** | 可快速回滾，但出問題影響 100% 使用者 | 出問題只影響小部分使用者     |
+| 比較項目     | Blue-Green                           | Canary                        |
+| ------------ | ------------------------------------ | ----------------------------- |
+| **環境數量** | 需要兩套完整環境                     | 單一環境⭐️，部分流量導向新版本 |
+| **成本**     | 高（雙倍資源）                       | 低（共用資源）                |
+| **切換方式** | 一次性全切                           | 漸進式調整流量比例            |
+| **風險控制** | 可快速回滾，但出問題影響 100% 使用者 | 出問題只影響小部分使用者      |
 
-## 標準 KMS 與 Custom Key Store 的差異
+## KMS 金鑰存放方式比較
 
-| 項目         | 標準 KMS           | Custom Key Store          |
+| 項目         | Default Key Store  | Custom Key Store          |
 | ------------ | ------------------ | ------------------------- |
-| 金鑰材料位置 | **AWS 管理的 HSM** | **你的 CloudHSM**         |
+| 金鑰材料位置 | **AWS 託管的 HSM** | **你的 CloudHSM**         |
 | 實體控制權   | **AWS**            | **你**                    |
 | 複雜度       | **低**             | **高**（需管理 CloudHSM） |
 | 成本         | **低**             | **高**（CloudHSM 費用）   |
+| 適用場景     | 一般用途           | 合規要求需自控金鑰        |
+
+## KMS 加密相關概念整理
+
+這三個維度**互相獨立**，可自由組合：
+
+| 維度             | 選項                                 | 決定因素                      |
+| ---------------- | ------------------------------------ | ----------------------------- |
+| **誰執行加密**   | Client-side / Server-side            | 你的應用加密 vs AWS 服務加密  |
+| **金鑰存放位置** | Default Key Store / Custom Key Store | AWS 託管 HSM vs 你的 CloudHSM |
+| **加密演算法**   | 對稱（AES）/ 非對稱（RSA）           | 使用場景需求                  |
+
+### 考試關鍵字判斷
+
+| 關鍵字                                         | 選擇                  |
+| ---------------------------------------------- | --------------------- |
+| encrypt before upload、application encrypts    | **Client-side**       |
+| SSE、encryption at rest、automatic encryption  | **Server-side**       |
+| regulatory、compliance、full control over keys | **Custom Key Store**  |
+| 沒特別提金鑰控制                               | **Default Key Store** |
 
 ## CloudHSM = 硬體加密模組
 
 **HSM (Hardware Security Module)**：專門用來保管加密金鑰的實體硬體設備
 
-## CloudHSM vs KMS
+## 金鑰管理方案比較
 
-| 特性         | KMS              | CloudHSM            |
-| ------------ | ---------------- | ------------------- |
-| **控制權**   | AWS 管理         | **你完全控制**      |
-| **合規**     | 一般用途         | **金融/政府高規格** |
-| **金鑰存取** | AWS 可協助       | **只有你能存取**    |
-| **價格**     | 便宜             | **貴（$1+/小時）**  |
-| **整合**     | AWS 服務原生支援 | 需自行整合          |
+| 特性         | KMS（Default Key Store） | KMS（Custom Key Store） | CloudHSM 直接使用 |
+| ------------ | ------------------------ | ----------------------- | ----------------- |
+| **金鑰存放** | AWS 託管 HSM             | 你的 CloudHSM           | 你的 CloudHSM     |
+| **控制權**   | AWS 管理                 | 你完全控制              | 你完全控制        |
+| **整合方式** | AWS 服務原生支援         | 透過 KMS API            | 需自行整合        |
+| **適用場景** | 一般用途                 | 合規 + 想用 KMS API     | 合規 + 自訂整合   |
+| **價格**     | 低                       | 高（CloudHSM 費用）     | 高                |
 
-## 考試判斷
+### 考試需求判斷
 
 - 題目提到 **FIPS 140-2 Level 3**、**單租戶**、**完全控制金鑰** → CloudHSM
 - 一般加密需求 → KMS
@@ -465,15 +501,15 @@ Layer 3/4 常見 DDoS 攻擊類型：
 | 類型                        | 誰能管理 Key Policy | 能否設定 Rotation | 能否查看 CloudTrail | 金鑰材料存放位置  | 獨立審計 FIPS 140-2 Level 3 |
 | --------------------------- | ------------------- | ----------------- | ------------------- | ----------------- | --------------------------- |
 | **AWS Owned**               | AWS（你看不到）     | AWS 自動處理      | ✗ 看不到            | AWS HSM           | ✗                           |
-| **AWS Managed**             | AWS（你只能看）     | ✓ 自動每年        | ✓                   | AWS HSM           | ✗                           |
+| **AWS Managed**             | AWS（你只能看）     | ✓ 自動每年⭐️        | ✓                   | AWS HSM           | ✗                           |
 | **Customer Managed (標準)** | **你**              | ✓ 可選自動/手動   | ✓                   | AWS HSM           | ✗                           |
 | **Custom Key Store**        | **你**              | ✓ 可選自動/手動   | ✓                   | **你的 CloudHSM** | **✓**                       |
 
 ### 關鍵判斷點
 
-- AWS Owned vs AWS Managed：前者你完全看不到、後者你能看但不能改
-- AWS Managed vs Customer Managed：前者 AWS 幫你管、後者你自己管（考試愛考這個）
-- Customer Managed vs Custom Key Store：後者是你要「完全掌控硬體」+ 獨立審計需求時才用
+- AWS Owned vs AWS Managed：前者你完全看不到、後者你**能看但不能改**
+- AWS Managed vs Customer Managed：前者 AWS 幫你管、後者**你自己管（考試愛考這個）**
+- Customer Managed vs Custom Key Store：後者是你要「完全掌控硬體 + **獨立審計需求**」時才用
 
 ### 考試出題邏輯
 
@@ -481,7 +517,7 @@ Layer 3/4 常見 DDoS 攻擊類型：
 - 題目提到 "compliance" + "dedicated HSM" → Custom Key Store
 - 題目只說要 "encryption" 沒特別要求 → AWS Managed 最省事
 
-## S3 加密選項對比
+## S3 加密選項對比○
 
 | 加密位置    | 金鑰來源 | AWS 術語 | 實務常見度 |
 | ----------- | -------- | -------- | ---------- |
