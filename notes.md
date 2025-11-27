@@ -553,8 +553,8 @@
      2. **關鍵字識別**：「block country」+「allow specific IP」→ 只有 **WAF** 能做到
 126. ★★ **AWS Network Firewall** VPC 層級狀態型防火牆
      1. **服務定位**：VPC 邊界的**深度流量檢查**防火牆
-     2. **核心能力**：
-        - **Deep Packet Inspection (DPI)**：看到 Layer 7 內容
-        - **Stateful Inspection**：追蹤連線狀態
-        - **Domain Filtering**：限制只能連到特定網域
-        - **IPS/IDS**：入侵偵測與防護（Suricata 引擎）
+     2. **核心能力**：Deep Packet Inspection（Layer 7）、Stateful Inspection（連線追蹤）、Domain Filtering（網域限制）、IPS/IDS（Suricata 引擎）
+127. ★ **Network Access Analyzer vs Network Firewall** 考試陷阱識別
+     1. **Network Access Analyzer**：**靜態分析工具**，檢查「誰有權限連到誰」，做**合規審計**用
+     2. **關鍵限制**：無法做 **Deep Packet Inspection**，不是即時檢查封包的服務
+     3. **考試判斷**：看到「**inspect traffic**」→ 選能即時檢查封包的服務（如 Network Firewall），不是 Network Access Analyzer
