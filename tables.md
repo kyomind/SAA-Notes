@@ -1796,3 +1796,36 @@ File Gateway 是**獨立的模式**,不屬於那三種 Volume Gateway。
 | NACL             | Subnet           | Stateless L4 過濾    |
 | WAF              | Application (L7) | HTTP/HTTPS 請求過濾  |
 | Network Firewall | VPC 邊界         | 完整流量檢查 + IPS   |
+
+## S3 Glacier Retrieval 完整比較
+
+### Glacier（標準）
+
+| 選項          | 時間      | 成本   | 適用場景           |
+| ------------- | --------- | ------ | ------------------ |
+| **Expedited** | 1-5 分鐘  | 最貴   | 緊急需求、小量資料 |
+| **Standard**  | 3-5 小時  | 中等   | 一般取回，預設選項 |
+| **Bulk**      | 5-12 小時 | 最便宜 | 大量資料、不急     |
+
+### Glacier Deep Archive
+
+| 選項         | 時間      | 成本   |
+| ------------ | --------- | ------ |
+| **Standard** | 12 小時內 | 中等   |
+| **Bulk**     | 48 小時內 | 最便宜 |
+
+Deep Archive **沒有 Expedited**——這是考試陷阱。
+
+## 考試常見考法
+
+1. **「最低成本取回 PB 級資料」**→ Bulk
+2. **「幾分鐘內要拿到」**→ Expedited（但只有 Glacier 有，Deep Archive 沒有）
+3. **「一年存取一次」**→ Deep Archive（比 Glacier 更便宜但取回更慢）
+
+## Expedited 的額外細節
+
+Expedited 有容量限制，高需求時可能失敗。如果需要**保證 Expedited 可用**，要購買 **Provisioned Capacity**（預留容量）。
+
+**記憶口訣：**
+> Glacier 三種速度：**快（分鐘）、標（小時）、慢（半天）**
+> Deep Archive 只有兩種：**標（半天）、慢（兩天）**
