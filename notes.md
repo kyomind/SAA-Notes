@@ -561,3 +561,7 @@
 128. ★ **EBS Snapshot** 非同步快照機制
      1. **建立過程特性**：Snapshot 是**非同步**操作，建立期間 volume 仍可正常讀寫使用
      2. **Lazy Loading 機制**：從 snapshot 建立新 volume 時可**立即使用**，資料在背景從 S3 慢慢載入
+129. ★★ **VPC 層級架構**：EC2 與 Subnet 的強制關係
+     1. **核心限制**：EC2 **必須放在 Subnet** 裡，無法直接連上 VPC
+     2. **層級關係**：**VPC → Subnet → EC2**（強制的架構設計）
+     3. **Subnet 功能**：定義 **IP 範圍**、**路由規則**、**NACL**，是 EC2 取得網路連線的基礎
