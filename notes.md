@@ -584,3 +584,7 @@
      1. **預設與上限**：預設 **4 天**，最長可調到 **14 天**
      2. **問題場景**：consumer 處理頻率低於保留期限（如每週一次），訊息會在被處理前**自動刪除**
      3. **解決方案**：使用 **SetQueueAttributes** API 延長 retention period
+135. ★★ **EFS** 大規模 Linux 共享儲存解決方案
+     1. **題目關鍵字**：**rapidly changing data** + **多台 Linux servers** 共用
+     2. **EFS 適用原因**：**共享檔案系統**，專為多 instance 同時存取設計，支援 **NFS 協定**
+     3. **排除其他選項**：EBS 只能掛**單一 instance**、S3 不適合頻繁覆寫、EBS snapshot 不適合頻繁變動的資料
