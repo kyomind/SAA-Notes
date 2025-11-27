@@ -565,3 +565,14 @@
      1. **核心限制**：EC2 **必須放在 Subnet** 裡，無法直接連上 VPC
      2. **層級關係**：**VPC → Subnet → EC2**（強制的架構設計）
      3. **Subnet 功能**：定義 **IP 範圍**、**路由規則**、**NACL**，是 EC2 取得網路連線的基礎
+130. ★★ **快速封鎖攻擊 IP** 解決方案：NACL vs Bastion Host 考試陷阱
+     1. **正確答案**：**NACL** 設定 deny rule 擋掉特定 IP，**立即生效**
+     2. **考試陷阱**：**Bastion Host** 是安全存取內部資源的**跳板機**，跟封鎖攻擊 IP 完全無關
+     3. **關鍵字識別**：題目強調「**quickest way**」→ NACL 是正解
+131. ★ **IP 封鎖工具選擇邏輯**：NACL vs Security Group vs WAF
+     1. **Security Group**：處理 **instance 層級**的 IP 過濾（無法設定 deny rule）
+     2. **WAF**：處理**應用層** IP 封鎖（可搭配 rate limiting）
+     3. **NACL 適用場景**：**緊急狀況**需快速封鎖、在 **subnet 層級**一次擋掉（比逐一改 SG 快）⭐️
+132. 😇 **IP 封鎖實務考量**：短期 vs 長期管理策略
+     1. **短期緊急封鎖**：NACL deny rule（立即生效、subnet 層級）
+     2. **長期黑名單管理**：**WAF + IP Set** 更好維護（可集中管理、支援自動化更新）
