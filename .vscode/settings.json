@@ -31,6 +31,7 @@
         "NTFS",
         "numpy",
         "OLAP",
+        "OLTP",
         "ONTAP",
         "Preemptible",
         "RDSOS",
