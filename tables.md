@@ -905,12 +905,12 @@ WAF 擋 Web 攻擊，Network Firewall 顧整個 VPC
 
 ## Systems Manager Parameter Store vs Secrets Manager○
 
-| 功能         | Parameter Store | Secrets Manager |
-| ------------ | --------------- | --------------- |
-| 加密儲存     | ✅ SecureString  | ✅               |
-| **自動輪換** | ❌ 需自建 Lambda | ✅ 原生支援      |
-| RDS 整合     | ❌               | ✅               |
-| 成本         | 免費（標準層）  | 付費            |
+| 功能          | Parameter Store | Secrets Manager |
+| ------------- | --------------- | --------------- |
+| 加密儲存      | ✅ SecureString  | ✅               |
+| **自動輪換**⭐️ | ❌ 需自建 Lambda | ✅ 原生支援      |
+| RDS 整合⭐️     | ❌               | ✅               |
+| 成本          | 免費（標準層）  | 付費            |
 
 ### 為什麼 Parameter Store 是錯的
 
@@ -922,11 +922,13 @@ WAF 擋 Web 攻擊，Network Firewall 顧整個 VPC
 
 ## S3 Object Lock 保護模式比較
 
+```bash
 Object Lock（功能開關）
-├── Retention Mode（保留模式 - 二選一）
+├── Retention Mode（保留模式，可選 - 兩種選項選一）
 │   ├── Compliance Mode（最嚴格）
 │   └── Governance Mode（可特殊權限覆寫）
 └── Legal Hold（獨立開關，可搭配使用）
+```
 
 | 配置                    | 說明                                  |
 | ----------------------- | ------------------------------------- |
@@ -936,16 +938,20 @@ Object Lock（功能開關）
 | Compliance + Legal Hold | **最強保護**：到期前不可刪 + 訴訟保護 |
 | Governance + Legal Hold | 一般保護 + 訴訟保護                   |
 
-## S3 Object Lock: Legal Hold vs Retention Period
+「誰能解除」那行有問題——Governance Mode 是可以被特殊權限解除的，只有 Compliance Mode 才是無人能解除。
 
-| 比較項目     | Retention Period            | Legal Hold                        |
-| ------------ | --------------------------- | --------------------------------- |
-| **期限設定** | 固定時間(如 1 年)           | 無期限                            |
-| **自動解除** | ✅ 到期自動解除              | ❌ 必須手動移除                    |
-| **誰能解除** | 無人能解除(Compliance mode) | 有 `s3:PutObjectLegalHold` 權限者 |
-| **適用場景** | 合規要求有明確期限          | 法律訴訟/調查(期限未定)           |
-| **可否共存** | ✅ 可與 Legal Hold 同時存在  | ✅ 可與 Retention Period 同時存在  |
-| **保護機制** | 期限內 WORM 保護            | 手動移除前持續 WORM 保護          |
+修正版：
+
+## Legal Hold vs Retention Period
+
+| 比較項目     | Retention Period                                   | Legal Hold                        |
+| ------------ | -------------------------------------------------- | --------------------------------- |
+| **期限設定** | 固定時間（如 1 年）                                | 無期限                            |
+| **自動解除** | 到期自動解除                                       | 必須手動移除                      |
+| **誰能解除** | Compliance: 無人可解除；Governance: 特殊權限可繞過 | 有 `s3:PutObjectLegalHold` 權限者 |
+| **適用場景** | 合規要求有明確期限                                 | 法律訴訟/調查（期限未定）         |
+| **可否共存** | 可與 Legal Hold 同時存在                           | 可與 Retention Period 同時存在    |
+| **保護機制** | 期限內 WORM 保護                                   | 手動移除前持續 WORM 保護          |
 
 ## 災難復原 (DR) 策略比較
 
@@ -958,59 +964,32 @@ Object Lock（功能開關）
 
 ## Aurora Serverless v2 vs 標準 Aurora (Provisioned)
 
-| 特性         | Aurora Provisioned            | Aurora Serverless v2  |
-| ------------ | ----------------------------- | --------------------- |
-| **容量管理** | 手動選擇 instance type        | 自動擴縮 (ACU)        |
-| **擴縮速度** | 需手動調整 (停機或加 replica) | 秒級自動調整          |
-| **計費方式** | 按 instance 小時計費          | 按實際 ACU 使用量計費 |
-| **成本**     | 固定成本,可預測               | 浮動成本,流量低時較省 |
-| **最低成本** | 持續運行的最小 instance       | 可縮到 0.5 ACU        |
-| **適用場景** | 穩定、可預測流量              | 波動大、難預測流量    |
-
-## 考試判斷標準
-
-### 選 Provisioned
-
-- "steady/predictable workload"
-- "需要特定 instance 規格" (如大記憶體)
-- "成本可預測性很重要"
-
-### 選 Serverless v2
-
-- "unpredictable/variable workload"
-- "cost optimization" + 流量波動
-- "automatically scale" 是關鍵字
+| 特性         | Aurora Provisioned            | Aurora Serverless v2   |
+| ------------ | ----------------------------- | ---------------------- |
+| **容量管理** | 手動選擇 instance type        | 自動擴縮 (ACU)         |
+| **擴縮速度** | 需手動調整 (停機或加 replica) | 秒級自動調整           |
+| **計費方式** | 按 instance 小時計費          | 按實際 ACU 使用量計費  |
+| **成本**     | 固定成本，可預測              | 浮動成本，流量低時較省 |
+| **最低成本** | 持續運行的最小 instance       | 可縮到 0.5 ACU         |
+| **適用場景** | 穩定、可預測流量              | 波動大、難預測流量     |
 
 ## EC2 Placement Groups 比較
 
-| 類型          | 用途              | 數量限制                   | 網路特性       |
-| ------------- | ----------------- | -------------------------- | -------------- |
-| **Spread**    | 高可用,分散風險   | 每 AZ 最多 7 個            | 一般           |
-| **Cluster**   | 高效能運算,低延遲 | 無硬性限制                 | 10 Gbps 高頻寬 |
-| **Partition** | 大規模分散式系統  | 每 AZ 最多 7 個 partitions | 一般           |
-
-## 考試重點
-
-### 關鍵字識別
-
-- "critical instances" + "kept separate" → Spread
-- "small number" → Spread (不是 Cluster 的大量部署)
-- "reduce simultaneous failures" → Spread
-
-### 常見陷阱
-
-- 看到 "high availability" 就選 Spread → 要看數量!超過 7 個用 Partition
-- 混淆 Spread 和 Cluster → Cluster 是為了效能,不是容錯
+| 類型          | 用途               | 數量限制                   | 網路特性       |
+| ------------- | ------------------ | -------------------------- | -------------- |
+| **Spread**    | 高可用，分散風險   | 每 AZ 最多 7 個            | 一般           |
+| **Cluster**   | 高效能運算，低延遲 | 無硬性限制                 | 10 Gbps 高頻寬 |
+| **Partition** | 大規模分散式系統   | 每 AZ 最多 7 個 partitions | 一般           |
 
 ## DynamoDB On-Demand vs Provisioned 模式比較
 
 | 比較項目     | On-Demand      | Provisioned             |
 | ------------ | -------------- | ----------------------- |
 | 容量管理     | 自動調整       | 需手動設定 RCU/WCU      |
-| Auto Scaling | 不需要(已內建) | **預設關閉**,需手動啟用 |
+| Auto Scaling | 不需要（已內建） | **預設關閉**，需**手動啟用** |
 | 適用場景     | 流量不可預測   | 流量穩定可預測          |
 
-## EC2 計費狀態整理
+## EC2 計費狀態整理○
 
 ### 會計費的狀態
 
