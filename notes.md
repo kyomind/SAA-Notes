@@ -580,3 +580,7 @@
      1. **核心優勢**：**不需要開 SSH/RDP port**，透過 **SSM Agent** 直接在 EC2 上執行指令或腳本
      2. **必要前提**：EC2 instance 要安裝 **SSM Agent** + 附加對應的 **IAM Role**（AmazonSSMManagedInstanceCore）
      3. **安全優勢**：減少攻擊面（不暴露 22/3389 port）、集中管理、有完整的執行紀錄
+134. ★ **SQS Message Retention Period** 訊息保留期限設定
+     1. **預設與上限**：預設 **4 天**，最長可調到 **14 天**
+     2. **問題場景**：consumer 處理頻率低於保留期限（如每週一次），訊息會在被處理前**自動刪除**
+     3. **解決方案**：使用 **SetQueueAttributes** API 延長 retention period
