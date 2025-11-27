@@ -576,3 +576,7 @@
 132. 😇 **IP 封鎖實務考量**：短期 vs 長期管理策略
      1. **短期緊急封鎖**：NACL deny rule（立即生效、subnet 層級）
      2. **長期黑名單管理**：**WAF + IP Set** 更好維護（可集中管理、支援自動化更新）
+133. ★★ **AWS Systems Manager Run Command** 無 SSH/RDP 遠端執行解決方案
+     1. **核心優勢**：**不需要開 SSH/RDP port**，透過 **SSM Agent** 直接在 EC2 上執行指令或腳本
+     2. **必要前提**：EC2 instance 要安裝 **SSM Agent** + 附加對應的 **IAM Role**（AmazonSSMManagedInstanceCore）
+     3. **安全優勢**：減少攻擊面（不暴露 22/3389 port）、集中管理、有完整的執行紀錄
