@@ -527,14 +527,6 @@ Layer 3/4 常見 DDoS 攻擊類型：
 | Client-Side | AWS KMS  | CSE-KMS  | ⭐⭐         |
 | Client-Side | 客戶管理 | CSE-C    | ⭐          |
 
-## Aurora Endpoint 類型對比⭐️
-
-| Endpoint             | 用途         | 指向                                            |
-| -------------------- | ------------ | ----------------------------------------------- |
-| **Cluster Endpoint** | **寫入**操作 | **Primary** instance (DDL/DML)                  |
-| **Reader Endpoint**  | 讀取操作     | **自動 load balance** 到最多 **15** 個 replicas |
-| **Custom Endpoint**⭐️ | 特定需求     | 你自訂的 instance 群組                          |
-
 ## VPN 連接方案對比
 
 | 選項               | 為何不對                                            |
@@ -809,11 +801,11 @@ WAF 擋 Web 攻擊，Network Firewall 顧整個 VPC
 
 ## AWS 全球加速服務對比○
 
-| 服務                         | 主要用途 | 流量方向             | 快取機制    | 適用場景                                     | 成本特性          |
-| ---------------------------- | -------- | -------------------- | ----------- | -------------------------------------------- | ----------------- |
-| **S3 Transfer Acceleration** | 加速上傳 | 客戶端 → S3          | ❌ 無        | • 跨國上傳大檔案 / 備份到 S3 / 用戶分散全球  | 每次傳輸收費      |
-| **CloudFront**               | 加速下載 | S3 → 客戶端          | ✅ Edge 快取 | • 全球分發靜態內容 / 軟體更新下載 / 串流媒體 | 快取後省流量費    |
-| **Global Accelerator**       | 加速應用 | 客戶端 ↔ ALB/NLB/EC2 | ❌ 無        | • 遊戲伺服器 / WebSocket / 即時應用程式      | 固定費用 + 流量費 |
+| 服務                         | 主要用途     | 流量方向             | 快取機制    | 適用場景                                     | 成本特性          |
+| ---------------------------- | ------------ | -------------------- | ----------- | -------------------------------------------- | ----------------- |
+| **S3 Transfer Acceleration** | 加速**上傳** | 客戶端 → S3          | ❌ 無        | • 跨國上傳大檔案 / 備份到 S3 / 用戶分散全球  | 每次傳輸收費      |
+| **CloudFront**               | 加速下載     | S3 → 客戶端          | ✅ Edge 快取 | • 全球分發靜態內容 / 軟體更新下載 / 串流媒體 | 快取後省流量費    |
+| **Global Accelerator**       | 加速**應用** | 客戶端 ↔ ALB/NLB/EC2 | ❌ 無        | • 遊戲伺服器 / WebSocket / 即時應用程式      | 固定費用 + 流量費 |
 
 ### 關鍵差異：協定層級
 
@@ -825,7 +817,7 @@ WAF 擋 Web 攻擊，Network Firewall 顧整個 VPC
 | 加密類型    | Header                                    | 金鑰管理者 | 使用場景               |
 | ----------- | ----------------------------------------- | ---------- | ---------------------- |
 | **SSE-S3**  | `x-amz-server-side-encryption`            | AWS 管理   | 一般用途，最簡單       |
-| **SSE-KMS** | `x-amz-server-side-encryption: aws:kms`   | AWS KMS    | 需要金鑰審計、權限控管 |
+| **SSE-KMS** | `x-amz-server-side-encryption: aws:kms`⭐️  | AWS KMS    | 需要金鑰審計、權限控管 |
 | **SSE-C**   | `x-amz-server-side-encryption-customer-*` | 你自己管理 | 自帶金鑰、合規要求     |
 
 ### SSE-S3 特徵
@@ -837,7 +829,7 @@ WAF 擋 Web 攻擊，Network Firewall 顧整個 VPC
 
 ### SSE-C 特徵
 
-- 需要三個 header（algorithm、key、MD5）
+- 需要**三個** header（algorithm、key、MD5）
 - 你負責金鑰管理
 - 每次請求都要帶金鑰
 
@@ -851,6 +843,7 @@ WAF 擋 Web 攻擊，Network Firewall 顧整個 VPC
 ## Snowball vs Snowball Edge 比較
 
 **Snowball**：純資料傳輸設備
+
 **Snowball Edge**：資料傳輸 + 邊緣運算能力
 
 | 特性         | Snowball           | Snowball Edge                  |
@@ -886,22 +879,19 @@ WAF 擋 Web 攻擊，Network Firewall 顧整個 VPC
 | **地端角色** | 任務完成後可移除 agent | 需長期運行 gateway         |
 | **典型場景** | 資料中心關閉、歸檔     | 地端應用仍需讀寫雲端資料   |
 
-## 🧩 EventBridge vs SNS 比較表
+## EventBridge vs SNS 比較表
 
-| 項目              | **Amazon EventBridge**                                                      | **Amazon SNS (Simple Notification Service)**                      |
-| ----------------- | --------------------------------------------------------------------------- | ----------------------------------------------------------------- |
-| 💡 **設計目的**    | 建立 **事件驅動架構 (Event-Driven Architecture)** 的核心路由器              | 實現 **訊息廣播與通知 (Pub/Sub)**                                 |
-| 🧭 **資料流方式**  | **事件 (event)**：發生某件事 → 根據規則路由給多個 target                    | **訊息 (message)**：主題發佈 → 廣播給所有訂閱者                   |
-| 🎯 **路由邏輯**    | 支援 **複雜過濾條件 (event pattern filtering)**，可針對 JSON 屬性比對       | 僅支援「topic-based 訂閱」，無法針對內容過濾                      |
-| 🧱 **整合對象**    | 原生整合超過 **100+ AWS 服務與 SaaS** (e.g. Zendesk, Auth0, Datadog)        | 支援推送到 **SQS、Lambda、HTTP、SMS、Email**                      |
-| ⚙️ **觸發單位**    | 每個事件皆有 **固定結構 (source, detail-type, detail)**                     | 訊息格式自由，完全由 Publisher 決定                               |
-| 📦 **傳遞模型**    | **事件路由 (Event Bus → Rule → Target)**                                    | **主題廣播 (Topic → Subscriber)**                                 |
-| 🔁 **用途舉例**    | - 跨服務事件通知（OrderCreated → Shipping） / 第三方 SaaS 整合 / 微服務解耦 | - 發送警示（CloudWatch → SNS → Email） / Lambda 觸發器 / 系統廣播 |
-| 🧩 **與 SQS 整合** | 可將事件送至 SQS 作為 target（事件中繼）                                    | 常與 SQS 搭配成「fan-out」架構                                    |
-| 🧠 **抽象層級**    | **事件層級 (semantic event)**，強調「發生了什麼事」                         | **訊息層級 (payload message)**，強調「傳送什麼內容」              |
-| 🔒 **重試機制**    | 內建多種重試與死信佇列（DLQ）支援                                           | 也支援 DLQ，但僅限特定傳送失敗情境                                |
-| ⚡ **延遲 / 吞吐** | 適合中大型事件整合（延遲略高但功能更強）                                    | 延遲極低，適合高頻簡單通知                                        |
-| 🧠 **考試陷阱**    | 若題目提到「**事件路由、過濾條件、多目標整合、SaaS**」→ 選 **EventBridge**  | 若題目提到「**即時通知、簡單廣播、Email/SMS**」→ 選 **SNS**       |
+| 項目            | **EventBridge**                        | **SNS**                         |
+| --------------- | -------------------------------------- | ------------------------------- |
+| **設計目的**    | 事件驅動架構的核心路由器               | 訊息廣播與通知 (Pub/Sub)        |
+| **資料流方式**  | 事件發生 → 根據規則路由給多個 target   | 主題發佈 → 廣播給所有訂閱者     |
+| **路由邏輯**    | 支援複雜過濾條件，可針對 JSON 屬性比對 | 僅 topic-based 訂閱，無內容過濾 |
+| **整合對象**    | 原生整合 100+ AWS 服務與 SaaS          | SQS、Lambda、HTTP、SMS、Email   |
+| **傳遞模型**    | Event Bus → Rule → Target              | Topic → Subscriber              |
+| **典型用途**    | 跨服務事件通知、SaaS 整合、微服務解耦  | 警示通知、Lambda 觸發、系統廣播 |
+| **與 SQS 整合** | 可將事件送至 SQS 作為 target           | 常搭配 SQS 成 fan-out 架構      |
+| **延遲/吞吐**   | 延遲略高但功能更強                     | 延遲極低，適合高頻簡單通知      |
+| **考試關鍵字**  | 事件路由、過濾條件、多目標整合、SaaS   | 即時通知、簡單廣播、Email/SMS   |
 
 ## Aurora Endpoint 背後的運作機制
 
@@ -913,20 +903,7 @@ WAF 擋 Web 攻擊，Network Firewall 顧整個 VPC
 
 後二者都有**自動負載平衡**效果，但 Reader Endpoint 是打所有 read replica，Custom Endpoint 是只打你指定的那幾台。
 
-## Glacier Deep Archive vs Glacier Flexible Retrieval
-
-| 比較項目 | Deep Archive       | Flexible Retrieval |
-| -------- | ------------------ | ------------------ |
-| 儲存成本 | 最低（~$1/TB/月）  | 較高（~$4/TB/月）  |
-| 取回時間 | 12-48 小時         | 分鐘-12 小時       |
-| 適用場景 | 極少存取（年度級） | 偶爾存取（季度級） |
-
-## 記憶公式：長期封存 + 極少存取 = Deep Archive
-
-- 法規遵循、歷史資料、災難復原備份
-- 關鍵字：10 年、rarely accessed、once or twice a year
-
-## Systems Manager Parameter Store vs Secrets Manager
+## Systems Manager Parameter Store vs Secrets Manager○
 
 | 功能         | Parameter Store | Secrets Manager |
 | ------------ | --------------- | --------------- |
