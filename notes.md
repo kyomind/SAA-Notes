@@ -595,3 +595,16 @@
 137. ★ **混合雲虛擬桌面考試判斷技巧**
      1. **關鍵字識別**：「on-premises Active Directory」→ **Directory Services**、「virtual desktops」→ **WorkSpaces**、「communicate with on-premises」→ **VPN** 或 **Direct Connect**
      2. **錯誤選項排除**：ClassicLink（過時的 EC2-Classic 功能）、IAM（無法整合 AD）、S3（儲存服務，與虛擬桌面無關）
+138. ★★ **VPN 吞吐量擴展**：Transit Gateway + ECMP 解決方案
+     1. **硬限制**：單一 VPN tunnel 上限 **1.25 Gbps**，無法突破
+     2. **解決方案**：透過 **Transit Gateway** 啟用 **ECMP（Equal Cost Multi-Path）**，建立多條 VPN tunnels
+     3. **頻寬計算**：流量平均分配到各 tunnel，總吞吐量 = **1.25 Gbps × tunnel 數量**
+139. ★★ **VGW vs Transit Gateway** VPN 架構差異
+     1. **VGW（Virtual Private Gateway）**：❌ 不支援 ECMP，卡在 1.25 Gbps
+     2. **Transit Gateway**：✅ 支援 ECMP，可水平擴展頻寬
+     3. **考試記憶點**：「VPN 慢 + 要擴展吞吐量」→ **Transit Gateway + ECMP + 多條 VPN tunnels**
+140. ★ **VPN 2 條 Tunnels 的真正用途**：高可用性而非頻寬加倍
+     1. **Active/Passive 架構**：一條 active，一條 standby，流量**不會同時走兩條**
+     2. **實際頻寬**：仍是 **1.25 Gbps**（不是 2.5 Gbps）
+     3. **ECMP 差異**：Transit Gateway + ECMP 才是 **Active/Active**，頻寬才能疊加
+     4. **記憶口訣**：VGW 的 2 tunnels = **備援用**；TGW + ECMP = **聚合用**
