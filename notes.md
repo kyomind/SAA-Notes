@@ -551,3 +551,10 @@
 125. ★ **Geo Restriction 選擇記憶技巧**
      1. **判斷原則**：要「有原則又有例外」→ 用 **WAF**，別用 CloudFront Geo Restriction
      2. **關鍵字識別**：「block country」+「allow specific IP」→ 只有 **WAF** 能做到
+126. ★★ **AWS Network Firewall** VPC 層級狀態型防火牆
+     1. **服務定位**：VPC 邊界的**深度流量檢查**防火牆
+     2. **核心能力**：
+        - **Deep Packet Inspection (DPI)**：看到 Layer 7 內容
+        - **Stateful Inspection**：追蹤連線狀態
+        - **Domain Filtering**：限制只能連到特定網域
+        - **IPS/IDS**：入侵偵測與防護（Suricata 引擎）

@@ -983,11 +983,11 @@ Object Lock（功能開關）
 
 ## DynamoDB On-Demand vs Provisioned 模式比較
 
-| 比較項目     | On-Demand      | Provisioned             |
-| ------------ | -------------- | ----------------------- |
-| 容量管理     | 自動調整       | 需手動設定 RCU/WCU      |
+| 比較項目     | On-Demand        | Provisioned                  |
+| ------------ | ---------------- | ---------------------------- |
+| 容量管理     | 自動調整         | 需手動設定 RCU/WCU           |
 | Auto Scaling | 不需要（已內建） | **預設關閉**，需**手動啟用** |
-| 適用場景     | 流量不可預測   | 流量穩定可預測          |
+| 適用場景     | 流量不可預測     | 流量穩定可預測               |
 
 ## EC2 計費狀態整理○
 
@@ -1785,3 +1785,14 @@ File Gateway 是**獨立的模式**,不屬於那三種 Volume Gateway。
 - **管未來 → Budgets**（設預算、超支警報、自動停機）
 
 題目出現「**notify when cost exceeds**」或「**alert before overspending**」→ 選 **Budgets**
+
+## AWS 網路安全防護層級比較表
+
+重點是這些元件具體是在哪個層級運作
+
+| 服務             | 層級             | 用途                 |
+| ---------------- | ---------------- | -------------------- |
+| Security Group   | Instance         | 基本的 L4 allow/deny |
+| NACL             | Subnet           | Stateless L4 過濾    |
+| WAF              | Application (L7) | HTTP/HTTPS 請求過濾  |
+| Network Firewall | VPC 邊界         | 完整流量檢查 + IPS   |
