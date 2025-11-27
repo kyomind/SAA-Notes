@@ -612,13 +612,13 @@ Layer 3/4 常見 DDoS 攻擊類型：
 
 常見一起比較的儲存服務：
 
-| 服務                | 類型     | 特點                        | 適用場景               |
-| ------------------- | -------- | --------------------------- | ---------------------- |
-| **EBS**             | 區塊儲存 | 單一 EC2、低延遲            | EC2 系統碟/資料碟      |
+| 服務                | 類型         | 特點                        | 適用場景               |
+| ------------------- | ------------ | --------------------------- | ---------------------- |
+| **EBS**             | 區塊儲存     | 單一 EC2、低延遲            | EC2 系統碟/資料碟      |
 | **EFS**             | **檔案**系統 | 多 EC2 共享、**NFS**、Linux | Linux 共享儲存         |
 | **FSx for Windows** | **檔案**系統 | 多機共享、**SMB**、AD 整合  | Windows 共享儲存       |
 | **FSx for Lustre**  | **檔案**系統 | 高效能平行運算              | HPC、ML 訓練           |
-| **S3**              | 物件儲存 | 無限擴展、HTTP 存取         | 靜態檔案、備份、資料湖 |
+| **S3**              | 物件儲存     | 無限擴展、HTTP 存取         | 靜態檔案、備份、資料湖 |
 
 ## 考試快速判斷
 
@@ -630,7 +630,7 @@ Layer 3/4 常見 DDoS 攻擊類型：
 | 單一 EC2 硬碟           | **EBS**             |
 | 靜態內容、無限儲存      | **S3**              |
 
-## Amazon DLM vs AWS Backup○
+## Amazon Data Lifecycle Manager vs AWS Backup○
 
 | 比較項目 | **Amazon DLM**            | **AWS Backup**                     |
 | -------- | ------------------------- | ---------------------------------- |
@@ -639,6 +639,14 @@ Layer 3/4 常見 DDoS 攻擊類型：
 | 複雜度   | 簡單直接                  | 功能完整但設定較複雜               |
 | 成本     | 免費（只付儲存）          | 免費（只付儲存）                   |
 | 考試答案 | **單純 EBS 問題選這個**   | **跨服務備份選這個**               |
+
+Amazon Data Lifecycle Manager 是用來 自動化 EBS 快照及 EBS-backed AMI (Image) 的建立、保留及刪除的服務。
+它主要用於資料備份策略（Backup Retention Policy），尤其常見於：
+
+- 自動快照備份（EBS Volume）
+- 建立 AMI 映像檔以支援跨區域或災難備援
+- 清除過期快照，降低成本
+- 配合 定期備份、保留 n 份 的策略
 
 ## 安全防護需求與解決方案對應表
 
@@ -651,28 +659,44 @@ Layer 3/4 常見 DDoS 攻擊類型：
 
 **判斷標準**：題目提到「SQL Injection」、「XSS」、「bot protection」、「web application firewall」→ 必定是 **ALB + WAF** (因為 WAF **只能**掛 ALB)
 
-## 常見 SSM 使用情境對應表
+## 常見 AWS Systems Manager（SSM）使用情境對應表
 
-| 情境                          | 正確答案        | 常見錯誤                  |
-| ----------------------------- | --------------- | ------------------------- |
-| 需要遠端連線 EC2 但不想開 SSH | Session Manager | 開 port 22 + Bastion Host |
-| 存應用配置（如 DB 連線）      | Parameter Store | 寫在程式碼裡              |
-| 需要自動輪替密碼              | Secrets Manager | Parameter Store           |
-| 管理混合環境（AWS + 本地）    | SSM + SSM Agent | 只想到 AWS 內部           |
+| 功能                           | DevOps 日常用途                        |
+| ------------------------------ | -------------------------------------- |
+| **Session Manager**            | 取代 SSH：無需跳板機、無需開防火牆     |
+| **Parameter Store**            | 儲存 Secret，搭配 Lambda / ECS / CI/CD |
+| **Run Command**                | 批次更新所有 EC2，例如 `apt upgrade`   |
+| **Automation + Patch Manager** | 每週自動 Patch 所有 Linux/Windows 主機 |
 
 ## AWS 成本管理工具對比
 
-| 工具                       | 用途                    | 記憶點         |
-| -------------------------- | ----------------------- | -------------- |
-| **Cost Explorer**          | **分析歷史 + 預測未來** | 看圖表、找趨勢 |
-| **AWS Budgets**            | **設定預算 + 超標告警** | 主動通知       |
-| **Cost Anomaly Detection** | **AI 自動偵測異常花費** | 機器學習找異常 |
-| **Cost and Usage Report**  | **詳細原始數據匯出**    | 給 BI 工具用   |
-| **Billing Dashboard**      | **當月帳單總覽**        | 只看總數       |
+| 工具                       | 用途                            | 記憶點         |
+| -------------------------- | ------------------------------- | -------------- |
+| **Cost Explorer**          | **分析歷史 + 預測未來(有限度)** | 看圖表、找趨勢 |
+| **AWS Budgets**            | **設定預算 + 超標告警**         | 主動通知       |
+| **Cost Anomaly Detection** | **AI 自動偵測異常花費**         | 機器學習找異常 |
+| **Cost and Usage Report**  | **詳細原始數據匯出**            | 給 BI 工具用   |
+| **Billing Dashboard**      | **當月帳單總覽**                | 只看總數       |
+
+**Budgets 也可以「預測」**，但性質不同：
+
+| 工具              | 預測方式                           | 用途       |
+| ----------------- | ---------------------------------- | ---------- |
+| **Cost Explorer** | 基於歷史趨勢，預測未來 12 個月花費 | 規劃、分析 |
+| **Budgets**       | 預測「本月底會不會超過你設的預算」 | 告警觸發   |
+
+**關鍵差異：**
+
+- Cost Explorer：「下個月大概花多少？」→ **主動分析**
+- Budgets：「照這個速度，月底會爆預算嗎？」→ **被動警示**
+
+Budgets 的「Forecasted」告警就是這個概念——當預測值將超過預算時提前通知你，而不是等到真的超過才告警。
+
+所以你的表格沒錯，只是「預測」的含義不同。考試通常問的是 Cost Explorer 的**趨勢預測**功能。
 
 ## AWS Glue vs Amazon EMR
 
-| 特性     | **AWS Glue**             | **Amazon EMR**                   |
+| 特性     | AWS Glue                 | Amazon EMR                       |
 | -------- | ------------------------ | -------------------------------- |
 | **用途** | **Serverless ETL**       | **完整 big data framework**      |
 | **框架** | **內建 Spark**           | **Hadoop/Spark/Hive/Pig 等多種** |
@@ -693,7 +717,7 @@ Layer 3/4 常見 DDoS 攻擊類型：
 | 加密方式    | 金鑰管理者     | 使用時機                                         | 考試關鍵字 |
 | ----------- | -------------- | ------------------------------------------------ | ---------- |
 | **SSE-S3**  | AWS 完全管理   | **最簡單，預設選項**                             | AES-256    |
-| **SSE-KMS** | AWS KMS 管理   | **需要金鑰審計日誌、CloudTrail、金鑰輪替**       | CloudTrail |
+| **SSE-KMS** | AWS KMS 管理   | **需要金鑰審計日誌、CloudTrail⭐️、金鑰輪替⭐️**     | CloudTrail |
 | **SSE-C**   | 你自己管理金鑰 | **完全控制金鑰，但你要保管、每次請求都要帶金鑰** | 客戶自管   |
 
 ## VPC Peering vs Transit Gateway vs VPN 比較
@@ -704,6 +728,10 @@ Layer 3/4 常見 DDoS 攻擊類型：
 | **CIDR 限制**  | 不能重疊                  | 不能重疊            | 可透過 NAT 解決        |
 | **跨區域支援** | ✅ 支援，會收費            | ✅ 支援，集中管理    | ✅ 支援，但效能較低     |
 | **適合場景**   | 少量 VPC 互聯             | 大規模多 VPC 架構   | 與 On-Premise 或其他雲 |
+
+**CIDR 限制筆記：**
+
+VPC Peering 和 Transit Gateway 都要求連接的網路 CIDR 不能重疊，因為路由無法判斷封包該送往哪個目的地。VPN 可透過 NAT 轉換 IP 範圍來繞過此限制。考試看到「CIDR 重疊」關鍵字，直接排除 Peering 和 TGW，考慮 PrivateLink 或 VPN + NAT。
 
 考試記法：
 
@@ -716,67 +744,60 @@ Layer 3/4 常見 DDoS 攻擊類型：
 | 服務        | 用途                                          |
 | ----------- | --------------------------------------------- |
 | Rekognition | **圖像/影片內容分析**（臉部、物件、不當內容） |
-| Macie       | **S3 敏感資料偵測**（PII、機密資料）          |
+| Macie       | **S3 敏感資料偵測⭐️**（PII、機密資料）         |
 | GuardDuty   | **威脅偵測**（安全異常行為）                  |
 
 ## VPC 網路連通性問題的排查順序
 
-| 類型     | Security Group           | NACL                    |
-| -------- | ------------------------ | ----------------------- |
-| 作用層級 | Instance                 | Subnet                  |
-| 狀態     | Stateful（回傳自動允許） | Stateless（需雙向規則） |
-| 預設行為 | Deny all inbound         | Allow all               |
-| 優先檢查 | ✓ 先查這個               | 再查這個                |
+| 類型     | Security Group                              | NACL                    |
+| -------- | ------------------------------------------- | ----------------------- |
+| 作用層級 | Instance                                    | Subnet                  |
+| 狀態     | Stateful（回傳自動允許）                    | Stateless（需雙向規則） |
+| 預設行為 | Deny all inbound(指沒有任何 allow 項目設定) | Allow all               |
+| 優先檢查 | ✓ 先查這個                                  | 再查這個                |
 
 題目提「兩個 subnet 之間通訊」→ 兩者都要檢查。
 
-## 🎯 考試核心：只需搞懂這三個
+## AWS CI/CD 三劍客
 
-| 服務             | 考試常見問法                                              | 關鍵判斷標準                                       | 核心概念                                     | 必記重點                                                                        |
-| ---------------- | --------------------------------------------------------- | -------------------------------------------------- | -------------------------------------------- | ------------------------------------------------------------------------------- |
-| **CodeBuild**    | 如何建置 Docker image？如何執行自動化測試？               | 看到 `buildspec.yml`、「build」「compile」「test」 | **建置工具**，相當於 Jenkins build job       | buildspec.yml 定義建置步驟、可建置 Docker image 推到 ECR、支援多種語言環境      |
-| **CodeDeploy**   | 如何零停機部署？如何快速回滾？部署到 EC2 / Lambda / ECS   | 看到 `appspec.yml`、「Blue/Green」「In-place」     | **部署工具**，相當於 Ansible + 部署策略      | appspec.yml 定義部署步驟、Blue/Green 零停機、In-place 直接替換但有短暫中斷      |
-| **CodePipeline** | 如何自動化 CI/CD 流程？如何串接 GitHub → Build → Deploy？ | 看到「orchestrate」「automate」「workflow」        | **編排工具**，相當於 GitHub Actions workflow | 串接多個 stage（Source → Build → Deploy）、可整合第三方工具、自動觸發或手動核准 |
+| 服務             | 一句話                 | 關鍵字                          |
+| ---------------- | ---------------------- | ------------------------------- |
+| **CodeBuild**    | 編譯、測試、打包       | `buildspec.yml`、build、compile |
+| **CodeDeploy**   | 部署到 EC2/Lambda/ECS  | `appspec.yml`、Blue/Green       |
+| **CodePipeline** | 串接以上，編排整個流程 | orchestrate、workflow           |
 
-## 📦 考試偶爾出現（知道就好）
-
-| 服務             | 一句話記憶                             | 考試出現率 |
-| ---------------- | -------------------------------------- | ---------- |
-| **CodeCommit**   | AWS 自己的 Git repository，與 IAM 整合 | ⭐ 10%      |
-| **CodeArtifact** | 私有套件庫（npm / pip / maven）        | ⭐⭐ 20%     |
-| **CodeStar**     | ❌ AWS 專案樣板工具（已過時，直接忽略） | ❌ 0%       |
+記憶口訣：Build 建、Deploy 部、Pipeline 串
 
 ## SQS vs Amazon MQ (RabbitMQ)
 
-| 特性 | **SQS**                | **Amazon MQ (RabbitMQ)** |
-| ---- | ---------------------- | ------------------------ |
-| 管理 | **全託管，零維護**     | **需選機器規格**         |
-| 費用 | **按請求計費（便宜）** | **按執行時間計費**       |
-| 協定 | **AWS SDK/HTTP**       | **AMQP 0-9-1**           |
-| 適用 | **雲原生應用**         | **遷移既有系統**         |
+| 特性 | **SQS**                | **Amazon MQ (RabbitMQ、ActiveMQ 相容)**           |
+| ---- | ---------------------- | ------------------------------------------------- |
+| 管理 | **全託管，零維護**     | **需選機器規格**                                  |
+| 費用 | **按請求計費（便宜）** | **按執行時間計費**                                |
+| 協定 | **AWS SDK/HTTP**       | **AMQP 0-9-1**                                    |
+| 適用 | **雲原生應用**         | **遷移既有系統**⭐️只有「需要與既有 MQ 相容」才有用 |
 
 **考試判斷標準**：
 
 - 題目提到「existing application」或「migrate from on-premises RabbitMQ」→ **Amazon MQ**
 - 其他情況 → **SQS**
 
-## AWS WAF vs AWS Network Firewall 比較
+## AWS WAF vs Network Firewall
 
-| 比較項目            | AWS WAF                                 | AWS Network Firewall                                     |
-| ------------------- | --------------------------------------- | -------------------------------------------------------- |
-| **防護層級**        | Layer 7 (應用層)                        | Layer 3-7 (網路到應用層)                                 |
-| **部署位置**        | ALB/API Gateway/CloudFront 前面         | VPC 邊界（Internet Gateway/NAT Gateway 旁）              |
-| **主要用途**        | 保護 Web 應用免受攻擊                   | VPC 層級的流量過濾與檢查                                 |
-| **過濾能力**        | HTTP/HTTPS 請求內容、SQL injection、XSS | 所有協定（TCP/UDP/ICMP）、Domain filtering、IPS          |
-| **Domain/URL 過濾** | 可以，但僅限 HTTP/HTTPS                 | 可以，支援所有協定的 FQDN 過濾                           |
-| **使用場景**        | 防範 Web 攻擊、Bot、DDoS                | 整個 VPC 的進出流量管控                                  |
-| **價格**            | 較便宜（按規則和請求數計費）            | 較貴（按 endpoint 小時數和處理量計費）                   |
-| **題目關鍵字**      | SQL injection / XSS / Bot / Web attack  | VPC perimeter / FQDN filtering / All protocols / IPS/IDS |
+| 項目       | AWS WAF                       | Network Firewall                             |
+| ---------- | ----------------------------- | -------------------------------------------- |
+| **層級**   | Layer 7                       | Layer 3-7                                    |
+| **位置**   | ALB/CloudFront/API Gateway 前 | VPC 邊界                                     |
+| **關鍵字** | SQL injection、XSS、Bot       | VPC perimeter、FQDN filtering、all protocols |
 
 ### 速判口訣
 
+WAF 擋 Web 攻擊，Network Firewall 顧整個 VPC
+
 - **Web 攻擊** → WAF
 - **VPC 邊界 + FQDN** → Network Firewall
+
+唯一補充：如果題目出現「**outbound traffic filtering**」或「**egress filtering**」，也是指向 Network Firewall，因為它能在 VPC 出口過濾流量，WAF 做不到這件事。
 
 ## IAM User vs STS 比較
 
@@ -786,7 +807,7 @@ Layer 3/4 常見 DDoS 攻擊類型：
 | 安全性   | 低（長期暴露） | 高（用完即過期） |
 | 用途     | 固定身份       | 臨時授權         |
 
-## 全球加速服務對比
+## AWS 全球加速服務對比○
 
 | 服務                         | 主要用途 | 流量方向             | 快取機制    | 適用場景                                     | 成本特性          |
 | ---------------------------- | -------- | -------------------- | ----------- | -------------------------------------------- | ----------------- |
