@@ -558,3 +558,6 @@
      1. **Network Access Analyzer**：**靜態分析工具**，檢查「誰有權限連到誰」，做**合規審計**用
      2. **關鍵限制**：無法做 **Deep Packet Inspection**，不是即時檢查封包的服務
      3. **考試判斷**：看到「**inspect traffic**」→ 選能即時檢查封包的服務（如 Network Firewall），不是 Network Access Analyzer
+128. ★ **EBS Snapshot** 非同步快照機制
+     1. **建立過程特性**：Snapshot 是**非同步**操作，建立期間 volume 仍可正常讀寫使用
+     2. **Lazy Loading 機制**：從 snapshot 建立新 volume 時可**立即使用**，資料在背景從 S3 慢慢載入
