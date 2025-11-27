@@ -539,3 +539,15 @@
      1. **CloudWatch 指標整合**：SQS 的 CloudWatch 指標可以驅動 Auto Scaling
      2. **Target Tracking 彈性**：可以基於「**自訂指標**」，不只是 CPU/Memory
      3. **AMI 前置條件**：要先有 AMI 才能建 ASG（題目會拿來當選項陷阱）
+123. ★★ **CloudFront Geo Restriction vs AWS WAF Geo Match** 地理封鎖功能差異
+     1. **核心概念**：AWS WAF 規則可以組合使用，實現「**封鎖某國但允許特定 IP**」的彈性邏輯
+     2. **共同功能**：兩者都能封鎖整個國家⭐️
+     3. **WAF 獨有優勢**：允許例外 IP（白名單）、可與其他條件組合、請求會到達 WAF 層處理
+     4. **Geo Restriction 限制**：被封鎖國家的請求**直接擋掉**，不轉發到 WAF
+124. ★★ **CloudFront Geo Restriction 考試陷阱**
+     1. **致命缺點**：被封鎖國家的請求**根本不會轉發到 WAF**，無法在 WAF 層「開後門」給特定 IP
+     2. **正確做法**：全部交給 **AWS WAF** 處理（規則 1：Allow IP Set 白名單優先 → 規則 2：Block 特定國家）
+     3. **規則順序**：WAF 按**優先級評估**，先 match 到 allow 的 IP 就放行，不會再被後面的 geo block 擋掉
+125. ★ **Geo Restriction 選擇記憶技巧**
+     1. **判斷原則**：要「有原則又有例外」→ 用 **WAF**，別用 CloudFront Geo Restriction
+     2. **關鍵字識別**：「block country」+「allow specific IP」→ 只有 **WAF** 能做到
