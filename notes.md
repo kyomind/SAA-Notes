@@ -527,3 +527,15 @@
      1. **Public Internet 存取**：普通 ✅ 可以、VPC Only ❌ 不可
      2. **VPC Endpoint 要求**：普通 ❌ 非必須、VPC Only ✅ 必須
      3. **記憶口訣**：**VPC Only = S3 完全私有化，不再是公共服務**
+120. ★★ **SQS + Auto Scaling** 基於訊息積壓的自動擴展機制
+     1. **核心概念**：根據 SQS 隊列的「**訊息積壓程度**」來自動擴展處理訊息的 EC2 實例
+     2. **關鍵指標**：`ApproximateAgeOfOldestMessage` 代表隊列中「**最老的訊息**」等待時間
+     3. **指標意義**：數值越大 = 訊息積壓越嚴重 = consumer 處理不過來 = 該擴展了
+121. ★ **SQS + ASG 實作流程**
+     1. **建立 AMI**：把現有 EC2 backend 打包成映像檔
+     2. **建立 Auto Scaling Group**：用該 AMI 作為 **Launch Template**
+     3. **設定 Target Tracking Policy**：追蹤 `ApproximateAgeOfOldestMessage`，超過閾值就擴展
+122. 😇 **SQS + ASG 考試陷阱識別**
+     1. **CloudWatch 指標整合**：SQS 的 CloudWatch 指標可以驅動 Auto Scaling
+     2. **Target Tracking 彈性**：可以基於「**自訂指標**」，不只是 CPU/Memory
+     3. **AMI 前置條件**：要先有 AMI 才能建 ASG（題目會拿來當選項陷阱）
