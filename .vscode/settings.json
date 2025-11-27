@@ -37,6 +37,7 @@
         "recreatable",
         "Remediations",
         "RMAN",
+        "Slowloris",
         "Snowcone",
         "sslmode",
         "SSML",
