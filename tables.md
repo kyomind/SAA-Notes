@@ -610,6 +610,26 @@ Layer 3/4 常見 DDoS 攻擊類型：
 
 看到 **SMB、Windows 共享、多台同時存取** → 選 FSx for Windows，不是 EBS Multi-Attach
 
+常見一起比較的儲存服務：
+
+| 服務                | 類型     | 特點                        | 適用場景               |
+| ------------------- | -------- | --------------------------- | ---------------------- |
+| **EBS**             | 區塊儲存 | 單一 EC2、低延遲            | EC2 系統碟/資料碟      |
+| **EFS**             | **檔案**系統 | 多 EC2 共享、**NFS**、Linux | Linux 共享儲存         |
+| **FSx for Windows** | **檔案**系統 | 多機共享、**SMB**、AD 整合  | Windows 共享儲存       |
+| **FSx for Lustre**  | **檔案**系統 | 高效能平行運算              | HPC、ML 訓練           |
+| **S3**              | 物件儲存 | 無限擴展、HTTP 存取         | 靜態檔案、備份、資料湖 |
+
+## 考試快速判斷
+
+| 關鍵字                  | 選擇                |
+| ----------------------- | ------------------- |
+| Linux + 共享            | **EFS**             |
+| Windows + SMB + AD      | **FSx for Windows** |
+| HPC、Lustre、高吞吐運算 | **FSx for Lustre**  |
+| 單一 EC2 硬碟           | **EBS**             |
+| 靜態內容、無限儲存      | **S3**              |
+
 ## Amazon DLM vs AWS Backup○
 
 | 比較項目 | **Amazon DLM**            | **AWS Backup**                     |
