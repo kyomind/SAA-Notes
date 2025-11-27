@@ -624,4 +624,3 @@
      1. **多 prefix 分散**：將物件分到不同 prefix（如 `/images/01/`、`/images/02/`），每個各享獨立額度，效能 = **N 倍**
      2. **CloudFront 快取**：適合 **GET 請求為主**，減少直接打 S3
      3. **S3 Transfer Acceleration**：適合**上傳為主**、跨區域傳輸場景
-
