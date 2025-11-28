@@ -989,86 +989,75 @@ Object Lock（功能開關）
 | Auto Scaling | 不需要（已內建） | **預設關閉**，需**手動啟用** |
 | 適用場景     | 流量不可預測     | 流量穩定可預測               |
 
-## EC2 計費狀態整理○
+## EC2 計費狀態整理
 
 ### 會計費的狀態
 
-| 實例類型  | 狀態                        | 原因                                 |
-| --------- | --------------------------- | ------------------------------------ |
-| On-Demand | `stopping` (準備 hibernate) | **休眠保留記憶體內容,持續佔用資源**  |
-| Reserved  | `terminated`                | **RI 是預付費合約,用不用都要付到期** |
-| 所有類型  | `running`                   | 正常使用中                           |
+| 實例類型  | 狀態                        | 原因                                  |
+| --------- | --------------------------- | ------------------------------------- |
+| On-Demand | `stopping` (準備 hibernate) | **休眠保留記憶體內容，持續佔用資源**  |
+| Reserved  | `terminated`                | **RI 是預付費合約，用不用都要付到期** |
+| 所有類型  | `running`                   | 正常使用中                            |
 
 ### 不計費的狀態
 
-| 狀態                   | 說明                      |
-| ---------------------- | ------------------------- |
-| `pending`              | 啟動中,還沒進入 running   |
-| `stopping` (準備 stop) | 正常關機準備,非 hibernate |
-| `stopped`              | 已關機                    |
-| `shutting-down`        | 準備終止                  |
+| 狀態                   | 說明                       |
+| ---------------------- | -------------------------- |
+| `pending`              | 啟動中，還沒進入 running   |
+| `stopping` (準備 stop) | 正常關機準備，非 hibernate |
+| `stopped`              | 已關機                     |
+| `shutting-down`        | 準備終止                   |
 
-## 關鍵陷阱
+### Spot Instance 不會在 `stopping` 計費
 
-### 1. `stopping` 狀態有兩種情境
-
-- **準備 stop** → 不計費(正常關機)
-- **準備 hibernate** → **計費**(記憶體內容寫入 EBS,佔用儲存空間)
-
-### 2. Reserved Instance 特殊規則
-
-即使 instance 終止了,**RI 合約還在繼續計費到期滿**
-
-- 1 年 / 3 年合約,買了就要付完
-- 這是你的 GitHub PR 改進的重點 🎯
-
-### 3. Spot Instance 不會在 `stopping` 計費
-
-因為 Spot 是「用多少付多少」,準備關機時 AWS 已經不提供資源了
+因為 Spot 是「用多少付多少」，準備關機時 AWS 已經不提供資源了
 
 ## 自動備份：RDS vs EBS 快照機制比較
 
-| 項目                  | RDS                    | EBS                    |
-| --------------------- | ---------------------- | ---------------------- |
-| 自動備份              | 內建功能，開箱即用     | 需配置 DLM/AWS Backup  |
-| 保留期                | 0-35 天（可設 0 關閉） | 自訂，無上限           |
-| Point-in-time restore | ✅ 支援（5 分鐘粒度）   | ❌ 只能還原到快照時間點 |
-| 備份範圍              | 整個 DB instance       | 單一 EBS volume        |
+| 項目                         | RDS                              | EBS                    |
+| ---------------------------- | -------------------------------- | ---------------------- |
+| 自動備份                     | 內建功能，需設定保留期才啟用     | 需配置 DLM/AWS Backup  |
+| 保留期⭐️                      | 1-35 天（設 0 = 關閉）           | 自訂，無上限           |
+| Point-in-time restore (PITR) | ✅ 支援（5 分鐘粒度）             | ❌ 只能還原到快照時間點 |
+| 備份範圍                     | 整個 DB instance                 | 單一 EBS volume        |
+| 費用                         | 備份儲存收費（超過 DB 大小部分） | 快照儲存收費           |
 
-## 考試關鍵
+RDS 自動備份是內建功能，但**預設保留期是 0 天（等於關閉）**。
+要啟用自動備份，你需要將保留期設為 1-35 天。這不是「額外付費功能」，而是：
 
-- 題目問「自動備份」→ RDS 直接內建
+- 備份儲存本身要收費（超過 DB instance 大小的部分）
+- 功能本身不收錢，但儲存空間要錢
+
+## 備份考試關鍵
+
+- 題目問「自動備份」→ RDS 內建此功能（但**預設關閉**）
 - EBS 也能自動化，但需額外配置（**DLM**/EventBridge/AWS Backup）
 - 需要 point-in-time recovery → 只能選 RDS
 - RDS 需要**超過 35 天**的備份 → 用 AWS Backup 搭配 RDS
 
 ## Kinesis Data Streams vs Firehose
 
-| 特性        | Data Streams              | Firehose                          |
-| ----------- | ------------------------- | --------------------------------- |
-| 延遲        | 毫秒級(real-time)         | 60 秒+(near real-time)            |
-| Lambda 角色 | **消費者** - 讀取處理資料 | **處理器** - 轉換資料後寫入目的地 |
-| 目的地      | 自行處理                  | S3/Redshift/OpenSearch/HTTP       |
+| 特性        | Data Streams               | Firehose                     |
+| ----------- | -------------------------- | ---------------------------- |
+| 延遲        | 毫秒級（real-time）        | 60 秒+（near real-time）     |
+| 管理方式    | 自行管理 shard 容量        | 全託管，自動擴展             |
+| Lambda 角色 | **消費者**：讀取並處理資料 | **轉換器**：轉換後交給目的地 |
+| 資料流向    | Lambda 是終點              | Lambda 是中繼站              |
+| 內建目的地  | 無，自行決定               | S3/Redshift/OpenSearch/HTTP  |
 
-## 為何 Firehose + Lambda 錯誤
+## Lambda 在兩者中的角色差異
 
-Lambda 在 Firehose 中是 **data transformation function**:
+### Data Streams + Lambda
 
-- 僅用於資料轉換(如格式轉換、過濾)
-- 不是資料的最終消費者
-- 處理後必須寫入 Firehose 支援的目的地
+```bash
+資料 → Kinesis → Lambda（消費、處理、結束）
+```
 
-**題目要求:**
+### Firehose + Lambda
 
-- Real-time analytics service
-- Lambda 需要「讀取並處理」資料
-
-→ 只有 **Data Streams** 符合
-
-## 兩者記憶口訣
-
-- **Streams** → Lambda 是主角(消費者)
-- **Firehose** → Lambda 是配角(轉換器)
+```bash
+資料 → Firehose → Lambda（轉換）→ Firehose → S3/Redshift
+```
 
 ## Security Group vs Network ACL 比較
 
@@ -1116,9 +1105,7 @@ Lambda 在 Firehose 中是 **data transformation function**:
 | **Provisioned IOPS SSD (io1/io2)** | 穩定低延遲、高 IOPS  | I/O 密集應用，大型關聯式/NoSQL 資料庫 |
 | **Magnetic (舊世代)**              | 最低成本             | 低頻存取、成本敏感場景                |
 
-「目錄管理」是指管理 **使用者帳號、群組、權限** 的集中式服務。
-
-## 核心概念
+## AWS Directory Service 基本概念
 
 **目錄 (Directory)** = 儲存使用者身份資訊的資料庫
 
@@ -1153,17 +1140,17 @@ Lambda 在 Firehose 中是 **data transformation function**:
 
 ## 記憶口訣：審計追蹤 = 一定是 KMS
 
-| 加密方式 | Audit Trail           | 自動輪替   | 考試判斷       |
-| -------- | --------------------- | ---------- | -------------- |
-| SSE-KMS  | ✅ CloudTrail 完整記錄 | ✅ 自動     | 有合規需求必選 |
-| SSE-S3   | ❌ 只有 S3 操作紀錄    | ✅ 但看不見 | 最簡單/最便宜  |
-| SSE-C    | ❌ 無                  | ❌ 自己做   | 自己管金鑰     |
+| 加密方式 | Audit Trail            | 自動輪替   | 考試判斷       |
+| -------- | ---------------------- | ---------- | -------------- |
+| SSE-KMS  | ✅ CloudTrail 完整記錄⭐️ | ✅ 自動     | 有合規需求必選 |
+| SSE-S3   | ❌ 只有 S3 操作紀錄     | ✅ 但看不見 | 最簡單/最便宜  |
+| SSE-C    | ❌ 無                   | ❌ 自己做   | 自己管金鑰     |
 
 題目說 "audit trail that shows **who used the encryption key**" → 直接鎖定 KMS。
 
 ## RDS 自帶的(CloudWatch 基本指標)
 
-從 **hypervisor 層**收集,不需額外啟用:
+從 hypervisor 層收集，不需額外啟用:
 
 | 指標類別             | 說明                         |
 | -------------------- | ---------------------------- |
@@ -1175,16 +1162,18 @@ Lambda 在 Firehose 中是 **data transformation function**:
 
 ## 二、Enhanced Monitoring 才有的
 
-從 **DB instance OS 層的 agent** 收集,需手動啟用:
+從 **DB instance OS 層的 agent** 收集，需**手動**啟用:
 
 | 指標類別             | 說明                                    |
 | -------------------- | --------------------------------------- |
 | **Process List**     | 顯示各 process/thread 的資源使用        |
-| RDS child processes  | DB 主程序(如 `mysqld`, `aurora`)        |
+| RDS child processes⭐️ | DB 主程序(如 `mysqld`, `aurora`)        |
 | RDS processes        | RDS 管理 agent、診斷程序                |
-| OS processes         | Kernel、系統程序                        |
+| OS processes⭐️        | Kernel、系統程序                        |
 | **Per-process CPU**  | 個別 process 的 CPU 使用率              |
 | **Memory breakdown** | 詳細記憶體分配(active/inactive/buffers) |
+
+顯然，所有關於 **process** 的指標，都是 Enhanced Monitoring 獨有的。
 
 ## IAM Policy 解讀
 
@@ -1226,30 +1215,29 @@ Lambda 在 Firehose 中是 **data transformation function**:
 
 ## AMI 兩種類型
 
-| 類型                      | Root Device    | 資料持久性               |
-| ------------------------- | -------------- | ------------------------ |
-| **EBS-backed**            | EBS Volume     | 終止後保留(除非設定刪除) |
-| **Instance Store-backed** | Instance Store | **終止後自動刪除**       |
+| 類型                      | Root Device    | 資料持久性                   |
+| ------------------------- | -------------- | ---------------------------- |
+| **EBS-backed**            | EBS Volume     | 終止後**保留**(除非設定刪除) |
+| **Instance Store-backed** | Instance Store | **終止後自動刪除**           |
 
 ## S3 Presigned URLs vs CloudFront Signed URLs
 
 | 比較項目 | S3 Presigned URLs | CloudFront Signed URLs       |
 | -------- | ----------------- | ---------------------------- |
-| 效能     | 直連 S3,無快取    | 全球 CDN 加速                |
+| 效能     | 直連 S3，無快取   | 全球 CDN 加速                |
 | 成本     | 直接從 S3 傳輸    | 透過 CloudFront 節省頻寬成本 |
 | 使用場景 | 簡單的檔案下載    | 大規模、全球分發             |
 
 ## Elastic IP 是綁在哪？
 
-| AWS 元件                   | 能不能綁 EIP？ | 說明                                                                            |
-| -------------------------- | -------------- | ------------------------------------------------------------------------------- |
-| **NAT Gateway**            | ✅ 可以         | NAT Gateway 建立時就必須指定一個 EIP，這就是外部看到的 NAT 公網 IP。            |
-| **Internet Gateway (IGW)** | ❌ 不行         | IGW 是一個區域性的 VPC 出口，只負責「路由」，不是一個實體端點，沒有 IP 可以綁。 |
-| **EC2**（透過 ENI）        | ✅ 可以         | EIP 綁在 EC2 NIC（ENI）上。                                                     |
+| AWS 元件                        | 能不能綁 EIP？ | 說明                                                                            |
+| ------------------------------- | -------------- | ------------------------------------------------------------------------------- |
+| **NAT Gateway**                 | ✅ 可以         | NAT Gateway 建立時就必須指定一個 EIP，這就是外部看到的 NAT 公網 IP。            |
+| **Internet Gateway (IGW)**      | ❌ 不行         | IGW 是一個區域性的 VPC 出口，只負責「路由」，不是一個實體端點，沒有 IP 可以綁。 |
+| **EC2**（透過 ENI）             | ✅ 可以         | EIP 綁在 EC2 NIC（ENI）上。                                                     |
+| **Network Load Balancer (NLB)** | ✅ 可以         | 每個 AZ 可指定一個 EIP，適合需要固定 IP 白名單的場景。                          |
 
-👉 **所以答案：Elastic IP 是綁在 NAT Gateway（或 EC2），不是 IGW。**
-
-## NAT Gateway vs Internet Gateway vs Bastion Host
+## NAT Gateway vs Internet Gateway vs Bastion Host○
 
 | 服務                 | 用途                        | 位置          |
 | -------------------- | --------------------------- | ------------- |
