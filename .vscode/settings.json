@@ -33,6 +33,7 @@
         "OLAP",
         "OLTP",
         "ONTAP",
+        "PITR",
         "Preemptible",
         "RDSOS",
         "recreatable",
