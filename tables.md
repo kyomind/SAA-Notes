@@ -1245,42 +1245,56 @@ RDS 自動備份是內建功能，但**預設保留期是 0 天（等於關閉�
 | **Internet Gateway** | 讓 Public subnet 雙向通訊   | VPC level⭐️    |
 | **Bastion Host**     | 讓你 SSH 進 Private subnet  | Public subnet |
 
-以下整理成 **最精準、最考試向的 SG vs NACL 重點比較**，遇到題目就依這張表判斷即可（SAA 高命中率🔥）。
-
----
-
 ## ✅ Security Group（SG） vs Network ACL（NACL）
 
-| 項目         | **Security Group (SG)**                                                                       | **Network ACL (NACL)**                                                                        |
-| ------------ | --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
-| **層級**     | Instance level（綁 EC2、ENI）                                                                 | Subnet level（作用於整個 Subnet）                                                             |
-| **規則性質** | **Allow-only（白名單）**                                                                      | Allow + Deny                                                                                  |
-| **狀態性**   | **Stateful**（回程自動允許）                                                                  | **Stateless**（需 inbound + outbound 兩邊都設）                                               |
-| **用途定位** | **精準控制**：限制某 IP / 某 Port                                                             | **粗粒度過濾**：阻擋 CIDR、整段流量策略                                                       |
-| **常見考題** | - "Only allow XYZ IP" / - "Restrict SSH/FTP/RDP from specific IPs" / - "Tight access control" | - "Block a malicious IP range" / - "Subnet-wide allow/deny" / - "Additional layer of defense" |
-| **預設行為** | Deny all inbound, allow all outbound                                                          | Allow all inbound/outbound（Default VPC）                                                     |
-| **何時用？** | **要允許某人進來** → SG                                                                       | **要阻擋整段流量** → NACL                                                                     |
+| 項目         | **Security Group (SG)**                                                                       | **Network ACL (NACL)**                                                                            |
+| ------------ | --------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| **層級**     | Instance level（綁 EC2、ENI）                                                                 | Subnet level（作用於整個 Subnet）                                                                 |
+| **規則性質** | **Allow-only（白名單）**                                                                      | Allow + Deny                                                                                      |
+| **狀態性**   | **Stateful**（回程自動允許）                                                                  | **Stateless**（需 inbound + outbound 兩邊都設）                                                   |
+| **用途定位** | **精準控制**：限制某 IP / 某 Port                                                             | **粗粒度過濾**：阻擋 CIDR、整段流量策略                                                           |
+| **常見考題** | - "Only allow XYZ IP" / - "Restrict SSH/FTP/RDP from specific IPs" / - "Tight access control" | - "**Block a malicious IP range**" / - "Subnet-wide allow/deny" / - "Additional layer of defense" |
+| **預設行為** | Deny all inbound, allow all outbound                                                          | Allow all inbound/outbound（Default VPC）                                                         |
+| **何時用？** | **要允許某人進來** → SG                                                                       | **要阻擋整段流量** → NACL                                                                         |
 
-### 一句話心法（超好用）
+提醒：NACL 完全不是**擋單一 IP** 的最佳工具。(可以做到但很麻煩且不直觀)
 
-> **SG 用來控制誰能進來（精準 Allow）**
-> **NACL 用來阻擋不該進來的（粗略 Deny）**
+## S3 Bucket Policy
 
-NACL 完全不是**擋單一 IP** 的最佳工具。(可以做到但很麻煩且不直觀)
+兩者都用相同的 JSON 語法（AWS Policy Language），但：
 
-## S3 Bucket Policy：強制所有上傳物件都要加密
+| 比較         | IAM Policy                    | S3 Bucket Policy            |
+| ------------ | ----------------------------- | --------------------------- |
+| **附加對象** | IAM User / Role / Group       | S3 Bucket 本身              |
+| **控制角度** | 「誰」能做什麼                | 「這個 Bucket」允許誰做什麼 |
+| **跨帳號**   | 只能管自己帳號內的 principal  | 可授權其他 AWS 帳號存取     |
+| **Resource** | 必須明確指定（如 bucket ARN） | 可省略，預設就是該 bucket   |
+
+## 強制 S3 上傳加密的 Bucket Policy 範例
 
 ```json
 {
-  "Effect": "Deny",
-  "Action": "s3:PutObject",
-  "Condition": {
-    "StringNotEquals": {
-      "s3:x-amz-server-side-encryption": "AES256"
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Deny",
+      "Principal": "*",
+      "Action": "s3:PutObject",
+      "Resource": "arn:aws:s3:::your-bucket-name/*",
+      "Condition": {
+        "StringNotEquals": {
+          "s3:x-amz-server-side-encryption": "AES256"
+        }
+      }
     }
-  }
+  ]
 }
 ```
+
+**考試判斷技巧**：
+
+- 看到 `Principal` 欄位 → Bucket Policy（或 Resource-based Policy）
+- 沒有 `Principal` → IAM Policy（identity-based）
 
 ## NAT Gateway vs Egress-only Internet Gateway 比較
 
@@ -1303,15 +1317,26 @@ Egress-only IGW:
 
 ## Aurora Auto Scaling vs Global Database
 
-| 特性         | Aurora Auto Scaling        | Aurora Global Database          |
-| ------------ | -------------------------- | ------------------------------- |
-| **解決問題** | 單一區域的讀取擴展         | 跨區域災難復原 + 全球低延遲讀取 |
-| **擴展方式** | 自動增減 read replica 數量 | 在多個 AWS 區域建立只讀副本     |
-| **延遲**     | 毫秒級 (同區域)            | 次秒級 (跨區域複製延遲 < 1秒)   |
-| **成本**     | 只付使用的 replica         | 跨區域資料傳輸 + 多區域儲存成本 |
-| **使用場景** | 流量波動大的應用           | 全球化業務、DR 需求             |
+| 特性         | Aurora Auto Scaling        | Aurora Global Database                  |
+| ------------ | -------------------------- | --------------------------------------- |
+| **解決問題** | 單一區域的讀取擴展         | 跨區域**災難復原** + 全球**低延遲讀取** |
+| **擴展方式** | 自動增減 read replica 數量 | 在多個 AWS 區域建立只讀副本             |
+| **延遲**     | 毫秒級 (同區域)            | 次秒級 (跨區域複製延遲 < 1秒)           |
+| **成本**     | 只付使用的 replica         | 跨區域資料傳輸 + 多區域儲存成本         |
+| **使用場景** | 流量波動大的應用           | 全球化業務、DR 需求                     |
 
-## AWS 儲存服務考試重點對照表
+## Aurora Auto Scaling 概覽
+
+| 項目         | 說明                                                  |
+| ------------ | ----------------------------------------------------- |
+| **預設狀態** | 關閉，需手動設定 Auto Scaling policy                  |
+| **適用版本** | Aurora **Provisioned only**（Serverless v2 自帶容量調整） |
+| **功能費用** | 免費                                                  |
+| **實際成本** | 依產生的 Read Replica instance 規格與時間計費         |
+| **調整標的** | Read Replica **數量**（非單一 instance 大小）         |
+| **常用指標** | CPU utilization、連線數                               |
+
+## AWS 儲存服務考試重點對照表○
 
 | 服務                     | 類型         | 協定            | 考試關鍵字                       | 適用場景                             |
 | ------------------------ | ------------ | --------------- | -------------------------------- | ------------------------------------ |
