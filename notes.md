@@ -716,3 +716,7 @@
      1. **關鍵規則**：「Without permission from the key policy, IAM policies that allow permissions have no effect.」
      2. **類比理解**：跟 S3 bucket policy 概念類似——即使 IAM role 有權限，resource policy 沒開放就進不去
      3. **考試判斷**：Lambda 存取 KMS 加密資源失敗 → 檢查 **execution role + key policy** 兩邊權限
+168. ★★ **MongoDB 遷移選擇**：DocumentDB vs DynamoDB
+     1. **DocumentDB 優勢**：與 MongoDB **API 相容**，幾乎不改 code
+     2. **DynamoDB 問題**：雖支援 JSON-like 資料，但 API 完全不同（GetItem/Query vs MQL），遷移**必須改寫程式碼**
+     3. **考試判斷**：看到「**minimal code changes**」+ MongoDB → 選 **DocumentDB**
