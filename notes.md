@@ -690,4 +690,5 @@
 161. ★★ **NACL Ephemeral Port 設定規則**
      1. **Inbound rule**：管 port 443（伺服器接收請求）
      2. **Outbound rule**：管 port **32768-65535**（回程給 client 的 ephemeral port）⭐️
-     3. **為何開整個範圍**：client OS 隨機選 port，無法預測具體數值，需放行整個 ephemeral port range
+     3. 回程流量的 destination port 是 client 的 ephemeral port，不是 443
+     4. **為何開整個範圍**：client OS 隨機選 port，無法預測具體數值，需放行整個 ephemeral port range
