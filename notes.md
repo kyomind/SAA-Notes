@@ -752,5 +752,9 @@
      3. **設計意義**：這是 AWS 高可用架構的基礎設計
 176. ★ **Subnet 的預設 Route Table 行為**
      1. **自動關聯**：新建的 Subnet 會自動連結到 VPC 的 **main route table**
-     2. **最佳實踐**：main route table 應保持**私有**（不加 IGW route）
+     2. **最佳實踐**：main route table 應保持**私有**（不加 IGW route）⭐️
      3. **安全考量**：避免新 Subnet 意外暴露到公網
+177. ★ **AWS Glue Job Bookmark** 增量處理機制
+     1. **功能**：追蹤 ETL job 上次處理到哪裡，下次只處理**新資料**
+     2. **效益**：不重複處理舊資料，減少執行時間與成本
+     3. **考試關鍵字**：「incremental processing」、「avoid reprocessing」、「only new data」→ 選 **Job Bookmark**
