@@ -720,3 +720,12 @@
      1. **DocumentDB 優勢**：與 MongoDB **API 相容**，幾乎不改 code
      2. **DynamoDB 問題**：雖支援 JSON-like 資料，但 API 完全不同（GetItem/Query vs MQL），遷移**必須改寫程式碼**
      3. **考試判斷**：看到「**minimal code changes**」+ MongoDB → 選 **DocumentDB**
+169. ★★ **Storage Gateway 類型與 S3 直接存取**
+     1. **核心重點**：Volume Gateway 的資料**不能直接用 S3 API 存取**，要直接存取 S3 請用 **File Gateway**
+     2. **File Gateway**：資料呈現為 S3 objects（NFS/SMB 介面）→ ✅ 可直接存取
+     3. **Volume Gateway**：資料呈現為 EBS snapshots（iSCSI 介面）→ ❌ 不可直接存取
+     4. **Tape Gateway**：資料呈現為 S3 Glacier archives（VTL 介面）→ ❌ 不可直接存取
+170. ★ **Storage Gateway S3 存取考試判斷**
+     1. **觸發關鍵字**：題目提到「**directly access using S3 API**」
+     2. **正確答案**：只有 **File Gateway** 符合
+     3. **記憶口訣**：File Gateway = S3 objects = S3 API 可用
