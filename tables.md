@@ -1327,14 +1327,14 @@ Egress-only IGW:
 
 ## Aurora Auto Scaling 概覽
 
-| 項目         | 說明                                                  |
-| ------------ | ----------------------------------------------------- |
-| **預設狀態** | 關閉，需手動設定 Auto Scaling policy                  |
+| 項目         | 說明                                                      |
+| ------------ | --------------------------------------------------------- |
+| **預設狀態** | 關閉，需手動設定 Auto Scaling policy                      |
 | **適用版本** | Aurora **Provisioned only**（Serverless v2 自帶容量調整） |
-| **功能費用** | 免費                                                  |
-| **實際成本** | 依產生的 Read Replica instance 規格與時間計費         |
-| **調整標的** | Read Replica **數量**（非單一 instance 大小）         |
-| **常用指標** | CPU utilization、連線數                               |
+| **功能費用** | 免費                                                      |
+| **實際成本** | 依產生的 Read Replica instance 規格與時間計費             |
+| **調整標的** | Read Replica **數量**（非單一 instance 大小）             |
+| **常用指標** | CPU utilization、連線數                                   |
 
 ## AWS 儲存服務考試重點對照表○
 
@@ -1853,3 +1853,19 @@ Expedited 有容量限制，高需求時可能失敗。如果需要**保證 Expe
 | **高可用**   | 資料自動同步複製至多個 AZ，自動 failover |
 
 **考試關鍵字**：超大規模、自動擴展儲存、多 AZ 同步、高效能 + MySQL/PostgreSQL 相容 → **Aurora**
+
+## EC2 Placement Groups 比較表
+
+注意：所有類型的 Placement Group 都只能在**單一 Region** 內使用。
+
+| 類型          | 目的           | 部署方式           | 跨 AZ | 適用場景                                 |
+| ------------- | -------------- | ------------------ | ----- | ---------------------------------------- |
+| **Cluster**   | 低延遲、高吞吐 | 同一 AZ、同一機架  | ❌     | HPC、緊密耦合運算                        |
+| **Spread**    | 隔離硬體故障   | 分散到不同硬體     | ✅     | 少量關鍵 instances（上限 7/AZ）          |
+| **Partition** | 隔離機架故障   | 分散到不同機架分區 | ✅     | 大型分散式系統（HDFS、Cassandra、Kafka） |
+
+**快速判斷**：
+
+- 題目提 **HPC / low-latency / tightly-coupled** → **Cluster**
+- 題目提 **故障隔離 / 關鍵應用 / 少量 instances** → **Spread**
+- 題目提 **大數據 / 分散式資料庫 / partition-aware** → **Partition**

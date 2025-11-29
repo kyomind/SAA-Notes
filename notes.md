@@ -624,3 +624,11 @@
      1. **多 prefix 分散**：將物件分到不同 prefix（如 `/images/01/`、`/images/02/`），每個各享獨立額度，效能 = **N 倍**
      2. **CloudFront 快取**：適合 **GET 請求為主**，減少直接打 S3
      3. **S3 Transfer Acceleration**：適合**上傳為主**、跨區域傳輸場景
+145. ★★ **Cluster Placement Group** HPC 低延遲網路解決方案
+     1. **題目關鍵字識別**：HPC（高效能運算）、tightly-coupled node-to-node communication、low-latency network、跨多個 AZ 卻遇到延遲問題
+     2. **問題根源**：**AZ 之間有網路延遲**，HPC 需要極低延遲的節點間通訊
+     3. **解決方案**：Cluster Placement Group 把 EC2 instances 放在**同一個 AZ 的同一個底層硬體機架**，提供最低網路延遲
+146. ★ **Cluster Placement Group 考試陷阱識別**
+     1. **干擾選項**：Enhanced Networking、EFA（Elastic Fabric Adapter）可能同時出現
+     2. **判斷優先級**：EFA 是加分項提升效能，但 **Placement Group 才是解決「跨 AZ 延遲」的根本方案**
+     3. **記憶口訣**：HPC + 延遲問題 → **先考慮 Cluster Placement Group**，再考慮 EFA 加速
