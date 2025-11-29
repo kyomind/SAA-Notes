@@ -1035,30 +1035,6 @@ RDS 自動備份是內建功能，但**預設保留期是 0 天（等於關閉�
 - 需要 point-in-time recovery → 只能選 RDS
 - RDS 需要**超過 35 天**的備份 → 用 AWS Backup 搭配 RDS
 
-## Kinesis Data Streams vs Firehose
-
-| 特性        | Data Streams               | Firehose                     |
-| ----------- | -------------------------- | ---------------------------- |
-| 延遲        | 毫秒級（real-time）        | 60 秒+（near real-time）     |
-| 管理方式    | 自行管理 shard 容量        | 全託管，自動擴展             |
-| Lambda 角色 | **消費者**：讀取並處理資料 | **轉換器**：轉換後交給目的地 |
-| 資料流向    | Lambda 是終點              | Lambda 是中繼站              |
-| 內建目的地  | 無，自行決定               | S3/Redshift/OpenSearch/HTTP  |
-
-## Lambda 在兩者中的角色差異
-
-### Data Streams + Lambda
-
-```bash
-資料 → Kinesis → Lambda（消費、處理、結束）
-```
-
-### Firehose + Lambda
-
-```bash
-資料 → Firehose → Lambda（轉換）→ Firehose → S3/Redshift
-```
-
 ## Security Group vs Network ACL 比較
 
 | 項目             | Security Group (SG)                    | Network ACL (NACL)                            |
@@ -1887,3 +1863,25 @@ Expedited 有容量限制，高需求時可能失敗。如果需要**保證 Expe
 - **Firehose** = 消防水管，直接噴向固定目標（S3、Redshift 等）
 
 題目如果要 Lambda **處理並消費** Kinesis 資料 → 用 **Data Streams**，不是 Firehose。
+
+### Data Firehose 內建目的地
+
+| 類別     | 目的地                                                                  |
+| -------- | ----------------------------------------------------------------------- |
+| AWS 服務 | S3、Redshift、OpenSearch Service                                        |
+| 第三方   | Splunk、Datadog、Dynatrace、LogicMonitor、MongoDB、New Relic、Snowflake |
+| 通用     | 自訂 HTTP Endpoint                                                      |
+
+S3 是最常見的，很多時候 Redshift/OpenSearch 也是先經過 S3 再載入。
+
+### Data Streams + Lambda
+
+```bash
+資料 → Kinesis → Lambda（消費、處理、結束）
+```
+
+### Firehose + Lambda
+
+```bash
+資料 → Firehose → Lambda（轉換）→ Firehose → S3/Redshift
+```
