@@ -1869,3 +1869,21 @@ Expedited 有容量限制，高需求時可能失敗。如果需要**保證 Expe
 - 題目提 **HPC / low-latency / tightly-coupled** → **Cluster**
 - 題目提 **故障隔離 / 關鍵應用 / 少量 instances** → **Spread**
 - 題目提 **大數據 / 分散式資料庫 / partition-aware** → **Partition**
+
+## Kinesis Data Streams vs Data Firehose 比較表
+
+**關鍵**：Lambda 不能作為 Firehose 的**目的地（destination）**。
+
+| 特性        | Kinesis Data Streams                | Data Firehose                                |
+| ----------- | ----------------------------------- | -------------------------------------------- |
+| 消費者模式  | 自己寫 consumer（Lambda、EC2、KCL） | 內建目的地（S3、Redshift、OpenSearch、HTTP） |
+| Lambda 角色 | ✅ 直接消費資料                      | ⚠️ 只能做**中間處理/轉換**，不是最終消費      |
+| 即時性      | 真正即時                            | Near real-time（有 buffer）                  |
+| 管理複雜度  | 高（要管 shard、consumer）          | 低（全託管）                                 |
+
+**記憶方式**：
+
+- **Data Streams** = 水管，你要自己接水龍頭（consumer）
+- **Firehose** = 消防水管，直接噴向固定目標（S3、Redshift 等）
+
+題目如果要 Lambda **處理並消費** Kinesis 資料 → 用 **Data Streams**，不是 Firehose。
