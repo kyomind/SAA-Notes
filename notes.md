@@ -653,3 +653,14 @@
 151. 😇 **AppSync vs API Gateway + Lambda** 選擇邏輯
      1. **API Gateway + Lambda**：也能實作即時功能，但需自己處理 WebSocket 連線管理
      2. **AppSync 優勢**：**內建即時訂閱功能**（Subscriptions），更直接、更少開發工作
+152. ★★ **IAM Group 不能作為 Policy Principal** 核心限制
+     1. **核心概念**：**Group 不能作為 Policy 的 Principal**
+     2. **可當 Principal**：IAM User ✅（可被驗證身份）、IAM Role ✅（可被驗證身份）
+     3. **不可當 Principal**：IAM Group ❌（只是權限集合，不是身份實體）
+153. ★★ **IAM Group 限制的實務意義**
+     1. **Resource-based policy 限制**：S3 bucket policy 不能寫 `"Principal": "arn:aws:iam::123456789:group/Developers"`
+     2. **正確做法**：要授權給一群人 → 用 **identity-based policy 附加到 Group**
+154. ★ **IAM Group 權限設定正確流程**
+     1. **Step 1**：每個部門建一個 IAM Group
+     2. **Step 2**：建立要求 MFA + 最小權限的 IAM Policy
+     3. **Step 3**：把 Policy **attach 到 Group**（不是把 Group 放進 Principal）
