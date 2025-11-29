@@ -727,5 +727,5 @@
      4. **Tape Gateway**：資料呈現為 S3 Glacier archives（VTL 介面）→ ❌ 不可直接存取
 170. ★ **Storage Gateway S3 存取考試判斷**
      1. **觸發關鍵字**：題目提到「**directly access using S3 API**」
-     2. **正確答案**：只有 **File Gateway** 符合
+     2. **正確答案**：只有 **File Gateway** 符合⭐️
      3. **記憶口訣**：File Gateway = S3 objects = S3 API 可用
