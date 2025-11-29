@@ -788,3 +788,6 @@
         - Elastic IP（如果有綁定）
         - **EBS 資料**（持久化儲存）
      3. **考試判斷**：題目問 Stop/Start 後什麼會改變 → 選「Public IP changes」或「Instance store data is lost」
+183. ★ **AWS 考試選項判斷原則**：Managed 優於 Self-managed
+     1. **核心原則**：題目沒有明確限制時，**managed > self-managed**，**automated > manual**
+     2. **設計理念**：AWS 推崇 **least operational overhead**，優先選擇減少維運負擔的方案
