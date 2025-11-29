@@ -734,3 +734,15 @@
      2. **錯誤做法**：對 100 個 user 各別 attach policy → 管理噩夢 ❌
      3. **正確做法**：建 Group → 把 user 加進去 → policy attach 到 Group ✅
      4. **考試關鍵字**：「大量 IAM users」+「相同權限」→ 答案一定是 **IAM Group**
+172. ★★ **Glacier Retrieval** 取回速度選項
+     1. **Expedited**：1-5 分鐘，緊急需求（符合 < 15 min）
+     2. **Standard**：3-5 小時，一般取回
+     3. **Bulk**：5-12 小時，大量、非緊急
+173. ★★ **Provisioned Capacity** 保證取回能力解決方案
+     1. **問題背景**：Expedited 在**高需求時可能失敗**（capacity 不夠）
+     2. **解決方案**：購買 provisioned capacity = **保證** expedited 隨時可用
+     3. **效能規格**：支援最高 **150 MB/s** throughput
+174. ★★ **Glacier 考試關鍵字組合**判斷技巧
+     1. **Expedited 關鍵字**：「under 15 minutes」→ 選 Expedited
+     2. **Provisioned Capacity 關鍵字**：「under all circumstances」+「retrieval capacity available when needed」→ 選 Provisioned Capacity
+     3. **考試陷阱**：兩者要**一起選**才能滿足「任何時候都能在 15 分鐘內取回」的合規要求
