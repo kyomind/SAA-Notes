@@ -675,3 +675,11 @@
      1. **CreationPolicy + cfn-signal**：題目提到 "ensure components are properly running"、軟體層驗證
      2. **DependsOn**：只管**資源建立順序**，不管軟體層是否就緒
      3. **記憶口訣**：DependsOn = 順序控制；CreationPolicy = **完成度驗證**
+158. ★★ **RDS 備份保留期限**：自動備份 vs AWS Backup
+     1. **RDS 自動備份**：最長 **35 天**
+     2. **AWS Backup**：**無上限**（可設數年）
+     3. **考試判斷**：超過 35 天 → 必須用 **AWS Backup**
+159. ★ **RDS 35 天限制的設計原因**
+     1. **定位差異**：RDS 自動備份是 **短期 operational recovery**（誤刪資料、回滾錯誤），非長期 archive 用途
+     2. **長期保留需求**：合規需求（金融業保留 7 年）、災難復原策略、跨服務統一管理 → 交給 **AWS Backup** 處理
+     3. **設計理念**：讓 RDS 本身保持簡單，長期備份由獨立服務負責
