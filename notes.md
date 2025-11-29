@@ -632,3 +632,11 @@
      1. **干擾選項**：Enhanced Networking、EFA（Elastic Fabric Adapter）可能同時出現
      2. **判斷優先級**：EFA 是加分項提升效能，但 **Placement Group 才是解決「跨 AZ 延遲」的根本方案**
      3. **記憶口訣**：HPC + 延遲問題 → **先考慮 Cluster Placement Group**，再考慮 EFA 加速
+147. ★★ **S3 跨帳戶複製物件擁有權問題**
+     1. **核心概念**：S3 物件的擁有者是**上傳者的帳戶**，不是 bucket 擁有者
+     2. **問題場景**：Account A 把物件複製到 Account B 的 bucket，物件擁有者仍是 Account A → Account B 無法完全控制自己 bucket 裡的物件
+     3. **解法**：讓 **Account B 自己執行複製動作**
+148. ★ **S3 跨帳戶複製設定步驟**
+     1. **Step 1**：Account A 的 source bucket 加上 **bucket policy**，允許 Account B 讀取
+     2. **Step 2**：Account B 建立 **IAM policy**，授權其 user/role 執行跨帳戶複製
+     3. **Step 3**：由 Account B 的 IAM user/role 執行複製 → 複製後物件擁有者即為 Account B
