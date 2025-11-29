@@ -664,3 +664,7 @@
      1. **Step 1**：每個部門建一個 IAM Group
      2. **Step 2**：建立要求 MFA + 最小權限的 IAM Policy
      3. **Step 3**：把 Policy **attach 到 Group**（不是把 Group 放進 Principal）
+155. ★★ **Auto Scaling AMI 變更流程**：Launch Template 是關鍵
+     1. **核心概念**：ASG 本身不定義「要啟動什麼樣的 EC2」，只負責「何時擴展、縮減幾台」
+     2. **EC2 規格定義位置**：**Launch Template** 包含 AMI ID、Instance type、Security groups、Key pair、User data 等
+     3. **AMI 變更步驟**：建立新的 Launch Template（或新版本）→ 更新 ASG 指向新的 Launch Template
