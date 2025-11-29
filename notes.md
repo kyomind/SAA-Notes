@@ -692,3 +692,15 @@
      2. **Outbound rule**：管 port **32768-65535**（回程給 client 的 ephemeral port）⭐️
      3. 回程流量的 destination port 是 client 的 ephemeral port，不是 443
      4. **為何開整個範圍**：client OS 隨機選 port，無法預測具體數值，需放行整個 ephemeral port range
+162. ★★ **RDS Storage Auto Scaling** 容量自動擴展解決方案
+     1. **核心結論**：容量不夠 → **開啟 Storage Auto Scaling**，不是手動增加
+     2. **Auto Scaling 優勢**：自動監控、按需擴展、**零停機**、無額外費用
+     3. **手動增加問題**：需預測用量、可能 over-provision 浪費錢
+163. ★ **RDS Storage Auto Scaling 考試關鍵字**
+     1. **zero downtime**：不影響服務
+     2. **set maximum storage limit**：只需設上限，其餘自動處理⭐️
+     3. **no additional cost**：只付實際使用的 storage
+164. ★ **RDS Storage 考試判斷邏輯**
+     1. **觸發關鍵字**：「RDS storage 不足」「database workload growing」
+     2. **正確答案**：**enable storage autoscaling**
+     3. **錯誤選項識別**：手動加容量、scale out read replica（read replica 是解決讀取效能，不是 storage）
