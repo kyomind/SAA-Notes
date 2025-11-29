@@ -668,3 +668,10 @@
      1. **核心概念**：ASG 本身不定義「要啟動什麼樣的 EC2」，只負責「何時擴展、縮減幾台」
      2. **EC2 規格定義位置**：**Launch Template** 包含 AMI ID、Instance type、Security groups、Key pair、User data 等
      3. **AMI 變更步驟**：建立新的 Launch Template（或新版本）→ 更新 ASG 指向新的 Launch Template
+156. ★★ CloudFormation **CreationPolicy + cfn-signal** 初始化驗證機制
+     1. **用途**：確保 EC2 內的軟體安裝配置完成後，CloudFormation 才視為資源建立成功
+     2. **運作流程**：CloudFormation 建立 EC2 → EC2 內透過 `cfn-init` 執行安裝腳本 → 安裝完成後 `cfn-signal` 回報成功 → CloudFormation 收到 signal 繼續建下一個資源
+157. ★ **CloudFormation 初始化考試關鍵字判斷**
+     1. **CreationPolicy + cfn-signal**：題目提到 "ensure components are properly running"、軟體層驗證
+     2. **DependsOn**：只管**資源建立順序**，不管軟體層是否就緒
+     3. **記憶口訣**：DependsOn = 順序控制；CreationPolicy = **完成度驗證**
