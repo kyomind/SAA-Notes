@@ -640,3 +640,16 @@
      1. **Step 1**：Account A 的 source bucket 加上 **bucket policy**，允許 Account B 讀取
      2. **Step 2**：Account B 建立 **IAM policy**，授權其 user/role 執行跨帳戶複製
      3. **Step 3**：由 Account B 的 IAM user/role 執行複製 → 複製後物件擁有者即為 Account B
+149. ★★ **AWS AppSync** 即時**協作**應用解決方案
+     1. **服務定位**：託管的 **GraphQL API** 服務，主打 **real-time synchronization**（即時同步）
+     2. **適用場景**：協作型應用（多人同時編輯、即時更新）、mobile/web app 即時資料同步⭐️
+     3. **考試判斷**：題目提到 **real-time + collaborative + mobile/web app** → 想到 AppSync
+150. ★ **AppSync 資料來源整合**
+     1. **DynamoDB**：即時資料存取（最常見組合）
+     2. **Lambda**：自訂商業邏輯
+     3. **OpenSearch**：搜尋查詢
+     4. **RDS（Aurora）**：關聯式資料
+     5. **HTTP Endpoint**：第三方 API 整合
+151. 😇 **AppSync vs API Gateway + Lambda** 選擇邏輯
+     1. **API Gateway + Lambda**：也能實作即時功能，但需自己處理 WebSocket 連線管理
+     2. **AppSync 優勢**：**內建即時訂閱功能**（Subscriptions），更直接、更少開發工作
