@@ -683,3 +683,11 @@
      1. **定位差異**：RDS 自動備份是 **短期 operational recovery**（誤刪資料、回滾錯誤），非長期 archive 用途
      2. **長期保留需求**：合規需求（金融業保留 7 年）、災難復原策略、跨服務統一管理 → 交給 **AWS Backup** 處理
      3. **設計理念**：讓 RDS 本身保持簡單，長期備份由獨立服務負責
+160. ★★ **NACL Outbound Ephemeral Port** 為什麼需要開放
+     1. **核心概念**：NACL 是 **stateless**，不記得「這是回應剛才進來的連線」
+     2. **連線流程**：`Client:52000 → EC2:443`（Inbound）→ `EC2:443 → Client:52000`（Outbound 回程）⭐️
+     3. **問題根源**：回程封包的 destination port 是 client 的 ephemeral port，NACL 若沒開放會被擋掉
+161. ★★ **NACL Ephemeral Port 設定規則**
+     1. **Inbound rule**：管 port 443（伺服器接收請求）
+     2. **Outbound rule**：管 port **32768-65535**（回程給 client 的 ephemeral port）⭐️
+     3. **為何開整個範圍**：client OS 隨機選 port，無法預測具體數值，需放行整個 ephemeral port range
