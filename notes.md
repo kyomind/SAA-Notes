@@ -791,3 +791,15 @@
 183. ★ **AWS 考試選項判斷原則**：Managed 優於 Self-managed
      1. **核心原則**：題目沒有明確限制時，**managed > self-managed**，**automated > manual**
      2. **設計理念**：AWS 推崇 **least operational overhead**，優先選擇減少維運負擔的方案
+184. ★★ **Cost Explorer API** 程式化成本預測解決方案
+     1. **核心能力**：內建 `GetCostForecast` API 取得未來成本預測
+     2. **考試關鍵字**：**programmatically** + cost/usage、**forecast** + cost → 選 **Cost Explorer API**
+     3. **干擾選項排除**：
+        - AWS Budgets：設定警報用，無法查詢預測數據
+        - CUR：需自己用 Athena 分析，維運負擔高
+        - Billing Dashboard：無 API
+185. ★ **Cost Explorer vs AWS Budgets** 功能定位差異
+     1. **Cost Explorer**：**查詢與分析**成本資料，可程式化取得預測結果
+     2. **AWS Budgets**：設定預算 + 觸發**警報/動作**，預測僅供內部判斷是否超預算
+     3. **關鍵差異**：Budgets **無法透過 API 取出預測數字**
+     4. **記憶口訣**：Budgets = 守門員（警報）；Cost Explorer = 分析師（查詢 + 報表）
