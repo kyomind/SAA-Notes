@@ -762,6 +762,14 @@
      1. **支援規格**：最大 **10 GB** image size、ephemeral storage **512 MB ~ 10 GB**、timeout 上限 **15 分鐘**
      2. **識別關鍵字**：「Docker image + serverless + fully managed」→ 優先選 **Lambda Container Image**
      3. **陷阱選項辨識**：
-        - ECS on Fargate：Serverless 但**不是 fully managed**（需管理 Task Definition、Service）
-        - ECS on EC2：不是 serverless⭐️
+        - ECS on Fargate：Serverless 但**不是 fully managed**（需管理 Task Definition、Service）⭐️
+        - ECS on EC2：不是 serverless
         - App Runner：Serverless + fully managed，但 ephemeral storage 上限只有 **3 GB**
+179. ★★ **EC2 Hibernation** 快速恢復機制
+     1. **問題背景**：Stop/Start EC2 時 RAM 清空，應用需重新載入狀態，導致啟動慢
+     2. **解決方案**：Hibernate 將 RAM 保存到 **root EBS volume**，Resume 時秒級恢復
+     3. **考試關鍵字**：「takes several minutes to become operational」、「long initialization」、「preserve in-memory state」→ 選 **Hibernation**
+180. ★ **EC2 Hibernation** 限制條件
+     1. **儲存要求**：Root volume 必須是 **encrypted EBS**
+     2. **容量限制**：RAM 上限 **150 GB**、最長 hibernate 時間 **60 天**
+     3. **與 Stop 差異**：Stop 清空 RAM（恢復慢）；Hibernate 保存 RAM 到 EBS（秒級恢復）
