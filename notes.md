@@ -773,3 +773,18 @@
      1. **儲存要求**：Root volume 必須是 **encrypted EBS**
      2. **容量限制**：RAM 上限 **150 GB**、最長 hibernate 時間 **60 天**
      3. **與 Stop 差異**：Stop 清空 RAM（恢復慢）；Hibernate 保存 RAM 到 EBS（秒級恢復）
+181. ★★ **EC2 Stop/Start vs Reboot** 底層行為差異
+     1. **核心概念**：Stop/Start ≠ Reboot，兩者底層行為完全不同
+     2. **Stop/Start 行為**：Instance 被釋放回 AWS 資源池，再重新分配到（**可能不同的**）實體主機⭐️
+     3. **Reboot 行為**：在**同一台實體主機**上重啟，不換 host
+182. ★★ **EC2 Stop/Start** 會改變與不變的項目
+     1. **會改變**
+        - Underlying host 可能改變
+        - **Public IP 改變**（除非用 Elastic IP）
+        - **Instance store data 遺失**
+        - RAM 清空
+     2. **不會改變**
+        - **Private IP**（同 VPC subnet 內保持不變）
+        - Elastic IP（如果有綁定）
+        - **EBS 資料**（持久化儲存）
+     3. **考試判斷**：題目問 Stop/Start 後什麼會改變 → 選「Public IP changes」或「Instance store data is lost」
