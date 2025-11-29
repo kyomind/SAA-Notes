@@ -729,3 +729,8 @@
      1. **觸發關鍵字**：題目提到「**directly access using S3 API**」
      2. **正確答案**：只有 **File Gateway** 符合⭐️
      3. **記憶口訣**：File Gateway = S3 objects = S3 API 可用
+171. ★★ **IAM 群組管理最佳實務**
+     1. **核心概念**：管理大量使用者權限時，**用 Group 管理，不要逐一設定**
+     2. **錯誤做法**：對 100 個 user 各別 attach policy → 管理噩夢 ❌
+     3. **正確做法**：建 Group → 把 user 加進去 → policy attach 到 Group ✅
+     4. **考試關鍵字**：「大量 IAM users」+「相同權限」→ 答案一定是 **IAM Group**
