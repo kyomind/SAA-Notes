@@ -746,3 +746,11 @@
      1. **Expedited 關鍵字**：「under 15 minutes」→ 選 Expedited
      2. **Provisioned Capacity 關鍵字**：「under all circumstances」+「retrieval capacity available when needed」→ 選 Provisioned Capacity
      3. **考試陷阱**：兩者要**一起選**才能滿足「任何時候都能在 15 分鐘內取回」的合規要求
+175. ★★ **Subnet 與 AZ 的對應關係**
+     1. **核心規則**：每個 Subnet 只對應**一個** Availability Zone
+     2. **不可變性**：建立時必須指定 AZ，**之後無法更改**
+     3. **設計意義**：這是 AWS 高可用架構的基礎設計
+176. ★ **Subnet 的預設 Route Table 行為**
+     1. **自動關聯**：新建的 Subnet 會自動連結到 VPC 的 **main route table**
+     2. **最佳實踐**：main route table 應保持**私有**（不加 IGW route）
+     3. **安全考量**：避免新 Subnet 意外暴露到公網
