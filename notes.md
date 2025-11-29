@@ -704,3 +704,7 @@
      1. **觸發關鍵字**：「RDS storage 不足」「database workload growing」
      2. **正確答案**：**enable storage autoscaling**
      3. **錯誤選項識別**：手動加容量、scale out read replica（read replica 是解決讀取效能，不是 storage）
+165. ★ **手動 vs 自動考試選擇原則**
+     1. **手動增加問題**：需要持續監控 + 主動規劃（operational overhead）、無法長期 scale（每次容量不足都要人工介入）
+     2. **Auto Scaling 優勢**：設一次上限就搞定，完全不用再管
+     3. **考試邏輯**：看到「手動」vs「自動」選項，除非題目有特殊限制，**通常選自動**（符合 AWS 推崇的 **least operational overhead** 原則）
