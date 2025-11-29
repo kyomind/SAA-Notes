@@ -1885,3 +1885,13 @@ S3 是最常見的，很多時候 Redshift/OpenSearch 也是先經過 S3 再載�
 ```bash
 資料 → Firehose → Lambda（轉換）→ Firehose → S3/Redshift
 ```
+
+## EC2 無法連外的網路排錯步驟
+
+| 層級 | 檢查項目             | 控制方向                          |
+| ---- | -------------------- | --------------------------------- |
+| 1    | **Public IP / EIP**  | 有沒有對外地址                    |
+| 2    | **Route Table**      | Subnet 有沒有路由到 IGW           |
+| 3    | **Internet Gateway** | VPC 有沒有掛 IGW                  |
+| 4    | **Security Group**   | Inbound/Outbound 規則（Stateful） |
+| 5    | **Network ACL**      | Subnet 層級規則（Stateless）      |
