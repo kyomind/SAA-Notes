@@ -1117,7 +1117,7 @@
      3. **考試判斷關鍵字**：「盡可能所有資源可用」→ **Active-Active + Weighted**；「偵測不健康並停止路由」→ **Weighted + Health Check**
 
 265. ★★ Kinesis Data Streams 資料遺失問題 - Retention Period 設定關鍵
-     1. **資料遺失根本原因**：Kinesis Data Streams 預設 **retention period = 24 小時**，consumer 超過 24 小時沒讀取資料就被**自動刪除**
+     1. **資料遺失根本原因**：Kinesis Data Streams 預設 **retention period = 24 小時**，consumer 超過 24 小時沒讀取資料就被**自動刪除**⭐️
      2. **Retention Period 範圍**：最短 24 小時（預設）、最長 8760 小時（365 天），可根據業務需求調整（如 7 天、30 天）
      3. **類比理解**：Kinesis 像「會過期的郵局」，信件（資料）只保管 24 小時，超過時間沒領取就銷毀，需要更長保管期須付費延長
 266. 😇 Kinesis Data Streams 故障排除與考試陷阱
