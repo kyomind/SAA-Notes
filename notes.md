@@ -708,3 +708,11 @@
      1. **手動增加問題**：需要持續監控 + 主動規劃（operational overhead）、無法長期 scale（每次容量不足都要人工介入）
      2. **Auto Scaling 優勢**：設一次上限就搞定，完全不用再管
      3. **考試邏輯**：看到「手動」vs「自動」選項，除非題目有特殊限制，**通常選自動**（符合 AWS 推崇的 **least operational overhead** 原則）
+166. ★★ **KMS 雙重許可模型**：IAM Policy + Key Policy
+     1. **核心概念**：KMS 採用「**雙重許可**」機制，兩邊都要授權才能存取
+     2. **IAM Policy（caller 端）**：Lambda execution role 要有 `kms:Decrypt` ✅ 必須
+     3. **Key Policy（resource 端）**：KMS key 要允許該 role 使用 ✅ 必須
+167. ★★ **KMS Key Policy 的決定性地位**
+     1. **關鍵規則**：「Without permission from the key policy, IAM policies that allow permissions have no effect.」
+     2. **類比理解**：跟 S3 bucket policy 概念類似——即使 IAM role 有權限，resource policy 沒開放就進不去
+     3. **考試判斷**：Lambda 存取 KMS 加密資源失敗 → 檢查 **execution role + key policy** 兩邊權限
