@@ -868,3 +868,7 @@
      - **CloudFront + ACM**：CloudFront 是全球服務，控制平面在 us-east-1
      - **Edge-Optimized API Gateway**：底層用 CloudFront
      - **IAM（全球服務）**：設定存在 us-east-1（但不用特別指定）
+201. ★★ **自動化檢查 IAM 密碼政策的合規性**
+     1. **正確答案**：**AWS Config**
+     2. **關鍵字辨識**："automatically check and evaluate" + "compliance" → AWS Config 核心功能
+     3. **運作流程**：AWS Config 持續監控 → 偵測 IAM Password Policy 設定 → 比對 Config Rule（如 minimum length >= 12）→ 標記 **Compliant / Non-Compliant** → 可觸發通知或修復動作
