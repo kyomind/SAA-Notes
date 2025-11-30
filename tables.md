@@ -1895,3 +1895,12 @@ S3 是最常見的，很多時候 Redshift/OpenSearch 也是先經過 S3 再載�
 | 3    | **Internet Gateway** | VPC 有沒有掛 IGW                  |
 | 4    | **Security Group**   | Inbound/Outbound 規則（Stateful） |
 | 5    | **Network ACL**      | Subnet 層級規則（Stateless）      |
+
+## 兩種 SQS Queue 比較
+
+| 特性     | Standard Queue            | FIFO Queue                    |
+| -------- | ------------------------- | ----------------------------- |
+| 吞吐量   | 幾乎無限                  | 300 TPS（batching 可達 3000） |
+| 順序     | Best-effort               | 嚴格保證                      |
+| 重複⭐️     | At-least-once（可能重複） | Exactly-once（不重複）        |
+| 適用場景 | 高吞吐、可容忍重複        | 訂單、金融交易等不可重複場景  |
