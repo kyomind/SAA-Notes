@@ -914,3 +914,11 @@
      1. **雙重角色**：變更日誌（記錄 INSERT/UPDATE/DELETE 及前後值，**保留 24 小時**）+ **Lambda 原生事件來源**
      2. **運作機制**：透過 **Event Source Mapping**，Lambda 服務自動輪詢 stream，有新記錄就觸發，不需自己寫輪詢邏輯
      3. **考試關鍵字**：看到「detect DynamoDB changes → trigger Lambda」→ 選 **DynamoDB Streams**
+213. ★ **Kinesis Data Firehose 不適合有序處理場景**
+     1. **設計定位**：專為**即時串流資料投遞**設計，目標是 data lakes、data stores、analytics services
+     2. **核心限制**：保證**可靠投遞**，但**不保證訊息順序**
+     3. **考試陷阱**：題目要求「ordered message processing」→ 排除 Firehose，選 **SQS FIFO** 或 **Kinesis Data Streams**
+214. ★ **AWS Personal Health Dashboard** 帳戶級別健康監控
+     1. **功能定位**：顯示影響**你帳戶資源**的 AWS 事件（非全域公告）
+     2. **與 Service Health Dashboard 差異**：Service Health 是**全域公告**（所有用戶可見）；Personal Health 是**針對你的資源**
+     3. **整合方式**：事件會發送到 **EventBridge**，可設定規則觸發後續動作（如 SNS 通知、Lambda 處理）
