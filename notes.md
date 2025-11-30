@@ -902,3 +902,11 @@
      1. **Detailed Monitoring 限制**：只能增強標準指標（如 CPU）的粒度，**不包含 Memory 指標**
      2. **正確方案**：安裝 **CloudWatch Unified Agent** 直接收集 memory metrics
      3. **錯誤選項辨識**：看到 "detailed monitoring + custom metrics for memory" → 比 CloudWatch Agent 複雜，排除
+210. ★★ **AWS Control Tower vs Organizations** 多帳戶治理功能比較
+     1. **Control Tower 優勢**：一鍵建立 landing zone（含最佳實踐架構）、內建 Account Factory 自動建帳戶、**Control Tower Dashboard** 即時顯示違規資源、內建 **preventive + detective guardrails**
+     2. **Organizations 限制**：只提供帳戶組織結構、無 landing zone、無 Account Factory、無合規儀表板、只有 SCP（僅 preventive）
+     3. **關係定位**：Control Tower = Organizations 的「**懶人包 + 強化版**」，底層使用 Organizations + AWS Config Rules + SCPs + AWS SSO + 預設 OU 結構
+211. ★ **Control Tower 考試關鍵字判斷**
+     1. **選 Control Tower**：Landing zone、多帳戶**治理/合規**、Guardrails、Account Factory、**Compliance Dashboard**⭐️
+     2. **選 Organizations**：只需帳戶組織結構 + SCP（較少見）
+     3. **排除陷阱**：**Personal Health Dashboard** 是顯示 AWS 服務健康狀態的工具（某區域 EC2 有問題），**跟帳戶合規監控完全無關**
