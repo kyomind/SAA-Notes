@@ -1937,3 +1937,39 @@ S3 是最常見的，很多時候 Redshift/OpenSearch 也是先經過 S3 再載�
 | 「**application error**」「**application logs**」                                  | → CloudWatch Logs |
 | 「**network traffic**」「**security group**」「**accepted/rejected connections**」 | → VPC Flow Logs   |
 | 「**who connected to whom**」「**traffic analysis**」                              | → VPC Flow Logs   |
+
+## AWS 遷移工具完整比較
+
+### 核心工具對照
+
+| 工具                 | 搬什麼                      | 目標位置                   | 類比概念                 | 產出結果                  |
+| -------------------- | --------------------------- | -------------------------- | ------------------------ | ------------------------- |
+| **AWS MGN**          | 整台 VM（OS + 應用 + 資料） | EC2                        | VMware vMotion           | 可直接啟動的 EC2 instance |
+| **AWS DMS**          | 資料庫內容                  | RDS / Aurora / EC2 上的 DB | `pg_dump` + `pg_restore` | 遷移完成的資料庫          |
+| **AWS DataSync**     | 檔案、資料夾                | S3 / EFS / FSx             | `rsync` / `robocopy`     | 同步完成的檔案            |
+| **AWS Snow Family**  | 大量資料（離線）            | S3                         | 寄硬碟給 AWS             | 資料匯入 S3               |
+| **VM Import/Export** | VM image（手動）            | EC2 AMI                    | 匯出 OVA 再匯入          | AMI（一次性）             |
+
+---
+
+### 依情境選擇
+
+| 情境關鍵字                                         | 選擇                      |
+| -------------------------------------------------- | ------------------------- |
+| lift-and-shift、migrate servers、minimize downtime | **AWS MGN**               |
+| database migration、schema conversion、異質資料庫  | **AWS DMS**（可搭配 SCT） |
+| transfer files、sync data to S3/EFS/FSx            | **AWS DataSync**          |
+| 網路頻寬不足、PB 級資料、離線傳輸                  | **Snow Family**           |
+| 一次性 VM 匯入、可接受較長停機                     | **VM Import/Export**      |
+
+---
+
+### 持續複製能力比較
+
+| 工具             | 持續複製？     | 停機時間           |
+| ---------------- | -------------- | ------------------ |
+| AWS MGN          | ✅ 持續同步差異 | 極短（分鐘級）     |
+| AWS DMS          | ✅ CDC 持續複製 | 極短               |
+| AWS DataSync     | ✅ 可排程同步   | 視資料量           |
+| Snow Family      | ❌ 一次性       | 較長（等設備寄送） |
+| VM Import/Export | ❌ 一次性       | 較長               |
