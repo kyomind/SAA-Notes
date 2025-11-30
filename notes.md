@@ -898,3 +898,7 @@
      1. **架構**：Data Key（資料金鑰）加密檔案 → Data Key 被 **Master Key（CMK）** 加密後存放
      2. **優勢**：輪換 Master Key 時，**不需要重新加密所有資料**（只需重新加密 Data Key）
      3. **考試關鍵字**：看到 "audit trail" + "auto rotation" + "envelope encryption" → **KMS**
+209. ★ **EC2 Memory 指標與 Auto Scaling**
+     1. **Detailed Monitoring 限制**：只能增強標準指標（如 CPU）的粒度，**不包含 Memory 指標**
+     2. **正確方案**：安裝 **CloudWatch Unified Agent** 直接收集 memory metrics
+     3. **錯誤選項辨識**：看到 "detailed monitoring + custom metrics for memory" → 比 CloudWatch Agent 複雜，排除
