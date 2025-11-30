@@ -1902,5 +1902,38 @@ S3 是最常見的，很多時候 Redshift/OpenSearch 也是先經過 S3 再載�
 | -------- | ------------------------- | ----------------------------- |
 | 吞吐量   | 幾乎無限                  | 300 TPS（batching 可達 3000） |
 | 順序     | Best-effort               | 嚴格保證                      |
-| 重複⭐️     | At-least-once（可能重複） | Exactly-once（不重複）        |
+| 重複⭐️    | At-least-once（可能重複） | Exactly-once（不重複）        |
 | 適用場景 | 高吞吐、可容忍重複        | 訂單、金融交易等不可重複場景  |
+
+## CloudWatch Logs vs VPC Flow Logs 比較表
+
+這題選錯是因為搞混了 **CloudWatch Logs** 和 **Flow Logs** 的用途。
+
+| Log 類型            | 記錄什麼                                       | 適用場景                |
+| ------------------- | ---------------------------------------------- | ----------------------- |
+| **CloudWatch Logs** | Application logs、系統日誌、任何你推送的 log   | 應用程式錯誤監控、debug |
+| **VPC Flow Logs**   | 網路流量的 metadata（IP、port、accept/reject） | 網路安全分析、流量監控  |
+
+## 為什麼 Flow Logs 不對
+
+**Flow Logs 記錄的是這種東西**：
+
+```bash
+2 123456789012 eni-abc123 10.0.1.5 52.94.133.10 443 49152 6 25 5000 1620000000 1620000060 ACCEPT OK
+```
+
+這只是「誰連到誰、用什麼 port、有沒有被 accept」，完全不包含：
+
+- HTTP 狀態碼
+- Application error message
+- Exception stack trace
+
+**你的 application 丟出 `NullPointerException` 或 `500 Internal Server Error`，Flow Logs 根本看不到。**
+
+## 考試判斷技巧
+
+| 題目關鍵字                                                                         | 答案方向          |
+| ---------------------------------------------------------------------------------- | ----------------- |
+| 「**application error**」「**application logs**」                                  | → CloudWatch Logs |
+| 「**network traffic**」「**security group**」「**accepted/rejected connections**」 | → VPC Flow Logs   |
+| 「**who connected to whom**」「**traffic analysis**」                              | → VPC Flow Logs   |
