@@ -830,3 +830,11 @@
      1. **Vault Lock 適用**：強調**不可提前刪除**的合規需求（SEC、FINRA 等法規）
      2. **普通 Glacier 適用**：只需長期保存，沒有強制不可刪除的要求
      3. **記憶口訣**：看到 **mandates + cannot be deleted** → Vault Lock；只是長期保存 → 普通 Glacier + Lifecycle
+192. ★★ **Custom Identity Broker + STS** 非 SAML 身份整合解決方案
+     1. **適用情境**：地端身份存儲（LDAP）**不支援 SAML** 時的 Federation 方案
+     2. **架構流程**：用戶 → 自訂 Identity Broker → 驗證 LDAP → 呼叫 **STS AssumeRole** → 取得臨時憑證 → 存取 AWS
+     3. **考試判斷**：題目說 **"not compatible with SAML"** → 排除 AWS SSO、SAML Federation，選 **Custom Identity Broker + STS**
+193. ★ **Identity Federation 方案選擇邏輯**
+     1. **支援 SAML**：用 **AWS SSO** 或 **SAML Federation**（簡單、標準）
+     2. **不支援 SAML**：用 **Custom Identity Broker + STS**（需自己開發中間層）
+     3. **干擾選項排除**：直接用 IAM Users（不是 Federation）、Cognito User Pools（用於應用程式用戶，非企業 LDAP 整合）
