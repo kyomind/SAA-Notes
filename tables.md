@@ -1950,8 +1950,6 @@ S3 是最常見的，很多時候 Redshift/OpenSearch 也是先經過 S3 再載�
 | **AWS Snow Family**  | 大量資料（離線）            | S3                         | 寄硬碟給 AWS             | 資料匯入 S3               |
 | **VM Import/Export** | VM image（手動）            | EC2 AMI                    | 匯出 OVA 再匯入          | AMI（一次性）             |
 
----
-
 ### 依情境選擇
 
 | 情境關鍵字                                         | 選擇                      |
@@ -1961,8 +1959,6 @@ S3 是最常見的，很多時候 Redshift/OpenSearch 也是先經過 S3 再載�
 | transfer files、sync data to S3/EFS/FSx            | **AWS DataSync**          |
 | 網路頻寬不足、PB 級資料、離線傳輸                  | **Snow Family**           |
 | 一次性 VM 匯入、可接受較長停機                     | **VM Import/Export**      |
-
----
 
 ### 持續複製能力比較
 
