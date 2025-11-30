@@ -951,3 +951,8 @@
      1. **搬移目標差異**：DataSync 搬「**檔案資料**」到 S3/EFS/FSx；MGN 搬「**整台 VM**」到 EC2
      2. **考試陷阱**：DataSync **不會產生 AMI**，無法直接啟動 EC2，違背 lift-and-shift 精神
      3. **判斷口訣**：搬 VM/servers → **MGN**；搬檔案到 S3/EFS/FSx → **DataSync**；搬資料庫 → **DMS**
+222. ★ **第三方 SSL 憑證匯入 AWS** 兩種儲存位置
+     1. **AWS Certificate Manager (ACM)**：首選方案，可與 ALB/CloudFront/API Gateway 整合⭐️
+     2. **IAM Certificate Store**：ACM 不支援的 Region 或特殊用途時使用
+     3. **考試關鍵字**：看到「**third-party CA certificate**」+「**import**」→ 答案為 **ACM** 或 **IAM certificate store**
+
