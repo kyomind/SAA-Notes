@@ -978,3 +978,11 @@
      1. **Permission Sets**：預定義的權限模板，可針對特定服務（如 Aurora、EFS）設定細粒度存取
      2. **Groups**：按團隊分組（data science、engineering、compliance），每個 group 只綁定需要的 permission set
      3. **優勢**：單一地方管理所有人員權限，符合**最小權限原則**，**低管理負擔**
+229. ★★ **SCP 的本質**：只能「禁止」，不能「授予」
+     1. **IAM Policy vs SCP**：IAM Policy = 授予權限（給你鑰匙）；SCP = 設定權限天花板（鎖住某些門，連有鑰匙也開不了）
+     2. **SCP 用途**：Guardrail（護欄），說「整個帳戶/OU 裡的任何人都**不能**做 X」
+     3. **SCP 應用範例**：禁止關閉 CloudTrail、禁止離開 Organization、禁止在特定 Region 建立資源
+230. ★★ **SCP vs IAM Policy 考試判斷技巧**
+     1. **選 IAM Policy**：題目問「**grant access**」→ 不是 SCP 的工作，SCP 無法授予權限
+     2. **選 SCP**：題目問「**prevent / restrict at organization level**」→ 才考慮 SCP
+     3. **細粒度控制**：「讓某 team 只能讀取特定 table」→ 必須靠 **IAM Policy**，SCP 做不到
