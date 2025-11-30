@@ -838,3 +838,17 @@
      1. **支援 SAML**：用 **AWS SSO** 或 **SAML Federation**（簡單、標準）
      2. **不支援 SAML**：用 **Custom Identity Broker + STS**（需自己開發中間層）
      3. **干擾選項排除**：直接用 IAM Users（不是 Federation）、Cognito User Pools（用於應用程式用戶，非企業 LDAP 整合）
+194. ★★ **EKS 兩層擴展機制**：HPA vs Cluster Autoscaler
+     1. **應用層（Pods）**：**Horizontal Pod Autoscaler (HPA)** 根據 CPU/Memory 調整 Pod 數量
+     2. **基礎設施層（Nodes）**：**Cluster Autoscaler** 根據 Pending Pods 調整 Node 數量
+     3. **考試判斷**：題目說 **"infrastructure"** 或 **"nodes"** → 選 **Cluster Autoscaler**
+195. ★ **Cluster Autoscaler** 運作邏輯與干擾選項
+     1. **擴展邏輯**：Pods 因資源不足無法調度 → 偵測到 Pending Pods → 新增 Node
+     2. **縮減邏輯**：Nodes 閒置過久 → 偵測到低使用率 → 移除 Node
+     3. **干擾選項排除**：
+        - HPA alone：只管 Pod 數量，不管 Node
+        - EC2 ASG alone：不理解 K8s Pod 調度需求
+        - Fargate：serverless 方案，沒有 nodes 概念
+196. 👀 **Karpenter vs Cluster Autoscaler** 現代替代方案
+     1. **Karpenter 優勢**：擴展更快（直接呼叫 EC2 API）、動態選擇最適合的實例類型
+     2. **考試現況**：目前以 **Cluster Autoscaler** 為標準答案，Karpenter 實務越來越普及
