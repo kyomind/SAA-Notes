@@ -926,3 +926,15 @@
      1. **單一 AZ 故障**：❌ 不需額外設定，S3 Standard **預設跨 3 個 AZ** 複製
      2. **整個 Region 故障**：✅ 需啟用 **Cross-Region Replication (CRR)**，手動設定
      3. **考試關鍵字**：看到「**regional service failure**」→ 答案直接選 **CRR**
+216. ★★ **Redshift Spectrum** 直接查詢 S3 資料解決方案
+     1. **核心概念**：讓 Redshift 直接用 SQL 查詢放在 S3 的資料，**不需先載入**
+     2. **適用情境**：TB/PB 級資料全載入成本太高、冷熱分離（熱資料 Redshift、冷資料 S3）、資料湖整合（S3 既有資料不想搬動）
+     3. **運作方式**：Redshift Cluster → Spectrum Layer（**獨立運算資源**）→ S3 資料，不佔用 cluster 資源
+217. ★★ **Redshift Spectrum vs Athena** 考試判斷技巧
+     1. **選 Spectrum 關鍵字**：「**existing Redshift**」、「**join with Redshift data**」、需要 Redshift + S3 資料做 JOIN
+     2. **選 Athena 關鍵字**：「**serverless**」、「**ad-hoc query**」、單純分析 S3 資料且不需 Redshift
+     3. **核心差異**：Spectrum 需要有 Redshift cluster、複雜查詢效能較優；Athena 是 Serverless 獨立使用、臨時性查詢
+218. ★★ **Redshift vs Redshift Spectrum** 考試陷阱辨識
+     1. **核心差異**：Redshift（本體）❌ 必須先 COPY/載入資料到 cluster；Redshift Spectrum ✅ 可直接查 S3
+     2. **選項陷阱**：題目只寫「**Amazon Redshift**」而非「**Redshift Spectrum**」時，預設指 Redshift cluster 本身，資料需先載入
+     3. **關鍵字判斷**：看到「query data **in S3**」、「**without moving**」、「**in place**」→ 選 Athena 或 Redshift Spectrum，排除單純 Redshift
