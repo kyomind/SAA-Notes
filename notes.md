@@ -894,3 +894,7 @@
 207. 😇 **S3 Glacier 不適合即時處理**
      1. **定位**：S3 Glacier 僅用於**資料歸檔（data archive）**，不適合需要即時存取的場景
      2. **錯誤選項辨識**：看到 "Glacier + 即時處理應用程式日誌" → 排除此選項
+208. ★ **Envelope Encryption 原理**
+     1. **架構**：Data Key（資料金鑰）加密檔案 → Data Key 被 **Master Key（CMK）** 加密後存放
+     2. **優勢**：輪換 Master Key 時，**不需要重新加密所有資料**（只需重新加密 Data Key）
+     3. **考試關鍵字**：看到 "audit trail" + "auto rotation" + "envelope encryption" → **KMS**
