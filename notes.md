@@ -819,3 +819,14 @@
      1. **Bucket Policy**：整個 bucket 的所有物件（含未來上傳的）→ 適用**靜態網站 hosting**
      2. **上傳時個別設定**：僅該單一物件 → 適用**部分物件需要公開**
      3. **考試判斷**：題目問「如何讓物件公開讀取」→ 兩種方法都可能是正確答案，看作用範圍需求
+190. ★★ **Glacier Vault Lock** 合規性資料保留解決方案
+     1. **核心概念**：設定 **WORM（Write Once Read Many）** 政策，鎖定後**任何人都無法刪除或修改**（含 root 帳號）
+     2. **考試關鍵字**：**compliance**、**regulatory**、**mandates**、**cannot be deleted**、**immutable**、**retain for X years** → 選 **Glacier Vault Lock**
+     3. **干擾選項排除**：
+        - S3 Object Lock：也可做 WORM，但 Glacier 更符合長期歸檔成本效益
+        - S3 Lifecycle Policy：只是自動刪除，**無法防止提前刪除**
+        - 普通 Glacier：可手動刪除，不符合強制性要求
+191. ★ **Glacier Vault Lock vs 普通 Glacier** 選擇邏輯
+     1. **Vault Lock 適用**：強調**不可提前刪除**的合規需求（SEC、FINRA 等法規）
+     2. **普通 Glacier 適用**：只需長期保存，沒有強制不可刪除的要求
+     3. **記憶口訣**：看到 **mandates + cannot be deleted** → Vault Lock；只是長期保存 → 普通 Glacier + Lifecycle
