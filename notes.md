@@ -910,3 +910,7 @@
      1. **選 Control Tower**：Landing zone、多帳戶**治理/合規**、Guardrails、Account Factory、**Compliance Dashboard**⭐️
      2. **選 Organizations**：只需帳戶組織結構 + SCP（較少見）
      3. **排除陷阱**：**Personal Health Dashboard** 是顯示 AWS 服務健康狀態的工具（某區域 EC2 有問題），**跟帳戶合規監控完全無關**
+212. ★★ **DynamoDB Streams** 變更偵測與 Lambda 整合
+     1. **雙重角色**：變更日誌（記錄 INSERT/UPDATE/DELETE 及前後值，**保留 24 小時**）+ **Lambda 原生事件來源**
+     2. **運作機制**：透過 **Event Source Mapping**，Lambda 服務自動輪詢 stream，有新記錄就觸發，不需自己寫輪詢邏輯
+     3. **考試關鍵字**：看到「detect DynamoDB changes → trigger Lambda」→ 選 **DynamoDB Streams**
