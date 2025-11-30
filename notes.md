@@ -852,3 +852,7 @@
 196. 👀 **Karpenter vs Cluster Autoscaler** 現代替代方案
      1. **Karpenter 優勢**：擴展更快（直接呼叫 EC2 API）、動態選擇最適合的實例類型
      2. **考試現況**：目前以 **Cluster Autoscaler** 為標準答案，Karpenter 實務越來越普及
+197. ★★ **Redshift 跨區域災難復原（DR）策略**
+     1. **關鍵情境**：當題目出現 "AWS region outage"，整個區域掛掉時，備份必須在另一個 Region
+     2. **正確答案**：**Enable Cross-Region Snapshots Copy**
+     3. **運作流程**：Redshift Cluster (us-east-1) → Snapshot 儲存至 S3 (us-east-1) → Cross-Region Copy 啟用 → Snapshot 複製到 S3 (us-west-2) → 災難發生時從 Snapshot 還原新 Cluster (us-west-2)
