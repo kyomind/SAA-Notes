@@ -922,3 +922,7 @@
      1. **功能定位**：顯示影響**你帳戶資源**的 AWS 事件（非全域公告）
      2. **與 Service Health Dashboard 差異**：Service Health 是**全域公告**（所有用戶可見）；Personal Health 是**針對你的資源**
      3. **整合方式**：事件會發送到 **EventBridge**，可設定規則觸發後續動作（如 SNS 通知、Lambda 處理）
+215. ★★ **S3 容災層級選擇**：單一 AZ vs 整個 Region 故障
+     1. **單一 AZ 故障**：❌ 不需額外設定，S3 Standard **預設跨 3 個 AZ** 複製
+     2. **整個 Region 故障**：✅ 需啟用 **Cross-Region Replication (CRR)**，手動設定
+     3. **考試關鍵字**：看到「**regional service failure**」→ 答案直接選 **CRR**
