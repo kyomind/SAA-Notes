@@ -969,4 +969,4 @@
 226. ★★ **Compute Optimizer vs Well-Architected Tool** 功能定位差異
      1. **Compute Optimizer**：分析 EC2/EBS/Lambda **資源配置是否過大或過小**，幫你省錢或提升效能
      2. **Well-Architected Tool**：檢查**架構設計**是否符合 AWS best practices
-     3. **考試陷阱**：Compute Optimizer 只管「**資源大小優化**」，不管架構設計⭐️
+     3. **考試陷阱**：Compute Optimizer 只管「**資源大小優化**」，不管架構設計
