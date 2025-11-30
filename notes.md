@@ -883,3 +883,14 @@
 204. 😇 **Requester Pays vs CRR 的差異**
      1. **Requester Pays**：傳輸費由 requester 付，適合**省錢分享資料**
      2. **CRR（Cross-Region Replication）**：傳輸費由 bucket owner 付，適合 **DR 或降低延遲**，不是省錢方案
+205. ★ **Babelfish for Aurora PostgreSQL**
+     1. **用途**：讓 Aurora PostgreSQL 能直接理解 **T-SQL 語法和 TDS 協定**（port 1433），專為 **SQL Server 遷移**設計
+     2. **優勢**：應用程式幾乎不用改程式碼，只需換連線字串
+     3. **考試關鍵字**：看到 "SQL Server 遷 Aurora PostgreSQL" + "minimize code changes" → **Babelfish**
+206. 😇 **資料庫遷移方案比較**
+     - **MySQL/PostgreSQL → Aurora**：原生相容，可直接遷移
+     - **SQL Server → Aurora PostgreSQL**：使用 **Babelfish**
+     - **Oracle → Aurora**：需 SCT + DMS 並修改程式碼（無相容層）
+207. 😇 **S3 Glacier 不適合即時處理**
+     1. **定位**：S3 Glacier 僅用於**資料歸檔（data archive）**，不適合需要即時存取的場景
+     2. **錯誤選項辨識**：看到 "Glacier + 即時處理應用程式日誌" → 排除此選項
