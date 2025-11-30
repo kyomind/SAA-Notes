@@ -938,3 +938,16 @@
      1. **核心差異**：Redshift（本體）❌ 必須先 COPY/載入資料到 cluster；Redshift Spectrum ✅ 可直接查 S3
      2. **選項陷阱**：題目只寫「**Amazon Redshift**」而非「**Redshift Spectrum**」時，預設指 Redshift cluster 本身，資料需先載入
      3. **關鍵字判斷**：看到「query data **in S3**」、「**without moving**」、「**in place**」→ 選 Athena 或 Redshift Spectrum，排除單純 Redshift
+219. ★★ **AWS MGN（Application Migration Service）** Lift-and-shift VM 遷移解決方案
+     1. **核心定位**：直接複製整台 VM（OS + 應用 + 設定原封不動），支援 Linux/Windows
+     2. **最小化停機原理**：**持續複製**（continuous replication）→ cutover 只需同步最後一小段差異 → 停機時間僅**幾分鐘**
+     3. **運作流程**：安裝 Replication Agent → 持續複製到 AWS Staging Area → Launch Test Instance 驗證 → Cutover 到 Production
+220. ★★ **VM 遷移服務選擇** 考試判斷技巧
+     1. **AWS MGN**：搬整台 VM 到 EC2（**lift-and-shift + minimize downtime**）
+     2. **VM Import/Export**：手動匯入 VM image，一次性、可接受較長停機
+     3. **AWS Snow Family**：大量資料離線搬遷，網路頻寬不足時
+     4. **記憶口訣**：看到「**lift-and-shift**」+「**minimize downtime**」+「**VM migration**」→ 直覺選 **AWS MGN**
+221. ★★ **DataSync vs MGN** 本質差異與考試陷阱
+     1. **搬移目標差異**：DataSync 搬「**檔案資料**」到 S3/EFS/FSx；MGN 搬「**整台 VM**」到 EC2
+     2. **考試陷阱**：DataSync **不會產生 AMI**，無法直接啟動 EC2，違背 lift-and-shift 精神
+     3. **判斷口訣**：搬 VM/servers → **MGN**；搬檔案到 S3/EFS/FSx → **DataSync**；搬資料庫 → **DMS**
