@@ -872,3 +872,7 @@
      1. **正確答案**：**AWS Config**
      2. **關鍵字辨識**："automatically check and evaluate" + "compliance" → AWS Config 核心功能
      3. **運作流程**：AWS Config 持續監控 → 偵測 IAM Password Policy 設定 → 比對 Config Rule（如 minimum length >= 12）→ 標記 **Compliant / Non-Compliant** → 可觸發通知或修復動作
+202. ★★ **S3 資料傳輸費用原則**
+     1. **成本規則**：同 Region 免費、跨 Region 收費、出 Internet 最貴
+     2. **最佳實踐**：處理大量 S3 資料時，將 EC2 部署在與 S3 **相同 Region**（上傳下載皆免費）⭐️
+     3. **考試關鍵字**：看到 "minimize data transfer costs" + S3 → 確保運算資源與 S3 同 Region
