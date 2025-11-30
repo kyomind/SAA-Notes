@@ -856,3 +856,15 @@
      1. **關鍵情境**：當題目出現 "AWS region outage"，整個區域掛掉時，備份必須在另一個 Region
      2. **正確答案**：**Enable Cross-Region Snapshots Copy**
      3. **運作流程**：Redshift Cluster (us-east-1) → Snapshot 儲存至 S3 (us-east-1) → Cross-Region Copy 啟用 → Snapshot 複製到 S3 (us-west-2) → 災難發生時從 Snapshot 還原新 Cluster (us-west-2)
+198. ★★ **API Gateway Custom Domain + ACM 憑證的區域要求**
+     1. **Edge-Optimized API Gateway**：ACM 憑證必須在 **us-east-1**（底層走 CloudFront，控制平面在 us-east-1）
+     2. **Regional API Gateway**：ACM 憑證必須在 **API Gateway 同一個 Region**（無 CloudFront 中介，自己處理 TLS）
+     3. **記憶口訣**：Edge 走 CloudFront → us-east-1；Regional 不繞路 → 同 Region
+199. ★ **Regional API Gateway Custom Domain 設定流程**
+     1. 在 **API Gateway 所在 Region** 用 ACM 申請憑證（例如 us-east-2）
+     2. 在 API Gateway 建立 Regional Custom Domain Name，綁定該憑證
+     3. 在 Route 53 建立 **Alias Record** 指向 API Gateway domain name
+200. 😇 **常考的 us-east-1 限定服務**
+     - **CloudFront + ACM**：CloudFront 是全球服務，控制平面在 us-east-1
+     - **Edge-Optimized API Gateway**：底層用 CloudFront
+     - **IAM（全球服務）**：設定存在 us-east-1（但不用特別指定）
