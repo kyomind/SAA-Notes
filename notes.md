@@ -955,4 +955,18 @@
      1. **AWS Certificate Manager (ACM)**：首選方案，可與 ALB/CloudFront/API Gateway 整合⭐️
      2. **IAM Certificate Store**：ACM 不支援的 Region 或特殊用途時使用
      3. **考試關鍵字**：看到「**third-party CA certificate**」+「**import**」→ 答案為 **ACM** 或 **IAM certificate store**
-
+223. ★★ **EBS io1/io2 IOPS 計算規則**
+     1. **計算公式**：最大 IOPS = **容量 (GiB) × 50**
+     2. **範例計算**：10 GiB io1 → 10 × 50 = **500 IOPS**（此 volume size 的上限）
+     3. **考試重點**：IOPS 受限於 volume size，想要更高 IOPS 需增加容量或使用更大的 volume
+224. ★ **AWS Well-Architected Tool** 架構審查自助工具
+     1. **服務定位**：AWS 提供的**免費自助式架構審查工具**，檢查架構是否符合 AWS 最佳實踐
+     2. **考試關鍵字**：看到「**review architecture**」、「**best practices**」、「**Well-Architected Framework**」→ 選此工具
+225. ★★ **DynamoDB GSI 命名陷阱**：Global ≠ 跨 Region
+     1. **Global Secondary Index (GSI)**：「**全表範圍**」查詢，不是「全球」⭐️
+     2. **Local Secondary Index (LSI)**：只能查「同一個 partition key」內的資料
+     3. **跨 Region 正確做法**：使用 **DynamoDB Global Tables**，GSI 只存在於同一 Region⭐️
+226. ★★ **Compute Optimizer vs Well-Architected Tool** 功能定位差異
+     1. **Compute Optimizer**：分析 EC2/EBS/Lambda **資源配置是否過大或過小**，幫你省錢或提升效能
+     2. **Well-Architected Tool**：檢查**架構設計**是否符合 AWS best practices
+     3. **考試陷阱**：Compute Optimizer 只管「**資源大小優化**」，不管架構設計⭐️
