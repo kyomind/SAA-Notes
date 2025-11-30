@@ -986,3 +986,11 @@
      1. **選 IAM Policy**：題目問「**grant access**」→ 不是 SCP 的工作，SCP 無法授予權限
      2. **選 SCP**：題目問「**prevent / restrict at organization level**」→ 才考慮 SCP
      3. **細粒度控制**：「讓某 team 只能讀取特定 table」→ 必須靠 **IAM Policy**，SCP 做不到
+231. ★★ **Instance Store vs EBS 效能差異**：物理距離決定效能
+     1. **架構差異**：Instance Store = EC2 直接焊在主機板上的 NVMe SSD（本地硬碟）；EBS = EC2 ← 網路 ← EBS 儲存伺服器（網路儲存）
+     2. **效能比較**：Instance Store (I3en) 最大 **200 萬+ IOPS / 16 GB/s / 微秒級延遲**；EBS io2 Block Express 最大 **25.6 萬 IOPS / 4 GB/s / 亞毫秒延遲**
+     3. **核心原因**：Instance Store 資料不用跑網路，EBS 再快也有網路延遲，差距是**數量級**的
+232. ★★ **Instance Store 使用代價與適用場景**
+     1. **資料持久性風險**：EC2 停止 → 資料消失、EC2 硬體故障 → 資料消失、無法 detach 移到別台
+     2. **適用場景**：資料可丟失、或有複寫機制（如 NoSQL 自動複寫）
+     3. **考試判斷**：題目強調「**NoSQL + 自動複寫**」→ 暗示 Instance Store 缺點已被 cover，可選用
