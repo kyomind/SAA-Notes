@@ -874,5 +874,12 @@
      3. **運作流程**：AWS Config 持續監控 → 偵測 IAM Password Policy 設定 → 比對 Config Rule（如 minimum length >= 12）→ 標記 **Compliant / Non-Compliant** → 可觸發通知或修復動作
 202. ★★ **S3 資料傳輸費用原則**
      1. **成本規則**：同 Region 免費、跨 Region 收費、出 Internet 最貴
-     2. **最佳實踐**：處理大量 S3 資料時，將 EC2 部署在與 S3 **相同 Region**（上傳下載皆免費）⭐️
+     2. **最佳實踐**：處理大量 S3 資料時，將 EC2 部署在與 S3 **相同 Region**（上傳下載皆免費）
      3. **考試關鍵字**：看到 "minimize data transfer costs" + S3 → 確保運算資源與 S3 同 Region
+203. ★★ **S3 Requester Pays 功能**
+     1. **用途**：分享大量資料給第三方，讓**下載者負擔傳輸費用**（Bucket Owner 只付儲存費）
+     2. **附帶效果**：自動禁止匿名存取（匿名用戶無法被計費，請求會被拒絕）
+     3. **考試關鍵字**：看到 "share with partner" + "keep data transfer costs low" + "disable anonymous access" → Requester Pays
+204. 😇 **Requester Pays vs CRR 的差異**
+     1. **Requester Pays**：傳輸費由 requester 付，適合**省錢分享資料**
+     2. **CRR（Cross-Region Replication）**：傳輸費由 bucket owner 付，適合 **DR 或降低延遲**，不是省錢方案
