@@ -18,3 +18,8 @@
 5. 😇 DataSync vs Storage Gateway 都能搬資料，差異在「搬完之後」
    - **DataSync**：搬完就結束，任務導向（一次性遷移或定期同步備份）
    - **Storage Gateway**：搬完要持續用，架構導向（地端應用透過 Gateway 持續存取雲端儲存）
+6. 😇 AWS AppSync — 託管 GraphQL API 服務
+   - **Serverless**：不用管伺服器，自動擴展
+   - **GraphQL**：不是 REST，讓前端「要什麼拿什麼」的查詢語言
+   - **多資料源整合**：可同時串接 DynamoDB、Lambda、HTTP APIs 等
+   - **即時訂閱**：內建 WebSocket 支援 Pub/Sub
