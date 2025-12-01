@@ -2004,6 +2004,36 @@ CPU 80%+   → 加 4 台
 
 新啟動的 instance 在 warm-up 期間**不計入 scaling 指標計算**，避免還沒準備好就又觸發擴展。
 
+## 這題關鍵：「你自己指定 threshold」vs「AWS 幫你調」
+
+結論：看到「specifying the scaling metrics and threshold values」→ Step Scaling
+
+## 兩者本質差異
+
+| 特性                      | Target Tracking           | Step Scaling                               |
+| ------------------------- | ------------------------- | ------------------------------------------ |
+| **你設定什麼**            | 目標值（如 CPU 維持 50%） | 閾值 + 對應動作（CPU > 70% 加 2 台）       |
+| **誰建 CloudWatch Alarm** | AWS 自動建立並管理        | **你自己建、自己設定**                     |
+| **彈性程度**              | 低（AWS 黑盒處理）        | 高（完全自訂階梯式反應）                   |
+| **類比**                  | 恆溫冷氣（設 25 度就好）  | 手動冷氣（超過 28 度開弱、超過 32 度開強） |
+
+## 題目為何是 Step Scaling？
+
+題目這句話是關鍵：
+> **「specifying the scaling metrics and threshold values for the CloudWatch alarms」**
+
+這明確說「你」要指定 metrics 和 threshold —— 這就是 Step Scaling 的定義。
+
+**Target Tracking 的話**，你只會說：「我要 CPU 維持在 50%」，剩下的 AWS 全包，你根本不會去碰 CloudWatch alarm 的 threshold。
+
+### 記法
+
+- **Target Tracking** = 設「目標」，AWS 自己想辦法達成
+- **Step Scaling** = 設「階梯規則」，你定義每個門檻該怎麼反應
+
+看到題目強調「你要設定 threshold / alarm」→ **Step Scaling**
+看到題目只提「維持某個 metric 在某個值」→ **Target Tracking**
+
 ## 對比 Cooldown vs Warm-up
 
 | 概念         | 作用                                         |
