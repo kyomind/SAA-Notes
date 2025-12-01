@@ -59,3 +59,19 @@
     1. **IAM Identity Center**：人登入 AWS Console（SSO 單一登入）
     2. **Secrets Manager**：存密碼、自動換密碼（應用程式取用）
     3. **IAM DB Authentication**：不用密碼，用 token 連 RDS
+15. ★★ EBS Encryption 加密涵蓋範圍 — 一次加密，全面保護
+    1. **加密演算法**：AES-256
+    2. **自動加密範圍**：Data at rest（靜態資料）、Data in transit（Volume ↔ EC2 傳輸）、Snapshots、衍生 Volumes
+    3. **核心概念**：啟用後上述四項**全部自動加密**，不需額外設定
+16. ★★ EBS 加密運作機制與特性
+    1. **加密位置**：在 **EC2 Host Server** 上進行，非 Instance 內部
+    2. **對應用透明**：不需改 code，Instance 看到的是解密後資料
+    3. **效能影響**：幾乎為零（硬體加速）
+17. ★ EBS 加密的區域性限制
+    1. **KMS 綁定**：EBS 加密使用 KMS，Key 綁定 Region
+    2. **跨區複製**：Snapshot 跨 Region 複製時，需在目標 Region **重新加密**
+18. ★★ EBS Encryption 考題陷阱
+    1. **題目問**：如何確保 EBS 資料在傳輸過程中的安全？
+    2. **陷阱選項**：設定 Security Group、使用 VPN
+    3. **正確答案**：啟用 EBS Encryption（**自動處理 in-transit 加密**）
+    4. **記憶點**：EBS Encryption = **at-rest + in-transit 都包了**
