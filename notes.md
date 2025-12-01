@@ -55,3 +55,7 @@
     - 「IAM user/role 連接 RDS」
     - 「不想在應用程式存密碼」
     - 「centralized access management for database」
+14. ★ IAM 認證服務快速區分
+    1. **IAM Identity Center**：人登入 AWS Console（SSO 單一登入）
+    2. **Secrets Manager**：存密碼、自動換密碼（應用程式取用）
+    3. **IAM DB Authentication**：不用密碼，用 token 連 RDS

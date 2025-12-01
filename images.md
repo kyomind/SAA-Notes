@@ -299,3 +299,7 @@ You can configure any access point to accept requests only from a virtual privat
 ## S3 Storage Classes Overview
 
 ![圖 31](https://img.kyomind.tw/img-20251125-221248.png)
+
+## EBS Architecture Overview
+
+![圖 29](https://img.kyomind.tw/img-20251201-180009.png)
