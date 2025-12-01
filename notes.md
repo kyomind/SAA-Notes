@@ -79,3 +79,15 @@
     1. **Step Scaling**：**你自己指定** scaling metrics 和 threshold values
     2. **Target Tracking**：**AWS 幫你調**，只需設定目標值（如 CPU 維持 50%）
     3. **考試技巧**：看到「specifying the scaling metrics and threshold values」→ **Step Scaling**
+20. ★★ EKS 自動擴展 — 兩層擴展架構
+    1. **應用層（Pods）**：Horizontal Pod Autoscaler (HPA)，依 CPU/Memory 使用率觸發
+    2. **基礎設施層（Nodes）**：Karpenter 或 Cluster Autoscaler，當 Pods 無法調度時觸發
+    3. **協同運作**：流量增加 → HPA 增加 Pods → Node 資源不足 → Karpenter 增加 Nodes⭐️
+21. ★★ EKS 自動擴展標準答案組合
+    1. **Metrics Server + HPA**：Metrics Server 提供指標，HPA 根據負載調整 Pod 數量（應用層擴展）
+    2. **Karpenter**：自動增減 EC2 nodes，根據 pod 需求選擇最適合的 instance type
+    3. **考試記憶點**：EKS + 自動擴展 + least overhead → **HPA + Karpenter**
+22. ★ Karpenter vs Cluster Autoscaler — 運維負擔比較
+    1. **Karpenter**：宣告式設定、動態選擇 instance type、直接呼叫 EC2 API（速度快）、**運維負擔低**
+    2. **Cluster Autoscaler**：需預先定義 ASG、固定 instance type、透過 ASG 間接整合、運維負擔較高
+    3. **選擇邏輯**：問 least operational overhead → **Karpenter**；問 native K8s solution → Cluster Autoscaler

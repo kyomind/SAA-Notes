@@ -2064,3 +2064,13 @@ Encrypted Volume
 ```
 
 反過來也成立：**未加密的 Volume 產生的 Snapshot 也是未加密的**，除非你在複製時明確指定加密。
+
+## Cluster Autoscaler vs Karpenter 比較表
+
+| 面向          | Cluster Autoscaler      | Karpenter                       |
+| ------------- | ----------------------- | ------------------------------- |
+| 運作方式      | 透過 Auto Scaling Group | 直接呼叫 EC2 API                |
+| 回應速度      | 較慢（需等 ASG 反應）   | 較快（即時 provision）          |
+| Instance 選擇 | 固定（ASG 預先定義）    | 動態（根據 pod 需求選最適合的） |
+| 設定複雜度    | 需要手動調校 ASG        | 宣告式設定，較簡單              |
+| **運維負擔**  | 較高                    | **較低**                        |
