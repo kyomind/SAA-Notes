@@ -75,3 +75,7 @@
     2. **陷阱選項**：設定 Security Group、使用 VPN
     3. **正確答案**：啟用 EBS Encryption（**自動處理 in-transit 加密**）
     4. **記憶點**：EBS Encryption = **at-rest + in-transit 都包了**
+19. ★★ Step Scaling vs Target Tracking Scaling — 關鍵判斷
+    1. **Step Scaling**：**你自己指定** scaling metrics 和 threshold values
+    2. **Target Tracking**：**AWS 幫你調**，只需設定目標值（如 CPU 維持 50%）
+    3. **考試技巧**：看到「specifying the scaling metrics and threshold values」→ **Step Scaling**
