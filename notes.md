@@ -42,3 +42,16 @@
     2. **AWS Batch**：長時間批次運算、需大資源、平行處理
     3. **EC2 + Auto Scaling**：需要完全控制環境、長期運行服務
     4. **陷阱提醒**：看到「simulation」「several hours」「大記憶體」→ 直接排除 Lambda
+11. ★★ IAM Database Authentication — RDS 的 Token-based 認證
+    1. **核心概念**：用 IAM 身份 + 短期 token 連接 RDS，取代傳統帳號密碼
+    2. **運作流程**：Application 用 IAM credential 呼叫 `generate-db-auth-token` → 取得 15 分鐘有效 token → 用 token 當密碼連 RDS
+    3. **優勢**：無需在應用程式存密碼、透過 IAM Policy 集中管理權限
+12. ★ IAM DB Authentication 限制與特性
+    1. **支援引擎**：僅 MySQL、PostgreSQL（**不支援 SQL Server、Oracle**）⭐️
+    2. **Token 有效期**：15 分鐘
+    3. **強制加密**：必須使用 SSL/TLS 連線
+13. 😇 IAM DB Authentication 考試關鍵字
+    - 「short-lived token」「temporary credentials」
+    - 「IAM user/role 連接 RDS」
+    - 「不想在應用程式存密碼」
+    - 「centralized access management for database」
