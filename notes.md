@@ -23,3 +23,22 @@
    2. **GraphQL**：不是 REST，讓前端「要什麼拿什麼」的查詢語言
    3. **多資料源整合**：可同時串接 DynamoDB、Lambda、HTTP APIs 等
    4. **即時訂閱**：內建 WebSocket 支援 Pub/Sub
+7. ★★ AWS Batch vs Lambda — 運算密集型任務的正確選擇
+   1. **Lambda 硬限制**：最大執行 15 分鐘、記憶體 10 GB、最多 6 vCPU
+   2. **結論**：Lambda 為「短暫、輕量、事件驅動」設計，不適合重型運算
+8. ★★ AWS Batch 核心概念
+   1. **本質**：批次運算任務的編排服務，自動開 EC2、分配任務、跑完關機
+   2. **平行執行**：定義多個 jobs，Batch 自動分散到多台 EC2
+   3. **資源彈性**：可指定 EC2 instance type（如 `r5.8xlarge` 有 32 vCPU + 256 GB RAM）
+   4. **最少維運**：不用自己管 EC2 lifecycle、job queue、失敗重試
+9. ★ AWS Batch 選擇時機 — 關鍵字組合
+   - **Batch processing / 批次處理**
+   - **HPC / 高效能運算 / simulation**
+   - **長時間運算**（超過 15 分鐘）
+   - **大量平行任務 + 需要大資源**
+   - **「least operational overhead」+ 運算密集**
+10. ★ Batch vs Lambda vs EC2 自建 — 場景選擇
+    1. **Lambda**：短任務（<15min）、事件觸發、輕量
+    2. **AWS Batch**：長時間批次運算、需大資源、平行處理
+    3. **EC2 + Auto Scaling**：需要完全控制環境、長期運行服務
+    4. **陷阱提醒**：看到「simulation」「several hours」「大記憶體」→ 直接排除 Lambda
