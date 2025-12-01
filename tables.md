@@ -1979,3 +1979,36 @@ S3 是最常見的，很多時候 Redshift/OpenSearch 也是先經過 S3 再載�
 | **修改方式** | 可以改檔案的某一部分（partial update）    | 整個物件替換，無法只改一小段          |
 | **鎖定機制** | 支援 file locking                         | 不支援（靠版本控制）                  |
 | **掛載**     | 可 mount 到 EC2，像 `/mnt/efs`            | 不能 mount，只能透過 SDK/CLI          |
+
+## 三種 Scaling Policy 比較
+
+| Policy 類型         | 特性                                        | 適用場景             |
+| ------------------- | ------------------------------------------- | -------------------- |
+| **Simple Scaling**  | 觸發後執行一次，等 cooldown 結束才能再觸發  | 最基本，較少用       |
+| **Step Scaling**    | 根據 alarm 超標程度，執行**不同幅度**的調整 | 需要分級反應         |
+| **Target Tracking** | 自動維持某指標在目標值（如 CPU 50%）        | 最簡單，推薦優先使用 |
+
+## Step Scaling 的兩個關鍵特性
+
+### 1. Step Adjustments（分級調整）
+
+根據超標程度決定擴展幅度：
+
+```bash
+CPU 60-70% → 加 1 台
+CPU 70-80% → 加 2 台
+CPU 80%+   → 加 4 台
+```
+
+### 2. Instance Warm-up Time
+
+新啟動的 instance 在 warm-up 期間**不計入 scaling 指標計算**，避免還沒準備好就又觸發擴展。
+
+## 對比 Cooldown vs Warm-up
+
+| 概念         | 作用                                         |
+| ------------ | -------------------------------------------- |
+| **Cooldown** | 擴展動作後**暫停一段時間**，避免連續觸發     |
+| **Warm-up**  | 新 instance 啟動後**不計入指標**，等它準備好 |
+
+兩者目的都是防止 Auto Scaling 過度反應，但切入點不同。
