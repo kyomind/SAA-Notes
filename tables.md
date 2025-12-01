@@ -1314,15 +1314,15 @@ Egress-only IGW:
 
 ## AWS 儲存服務考試重點對照表○
 
-| 服務                     | 類型         | 協定            | 考試關鍵字                       | 適用場景                             |
-| ------------------------ | ------------ | --------------- | -------------------------------- | ------------------------------------ |
-| **EBS**                  | Block        | iSCSI (隱藏)    | EC2 root volume、snapshot        | 單一 EC2 專用，高效能                |
-| **Instance Store**       | Block        | 直接附加        | 暫時性、ephemeral、highest IOPS  | 臨時資料、快取                       |
-| **FSx for NetApp ONTAP** | Block + File | iSCSI + SMB/NFS | 交易系統、Multi-AZ block storage | 需要 block 的 Windows/Linux 混合環境 |
-| **EFS**                  | File         | NFS             | Linux、shared access、serverless | 多 EC2 共享，自動擴展                |
-| **FSx for Windows**      | File         | SMB             | Active Directory、user shares    | Windows 檔案共享                     |
-| **FSx for Lustre**       | File         | Lustre          | HPC、ML training、S3 integration | 高效能運算                           |
-| **S3**                   | Object       | HTTP/HTTPS      | 靜態網站、備份、lifecycle        | 幾乎所有非即時存取需求               |
+| 服務                     | 類型          | 協定            | 考試關鍵字                       | 適用場景                              |
+| ------------------------ | ------------- | --------------- | -------------------------------- | ------------------------------------- |
+| **EBS**                  | Block         | iSCSI (隱藏)    | EC2 root volume、snapshot        | 單一 EC2 專用，高效能                 |
+| **Instance Store**       | Block         | 直接附加        | 暫時性、ephemeral、highest IOPS  | 臨時資料、快取                        |
+| **FSx for NetApp ONTAP** | Block⭐️ + File | iSCSI + SMB/NFS | 交易系統、Multi-AZ block storage | 需要 block 的 Windows⭐️/Linux 混合環境 |
+| **EFS**                  | File          | NFS             | Linux、shared access、serverless | 多 EC2 共享，自動擴展                 |
+| **FSx for Windows**      | File          | SMB             | Active Directory、user shares    | Windows 檔案共享                      |
+| **FSx for Lustre**       | File          | Lustre          | HPC、ML training、S3 integration | 高效能運算                            |
+| **S3**                   | Object        | HTTP/HTTPS      | 靜態網站、備份、lifecycle        | 幾乎所有非即時存取需求                |
 
 ## 考試判斷樹
 
@@ -1339,15 +1339,15 @@ Egress-only IGW:
         └─ 備份/靜態 → S3
 ```
 
-## File vs Block vs Object 儲存差異
+## File vs Block vs Object 儲存差異○
 
-| 特性         | Block Storage       | File Storage    | Object Storage         |
-| ------------ | ------------------- | --------------- | ---------------------- |
-| **存取單位** | 固定大小區塊 (4KB)  | 檔案 + 目錄結構 | 物件 (檔案 + metadata) |
-| **存取方式** | 直接讀寫磁碟區塊    | 檔案路徑        | HTTP API / URL         |
-| **效能**     | 最快 (sub-ms)       | 快 (ms)         | 較慢 (100ms+)          |
-| **使用情境** | OS、資料庫          | 共享檔案        | 備份、靜態內容         |
-| **AWS 服務** | EBS、Instance Store | EFS、FSx        | S3、Glacier            |
+| 特性         | Block Storage       | File Storage     | Object Storage          |
+| ------------ | ------------------- | ---------------- | ----------------------- |
+| **存取單位** | 固定大小區塊 (4KB)  | 檔案 + 目錄結構⭐️ | 物件 (檔案 + metadata⭐️) |
+| **存取方式** | 直接讀寫磁碟區塊    | 檔案路徑⭐️        | HTTP API / URL ⭐️        |
+| **效能**     | 最快 (sub-ms)       | 快 (ms)          | 較慢 (100ms+)           |
+| **使用情境** | OS、資料庫          | 共享檔案         | 備份、靜態內容          |
+| **AWS 服務** | EBS、Instance Store | EFS、FSx         | S3、Glacier             |
 
 ## 技術差異
 
@@ -1969,3 +1969,13 @@ S3 是最常見的，很多時候 Redshift/OpenSearch 也是先經過 S3 再載�
 | AWS DataSync     | ✅ 可排程同步   | 視資料量           |
 | Snow Family      | ❌ 一次性       | 較長（等設備寄送） |
 | VM Import/Export | ❌ 一次性       | 較長               |
+
+## EFS vs S3 存取方式比較表
+
+| 特性         | EFS (File Storage)                        | S3 (Object Storage)                   |
+| ------------ | ----------------------------------------- | ------------------------------------- |
+| **存取方式** | 像本機硬碟，mount 後直接讀寫              | 透過 HTTP API (PUT/GET)               |
+| **路徑概念** | 真正的目錄階層 `/home/user/docs/file.txt` | 扁平結構，「目錄」只是 key 的前綴假象 |
+| **修改方式** | 可以改檔案的某一部分（partial update）    | 整個物件替換，無法只改一小段          |
+| **鎖定機制** | 支援 file locking                         | 不支援（靠版本控制）                  |
+| **掛載**     | 可 mount 到 EC2，像 `/mnt/efs`            | 不能 mount，只能透過 SDK/CLI          |
