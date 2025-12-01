@@ -2012,3 +2012,25 @@ CPU 80%+   → 加 4 台
 | **Warm-up**  | 新 instance 啟動後**不計入指標**，等它準備好 |
 
 兩者目的都是防止 Auto Scaling 過度反應，但切入點不同。
+
+## EBS Encryption 完整涵蓋範圍
+
+| 加密範圍        | 說明                                          |
+| --------------- | --------------------------------------------- |
+| Data at rest    | Volume 內的靜態資料                           |
+| Data in transit | Volume ↔ EC2 Instance 之間的傳輸資料          |
+| Snapshots       | 從加密 Volume 建立的快照，**自動加密**        |
+| 衍生 Volumes    | 從加密 Snapshot 建立的新 Volume，**自動加密** |
+| Boot Volume     | 支援加密（早期不支援，現在可以）              |
+
+### 關鍵原則
+
+**加密具有「傳染性」**— 一旦源頭加密，後續產物全部繼承加密狀態，無法中斷。
+
+```bash
+Encrypted Volume
+    → Encrypted Snapshot
+        → Encrypted Volume
+```
+
+反過來也成立：**未加密的 Volume 產生的 Snapshot 也是未加密的**，除非你在複製時明確指定加密。
