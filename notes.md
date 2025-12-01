@@ -91,3 +91,7 @@
     1. **Karpenter**：宣告式設定、動態選擇 instance type、直接呼叫 EC2 API（速度快）、**運維負擔低**
     2. **Cluster Autoscaler**：需預先定義 ASG、固定 instance type、透過 ASG 間接整合、運維負擔較高
     3. **選擇邏輯**：問 least operational overhead → **Karpenter**；問 native K8s solution → Cluster Autoscaler
+23. ★★ Aurora Failover 機制 — 有無 Replica 決定行為
+    1. **有 Aurora Replica**：CNAME 翻轉指向健康 Replica，Replica 升級為 Primary（**約 30 秒內**）
+    2. **沒有 Replica（單一 instance）**：在同一 AZ 嘗試**重建**新的 DB instance（較慢，best-effort）
+    3. **考試陷阱**：看到「single Aurora instance」→ 沒有 Replica 可 promote，只能重建

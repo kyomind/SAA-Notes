@@ -2074,3 +2074,10 @@ Encrypted Volume
 | Instance 選擇 | 固定（ASG 預先定義）    | 動態（根據 pod 需求選最適合的） |
 | 設定複雜度    | 需要手動調校 ASG        | 宣告式設定，較簡單              |
 | **運維負擔**  | 較高                    | **較低**                        |
+
+## Aurora Failover 機制解析
+
+| 情境                              | Failover 行為                                         | 時間                |
+| --------------------------------- | ----------------------------------------------------- | ------------------- |
+| **有 Aurora Replica**             | 翻轉 CNAME 指向健康的 Replica，Replica 升級為 Primary | 約 30 秒內          |
+| **沒有 Replica（單一 instance）** | 在同一 AZ 嘗試重建新的 DB instance                    | 較慢（best-effort） |
