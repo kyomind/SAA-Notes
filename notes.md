@@ -95,3 +95,21 @@
     1. **有 Aurora Replica**：CNAME 翻轉指向健康 Replica，Replica 升級為 Primary（**約 30 秒內**）
     2. **沒有 Replica（單一 instance）**：在同一 AZ 嘗試**重建**新的 DB instance（較慢，best-effort）
     3. **考試陷阱**：看到「single Aurora instance」→ 沒有 Replica 可 promote，只能重建
+24. ★ S3 Glacier 成本結構 — 三大費用組成
+    1. **Storage**：存放費用（極低，Glacier 的核心賣點）
+    2. **Retrieval**：取回費用（按 GB 計費 + 請求次數），**越快越貴**
+    3. **Request**：API 請求費用
+    4. **重點**：從 Glacier 取回資料**一定要付 retrieval 費用**，這是便宜儲存的代價
+25. ★★ S3 Glacier 考試題型 — 關鍵字拆解
+    1. **典型題目**：「合規資料長期保存，**偶爾**需在 **12 小時內**取回，**最低成本**」
+    2. **答案**：Glacier Deep Archive + Standard retrieval
+    3. **關鍵字解析**：「偶爾取回」→ Glacier 系列、「12 小時內」→ Deep Archive Standard 符合、「最低成本」→ Deep Archive 儲存費最低
+    4. **考試陷阱**：Deep Archive **沒有 Expedited** 選項
+26. ★ Glacier Instant Retrieval 定位與費用邏輯
+    1. **定位**：「混血」storage class，**毫秒級取回**但仍收 retrieval 費用
+    2. **儲存費用**：約 S3 Standard 的 68%（便宜）
+    3. **Retrieval 費用**：每 GB 都收費，**比 S3 Standard-IA 還貴**
+    4. **白話說**：存得便宜，但每次拿都要付「取貨費」
+27. ★★ Glacier Instant Retrieval 考試判斷 — 關鍵字組合
+    1. **選擇時機**：「**每季存取一次**」或「**一年幾次**」+「**需要立即取回**」或「**毫秒級延遲**」+「**長期保存**」
+    2. **對比選擇**：可以等幾小時 → **Glacier Flexible Retrieval**（更便宜）

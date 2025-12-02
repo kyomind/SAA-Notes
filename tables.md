@@ -1453,7 +1453,7 @@ conn = psycopg2.connect(
 | 類型                 | 管理者 | 你能控制什麼  | 能否稽核            |
 | -------------------- | ------ | ------------- | ------------------- |
 | **AWS owned**        | AWS    | 無            | ❌ 不可見            |
-| **AWS managed**      | AWS    | 無法刪除/輪替 | ✅ CloudTrail only ⭐️  |
+| **AWS managed**      | AWS    | 無法刪除/輪替 | ✅ CloudTrail only ⭐️ |
 | **Customer managed** | 你     | 完全控制      | ✅ CloudTrail + 自訂 |
 
 ## RDS Enhanced Monitoring 重點
@@ -1467,7 +1467,7 @@ conn = psycopg2.connect(
 | 監控層級 | Hypervisor 層(虛擬化) | OS 層(實際資源)               |
 | 粒度     | 1 分鐘                | 最快 1 秒                     |
 | 指標範例 | CPU utilization       | CPU per process, memory usage |
-| 儲存位置 | CloudWatch            | CloudWatch Logs⭐️               |
+| 儲存位置 | CloudWatch            | CloudWatch Logs⭐️              |
 
 **關鍵考點**:
 
@@ -1487,12 +1487,12 @@ conn = psycopg2.connect(
 
 ## 關鍵數字(必背)
 
-| 指標           | 數值                        | 意義                          |
-| -------------- | --------------------------- | ----------------------------- |
+| 指標           | 數值                        | 意義                           |
+| -------------- | --------------------------- | ------------------------------ |
 | **RPO**        | < 1 秒                      | 資料複製延遲，幾乎不會遺失資料 |
-| **RTO**        | < 1 分鐘                    | 故障時切換到備用區域的時間    |
-| **複製延遲**   | < 1 秒                      | Storage-based 自動複製        |
-| **支援區域數** | 最多 5 個 secondary regions | 1 primary + 5 secondary       |
+| **RTO**        | < 1 分鐘                    | 故障時切換到備用區域的時間     |
+| **複製延遲**   | < 1 秒                      | Storage-based 自動複製         |
+| **支援區域數** | 最多 5 個 secondary regions | 1 primary + 5 secondary        |
 
 ### 與其他方案比較
 
@@ -1521,8 +1521,8 @@ conn = psycopg2.connect(
 | --------------------------------- | ------------------------ | ----------------------- | ------ | ------------ | -------------- | ------------------------------------------------------------- |
 | **S3 Standard**                   | 頻繁存取、關鍵數據       | 最貴                    | 99.99% | 無           | 毫秒級         | **預設選項**,看到「frequently accessed」就選它                |
 | **S3 Intelligent-Tiering**        | 存取模式不確定、自動優化 | 有監控費用              | 99.9%  | 無           | 毫秒級         | 關鍵字「**unpredictable access**」、「**changing patterns**」 |
-| **S3 Standard-IA**                | 不常存取但需快速取回     | 便宜但有**檢索費** ⭐️         | 99.9%  | **30天**     | 毫秒級         | 看到「**infrequent**」+「**immediate access**」               |
-| **S3 One Zone-IA**                | **可重建**的非關鍵數據       | 比 Standard-IA 便宜 20% | 99.5%  | **30天**     | 毫秒級         | 關鍵字「**single AZ**」、「**can be recreated**」             |
+| **S3 Standard-IA**                | 不常存取但需快速取回     | 便宜但有**檢索費** ⭐️    | 99.9%  | **30天**     | 毫秒級         | 看到「**infrequent**」+「**immediate access**」               |
+| **S3 One Zone-IA**                | **可重建**的非關鍵數據   | 比 Standard-IA 便宜 20% | 99.5%  | **30天**     | 毫秒級         | 關鍵字「**single AZ**」、「**can be recreated**」             |
 | **S3 Glacier Instant Retrieval**  | 季度存取的歸檔數據       | 更便宜                  | 99.9%  | **90天**     | **毫秒級**     | 「**quarterly access**」+「需要**立即取回**」                 |
 | **S3 Glacier Flexible Retrieval** | 歸檔數據、可接受等待     | 很便宜                  | 99.99% | **90天**     | **分鐘到小時** | 「**archive**」+「**不急著拿**」,有加速選項                   |
 | **S3 Glacier Deep Archive**       | 長期保存、合規需求       | 最便宜                  | 99.99% | **180天**    | **12小時**     | 「**7-10 years**」、「**compliance**」、「**cheapest**」      |
@@ -1655,35 +1655,35 @@ One Zone-IA = 能接受資料遺失風險 + 要省錢
 
 ## 想到 Blacklist FQDN 就想到這兩個服務
 
-| 服務                  | 用途                      | 能否封鎖 FQDN        |
-| --------------------- | ------------------------- | -------------------- |
-| Route 53 DNS Firewall | 封鎖惡意網域              | ✅ 核心功能           |
-| Network Firewall      | Layer 3-7 網路流量過濾    | ✅ 可以，但非主要用途 |
-| WAF                   | HTTP/HTTPS 應用層攻擊防護 | ❌ 不處理 DNS         |
-| Security Group        | IP/Port 控制              | ❌ 不認識 domain      |
+| 服務                      | 用途                      | 能否封鎖 FQDN        |
+| ------------------------- | ------------------------- | -------------------- |
+| **Route 53 DNS Firewall** | 封鎖惡意網域              | ✅ 核心功能           |
+| **Network Firewall**      | Layer 3-7 網路流量過濾    | ✅ 可以，但非主要用途 |
+| WAF                       | HTTP/HTTPS 應用層攻擊防護 | ❌ 不處理 DNS         |
+| Security Group            | IP/Port 控制              | ❌ 不認識 domain      |
 
 dojo 中出現的就是 AWS Network Firewall。
 
 ## Geolocation vs Geoproximity Routing 比較表
 
-| 特性           | Geolocation Routing                                    | Geoproximity Routing                         |
-| -------------- | ------------------------------------------------------ | -------------------------------------------- |
-| **判斷依據**   | 用戶的地理位置(國家/州/大陸)                           | 用戶與資源的地理距離                         |
-| **路由邏輯**   | 固定規則:歐洲 → EU server                              | 動態計算:選最近的 server                     |
-| **Bias 調整**  | ❌ 不支援                                               | ✅ 可用 bias 擴大/縮小涵蓋範圍                |
-| **典型場景**   | 內容在地化、法規遵循                                   | 延遲優化、負載分散                           |
-| **考試關鍵字** | "based on user location", "restrict content by region" | "route to nearest", "bias", "distance-based" |
-
-## Virtual Private Gateway (VGW) 不需要固定 IP
-
-VGW 是 AWS 管理的服務，AWS 會自動分配 IP 給它。
+| 特性           | Geolocation Routing                                    | Geoproximity Routing                             |
+| -------------- | ------------------------------------------------------ | ------------------------------------------------ |
+| **判斷依據**   | 用戶的地理位置(國家/州/大陸)                           | 用戶與資源的地理距離                             |
+| **路由邏輯**   | 固定規則:歐洲 → EU server                              | 動態計算:選最近的 server                         |
+| **Bias 調整**  | ❌ 不支援                                               | ✅ 可用 bias 擴大/縮小涵蓋範圍                    |
+| **典型場景**   | 內容在地化、法規遵循                                   | 延遲優化、負載分散                               |
+| **考試關鍵字** | "based on user location", "restrict content by region" | "route to nearest", "**bias**", "distance-based" |
 
 ## Site-to-Site VPN 連線要求
 
 | 端點                              | 需要固定 IP? | 原因                                         |
 | --------------------------------- | ------------ | -------------------------------------------- |
 | **Customer Gateway (CGW)**        | ✅ 必須       | 你的 on-premises 設備需要公開 IP 讓 AWS 連線 |
-| **Virtual Private Gateway (VGW)** | ❌ 不需要     | AWS 自動處理,你不用管                        |
+| **Virtual Private Gateway (VGW)** | ❌ 不需要     | AWS 自動處理，你不用管                       |
+
+### Virtual Private Gateway (VGW) 不需要固定 IP
+
+VGW 是 AWS 管理的服務，AWS 會自動分配 IP 給它。                    |
 
 ## VPN 運作方式
 
@@ -1702,7 +1702,7 @@ VGW 是 AWS 管理的服務，AWS 會自動分配 IP 給它。
 | **時間維度** | 事件發生時間點 | 配置變更歷史 |
 | **合規性**   | 操作審計       | 配置合規檢查 |
 
-## 實際例子
+### 實際例子
 
 假設你刪除了一個 S3 bucket:
 
@@ -1726,14 +1726,12 @@ Compliance: Non-compliant (violated retention policy)
 
 ## Storage Gateway 完整分類
 
-File Gateway 是**獨立的模式**,不屬於那三種 Volume Gateway。
-
-| 類型               | 模式   | 協定      | 用途               |
-| ------------------ | ------ | --------- | ------------------ |
-| **File Gateway**   | -      | NFS/SMB   | 檔案共享,直接存 S3 |
-| **Volume Gateway** | Cached | iSCSI     | 區塊儲存,快取模式  |
-| **Volume Gateway** | Stored | iSCSI     | 區塊儲存,完整本地  |
-| **Tape Gateway**   | -      | iSCSI-VTL | 虛擬磁帶備份       |
+| 類型               | 模式   | 協定      | 用途                    |
+| ------------------ | ------ | --------- | ----------------------- |
+| **File Gateway**   | -      | NFS/SMB   | 檔案共享，**直接存 S3** |
+| **Volume Gateway** | Cached | iSCSI     | 區塊儲存，快取模式      |
+| **Volume Gateway** | Stored | iSCSI     | 區塊儲存，完整本地      |
+| **Tape Gateway**   | -      | iSCSI-VTL | 虛擬磁帶備份            |
 
 ## File Gateway vs Volume Gateway
 
@@ -1744,23 +1742,23 @@ File Gateway 是**獨立的模式**,不屬於那三種 Volume Gateway。
 | 用途：檔案上雲                      | 用途：Block Storage + 本地 Volume 備援 |
 | 常見用途：檔案伺服器替代、NAS、備份 | 常見用途：VM backup、DB volumes、災備  |
 
-**File Gateway**:
+### File Gateway
 
 - 檔案介面 (NFS/SMB)
 - **直接映射到 S3 objects**
 - 每個檔案 = 一個 S3 object
 
-**Volume Gateway**:
+### Volume Gateway
 
 - 區塊介面 (iSCSI)
 - 像是虛擬硬碟
-- 資料以 EBS snapshots 形式存 S3
+- 資料以 EBS snapshots 形式存 S3⭐️
 
 **考試判斷**: 題目提到 "file share" 或 "NFS/SMB" → File Gateway
 
 ## Route 53 的 A Record Alias
 
-這是一個 Route 53 特有的功能,讓你可以在 Zone Apex 使用類似 CNAME 的功能。(但本質是 A Record)
+這是一個 Route 53 特有的功能，讓你可以在 Zone Apex 使用類似 CNAME 的功能。(但本質是 A Record)
 
 | 記錄類型             | Zone Apex (`tutorialsdojo.com`) | 子網域 (`www.tutorialsdojo.com`) |
 | -------------------- | ------------------------------- | -------------------------------- |
@@ -1791,14 +1789,14 @@ File Gateway 是**獨立的模式**,不屬於那三種 Volume Gateway。
 
 ## AWS 網路安全防護層級比較表
 
-重點是這些元件具體是在哪個層級運作
+重點是這些元件具體是在**哪個層級**運作
 
-| 服務             | 層級             | 用途                 |
-| ---------------- | ---------------- | -------------------- |
-| Security Group   | Instance         | 基本的 L4 allow/deny |
-| NACL             | Subnet           | Stateless L4 過濾    |
-| WAF              | Application (L7) | HTTP/HTTPS 請求過濾  |
-| Network Firewall | VPC 邊界         | 完整流量檢查 + IPS   |
+| 服務             | 層級             | 用途                     |
+| ---------------- | ---------------- | ------------------------ |
+| Security Group   | Instance         | 基本的 **L4** allow/deny |
+| NACL             | Subnet           | Stateless L4 過濾        |
+| WAF              | Application (L7) | HTTP/HTTPS 請求過濾      |
+| Network Firewall | VPC 邊界         | 完整流量檢查 + IPS       |
 
 ## S3 Glacier Retrieval 完整比較
 
@@ -1819,12 +1817,6 @@ File Gateway 是**獨立的模式**,不屬於那三種 Volume Gateway。
 
 Deep Archive **沒有 Expedited**——這是考試陷阱。
 
-## 考試常見考法
-
-1. **「最低成本取回 PB 級資料」**→ Bulk
-2. **「幾分鐘內要拿到」**→ Expedited（但只有 Glacier 有，Deep Archive 沒有）
-3. **「一年存取一次」**→ Deep Archive（比 Glacier 更便宜但取回更慢）
-
 ## Expedited 的額外細節
 
 Expedited 有容量限制，高需求時可能失敗。如果需要**保證 Expedited 可用**，要購買 **Provisioned Capacity**（預留容量）。
@@ -1833,13 +1825,39 @@ Expedited 有容量限制，高需求時可能失敗。如果需要**保證 Expe
 > Glacier 三種速度：**快（分鐘）、標（小時）、慢（半天）**
 > Deep Archive 只有兩種：**標（半天）、慢（兩天）**
 
+## S3 Storage Classes Retrieval 費用
+
+**S3 Standard 不用，但 S3 Standard-IA 和 S3 One Zone-IA 要。**
+
+| Storage Class               | Retrieval 費用        | 備註                     |
+| --------------------------- | --------------------- | ------------------------ |
+| **S3 Standard**             | ❌ 無                  | 你付的就是儲存 + 請求    |
+| **S3 Intelligent-Tiering**  | ❌ 無                  | 自動分層，不收 retrieval |
+| **S3 Standard-IA**          | ✅ 有（per GB）        | 存取便宜的代價           |
+| **S3 One Zone-IA**          | ✅ 有（per GB）        | 同上                     |
+| **S3 Glacier Instant**      | ✅ 有（per GB）        | 更貴                     |
+| **S3 Glacier Flexible**     | ✅ 有（per GB + 速度） | 越快越貴                 |
+| **S3 Glacier Deep Archive** | ✅ 有（per GB + 速度） | 最便宜儲存，取回最貴     |
+
+### 記憶方式
+
+**有 "IA" 或 "Glacier" 字眼的，取回都要錢。**
+
+這也是為什麼 **S3 Intelligent-Tiering** 很香——它會自動把資料搬到便宜的層級，但 **不收 retrieval 費用**。代價是每月有一筆 monitoring fee（per object），所以適合大檔案、不適合海量小檔案。
+
+### 考試陷阱
+
+> 「資料存取模式不可預測，需要最低成本且不希望有額外 retrieval 費用」
+
+答案：**S3 Intelligent-Tiering**（不是 Standard-IA）
+
 ## Aurora 核心優勢
 
 | 特性         | 數據                                     |
 | ------------ | ---------------------------------------- |
 | **儲存上限** | 128 TiB（RDS 只有 64 TiB）               |
 | **效能**     | MySQL 的 5 倍、PostgreSQL 的 3 倍        |
-| **自動擴展** | 儲存以 10 GB 增量自動成長                |
+| **自動擴展**⭐️ | 儲存以 10 GB 增量自動成長                |
 | **高可用**   | 資料自動同步複製至多個 AZ，自動 failover |
 
 **考試關鍵字**：超大規模、自動擴展儲存、多 AZ 同步、高效能 + MySQL/PostgreSQL 相容 → **Aurora**
@@ -1866,7 +1884,7 @@ Expedited 有容量限制，高需求時可能失敗。如果需要**保證 Expe
 
 | 特性        | Kinesis Data Streams                | Data Firehose                                |
 | ----------- | ----------------------------------- | -------------------------------------------- |
-| 消費者模式  | 自己寫 consumer（Lambda、EC2、KCL） | 內建目的地（S3、Redshift、OpenSearch、HTTP） |
+| 消費者模式  | 自己寫 consumer（Lambda、EC2、KCL） | **內建目的地**（S3、Redshift、OpenSearch、HTTP） |
 | Lambda 角色 | ✅ 直接消費資料                      | ⚠️ 只能做**中間處理/轉換**，不是最終消費      |
 | 即時性      | 真正即時                            | Near real-time（有 buffer）                  |
 | 管理複雜度  | 高（要管 shard、consumer）          | 低（全託管）                                 |
