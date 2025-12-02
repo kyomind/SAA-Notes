@@ -1643,7 +1643,7 @@ One Zone-IA = 能接受資料遺失風險 + 要省錢
 - ELB = 標準解法
 - Route 53 Weighted = 也能做到
 
-## S3 Lifecycle Policy vs DLM 比較表○
+## S3 Lifecycle Policy vs DLM 比較表
 
 | 特性         | S3 Lifecycle Policy                | DLM (Data Lifecycle Manager)   |
 | ------------ | ---------------------------------- | ------------------------------ |
