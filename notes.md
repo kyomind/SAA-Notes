@@ -113,3 +113,19 @@
 27. ★★ Glacier Instant Retrieval 考試判斷 — 關鍵字組合
     1. **選擇時機**：「**每季存取一次**」或「**一年幾次**」+「**需要立即取回**」或「**毫秒級延遲**」+「**長期保存**」
     2. **對比選擇**：可以等幾小時 → **Glacier Flexible Retrieval**（更便宜）
+28. ★★ Placement Group：Spread vs Partition 核心差異
+    1. **Spread**：隔離單位為**單一硬體（機器）**，每台硬體嚴格放 **1 個 instance**
+    2. **Partition**：隔離單位為**機架（Rack）**，同一 partition 內可能共用硬體
+    3. **關鍵限制**：Spread 每個 AZ **最多 7 個 instances**；Partition 每個 AZ **最多 7 個 partitions**
+29. ★ Spread Placement Group — 極端隔離但規模受限
+    1. **用途**：少量但極關鍵的 instances（如 7 台 database replica）
+    2. **保證**：每個 instance 在**獨立實體硬體**上，任一硬體故障只影響 1 個 instance
+    3. **代價**：每個 AZ 最多 7 個 instances（硬體完全隔離的數量有限）
+30. ★ Partition Placement Group — 機架級隔離支援大規模
+    1. **用途**：大規模分散式系統（如 100 節點 Cassandra cluster）
+    2. **運作方式**：節點分散到不同 partition，每個 partition 對應不同機架
+    3. **故障影響**：整個機架斷電只損失約 1/7 節點，分散式系統的 replication 可處理
+31. ★★ Placement Group 考試選擇技巧
+    1. **選 Spread**：少量關鍵 instances、需要**最高隔離等級**
+    2. **選 Partition**：看到 **HDFS、Cassandra、Kafka** 等分散式系統關鍵字
+    3. **選擇邏輯**：這些系統本身有 partition/replication 概念，天生適合 Partition Placement Group
