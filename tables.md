@@ -1372,7 +1372,7 @@ Egress-only IGW:
 特點: 平面命名空間，URL 存取
 ```
 
-## 考試判斷關鍵字
+### 考試判斷關鍵字
 
 | 需求描述                        | 選擇類型   | AWS 服務     |
 | ------------------------------- | ---------- | ------------ |
@@ -1383,17 +1383,31 @@ Egress-only IGW:
 | "mount point"、"directory"      | **File**   | EFS/FSx      |
 | "REST API"、"lifecycle policy"  | **Object** | S3           |
 
-## 實際類比
+### 實際類比
 
 - **Block** = 你插一顆新硬碟到電腦
 - **File** = 你掛載一個網路磁碟 (NAS)
 - **Object** = 你用網址下載檔案 (Google Drive)
 
-## 記憶重點
+## FSx 名稱由來解析
 
-**需要最快速度 → Block**
-**需要共享檔案 → File**
-**需要便宜備份 → Object**
+這個「x」其實就是一個**變數/萬用字元**的概念，代表「**多種檔案系統**」。
+
+就像數學裡的 x 可以代入不同的值，FSx 的 x 代表 Amazon 支援的各種第三方檔案系統：
+
+| FSx 變體                        | x = ?        | 用途場景                               |
+| ------------------------------- | ------------ | -------------------------------------- |
+| FSx for **Windows** File Server | Windows      | Windows 環境的共享檔案系統（SMB 協定） |
+| FSx for **Lustre**              | Lustre       | 高效能運算（HPC）、機器學習            |
+| FSx for **NetApp ONTAP**        | NetApp ONTAP | 企業級 NAS，多協定支援                 |
+| FSx for **OpenZFS**             | OpenZFS      | Linux 工作負載，ZFS 快照功能           |
+
+簡單說，AWS 的命名邏輯是：
+
+- **EFS** = Elastic **File System**（AWS 原生的 Linux NFS）
+- **FSx** = **File System x**（第三方檔案系統的託管版）
+
+所以當你看到 FSx，就知道這是 AWS 幫你託管「**別人家的檔案系統**」，讓你不用自己架設和維護。
 
 ## IAM Database Authentication 與傳統密碼認證比較
 
