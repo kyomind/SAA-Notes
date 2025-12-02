@@ -1481,7 +1481,7 @@ conn = psycopg2.connect(
 - 題目要「1 秒監控間隔」→ Enhanced Monitoring
 - 題目只要基本 CPU/memory → CloudWatch Metrics 就夠
 
-## Amazon Aurora Global Database 考試重點整理
+## Aurora Global Database 考試重點整理
 
 **跨區域災難恢復 + 全球讀取加速**的終極解決方案
 
@@ -1489,12 +1489,12 @@ conn = psycopg2.connect(
 
 | 指標           | 數值                        | 意義                          |
 | -------------- | --------------------------- | ----------------------------- |
-| **RPO**        | < 1 秒                      | 資料複製延遲,幾乎不會遺失資料 |
+| **RPO**        | < 1 秒                      | 資料複製延遲，幾乎不會遺失資料 |
 | **RTO**        | < 1 分鐘                    | 故障時切換到備用區域的時間    |
 | **複製延遲**   | < 1 秒                      | Storage-based 自動複製        |
 | **支援區域數** | 最多 5 個 secondary regions | 1 primary + 5 secondary       |
 
-### ⚠️ 容易混淆的選項
+### 與其他方案比較
 
 | 需求             | Aurora Global DB | Multi-AZ     | Read Replica   |
 | ---------------- | ---------------- | ------------ | -------------- |
@@ -1503,7 +1503,7 @@ conn = psycopg2.connect(
 | 自動故障切換     | ✅ (跨區域)       | ✅ (單區域內) | ❌              |
 | RTO/RPO 要求極致 | ✅                | 一般         | 不適用         |
 
-## RDP vs SSH:AWS SAA 考試比較表
+## RDP vs SSH 考試比較表
 
 | 比較項目           | RDP                                        | SSH                                |
 | ------------------ | ------------------------------------------ | ---------------------------------- |
@@ -1521,8 +1521,8 @@ conn = psycopg2.connect(
 | --------------------------------- | ------------------------ | ----------------------- | ------ | ------------ | -------------- | ------------------------------------------------------------- |
 | **S3 Standard**                   | 頻繁存取、關鍵數據       | 最貴                    | 99.99% | 無           | 毫秒級         | **預設選項**,看到「frequently accessed」就選它                |
 | **S3 Intelligent-Tiering**        | 存取模式不確定、自動優化 | 有監控費用              | 99.9%  | 無           | 毫秒級         | 關鍵字「**unpredictable access**」、「**changing patterns**」 |
-| **S3 Standard-IA**                | 不常存取但需快速取回     | 便宜但有檢索費          | 99.9%  | **30天**     | 毫秒級         | 看到「**infrequent**」+「**immediate access**」               |
-| **S3 One Zone-IA**                | 可重建的非關鍵數據       | 比 Standard-IA 便宜 20% | 99.5%  | **30天**     | 毫秒級         | 關鍵字「**single AZ**」、「**can be recreated**」             |
+| **S3 Standard-IA**                | 不常存取但需快速取回     | 便宜但有**檢索費** ⭐️         | 99.9%  | **30天**     | 毫秒級         | 看到「**infrequent**」+「**immediate access**」               |
+| **S3 One Zone-IA**                | **可重建**的非關鍵數據       | 比 Standard-IA 便宜 20% | 99.5%  | **30天**     | 毫秒級         | 關鍵字「**single AZ**」、「**can be recreated**」             |
 | **S3 Glacier Instant Retrieval**  | 季度存取的歸檔數據       | 更便宜                  | 99.9%  | **90天**     | **毫秒級**     | 「**quarterly access**」+「需要**立即取回**」                 |
 | **S3 Glacier Flexible Retrieval** | 歸檔數據、可接受等待     | 很便宜                  | 99.99% | **90天**     | **分鐘到小時** | 「**archive**」+「**不急著拿**」,有加速選項                   |
 | **S3 Glacier Deep Archive**       | 長期保存、合規需求       | 最便宜                  | 99.99% | **180天**    | **12小時**     | 「**7-10 years**」、「**compliance**」、「**cheapest**」      |
@@ -1541,7 +1541,7 @@ conn = psycopg2.connect(
 ```bash
 頻繁存取 → Standard
 不常存取 + 立即需要 → Standard-IA
-不常存取 + 可等幾分鐘 → Glacier Flexible
+不常存取 + 可等幾分鐘⭐️ → Glacier Flexible
 不常存取 + 可等12小時 → Glacier Deep Archive
 ```
 
@@ -1561,7 +1561,7 @@ Glacier Flexible = 90天
 Glacier Deep Archive = 180天
 ```
 
-**陷阱**：如果你只存 15 天就刪除,照樣收 30/90/180 天的費用!
+**陷阱**：如果你只存 15 天就刪除，照樣收 30/90/180 天的費用!
 
 ### 2️⃣ 檢索時間記憶法
 
@@ -1585,7 +1585,7 @@ One Zone-IA = 能接受資料遺失風險 + 要省錢
 | ------------------------------ | ---------------------------- |
 | 同質資料庫 (MySQL→MySQL)       | DMS 或 native tools          |
 | 異質資料庫 (Oracle→PostgreSQL) | DMS + Schema Conversion Tool |
-| 需要加密傳輸                   | DMS + SSL                    |
+| 需要加密傳輸                   | DMS + SSL⭐️                   |
 | 大量資料                       | DMS + Snowball Edge          |
 
 ## AWS 憑證/金鑰管理服務比較表
@@ -1607,8 +1607,8 @@ One Zone-IA = 能接受資料遺失風險 + 要省錢
 
 選 Parameter Store vs Secrets Manager:
 
-- Parameter Store = 便宜、簡單配置、**不需自動輪換**
-- Secrets Manager = 貴一點、**需要自動輪換功能**
+- Parameter Store = 便宜、簡單配置、**不需自動輪換**⭐️
+- Secrets Manager = 貴一點、**需要自動輪換功能**⭐️
 
 ### ACM 陷阱
 
@@ -1617,9 +1617,9 @@ One Zone-IA = 能接受資料遺失風險 + 要省錢
 
 ### KMS 陷阱
 
-- KMS 是「加密工具」,不是「保險箱」
-- KMS 提供加密金鑰,但**不負責儲存你的應用程式憑證**
-- Secrets Manager 底層會用 KMS 加密,但你不直接用 KMS 存密碼
+- KMS 是「加密工具」，不是「保險箱」
+- KMS 提供加密金鑰，但**不負責儲存你的應用程式憑證**
+- Secrets Manager 底層會用 KMS 加密，但你不直接用 KMS 存密碼
 
 ### 考試記憶口訣
 
@@ -1629,7 +1629,7 @@ One Zone-IA = 能接受資料遺失風險 + 要省錢
 **"ACM = 網站鎖頭，KMS = 加密工廠"**
 都不是存密碼的地方
 
-## ELB vs Route 53 流量分配比較
+## ELB vs Route 53 Weighted 流量分配比較
 
 | 方案                  | 運作層級      | 健康檢查 | 自動故障轉移  | 適用場景                              |
 | --------------------- | ------------- | -------- | ------------- | ------------------------------------- |
@@ -1638,12 +1638,12 @@ One Zone-IA = 能接受資料遺失風險 + 要省錢
 
 ## 考試判斷重點
 
-題目只說「add elasticity」→ 兩者都對**
+題目只說「add elasticity」→ 兩者都能做到，但 ELB 是標準解法。
 
 - ELB = 標準解法
 - Route 53 Weighted = 也能做到
 
-## S3 Lifecycle Policy vs DLM 比較表
+## S3 Lifecycle Policy vs DLM 比較表○
 
 | 特性         | S3 Lifecycle Policy                | DLM (Data Lifecycle Manager)   |
 | ------------ | ---------------------------------- | ------------------------------ |
