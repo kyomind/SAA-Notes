@@ -28,9 +28,9 @@
 
 ### 格式要求
 - **輸出檔案**：`speed.md`（根目錄）
-- **第一層**：移除編號，變成**普通段落**（不是清單）
-- **第二層以下**：上移一層，保持原格式（編號 `1.`、`2.` 或 `-`）
-- **概念**：整體「少一層」，結構更扁平
+- **第一層**：改用**無序清單（bullet list）**，以 `-` 開頭
+- **第二層以下**：保持原樣（編號 `1.`、`2.` 或 `-` 不變）
+- **好處**：第一層方便刪除，子層保留原結構
 
 ### 範例
 
@@ -47,18 +47,16 @@
 
 輸出（`speed.md`）— 第 19 項有 `⭐️` 在子項目，複製整個項目；第 20 項沒有 `⭐️`，跳過：
 ```markdown
-★★ An **Edge-Optimized API Gateway** is **best for geographically distributed clients.**
-1. API requests are routed to the **nearest CloudFront Edge Location** which improves latency.
-2. The API Gateway still lives in **one** AWS Region.
-3. 這是預設選項，而且自動整合 CloudFront⭐️
+- ★★ An **Edge-Optimized API Gateway** is **best for geographically distributed clients.**
+    1. API requests are routed to the **nearest CloudFront Edge Location** which improves latency.
+    2. The API Gateway still lives in **one** AWS Region.
+    3. 這是預設選項，而且自動整合 CloudFront⭐️
 ```
 
 ## ⚡ 注意事項
 
 - 保持原文內容，不要修改或精簡
 - 維持 `⭐️` 符號在輸出中
-- **第一層**移除編號，變成普通段落（`19. ★★ ...` → `★★ ...`）
-- **第二層以下**移除縮排，上移一層
-- 新內容**附加**到 `speed.md` 尾端，不覆蓋既有內容
+- **只有第一層**轉換為無序清單（`19.` → `-`）
 - 第二層以下保持原格式不變
 - 新內容**附加**到 `speed.md` 尾端，不覆蓋既有內容
