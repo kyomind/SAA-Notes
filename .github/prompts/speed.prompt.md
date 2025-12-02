@@ -1,104 +1,62 @@
-# AWS SAA 筆記精簡萃取 Prompt
+# AWS SAA 重點萃取 Prompt
 
-你是 AWS 認證考試專家。請分析我的 SAA 學習筆記，生成「考前衝刺用」的精簡版本。
+從用戶指定的來源文件中，萃取標記為重要的條目到 `speed.md`。
 
-## 📋 輸入輸出設定
-- **輸入來源**：`notes.md`（原始速記筆記）
-- **輸出檔案**：`speed.md`（精簡萃取版本，同目錄）
-- **處理方式**：逐行分析、合併同類、優先保留高頻考點
+## 📋 使用方式
 
-## 🎯 萃取標準
+用戶必須提供：
+1. **來源文件**：指定要處理的檔案（如 `notes.md`、`notes-01.md`）
+2. **行數範圍**：指定要處理的確切行數（如 `1-100`、`50-200`）
 
-### 必須保留
-1. **高頻服務**：EC2、S3、RDS、Lambda、VPC、IAM、CloudWatch、DynamoDB、ALB/NLB、ECS/EKS、Cognito
-2. **易混淆對比**：
-   - S3 儲存類別（Standard vs IA vs Glacier vs Intelligent-Tiering vs One Zone-IA）
-   - RDS vs DynamoDB vs Aurora vs DocumentDB
-   - ALB vs NLB vs CLB（Layer 4 vs Layer 7）
-   - SG vs NACL（Stateful vs Stateless）
-   - 加密類型（SSE-S3 vs SSE-KMS vs SSE-C vs Client-Side）
-3. **關鍵數字**（務必正確）
-   - 時間限制：Lambda 15min、RTO/RPO、Cooldown period 預設 300s、DynamoDB item 400KB、EBS snapshot S3、SQS visibility timeout 預設 30s、SQS Long Polling 最高 20s
-   - 大小限制：DynamoDB item 400KB、SNS message 256KB、SQS message 256KB
-   - 配額：EC2 On-Demand vCPU limit per region、EBS Multi-Attach 僅限 io1/io2、ENI per instance
-4. **決策情境**：特定業務需求 → 推薦服務（必須有判斷邏輯）
-5. **★★ 標記項目**：必考點，一定要保留
+## 🎯 萃取規則
 
-### 必須捨棄
-- 冷門或邊界知識（如 Predictive Scaling 邊界假設）
-- 逐步操作細節（UI 點擊、console 步驟）
-- 重複的概念解釋（同一概念出現多次時只保留最精簡的）
-- 出現頻率 < 2 次的服務（如 Neptune、Textract 除非涉及決策對比）
-- 純英文原文（已有中文翻譯時刪除原文）
+**非常簡單**：只萃取包含 `⭐️` 符號的條目。
 
-## 📝 輸出格式範本
+- `⭐️` = 用戶自行標記的重點，代表用戶認為重要
+- 看到 `⭐️` → 直接複製該條目到 `speed.md`
+- 沒有 `⭐️` → 跳過
 
-### 單一服務模板
-```
-### [服務名稱] ⭐ (或 ⚠️)
-**定義**：一句話說明核心用途
-**使用場景**：
-- 場景 1
-- 場景 2
-**關鍵限制**：
-- 限制 1（單位）
-- 限制 2（時間）
-**易混淆點**：vs [相似服務]、常見誤解
-```
+### ⚠️ 重要：完整複製原則
 
-### 對比模板（易混淆類）
-```
-| 對比項 | 選項A | 選項B | 選項C | 判斷依據 |
-|--------|-------|-------|-------|---------|
-| 場景 1 | ... | ... | ... | 關鍵詞 |
-| 場景 2 | ... | ... | ... | 決策邏輯 |
+`⭐️` 可能出現在**主項目**或**子項目**的任何位置（通常在句尾）。
+
+**只要該項目的任何層級出現 `⭐️`，就必須複製「整個」項目，包含：**
+- 主項目本身
+- 所有子項目（不論子項目是否有 `⭐️`）
+
+## 📝 輸出格式
+
+### 格式要求
+- **輸出檔案**：`speed.md`（根目錄）
+- **第一層**：改用**無序清單（bullet list）**，以 `-` 開頭
+- **第二層以下**：保持原樣（編號 `1.`、`2.` 或 `-` 不變）
+- **好處**：第一層方便刪除，子層保留原結構
+
+### 範例
+
+來源（`notes-01.md`）：
+```markdown
+19. ★★ An **Edge-Optimized API Gateway** is **best for geographically distributed clients.**
+    1. API requests are routed to the **nearest CloudFront Edge Location** which improves latency.
+    2. The API Gateway still lives in **one** AWS Region.
+    3. 這是預設選項，而且自動整合 CloudFront⭐️
+20. ★ 目的關鍵需求：在 CloudFront Edge Locations 執行認證
+    1. 不要打回 Origin
+    2. 降低延遲——**用戶在哪裡，認證就在哪裡執行**
 ```
 
-### 關鍵數字參考表
+輸出（`speed.md`）— 第 19 項有 `⭐️` 在子項目，複製整個項目；第 20 項沒有 `⭐️`，跳過：
+```markdown
+- ★★ An **Edge-Optimized API Gateway** is **best for geographically distributed clients.**
+    1. API requests are routed to the **nearest CloudFront Edge Location** which improves latency.
+    2. The API Gateway still lives in **one** AWS Region.
+    3. 這是預設選項，而且自動整合 CloudFront⭐️
 ```
-| 服務 | 項目 | 數值 | 備註 |
-|------|------|------|------|
-| Lambda | 最長執行時間 | 15 分鐘 | 無法延長 |
-```
 
-## 🔍 精簡原則
+## ⚡ 注意事項
 
-### 保留形式
-- **✅ 保留**：`★★ [核心概念]` → 直接成為 section
-- **✅ 保留**：數字、限制、易錯點
-- **✅ 保留**：決策判斷邏輯（「當...應選...」）
-- **✅ 保留**：對比表格、架構組合（如 Multi-AZ + ASG + ELB）
-- **✅ 保留**：符號標記（⭐️、⚠️、❌、✅）
-
-### 刪除形式
-- **❌ 刪除**：`👀 [資訊型]` 除非涉及常見誤解
-- **❌ 刪除**：「已移除」項目
-- **❌ 刪除**：重複編號的同一概念
-- **❌ 刪除**：純 AWS 官方文案（除非是關鍵定義）
-
-## 🎓 內容結構
-
-### 建議組織順序
-1. **核心服務**（按考試重要度）：IAM、VPC、EC2、ELB、Auto Scaling、RDS/Aurora/DynamoDB、S3、Lambda
-2. **監控與合規**：CloudWatch、CloudTrail、GuardDuty、AWS Organizations
-3. **進階主題**：災難恢復 (DR vs HA)、加密與安全、跨帳號設計
-4. **易混淆清單**：對比表格集中放在最後
-
-## ⚡ 特別要求
-- **篇幅目標**：壓縮至原筆記的 25-35%
-- **技術準確度**：必須 100% 正確，不能簡化到錯誤
-- **語言**：繁體中文（技術術語保留英文原文）
-- **符號使用**：
-  - ⭐️ = 必考內容（考試高頻出現）
-  - ⚠️ = 易錯內容（常見陷阱）
-  - ❌ = 常見誤解
-  - ✅ = 正確做法
-- **表格校驗**：所有對比表格必須檢查行列對齊
-
-## 🚫 常見誤區（避免）
-- 不要把「預設值」當成「必須值」
-- 不要忘記「跨 region vs 跨 AZ」的區別
-- 不要混淆「同步複製」vs「非同步複製」
-- 不要遺漏「IAM Policy + Resource Policy」的雙層檢查邏輯
-- 不要把「功能限制」寫成「bug」
-
+- 保持原文內容，不要修改或精簡
+- 維持 `⭐️` 符號在輸出中
+- **只有第一層**轉換為無序清單（`19.` → `-`）
+- 第二層以下保持原格式不變
+- 新內容**附加**到 `speed.md` 尾端，不覆蓋既有內容
