@@ -1444,30 +1444,30 @@ conn = psycopg2.connect(
 | 成本     | 低          | 高(需維護 CloudHSM cluster) |
 | 適用     | 一般場景    | 嚴格合規需求                |
 
-**成本提醒**: CloudHSM 很貴,一個 cluster 至少需要 2 個 HSM instance,每個約 $1.45/hr。考試不會考價格,但實務上要知道這是「必要時才用」的方案。
-
-這段在強調 **KMS 金鑰的三種所有權類型**,考試常考混淆點。
+**成本提醒**: CloudHSM 很貴，一個 cluster 至少需要 2 個 HSM instance，每個約 $1.45/hr。考試不會考價格，但實務上要知道這是「必要時才用」的方案。
 
 ## KMS 金鑰的三種類型
+
+這段在強調 **KMS 金鑰的三種所有權類型**，考試常考混淆點。
 
 | 類型                 | 管理者 | 你能控制什麼  | 能否稽核            |
 | -------------------- | ------ | ------------- | ------------------- |
 | **AWS owned**        | AWS    | 無            | ❌ 不可見            |
-| **AWS managed**      | AWS    | 無法刪除/輪替 | ✅ CloudTrail only   |
+| **AWS managed**      | AWS    | 無法刪除/輪替 | ✅ CloudTrail only ⭐️  |
 | **Customer managed** | 你     | 完全控制      | ✅ CloudTrail + 自訂 |
 
 ## RDS Enhanced Monitoring 重點
 
-**核心功能**: 監控 RDS 底層 OS 的即時效能指標
+**核心功能**：監控 RDS 底層 OS 的即時效能指標
 
-**與 CloudWatch Metrics 的差異**:
+**與 CloudWatch Metrics 的差異**：
 
 | 項目     | CloudWatch Metrics    | Enhanced Monitoring           |
 | -------- | --------------------- | ----------------------------- |
 | 監控層級 | Hypervisor 層(虛擬化) | OS 層(實際資源)               |
 | 粒度     | 1 分鐘                | 最快 1 秒                     |
 | 指標範例 | CPU utilization       | CPU per process, memory usage |
-| 儲存位置 | CloudWatch            | CloudWatch Logs               |
+| 儲存位置 | CloudWatch            | CloudWatch Logs⭐️               |
 
 **關鍵考點**:
 
