@@ -6,7 +6,7 @@
 
 用戶必須提供：
 1. **來源文件**：指定要處理的檔案（如 `notes.md`、`notes-01.md`）
-2. **行數範圍**：指定要處理的確切行數（如 `1-100`、`50-200`）
+2. **行數範圍**：指定要處理的確切項目數（如 `1-100`、`50-200`）
 
 ## 🎯 萃取規則
 
@@ -48,10 +48,11 @@
 輸出（`speed.md`）— 第 19 項有 `⭐️` 在子項目，複製整個項目；第 20 項沒有 `⭐️`，跳過：
 ```markdown
 - ★★ An **Edge-Optimized API Gateway** is **best for geographically distributed clients.**
-    1. API requests are routed to the **nearest CloudFront Edge Location** which improves latency.
-    2. The API Gateway still lives in **one** AWS Region.
-    3. 這是預設選項，而且自動整合 CloudFront⭐️
+   1. API requests are routed to the **nearest CloudFront Edge Location** which improves latency.
+   2. The API Gateway still lives in **one** AWS Region.
+   3. 這是預設選項，而且自動整合 CloudFront⭐️
 ```
+說明：無序清單時，子項的 indent 統一只需要 3 個半型空格。
 
 ## ⚡ 注意事項
 
