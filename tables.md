@@ -2077,7 +2077,6 @@ CPU 80%+   → 加 4 台
               Cooldown 在這裡    Warm-up 在這裡
 ```
 
-
 ## EBS Encryption 完整涵蓋範圍
 
 | 加密範圍        | 說明                                          |
