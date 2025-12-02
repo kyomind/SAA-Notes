@@ -903,7 +903,7 @@ WAF 擋 Web 攻擊，Network Firewall 顧整個 VPC
 
 後二者都有**自動負載平衡**效果，但 Reader Endpoint 是打所有 read replica，Custom Endpoint 是只打你指定的那幾台。
 
-## Systems Manager Parameter Store vs Secrets Manager○
+## Systems Manager Parameter Store vs Secrets Manager
 
 | 功能          | Parameter Store | Secrets Manager |
 | ------------- | --------------- | --------------- |
@@ -1213,7 +1213,7 @@ RDS 自動備份是內建功能，但**預設保留期是 0 天（等於關閉�
 | **EC2**（透過 ENI）             | ✅ 可以         | EIP 綁在 EC2 NIC（ENI）上。                                                     |
 | **Network Load Balancer (NLB)** | ✅ 可以         | 每個 AZ 可指定一個 EIP，適合需要固定 IP 白名單的場景。                          |
 
-## NAT Gateway vs Internet Gateway vs Bastion Host○
+## NAT Gateway vs Internet Gateway vs Bastion Host
 
 | 服務                 | 用途                        | 位置          |
 | -------------------- | --------------------------- | ------------- |
@@ -1312,7 +1312,7 @@ Egress-only IGW:
 | **調整標的** | Read Replica **數量**（非單一 instance 大小）             |
 | **常用指標** | CPU utilization、連線數                                   |
 
-## AWS 儲存服務考試重點對照表○
+## AWS 儲存服務考試重點對照表
 
 | 服務                     | 類型          | 協定            | 考試關鍵字                       | 適用場景                              |
 | ------------------------ | ------------- | --------------- | -------------------------------- | ------------------------------------- |
@@ -1339,7 +1339,7 @@ Egress-only IGW:
         └─ 備份/靜態 → S3
 ```
 
-## File vs Block vs Object 儲存差異○
+## File vs Block vs Object 儲存差異
 
 | 特性         | Block Storage       | File Storage     | Object Storage          |
 | ------------ | ------------------- | ---------------- | ----------------------- |
