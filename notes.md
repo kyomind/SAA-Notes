@@ -129,3 +129,16 @@
     1. **選 Spread**：少量關鍵 instances、需要**最高隔離等級**
     2. **選 Partition**：看到 **HDFS、Cassandra、Kafka** 等分散式系統關鍵字
     3. **選擇邏輯**：這些系統本身有 partition/replication 概念，天生適合 Partition Placement Group
+32. ★★ ASG Cooldown vs Warm-up — 核心差異
+    1. **Cooldown**：scaling 動作後，**整個 ASG 暫停決策**（預設 300 秒），等指標穩定
+    2. **Warm-up**：新 instance 在熱身期間內，**其指標不納入 ASG 平均計算**
+    3. **作用範圍**：Cooldown 作用於 **ASG 層級**；Warm-up 作用於**單一 instance 層級**
+33. ★ ASG Cooldown — 防止 Scaling 震盪
+    1. **問題場景**：CPU 飆高觸發 scale-out，但 CloudWatch 指標有延遲，尚未反映新容量，又觸發加機器
+    2. **解法**：scaling 動作後暫停判斷一段時間，等指標穩定再做決策
+34. ★ ASG Warm-up — 新 Instance 的熱身期
+    1. **問題場景**：新 instance 啟動時跑 bootstrap script、載入 cache，CPU 飆高但非真正負載
+    2. **解法**：warm-up 期間內該 instance 的指標不計入 ASG 平均，避免誤判需要更多資源
+35. ★★ ASG Cooldown vs Warm-up 考試判斷
+    1. **調 Cooldown**：題目說「scaling 太頻繁」「震盪」「oscillation」
+    2. **調 Warm-up**：題目說「新 instance 啟動時指標異常」「bootstrap 期間」

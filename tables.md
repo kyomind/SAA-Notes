@@ -1853,12 +1853,12 @@ Expedited 有容量限制，高需求時可能失敗。如果需要**保證 Expe
 
 ## Aurora 核心優勢
 
-| 特性         | 數據                                     |
-| ------------ | ---------------------------------------- |
-| **儲存上限** | 128 TiB（RDS 只有 64 TiB）               |
-| **效能**     | MySQL 的 5 倍、PostgreSQL 的 3 倍        |
+| 特性          | 數據                                     |
+| ------------- | ---------------------------------------- |
+| **儲存上限**  | 128 TiB（RDS 只有 64 TiB）               |
+| **效能**      | MySQL 的 5 倍、PostgreSQL 的 3 倍        |
 | **自動擴展**⭐️ | 儲存以 10 GB 增量自動成長                |
-| **高可用**   | 資料自動同步複製至多個 AZ，自動 failover |
+| **高可用**    | 資料自動同步複製至多個 AZ，自動 failover |
 
 **考試關鍵字**：超大規模、自動擴展儲存、多 AZ 同步、高效能 + MySQL/PostgreSQL 相容 → **Aurora**
 
@@ -1882,12 +1882,12 @@ Expedited 有容量限制，高需求時可能失敗。如果需要**保證 Expe
 
 **關鍵**：Lambda 不能作為 Firehose 的**目的地（destination）**。
 
-| 特性        | Kinesis Data Streams                | Data Firehose                                |
-| ----------- | ----------------------------------- | -------------------------------------------- |
+| 特性        | Kinesis Data Streams                | Data Firehose                                    |
+| ----------- | ----------------------------------- | ------------------------------------------------ |
 | 消費者模式  | 自己寫 consumer（Lambda、EC2、KCL） | **內建目的地**（S3、Redshift、OpenSearch、HTTP） |
-| Lambda 角色 | ✅ 直接消費資料                      | ⚠️ 只能做**中間處理/轉換**，不是最終消費      |
-| 即時性      | 真正即時                            | Near real-time（有 buffer）                  |
-| 管理複雜度  | 高（要管 shard、consumer）          | 低（全託管）                                 |
+| Lambda 角色 | ✅ 直接消費資料                      | ⚠️ 只能做**中間處理/轉換**，不是最終消費          |
+| 即時性      | 真正即時                            | Near real-time（有 buffer）                      |
+| 管理複雜度  | 高（要管 shard、consumer）          | 低（全託管）                                     |
 
 **記憶方式**：
 
@@ -1930,16 +1930,14 @@ S3 是最常見的，很多時候 Redshift/OpenSearch 也是先經過 S3 再載�
 
 ## 兩種 SQS Queue 比較
 
-| 特性     | Standard Queue            | FIFO Queue                    |
-| -------- | ------------------------- | ----------------------------- |
-| 吞吐量   | 幾乎無限                  | 300 TPS（batching 可達 3000） |
-| 順序     | Best-effort               | 嚴格保證                      |
-| 重複⭐️    | At-least-once（可能重複） | Exactly-once（不重複）        |
-| 適用場景 | 高吞吐、可容忍重複        | 訂單、金融交易等不可重複場景  |
+| 特性     | Standard Queue            | FIFO Queue                       |
+| -------- | ------------------------- | -------------------------------- |
+| 吞吐量   | 幾乎無限                  | 300 TPS（batching 可達 3000）    |
+| 順序     | Best-effort               | 嚴格保證                         |
+| 重複⭐️    | At-least-once（可能重複） | Exactly-once（不重複）           |
+| 適用場景 | 高吞吐、**可容忍重複**    | 訂單、金融交易等**不可重複**場景 |
 
 ## CloudWatch Logs vs VPC Flow Logs 比較表
-
-這題選錯是因為搞混了 **CloudWatch Logs** 和 **Flow Logs** 的用途。
 
 | Log 類型            | 記錄什麼                                       | 適用場景                |
 | ------------------- | ---------------------------------------------- | ----------------------- |
@@ -1974,23 +1972,23 @@ S3 是最常見的，很多時候 Redshift/OpenSearch 也是先經過 S3 再載�
 
 ### 核心工具對照
 
-| 工具                 | 搬什麼                      | 目標位置                   | 類比概念                 | 產出結果                  |
-| -------------------- | --------------------------- | -------------------------- | ------------------------ | ------------------------- |
-| **AWS MGN**          | 整台 VM（OS + 應用 + 資料） | EC2                        | VMware vMotion           | 可直接啟動的 EC2 instance |
-| **AWS DMS**          | 資料庫內容                  | RDS / Aurora / EC2 上的 DB | `pg_dump` + `pg_restore` | 遷移完成的資料庫          |
-| **AWS DataSync**     | 檔案、資料夾                | S3 / EFS / FSx             | `rsync` / `robocopy`     | 同步完成的檔案            |
-| **AWS Snow Family**  | 大量資料（離線）            | S3                         | 寄硬碟給 AWS             | 資料匯入 S3               |
-| **VM Import/Export** | VM image（手動）            | EC2 AMI                    | 匯出 OVA 再匯入          | AMI（一次性）             |
+| 工具                 | 搬什麼⭐️                      | 目標位置⭐️                   | 類比概念                 | 產出結果                  |
+| -------------------- | ---------------------------- | --------------------------- | ------------------------ | ------------------------- |
+| **AWS MGN**          | 整台 VM（OS + 應用 + 資料）⭐️ | EC2                         | VMware vMotion           | 可直接啟動的 EC2 instance |
+| **AWS DMS**          | 資料庫內容                   | RDS / Aurora / EC2 上的 DB⭐️ | `pg_dump` + `pg_restore` | 遷移完成的資料庫          |
+| **AWS DataSync**     | 檔案、資料夾⭐️                | S3 / EFS / FSx              | `rsync` / `robocopy`     | 同步完成的檔案            |
+| **AWS Snow Family**  | 大量資料（離線）             | S3                          | 寄硬碟給 AWS             | 資料匯入 S3               |
+| **VM Import/Export** | VM image（手動）             | EC2 AMI                     | 匯出 OVA 再匯入          | AMI（一次性）             |
 
 ### 依情境選擇
 
-| 情境關鍵字                                         | 選擇                      |
-| -------------------------------------------------- | ------------------------- |
-| lift-and-shift、migrate servers、minimize downtime | **AWS MGN**               |
-| database migration、schema conversion、異質資料庫  | **AWS DMS**（可搭配 SCT） |
-| transfer files、sync data to S3/EFS/FSx            | **AWS DataSync**          |
-| 網路頻寬不足、PB 級資料、離線傳輸                  | **Snow Family**           |
-| 一次性 VM 匯入、可接受較長停機                     | **VM Import/Export**      |
+| 情境關鍵字                                              | 選擇                      |
+| ------------------------------------------------------- | ------------------------- |
+| **lift-and-shift**⭐️、migrate servers、minimize downtime | **AWS MGN**               |
+| database migration、schema conversion、異質資料庫       | **AWS DMS**（可搭配 SCT） |
+| transfer files、sync data to S3/EFS/FSx                 | **AWS DataSync**          |
+| 網路頻寬不足、PB 級資料、離線傳輸                       | **Snow Family**           |
+| 一次性 VM 匯入、可接受較長停機                          | **VM Import/Export**      |
 
 ### 持續複製能力比較
 
@@ -2004,13 +2002,13 @@ S3 是最常見的，很多時候 Redshift/OpenSearch 也是先經過 S3 再載�
 
 ## EFS vs S3 存取方式比較表
 
-| 特性         | EFS (File Storage)                        | S3 (Object Storage)                   |
-| ------------ | ----------------------------------------- | ------------------------------------- |
-| **存取方式** | 像本機硬碟，mount 後直接讀寫              | 透過 HTTP API (PUT/GET)               |
-| **路徑概念** | 真正的目錄階層 `/home/user/docs/file.txt` | 扁平結構，「目錄」只是 key 的前綴假象 |
-| **修改方式** | 可以改檔案的某一部分（partial update）    | 整個物件替換，無法只改一小段          |
-| **鎖定機制** | 支援 file locking                         | 不支援（靠版本控制）                  |
-| **掛載**     | 可 mount 到 EC2，像 `/mnt/efs`            | 不能 mount，只能透過 SDK/CLI          |
+| 特性         | EFS (File Storage)                         | S3 (Object Storage)                   |
+| ------------ | ------------------------------------------ | ------------------------------------- |
+| **存取方式** | 像本機硬碟，mount 後直接讀寫               | 透過 HTTP API (PUT/GET)               |
+| **路徑概念** | 真正的目錄階層 `/home/user/docs/file.txt`  | 扁平結構，「目錄」只是 key 的前綴假象 |
+| **修改方式** | 可以改檔案的**某一部分**（partial update） | **整個物件替換**，無法只改一小段      |
+| **鎖定機制** | 支援 file locking                          | 不支援（靠版本控制）                  |
+| **掛載**     | 可 mount 到 EC2，像 `/mnt/efs`             | 不能 mount，只能透過 SDK/CLI          |
 
 ## 三種 Scaling Policy 比較
 
@@ -2035,10 +2033,6 @@ CPU 80%+   → 加 4 台
 ### 2. Instance Warm-up Time
 
 新啟動的 instance 在 warm-up 期間**不計入 scaling 指標計算**，避免還沒準備好就又觸發擴展。
-
-## 這題關鍵：「你自己指定 threshold」vs「AWS 幫你調」
-
-結論：看到「specifying the scaling metrics and threshold values」→ Step Scaling
 
 ## 兩者本質差異
 
@@ -2074,6 +2068,15 @@ CPU 80%+   → 加 4 台
 | **Warm-up**  | 新 instance 啟動後**不計入指標**，等它準備好 |
 
 兩者目的都是防止 Auto Scaling 過度反應，但切入點不同。
+
+### 時間線視角
+
+```bash
+[指標超標] → [觸發 scaling] → [新 instance 啟動] → [instance 開始處理流量]
+              ↑                  ↑
+              Cooldown 在這裡    Warm-up 在這裡
+```
+
 
 ## EBS Encryption 完整涵蓋範圍
 
