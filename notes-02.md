@@ -809,11 +809,19 @@
      2. **IAM Role**：給 **AWS 服務**或**外部身分**用的**臨時權限**，非用戶管理工具
      3. **考試陷阱**：別被選項的 Role 誤導，**user 批量管理必用 Group**
 187. ★★ SCP vs IAM Policy 的本質差異與應用場景
-     1. **使用場景差異**：SCP 用於 AWS Organizations 多帳號管理、IAM Policy 用於單一帳號內的權限管理
-     2. **附加對象差異**：SCP 附加到 Organization Root / OU / Account、IAM Policy 附加到 User / Group / Role
-     3. **作用層級差異**：SCP 是帳號層級的**最大權限邊界**、IAM Policy 是實體層級的**權限授予/拒絕**
+     1. **使用場景差異**：
+        - SCP 用於 AWS Organizations 多帳號管理
+        - IAM Policy 用於單一帳號內的權限管理
+     2. **附加對象差異**：
+        - SCP 附加到 **Organization Root / OU / Account**⭐️
+        - IAM Policy 附加到 User / Group / Role
+     3. **作用層級差異**：
+        - SCP 是帳號層級的**最大權限邊界**
+        - IAM Policy 是實體層級的**權限授予/拒絕**
 188. ★ SCP 在考試中的判斷公式與陷阱
-     1. **快速判斷**：Single AWS Account → IAM Policy（❌ 排除任何 SCP 選項）、Multiple AWS Accounts (Organizations) → SCP
+     1. **快速判斷**：⭐️
+        - Single AWS Account → IAM Policy（❌ 排除任何 SCP 選項）
+        - Multiple AWS Accounts (Organizations) → SCP
      2. **常見陷阱**：SCP **不能直接附加到 IAM User**，Architecture 上就不符合
      3. **記憶技巧**：SCP = 公司集團管理規則，一間公司（Single Account）用 IAM Policy 就夠了
 189. ★★ KMS Policy 與 IAM Policy 的雙層權限控制模型⭐️
@@ -830,7 +838,7 @@
      2. **Execution Role 用途**：控制 Lambda「**能做什麼**」（工作證），決定其可存取的其他服務
      3. **類比記憶**：Resource policy = 門禁系統、Execution role = 員工權限
      4. **加 KMS 權限的位置**：❌ Resource policy（錯誤）、✅ Execution role（正確）
-192. ★ Lambda Resource Policy 常見誤用分析
+192. ★ Lambda Resource Policy 常見誤用分析○
      1. **實際控制範圍**：Resource policy 僅管理「API Gateway 能否 invoke Lambda」、「S3 能否觸發 Lambda」等外部服務呼叫
      2. **無法實現**：無法控制 Lambda **對其他服務**（如 KMS、DynamoDB）的操作權限
      3. **考試陷阱**：不能把需要 KMS 權限的選項放在 resource policy，即使題目有此選項也要排除
