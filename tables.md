@@ -2115,3 +2115,49 @@ Encrypted Volume
 | --------------------------------- | ----------------------------------------------------- | ------------------- |
 | **有 Aurora Replica**             | 翻轉 CNAME 指向健康的 Replica，Replica 升級為 Primary | 約 30 秒內          |
 | **沒有 Replica（單一 instance）** | 在同一 AZ 嘗試重建新的 DB instance                    | 較慢（best-effort） |
+
+## IAM Policy 必要組成元素
+
+IAM Policy 是 JSON 格式，**必要的 key 只有兩個**：
+
+| Key         | 必要性   | 說明                                  |
+| ----------- | -------- | ------------------------------------- |
+| `Version`   | **必要** | 固定寫 `"2012-10-17"`（目前唯一版本） |
+| `Statement` | **必要** | 陣列，包含一或多個權限聲明            |
+
+---
+
+## Statement 內的必要元素
+
+每個 Statement 物件中，**必要的 key**：
+
+| Key        | 必要性     | 說明                                             |
+| ---------- | ---------- | ------------------------------------------------ |
+| `Effect`   | **必要**   | `"Allow"` 或 `"Deny"`                            |
+| `Action`   | **必要**   | 允許/拒絕的操作，如 `"s3:GetObject"`             |
+| `Resource` | **視情況** | 操作的目標資源 ARN（identity-based policy 必要） |
+
+## 最小可行 Policy 範例
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": "s3:GetObject",
+      "Resource": "arn:aws:s3:::my-bucket/*"
+    }
+  ]
+}
+```
+
+## *V-SEA-R 口訣（依重要性排序）
+
+- **V**ersion — 永遠是 `2012-10-17`
+- **S**tatement — 權限聲明陣列
+- **E**ffect — Allow / Deny
+- **A**ction — 做什麼操作
+- **R**esource — 對什麼資源
+
+其他常見但**非必要**的 key：`Principal`（resource-based policy 才需要）、`Condition`（條件式授權）。

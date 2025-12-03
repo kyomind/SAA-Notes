@@ -624,7 +624,7 @@
      1. **Failover 工作方式**：**RDS endpoint (CNAME)** 指向 primary 的 DNS 記錄，failover 時 CNAME 自動指向 standby，**應用程式無需改 connection string**
      2. **為何不是 IP 切換**：**IP 是綁定 subnet 的**，subnet 不能跨 AZ（Primary 在 AZ-A：IP `10.0.1.10`，Standby 在 AZ-B：IP `10.0.2.20`，無法搬遷）⭐️⭐️⭐️
      3. **記憶點**：**Multi-AZ Failover = DNS (CNAME) 切換，不是 IP 切換**，這也是為何 RDS endpoint 是 DNS 名稱而非 IP 的原因
-143. ★★ AWS Control Tower - 多帳號自動化管理中心⭐️○
+143. ★★ AWS Control Tower - 多帳號自動化管理中心⭐️
      1. **核心定位**：**AWS Organizations** 的升級版，提供**自動化 baseline 部署和持續合規檢查**（而非只是帳戶管理）
      2. 重點：可**持續合規檢查**，不只是一次性設定！⭐️
      3. **核心功能**：**自動建立 multi-account 架構**、**預設 security baseline**、**偵測和修復不合規配置**
@@ -838,7 +838,7 @@
      2. **Execution Role 用途**：控制 Lambda「**能做什麼**」（工作證），決定其可存取的其他服務
      3. **類比記憶**：Resource policy = 門禁系統、Execution role = 員工權限
      4. **加 KMS 權限的位置**：❌ Resource policy（錯誤）、✅ Execution role（正確）
-192. ★ Lambda Resource Policy 常見誤用分析○
+192. ★ Lambda Resource Policy 常見誤用分析
      1. **實際控制範圍**：Resource policy 僅管理「API Gateway 能否 invoke Lambda」、「S3 能否觸發 Lambda」等外部服務呼叫
      2. **無法實現**：無法控制 Lambda **對其他服務**（如 KMS、DynamoDB）的操作權限
      3. **考試陷阱**：不能把需要 KMS 權限的選項放在 resource policy，即使題目有此選項也要排除
@@ -853,7 +853,7 @@
 195. ★★ EBS 快照為何不自動匯出到 S3 的設計邏輯
      1. **AWS 的設計哲學**：快照已存在 AWS 的 managed S3（帳戶看不到），再匯出到自己的 S3 bucket = **重複儲存浪費成本**
      2. **替代方案**：需要跨區域 → **Snapshot Copy**；需要長期保留 → **AWS Backup**
-196. ★ 快照匯出相關的考試陷阱與真實機制
+196. ★ 快照匯出相關的考試陷阱與真實機制⭐️
      1. **常見陷阱**：看到「自動匯出快照到 S3」的選項 → ❌ **99% 是錯的**，沒有服務會自動匯出
      2. **唯一相關服務**：**AWS Backup** 可設定備份存到指定位置，但這是「備份管理」而非「快照匯出」
      3. **操作方式**：所有快照匯出都需要**手動操作**或透過 **AWS Backup 統一管理**
@@ -864,12 +864,12 @@
 198. ★ Secrets Manager 與 Parameter Store 的選擇判斷
      1. **Secrets Manager 適用**：**密碼會過期/自動輪轉** → 「Secrets Manager 專治會動的祕密」
      2. **Parameter Store 適用**：**配置很少變化** → 靜態設定儲存
-199. ★ Systems Manager OpsCenter 的真實用途與考試陷阱
+199. 😇 Systems Manager OpsCenter 的真實用途與考試陷阱
      1. **OpsCenter 的定位**：**營運事件管理**（incidents/問題追蹤），**非資料儲存服務**
      2. **常見陷阱**：題目用「OpsCenter 預設加密」混淆 → ✅ 確實有加密，❌ **但根本不是用來存配置的**
      3. **考試記憶點**：見到 OpsCenter 選項用於存放 key-value 配置 → **直接排除**
-200. ★★ SQS + Auto Scaling 解決請求遺失問題
-     1. **問題根源**：**Scaling Lag**（新 EC2 啟動需 2-3 分鐘），Auto Scaling 啟動後請求仍遺失
+200. ★★ SQS + Auto Scaling 解決請求遺失問題⭐️
+     1. **問題根源**：**Scaling Lag**（新 EC2 啟動需 2-3 分鐘），Auto Scaling 啟動後請求仍遺失(此時沒有 SQS，處理請求的 instance 不夠)
      2. **解決架構**：User → API/ALB → EC2(接收) → **SQS Queue** → EC2 Workers(Auto Scaling)
      3. **SQS 的三大優勢**：立即寫入 SQS（毫秒級，保證不遺失）、異步處理（用戶不等待，Worker 慢慢處理）、精準擴展（監控 `ApproximateNumberOfMessages` 自動擴展）
 201. ★ Auto Scaling 監控指標與擴展配置
@@ -882,9 +882,7 @@
      1. **運作原理**：客戶端建立 TCP 連線時**隨機選擇**一個 ephemeral port 作為 source port，server 的回應會送到此隨機 port
      2. **系統範圍差異**：Linux/Amazon Linux (32768-61000)、Windows Server 2008+ (49152-65535)、ELB/NAT Gateway/Lambda (1024-65535)
      3. **NACL 控制重點**：**必須允許此範圍的 outbound 流量**，否則回應封包會被擋掉⭐️
-204. ★ NACL 與 Security Group 設定的快速判斷
-     1. **口訣**：「**SG 管進，NACL 管進出**」- Security Group 只管進門（stateful），NACL 進出都要管（stateless）
-     2. **考試技巧**：看到 NACL → 立刻想到 **ephemeral ports outbound**；只提 Security Group → 不用管 ephemeral ports
+204. (刪除)
 205. ★★ NACL Outbound 規則的關鍵細節 - Destination Port vs Source Port
      1. **核心差異**：Server outbound 流量的 **destination port 是 client 的 ephemeral port**（32768-65535），**不是 443**
      2. **NACL Outbound 配置**：Source 任意（server IP）、**Destination port 32768-65535**（客戶隨機 port）、Destination IP 0.0.0.0/0
@@ -908,7 +906,7 @@
      1. **IAM Policy 限制**：開發者具有 Admin 可以**自己修改** IAM Policy，無法強制限制
      2. **AWS Config Rules 限制**：本身**沒有**「防止修改」的機制，**只能檢查**不符合項但無法主動阻止⭐️
      3. **SCP 優勢**：設定在組織層級，IAM Policy、Config Rules 都無法繞過
-211. ★★ SCP 三大特性與考試判斷標準
+211. ★★ SCP 三大特性與考試判斷標準⭐️
      1. **組織層級控制**：適用於 **Organization 層級**或 **OU（Organization Unit）層級**，跨帳號統一管制
      2. **權限天花板機制**：限制的是「**最大權限範圍**」，即使 Root User 也能限制其操作
      3. **考試判斷關鍵字**：「prevent modification + across accounts」→ **SCP**；「centralized control」→ **SCP**；「限制 admin/root 行為」→ **只有 SCP 辦得到**
@@ -918,13 +916,15 @@
      3. **成本控管規則**：成本控管政策不能被個別帳號繞過（如禁用特定 Region、限制 Instance Type）
 213. ★★ AWS Config Rule vs SCP - Detective Control vs Preventive Control 的根本區別
      1. **Config Rule 本質**：**事後檢查（detective control）**，只能「**偵測**」不符合項，無法「**阻止**」操作執行
-     2. **SCP 本質**：**事前阻止（preventive control）**，在操作發生前直接拒絕，物理上無法執行⭐️
-     3. **考試應用**：題目要求「**prevent deletion**」或「**block operations**」→ 必選 **SCP**；題目要求「**detect non-compliance**」→ 才選 **Config Rule**
+     2. **SCP 本質**：**事前阻止（preventive control）**，在操作發生前直接拒絕，物理上**無法執行**⭐️
+     3. **考試應用**：
+        - 題目要求「**prevent deletion**」或「**block operations**」→ 必選 **SCP**
+        - 題目要求「**detect non-compliance**」→ 才選 **Config Rule**
 214. ★ Control Tower 的定位誤區與權限控制工具的邊界
      1. **Control Tower 真正用途**：**建立多帳號治理框架**、自動化 baseline 部署、持續合規檢查，**不是權限控制工具**⭐️
         - 多帳號管理框架
         - 自動化安全基準部署
-        - 持續合規檢查
+        - **持續合規檢查**⭐️
      2. **常見陷阱**：Control Tower 能檢查配置但**無法直接阻止操作**，若配合 Trust Policy 更是雙重錯誤
         - Control Tower 無法執行 preventive control
         - Trust Policy 無法限制 root user
@@ -934,7 +934,7 @@
         - 限制帳號層級權限 → **SCP**（IAM Policy 對 root user 無效）
         - 阻止操作執行 → **SCP**（Config Rule 只能偵測）
         - 限制 root user → **SCP**（IAM Role 無法限制直接登入）
-     2. **核心記憶**：**Organizations 層級的權限控制 = SCP，沒有替代方案**；其他工具各有其用但都無法在帳號層級限制 root user
+     2. **核心記憶**：**Organizations 層級的權限控制 = SCP，沒有替代方案**；其他工具各有其用但都無法在帳號層級限制 root user⭐️
         - SCP 是帳號層級的權限天花板
         - 其他工具適用於不同層級的不同場景
         - 無一可替代 SCP 的核心功能
@@ -946,25 +946,26 @@
      2. **架構特性**：典型的**資料湖架構**，適合大量感測器資料收集與分析
 218. ★★ S3 Server-Side Encryption (SSE) 三種變體對比 - 考試常考
      1. **SSE-S3**：AWS 管理一切，最簡單（預設 **AES-256**）
-     2. **SSE-KMS**：透過 **AWS KMS** 管理金鑰，可**追蹤使用記錄**
-     3. **SSE-C**：客戶提供金鑰給 AWS，AWS 用完即丟棄
+     2. **SSE-KMS**：透過 **AWS KMS** 管理金鑰，可**追蹤使用記錄**(即 CloudTrail)⭐️
+     3. **SSE-C**：客戶**提供金鑰給 AWS**，AWS 用完即丟棄
 219. ★ SSE 考試題目答案解析技巧
      1. **正確選項 1**：Enable SSE on S3 bucket (AES-256) → 指的是 **SSE-S3**
-     2. **正確選項 2**：用自己的加密金鑰加密後透過 HTTPS 上傳 → 這是 **SSE-C**（不是 Client-Side Encryption）
+     2. **正確選項 2**：用自己的加密金鑰加密後透過 HTTPS 上傳 → 這是 **SSE-C**，即客戶**提供金鑰給 AWS**（不是 Client-Side Encryption）
 220. ★★ VPC Peering 考試陷阱 - Route Table 更新的不完整選項
      1. **錯誤選項特徵**：只說「更新 DEV route table 加入 PROD 的 route」，但**沒提到要先建立 peering connection**
      2. **題解邏輯**：如果只更新 route table 但沒先建立 peering connection，當然不會通
-221. ★★ VPC Peering 完整正確配置流程
+221. ★★ VPC Peering 完整正確配置流程⭐️
      1. **建立連線**：建立 DEV ↔ PROD **peering connection**
      2. **雙向路由**：更新 **DEV** route table（加入 PROD CIDR → peering target）+ 更新 **PROD** route table（加入 DEV CIDR → peering target）
+     3. 兩個 route table 都要更新，才能完成雙向通訊
 222. ★ VPC Peering 考試判斷標準與常見陷阱
      1. **判斷標準**：VPC peering 題目的正確答案必須同時包含「建立 peering connection」+「更新雙方 route table」
      2. **常見陷阱**：選項可能寫「Update route table to add PROD CIDR」→ 看起來對，但**少了建立 peering 這步**
      3. **記憶口訣**：單獨只提 route table = 不完整 = 錯誤答案
-223. ★★ EBS Volume 終止行為 - Root vs Additional Volume 差異
-     1. **Root Volume**：預設 `DeleteOnTermination = True` → **自動刪除**
-     2. **Additional Volume**：預設 `DeleteOnTermination = False` → **保留**
-     3. **考試記憶**：Root volume 預設會刪，additional volume 預設會留
+223. ★★ EC2 Terminate(刪除)時的 Volume 處理⭐️
+     1. **Root Volume**（開機碟）：預設 `DeleteOnTermination = True` → **隨 Instance 一起刪除**
+     2. **Additional Volume**（額外掛載）：預設 `DeleteOnTermination = False` → **保留不刪**
+     3. **考試口訣**：Root 刪、Additional 留
 224. ★ EBS Root Volume 保留方法與時機
      1. **保留方法**：設定 `DeleteOnTermination = False`
      2. **修改時機**：Launch instance 時（Console/CLI）或 Instance 建立後透過 CLI/API
@@ -973,7 +974,7 @@
      1. **錯誤方案**：Snapshot → Create new Aurora DB cluster（**不支援跨類型轉換**）⭐️
      2. **正確方案**：DMS (Database Migration Service) - **線上遷移零停機**
      3. **關鍵限制**：Aurora Provisioned 和 Serverless 是不同部署模式，無法直接轉換⭐️
-226. ★ DMS 在 Aurora 遷移中的優勢
+226. ★ DMS 在 Aurora 遷移中的優勢⭐️
      1. **零停機**：支援 Aurora Provisioned → Aurora Serverless 的即時遷移
      2. **持續同步**：遷移過程中持續複製資料變更，切換時幾乎無感
      3. **專業工具**：專為跨資料庫類型/引擎遷移設計
@@ -988,7 +989,7 @@
      2. **同引擎跨類型**（Provisioned ↔ Serverless）：**DMS**
      3. **跨引擎遷移**（MySQL → PostgreSQL）：**DMS**
      4. **可接受停機**：Snapshot + Restore
-229. ★★ AWS 考試邏輯 - 技術可行性 vs 營運開銷 (Operational Overhead)
+229. ★★ AWS 考試邏輯 - 技術可行性 vs 營運開銷 (Operational Overhead)⭐️
      1. **考試陷阱**：給予 2-3 個技術上都正確的選項，但只有一個符合特定限制條件
      2. **解題策略**：先看限制條件（成本最低/維運最少/最快速），再選方案
      3. **常見限制詞**：LEAST operational overhead、most cost-effective、fastest implementation
@@ -996,7 +997,7 @@
      1. **手動增加 Storage**：技術可行但維運成本高（需持續監控 + 重複操作）
      2. **Storage Autoscaling**：技術可行且維運成本低（設定一次即可）
      3. **考試重點**：遇到 "LEAST operational overhead" → 選擇自動化方案
-231. ★ ENI (Elastic Network Interface) 分離行為澄清
+231. ★ ENI (Elastic Network Interface) 分離行為澄清⭐️
      1. **EC2 Stop/Start**：ENI **不會被** detach，保持連接狀態
      2. **真正分離情況**：手動 detach 或 terminate instance 時才會分離
      3. **考試陷阱**：誤以為 stop/start 會導致 ENI detached
@@ -1007,30 +1008,30 @@
         - ├── EC2 Instance A (你的)
         - ├── EC2 Instance B
         - └── EC2 Instance C
-233. ★★ EC2 Stop/Start 時 Underlying Host 切換機制
+233. ★★ EC2 Stop/Start 時 Underlying Host 切換機制⭐️
      1. **Stop 時**：AWS 把你的 EC2 從實體機器 A 上移除
      2. **Start 時**：AWS 可能把你的 EC2 放到實體機器 B 上（**不一定是原本那台**）
      3. **主機切換原因**：原主機硬體維護、資源調度優化、原主機負載過高
-234. ★★ Instance Store 資料遺失原理 - Underlying Host 切換導致
+234. ★★ Instance Store 資料遺失原理 - Underlying Host 切換導致⭐️
      1. **Instance Store 特性**：綁定在**實體主機的硬碟**上
      2. **資料遺失機制**：換主機 = 換硬碟 → 資料就沒了
      3. **EBS 不受影響**：EBS 是**網路儲存**，不在實體主機上，所以不受影響
-235. ★★ S3 資料加密方式分類 - Server-Side vs Client-Side
+235. ★★ S3 資料加密方式分類 - Server-Side vs Client-Side⭐️
      1. **兩大類別**：**Server-Side Encryption**（伺服器端加密）和 **Client-Side Encryption**（客戶端加密）
      2. **核心差異**：資料在哪個階段進行加密處理
-236. ★★ S3 Server-Side Encryption (SSE) 三種變體
+236. ★★ S3 Server-Side Encryption (SSE) 三種變體⭐️
      1. **SSE-S3**：AWS 全包，你不用管金鑰（最簡單）
      2. **SSE-KMS**：使用 **AWS KMS** 管理金鑰（可追蹤誰存取、設定權限）
      3. **SSE-C**：你自己提供金鑰給 AWS 使用（你要保管好金鑰）
      4. **運作原理**：資料送到 S3 **之後**，由 AWS 負責加密/解密
 237. ★★ S3 Client-Side Encryption 預加密機制
-     1. **運作原理**：資料在你手上就先加密，**然後再上傳**到 S3
+     1. **運作原理**：資料**在你手上就先加密**，然後**再上傳**到 S3⭐️
      2. **金鑰選項**：使用 **KMS key** 或使用**你自己的 master key**⭐️
 238. ★★ Client-Side vs Server-Side 安全性差異 - 明文存取防護
      1. **Server-Side 限制**：資料在傳輸過程中，AWS **看得到明文**（雖然只是短暫瞬間）
      2. **Client-Side 優勢**：從頭到尾，連 AWS 都**看不到明文**，只能看到加密後的資料
-     3. **考試判斷**：要求「**prevent plain text access**」（防止明文存取）→ 選 **Client-Side Encryption**
-239. ★★ Lambda Container Image 解決方案 - Serverless 與容器結合
+     3. **考試判斷**：要求「**prevent plain text access**」⭐️（防止明文存取）→ 選 **Client-Side Encryption**
+239. ★★ Lambda Container Image 解決方案 - Serverless 與容器結合○
      1. **核心組合**：**Lambda + Container Image + 5GB ephemeral storage**
      2. **適用場景**：Fully managed serverless compute + Container image 從 ECR + 需要暫存空間
 240. ★★ Lambda Container Image 關鍵判斷點
