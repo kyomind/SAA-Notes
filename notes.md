@@ -148,3 +148,11 @@
 37. 😇 Aurora Reader Endpoint 最佳實踐
     1. **架構擴展性**：一開始就把讀取邏輯指向 Reader Endpoint，日後加 Replicas 時**零程式碼修改**
     2. **考試重點**：問「如何實現 Aurora 讀取負載均衡」→ 答案永遠是 **Reader Endpoint**
+38. ★★ IAM 外部身分與 Assume Role — 核心概念⭐️
+    1. **外部身分定義**：不在你 AWS 帳戶內建立的 IAM User（跨帳戶用戶、Federated Users、Web Identity、SAML 2.0）
+    2. **為何用 Role**：無法在你帳戶幫外部人建立 IAM User，改用 **Assume Role + STS** 取得臨時憑證
+    3. **運作流程**：外部身分 → Assume Role → 獲得臨時憑證 → 存取 AWS 資源
+39. ★ IAM 內部 vs 外部身分 — 權限指派差異
+    1. **內部身分**（你帳戶的 IAM User）：直接指派 Policy 或加入 Group
+    2. **外部身分**（不在你帳戶內）：透過 Assume Role 取得臨時權限
+    3. **考試關鍵字**：看到「跨帳戶」「Federation」「SSO」「第三方登入」→ 想到 **IAM Role + STS**

@@ -702,7 +702,7 @@
         - 有 Replicas → 自動分散 SELECT 查詢到所有 Replicas
         - 沒有 Replicas → 連到 Primary instance（可讀寫）
      3. **考試關鍵**：Aurora 內建**自動讀取負載均衡**，無需自行架設 Load Balancer
-160. ★ Aurora Parallel Query 的單一查詢加速機制
+160. ★ Aurora Parallel Query 的單一查詢加速機制⭐️
      1. **目的**：加速**單一複雜查詢**（OLAP 分析）
      2. **運作原理**：將一個查詢拆到**多個 CPU 平行處理**
      3. **使用場景**：OLAP 分析查詢、複雜 JOIN/聚合運算
@@ -718,9 +718,9 @@
      1. **Initiate**：開始上傳，取得 upload ID
      2. **Upload Parts**：分段上傳各個片段
      3. **Complete**：通知 S3 組合所有片段
-164. ★★ AWS Direct Connect Gateway 多 VPC 連接能力
+164. ★★ AWS Direct Connect Gateway 跨 region 與多 VPC 連接能力⭐️
      1. **核心價值**：一條 DX 連線 + 一個 DX Gateway，可直接連接**最多 10 個 VPC**
-     2. **跨域特性**：支援跨 Region 和跨 Account 連接
+     2. **跨域特性**：支援**跨 Region** 和跨 Account 連接
      3. **考試意義**：多 VPC 環境下連接內部部署網路的首選方案
 165. ★★ VPC Peering 在 Direct Connect 架構中的限制（考試陷阱）
      1. **核心限制**：VPC Peering **只負責 VPC 間的流量**，不會處理「VPC ↔ on-premises」的流量
@@ -730,14 +730,14 @@
      1. **方案一**：VPC B 自己接 DX Gateway 連接
      2. **方案二**：透過 **Transit Gateway** 中轉（支援更複雜的網路拓撲）⭐️
      3. **記憶**：VPC Peering 是「VPC to VPC」，不涉及 on-premises 流量
-167. ★★ Public Subnet 連線的兩個必要條件（缺一不可）
+167. ★★ Public Subnet 連線的兩個必要條件（缺一不可）⭐️
      1. **EC2 必須有 Public IP**：EIP 或自動分配的 public IP
      2. **Route Table 必須有 IGW 路由**：0.0.0.0/0 → igw-xxx
 168. ★★ Route Table 的隱含邏輯與 Main Route Table 陷阱
-     1. **預設行為**：每個 subnet **必須關聯一個 route table**；無明確關聯 → **自動使用 main route table**⭐️
+     1. **預設行為**：每個 subnet **必須關聯一個 route table**；無明確關聯 → **自動使用 main route table**
      2. **常見陷阱**：新建 subnet 很可能用了 main route table，而 **main route table 可能沒有 IGW 路由**
      3. **解決方案**：建立 subnet 時明確指定 route table 或檢查 main route table 的路由配置
-169. ★★ AWS Reserved Instance Marketplace - 閒置保留實例銷售平台
+169. ★ AWS Reserved Instance Marketplace - 閒置保留實例銷售平台
      1. **平台功能**：支援第三方和 AWS 客戶銷售**未使用的 Standard Reserved Instances**（支援不同期限和定價選項）
      2. **使用場景**：遷移到新 AWS 區域、變更 instance 類型、提前結束專案、業務需求改變、有多餘容量
 170. ★ Reserved Instance 閒置時的正確處置方案
@@ -762,37 +762,40 @@
      1. **Cluster Placement Group**：限制在**單一 AZ**、**單一 Region**
      2. **Partition Placement Group**：限制在**單一 Region**（可跨多個 AZ）
      3. **Spread Placement Group**：限制在**單一 Region**（可跨多個 AZ）
-     4. **跨 Region 支援**：所有類型 Placement Groups 都**不支援跨 Region**
+     4. 所有類型 Placement Groups 都**不支援跨 Region**
 176. ★ Placement Group 跨域限制的考試陷阱
      1. **常見陷阱**：題目故意混淆「跨多個 AZ」與「跨 Regions」的概念
      2. **考試技巧**：看到 "across multiple AZs in multiple Regions" → ❌ 錯誤，Placement Groups 不支援跨 Region
 177. 😇 Placement Group 三類型的設計原則與記憶技巧
      1. **Cluster → 極致效能**：必須在**同一個機房（單一 AZ）**，追求最低延遲
      2. **Partition / Spread → 容錯策略**：可以**分散到不同 AZ（但同 Region）**，追求高可用性
-178. ★ AWS Config 用於 tag 管理與合規性檢查
+178. ★ AWS Config 用於 tag 管理與合規性檢查⭐️
      1. **require-tags rule 功能**：自動掃描所有資源的 tags
      2. **檢測能力**：檢測不符合命名規範的 tags（包括**大小寫**）
      3. **合規性標記**：標記為 **non-compliant**，讓團隊快速找出問題資源
 179. ★★ CloudFormation CreationPolicy 核心概念
      1. **問題場景**：SharePoint 需要 AD、SQL Server 等依賴服務都啟動完成，才能開始安裝
-     2. **預設行為限制**：CloudFormation 預設只確認 EC2 instance **創建成功**，不管裡面的應用程式是否安裝完成
+     2. **預設行為限制**：CloudFormation 預設只確認 EC2 instance **建立成功**，不管裡面的應用程式是否安裝完成
      3. **解決方案**：使用 **CreationPolicy** + **cfn-signal** 確保資源真正就緒
 180. ★★ CreationPolicy 運作流程與機制
      1. **完整流程**：EC2 創建 → 執行 UserData 安裝軟體 → cfn-signal 發送成功信號 → CloudFormation 繼續下一步
      2. **沒有 CreationPolicy**：EC2 一啟動就往下走，結果 SharePoint 開始裝時 SQL Server 還沒好 → **失敗**
      3. **有 CreationPolicy**：CloudFormation 會等到收到 **cfn-signal** 才認為資源真正完成
-181. ★ Launch Template 的不可變性與版本管理
-     1. **核心概念**：Launch Template 是**不可變的（immutable）**，不能直接修改現有版本
-     2. **換 AMI 的正確做法**：創建新版本 Launch Template（指定新 AMI）→ ASG 設定使用新版本 → 觸發 instance refresh 或等新 instance 啟動時自動套用
+181. ★ ASG Launch Template 的不可變性與版本管理
+     1. **核心概念**：Launch Template 是**不可變的（immutable）**⭐️，不能直接修改現有版本
+     2. ASG **換 AMI 的正確做法**：
+        1. 建立新版本 Launch Template（指定新 AMI）
+        2. ASG 設定使用新版本
+        3. 觸發 instance refresh 或等新 instance 啟動時自動套用
      3. **為什麼不能修改**：AWS 設計為版本控制模式，確保配置追蹤性和穩定性
 182. ★ AppSync 的核心應用場景
-     1. **即時同步**：利用 GraphQL 訂閱功能，投票結果即時推送到所有裝置
+     1. **即時同步**：利用 **GraphQL** 訂閱功能，投票結果即時推送到所有裝置
      2. **簡化開發**：自動處理 DynamoDB 查詢，無需自己撰寫 API
      3. **協作應用**：多人同時投票時，排名自動更新給所有用戶
 183. ★ DocumentDB + AppFlow 的組合陷阱
      1. **常見誤解**：DocumentDB 可用，但選擇 AppFlow 是**服務定位錯誤**
      2. **AppFlow 真正用途**：SaaS 資料傳輸服務（連接 Salesforce、Slack 等），**完全不能** query database 或做即時更新
-     3. **正確定義**：AppFlow = SaaS 之間搬資料（例：Salesforce → S3），**非即時資料庫查詢工具**
+     3. **正確定義**：AppFlow = SaaS 之間搬資料（例：Salesforce → S3），**非即時資料庫查詢工具**⭐️
 184. ★★ 批量 IAM 用戶管理的最佳做法
      1. **核心方案**：使用 **IAM Group** 而非逐一設定，新人加入時按部門分組
      2. **實務優勢**：一次設定權限整組套用、維護效率高、符合 RBAC 原則
@@ -803,7 +806,7 @@
      3. **執行邏輯**：MFA 就是「進門要刷卡」，沒刷卡（無 MFA）就進不來（Deny）
 186. 😇 IAM Group vs Role 的核心區別
      1. **IAM Group**：給 IAM User 用的**權限集合**，用於用戶批量管理
-     2. **IAM Role**：給 AWS 服務或外部身份用的**臨時權限**，非用戶管理工具
+     2. **IAM Role**：給 **AWS 服務**或**外部身分**用的**臨時權限**，非用戶管理工具
      3. **考試陷阱**：別被選項的 Role 誤導，**user 批量管理必用 Group**
 187. ★★ SCP vs IAM Policy 的本質差異與應用場景
      1. **使用場景差異**：SCP 用於 AWS Organizations 多帳號管理、IAM Policy 用於單一帳號內的權限管理
