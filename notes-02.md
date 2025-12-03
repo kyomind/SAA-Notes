@@ -626,11 +626,12 @@
      3. **記憶點**：**Multi-AZ Failover = DNS (CNAME) 切換，不是 IP 切換**，這也是為何 RDS endpoint 是 DNS 名稱而非 IP 的原因
 143. ★★ AWS Control Tower - 多帳號自動化管理中心⭐️○
      1. **核心定位**：**AWS Organizations** 的升級版，提供**自動化 baseline 部署和持續合規檢查**（而非只是帳戶管理）
-     2. **核心功能**：**自動建立 multi-account 架構**、**預設 security baseline**、**偵測和修復不合規配置**
-     3. **考試判斷關鍵字**：「**多帳號 + 標準化配置**」、「**治理策略 + 自動化建立**」、「**預設 baseline + 持續合規檢查**」 → 選 **Control Tower**
+     2. 重點：可**持續合規檢查**，不只是一次性設定！⭐️
+     3. **核心功能**：**自動建立 multi-account 架構**、**預設 security baseline**、**偵測和修復不合規配置**
+     4. **考試判斷關鍵字**：「**多帳號 + 標準化配置**」、「**治理策略 + 自動化建立**」、「**預設 baseline + 持續合規檢查**」 → 選 **Control Tower**
 144. ★★ EKS - Kubernetes cloud-agnostic 多雲支援
      1. **Cloud-agnostic 定義**：「**我不在乎底層是哪朵雲**」，能**無痛切換多個雲平台**（AWS EKS ↔ GCP GKE ↔ Azure AKS）
-     2. **Kubernetes 開源特性**：**開源容器編排標準**，YAML、Helm Charts、kubectl 指令**完全相容**各雲平台
+     2. **Kubernetes 開源特性**：**開源容器編排標準**，YAML、Helm Charts、kubectl 指令**完全相容**各雲平台⭐️
      3. **遷移優勢**：**遷移時無需改程式碼**，只需改底層基礎設施，**不被單一雲端綁架**
 145. ★ ECS - AWS 專屬容器服務與遷移風險
      1. **AWS 專屬定位**：**AWS 原生服務**，Task Definition 和配置**只能在 AWS 運作**
@@ -638,14 +639,15 @@
      3. **考試判斷**：題目提「**多雲環境**」「**遷移到其他雲**」「**避免雲端綁架**」→ **EKS**；題目**只在 AWS 內運作** → **ECS** 也可以
 146. ★★ AWS DataSync - 大規模資料遷移的自動化工具
      1. **核心定位**：**地端 → AWS 的專用資料傳輸工具**，比開源工具快 **10 倍**，無需寫 script 手動排程
-     2. **三大關鍵特性**：**自動化傳輸**（無需管理排程、監控）、**高速傳輸**（優化網路效能）、**支援冷資料歸檔**（直接送 Glacier Deep Archive）
+     2. **三大關鍵特性**：**自動化傳輸**（無需管理排程、監控）、**高速傳輸**（優化網路效能）、**支援冷資料歸檔**（**直接送** Glacier Deep Archive⭐️）
      3. 題目提「**大量資料**」「**自動化遷移**」「**加速傳輸**」→ **DataSync**
      4. 題目提「**實體硬碟**」→ **Snowball**；題目提「**混合雲持續存取**」→ **Storage Gateway**
 147. ★★ Gateway Endpoint Policy - 集中式 S3 存取控制方案
      1. **核心概念**：Gateway Endpoint 讓 VPC 內的資源**不透過網際網路**直接存取 S3/DynamoDB，想像成「**內網專線**」
      2. **存取控制方式**：控制「**哪些 S3 buckets 可以被存取**」有兩種方式
         - **Bucket Policy**：在每個 bucket 設定
-        - **Endpoint Policy**：在 Gateway Endpoint 設定
+        - **Endpoint Policy**：在 Gateway Endpoint 設定⭐️複數個 buckets，一個一個設定很麻煩
+     3. **考試判斷**：題目提「**trusted S3 buckets**」→ 優先考慮 **Endpoint Policy**
 148. ★★ Endpoint Policy vs Bucket Policy - 集中管理優勢
      1. **效率對比**
         - **Bucket Policy**：10 個 trusted buckets = 設定 10 次
@@ -654,10 +656,10 @@
         - **multiple buckets** + Gateway Endpoint 場景 → **Endpoint Policy**
      3. **關鍵記憶**：Endpoint Policy **優先於 Bucket Policy**，是額外的限制層
 149. ★ 權限驗證三層模型 - IAM/Bucket/Endpoint Policy 共同作用
-     1. **驗證流程**：三層依序檢查
+     1. **驗證流程**：三層依序檢查⭐️
         - **IAM Policy**：使用者有什麼權限
         - **Bucket Policy**：bucket 允許誰存取
-        - **Endpoint Policy**：這條路徑允許存取哪些 bucket
+        - **Endpoint Policy**：這條路徑允許存取哪些 bucket(額外限制、獨立的控制層)
      2. **通過條件**：三者**都要 Allow** 才能成功存取，任一層 Deny 就無法通過
 150. ★★ Gateway Endpoint Policy 配置機制
      1. **政策設定**：建立 Gateway endpoint 時可附加 **endpoint policy** 控制對服務的存取權限
@@ -669,9 +671,8 @@
         - **Bucket Policy**：逐個 bucket 設定，**時間成本高**
         - **Endpoint Policy**：單一 policy 設定，**效率高**
      3. **題目判斷**：看到「**trusted S3 buckets**」+ 「multiple buckets」→ 優先選 **Endpoint Policy**
-
-152. ★★ AWS Secrets Manager - 動態密碼管理與自動輪換
-     1. **核心價值**：API 動態取得最新密碼、自動輪換（auto rotation）、應用程式無需改 code
+152. ★★ AWS Secrets Manager - 動態密碼管理與自動輪換⭐️
+     1. **核心價值**：API 動態取得**最新**密碼、**自動輪換**（auto rotation）、應用程式無需改 code
      2. **解決的痛點**：密碼寫死在程式碼、要換密碼需改 code 重新部署、多個 app 共用密碼漏改爆炸
      3. **輪換流程**：產生新密碼 → 更新 RDS → 更新 secret → 驗證連線
 153. 😇 Secrets Manager 考試判斷標準與應用場景
@@ -679,7 +680,7 @@
      2. **考試判斷關鍵字**：看到「**自動輪換**」+ 「**RDS credentials**」→ 選 **Secrets Manager**
 154. ★★ AWS Glue - 全託管 ETL 服務與低成本資料轉換
      1. **核心價值**：全託管的 ETL 服務，不用管理伺服器、自動擴展、按使用量付費
-     2. **標準流程**：S3 (.csv) → **Glue Crawler**（自動發現 schema）→ **Glue ETL Job**（轉換成 Parquet）→ S3 (Parquet 格式)
+     2. **標準流程**：S3 (.csv) → **Glue Crawler**（自動發現 schema）→ **Glue ETL Job**（轉換成 Parquet）→ **S3 (Parquet 格式)**⭐️
      3. **Crawler 自動化**：自動掃描 S3 識別資料結構、建立 **Data Catalog**（無需手動定義 schema）
 155. ★★ Glue ETL Job - Parquet 轉換與排程執行
      1. **ETL 能力**：支援 Parquet/ORC 格式轉換（內建）、可設定定時執行、Serverless 無需管理基礎設施
@@ -695,9 +696,11 @@
      1. **Retention Mode**：必選其一（或都不選），設定保留期限
      2. **Legal Hold**：可選，獨立於 Retention Mode，無期限
      3. **記憶技巧**：Legal Hold 是額外的鎖，可以疊加在任何 Retention Mode 上
-159. ★★ Aurora Reader Endpoint 的自動負載均衡機制
+159. ★★ Aurora Reader Endpoint 的**自動負載均衡**機制⭐️
      1. **核心功能**：自動將所有 **read-only 查詢**負載均衡到 Read Replicas
-     2. **運作邏輯**：有 Replicas → 自動分散 SELECT 查詢到所有 Replicas；沒有 Replicas → 連到 Primary instance（可讀寫）
+     2. **運作邏輯**：
+        - 有 Replicas → 自動分散 SELECT 查詢到所有 Replicas
+        - 沒有 Replicas → 連到 Primary instance（可讀寫）
      3. **考試關鍵**：Aurora 內建**自動讀取負載均衡**，無需自行架設 Load Balancer
 160. ★ Aurora Parallel Query 的單一查詢加速機制
      1. **目的**：加速**單一複雜查詢**（OLAP 分析）

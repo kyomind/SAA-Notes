@@ -142,3 +142,9 @@
 35. ★★ ASG Cooldown vs Warm-up 考試判斷
     1. **調 Cooldown**：題目說「scaling 太頻繁」「震盪」「oscillation」
     2. **調 Warm-up**：題目說「新 instance 啟動時指標異常」「bootstrap 期間」
+36. ★★ Aurora Reader Endpoint 行為 — 有無 Replica 的差異
+    1. **有 Replicas**：自動負載均衡到所有 Replicas
+    2. **沒有 Replicas**：**退回連接到 Primary instance**（技術上不會報錯，但無讀寫分離效果）
+37. 😇 Aurora Reader Endpoint 最佳實踐
+    1. **架構擴展性**：一開始就把讀取邏輯指向 Reader Endpoint，日後加 Replicas 時**零程式碼修改**
+    2. **考試重點**：問「如何實現 Aurora 讀取負載均衡」→ 答案永遠是 **Reader Endpoint**
