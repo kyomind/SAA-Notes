@@ -38,21 +38,21 @@
 11. ★ **Network ACL 配置錯誤分析**⭐️
     1. **為何錯誤**：題目已指出可連接其他 EC2 instances，表示網路基本連通性正常
     2. **Network ACL 特性**：適合控制**整個 VPC 進出流量**，而非單一 EC2 instance 的流量控制
-12. ★ **AWS Glue Job Bookmark 核心概念**⭐️
+12. ★ **AWS Glue Job Bookmark 核心概念**
     1. **定義**：AWS Glue 的**狀態追蹤機制**，記錄 ETL job 已處理過的資料
     2. **運作原理**：持久化儲存 job 執行狀態（獨立於 job 本身）、追蹤已處理的資料位置/時間戳記
     3. **下次執行機制**：只處理新增的資料，**避免重複處理**
-13. ★★ **Job Bookmark 應用場景與優勢**
+13. ★★ **Job Bookmark 應用場景與優勢**⭐️
     1. **題目關鍵字**：出現 "reprocessed old data" + "operationally efficient" 場景
     2. **技術優勢**：一鍵啟用、無需修改程式碼、自動追蹤處理進度、節省時間與成本
     3. **考試記憶點**：遇到 "避免重複處理資料" + "Glue ETL" 場景 → 優先想到 **Job Bookmark**
-14. ★★ **SNI (Server Name Indication) 核心概念**
+14. ★★ **SNI (Server Name Indication) 核心概念**⭐️
     1. **定義**：讓**單一 IP 地址/Load Balancer 處理多個域名的 SSL 憑證**
     2. **運作原理**：透過 **TLS handshake** 時客戶端帶上 hostname 來選擇對應憑證
     3. **ALB 實作**：單一 listener (HTTPS:443) 綁定多張 SSL 憑證，自動選擇正確憑證
 15. ★★ **SNI 應用場景與優勢分析**
     1. **題目關鍵字**：出現 "multiple domains" + "SSL traffic" + "most cost-effective" 場景
-    2. **核心優勢**：ALB **原生免費功能**、單一 listener 綁定多張憑證、自動管理無需重新設定
+    2. **核心優勢**：ALB **原生免費功能**、單一 listener 綁定多張憑證、自動管理無需重新設定⭐️
     3. **考試記憶點**：**多域名 SSL + ALB** → 優先選 **SNI**
 16. 😇 **SNI 方案比較與限制**
     1. **SNI 優勢**：免費、ALB 原生支援
@@ -61,21 +61,21 @@
 17. ★★ **ELB 跨 region 部署限制**
     1. **核心限制**：**ELB 只能在單一 region 內運作**，無法跨 multiple regions
     2. **錯誤配置範例**：多個 region 的 EC2 instances + Auto Scaling 共用一個 ELB
-    3. **正確解決方案**：每個 region 部署獨立的 ELB，搭配 Route 53 做跨 region 負載均衡
-18. ★ A **gateway endpoint** is a gateway that you specify in your **route table** to access Amazon S3 from your VPC over the AWS network.
+    3. **正確解決方案**：每個 region 部署獨立的 ELB，搭配 Route 53 做跨 region 負載均衡⭐️
+18. ★ A **gateway endpoint** is a gateway that you specify in your **route table** to access Amazon S3 from your VPC over the AWS network.⭐️
 19. ★★ **AWS Config 核心功能與職責**
     1. **定義**：持續監控資源配置的合規性檢查工具
     2. **功能**：記錄資源配置變更歷史、用 Config Rules 評估是否符合規範、偵測到違規就標記為 `NON_COMPLIANT`
-    3. **限制**：只能「**發現問題**」，無法執行修復⭐️
+    3. **限制**：只能「**發現問題**」，無法執行修復⭐️，要自動修復需要搭配其他服務（如 EventBridge + Lambda）
 20. ★★ **EventBridge 在合規自動化中的角色**
     1. **定義**：事件驅動的膠水，連接 Config 和後續動作
     2. **功能**：監聽 AWS Config 發出的 `NON_COMPLIANT` 事件、用 custom event pattern 過濾特定規則、觸發下游目標(Lambda/SNS)
-    3. **職責**：充當橋樑，讓 Config 觸發自動化⭐️
+    3. **職責**：充當橋樑，讓 Config 觸發自動化
 21. ★★ **AWS 合規自動修復架構模式**
     1. **標準三件套**：Config（監控員）→ EventBridge（派遣員）→ Lambda（執行員）
     2. **運作流程**：AWS Config Rule（檢查 key 年齡）→ 偵測到違規 → EventBridge Rule（監聽 NON_COMPLIANT 事件）→ 觸發 → Lambda Function（執行 deactivate + delete）
     3. **應用場景**：IAM access keys 超過 90 天未 rotate → 自動停用刪除
-22. ★ **合規自動化架構設計原理分析**
+22. ★ **合規自動化架構設計原理分析**⭐️
     1. **各元件職責分工**：Config（監控 + 評估）、EventBridge（事件路由）、Lambda（執行修復）
     2. **為何需要三個元件**：Config 無法執行修復、Lambda 需要被觸發才能執行、EventBridge 作為事件橋樑
     3. **考試陷阱識別**：錯誤選項只用 Config + SNS 通知（只是發警報，沒有**自動修復**）

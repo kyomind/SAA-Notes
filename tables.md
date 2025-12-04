@@ -2169,3 +2169,20 @@ IAM Policy 是 JSON 格式，**必要的 key 只有兩個**：
 | Subnet   | Network ACL                    | 控制進出該 subnet 的所有流量 |
 | Instance | Security Group                 | 控制進出該 instance 的流量   |
 | VPC      | Route Table + Internet Gateway | 控制路由方向，非直接過濾流量 |
+
+## Nginx Virtual Host vs SNI 比較表
+
+| 機制               | 作用層級          | 解決的問題                            |
+| ------------------ | ----------------- | ------------------------------------- |
+| Nginx Virtual Host | HTTP 層 (Layer 7) | 根據 `Host` header 路由到不同 backend |
+| SNI                | TLS 層 (Layer 6)  | 根據 hostname 選擇正確的 SSL 憑證     |
+
+### 時序對比
+
+```bash
+傳統 HTTPS（無 SNI）：
+Client → TCP connect → TLS handshake（server 不知道要用哪張憑證）→ HTTP request（才看到 Host header）
+
+有 SNI：
+Client → TCP connect → TLS handshake + hostname → server 選對憑證 → HTTP request
+```
