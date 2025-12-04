@@ -156,3 +156,11 @@
     1. **內部身分**（你帳戶的 IAM User）：直接指派 Policy 或加入 Group
     2. **外部身分**（不在你帳戶內）：透過 Assume Role 取得臨時權限
     3. **考試關鍵字**：看到「跨帳戶」「Federation」「SSO」「第三方登入」→ 想到 **IAM Role + STS**
+40. ★ S3 Object Lambda — 即時攔截處理 S3 GET 請求
+    1. **本質**：在 GET 請求和回傳之間插入 Lambda 做即時處理（**攔截器模式**）
+    2. **運作流程**：Client → S3 Object Lambda Access Point → Lambda 處理 → 轉換後的檔案
+    3. **典型場景**：同一份資料不同角色看不同內容（遮蔽 PII）、動態調整圖片大小、動態加浮水印
+41. ★★ S3 Object Lambda 考試關鍵字
+    - 「**不想存多份副本**」+「**動態轉換**」→ S3 Object Lambda
+    - 「**不同使用者看到不同內容**」→ S3 Object Lambda
+    - 「**GET 時即時處理**」→ S3 Object Lambda

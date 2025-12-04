@@ -1031,17 +1031,17 @@
      1. **Server-Side 限制**：資料在傳輸過程中，AWS **看得到明文**（雖然只是短暫瞬間）
      2. **Client-Side 優勢**：從頭到尾，連 AWS 都**看不到明文**，只能看到加密後的資料
      3. **考試判斷**：要求「**prevent plain text access**」⭐️（防止明文存取）→ 選 **Client-Side Encryption**
-239. ★★ Lambda Container Image 解決方案 - Serverless 與容器結合○
+239. ★★ Lambda Container Image 解決方案 - Serverless 與容器結合
      1. **核心組合**：**Lambda + Container Image + 5GB ephemeral storage**
      2. **適用場景**：Fully managed serverless compute + Container image 從 ECR + 需要暫存空間
-240. ★★ Lambda Container Image 關鍵判斷點
+240. ★★ Lambda Container Image 關鍵判斷點⭐️
      1. **Serverless 要求**：Lambda 是唯一選項（ECS/EKS 雖然可以跑容器，但需要管理底層資源）
      2. **Container 支援**：Lambda 從 **2020 年底**開始支援 container image，最大支援 **10 GB 映像檔**
      3. **儲存空間**：5GB ephemeral storage（Lambda 預設 512 MB `/tmp` 空間，可設定 **512 MB ~ 10 GB**）
 241. ★ Lambda Container Image 技術特性與限制
      1. **解決問題**：突破傳統 Lambda deployment package **250 MB 限制**
      2. **執行限制**：最長執行時間 **15 分鐘**、Cold start 比傳統 Lambda 慢一些
-     3. **映像檔要求**：映像檔需要放 **ECR**（不能用其他 registry）
+     3. **映像檔要求**：映像檔需要放 **ECR**（不能用其他 registry）⭐️
 242. 😇 Lambda Container 適用場景與實務考量
      1. **適用場景**：需要複雜依賴或自訂 runtime、團隊已有容器化經驗、想在本地用 Docker 測試
      2. **ephemeral storage 特性**：每次執行後清空，適合暫存處理
@@ -1058,10 +1058,10 @@
      2. **適用場景**：需要**低延遲**、**高吞吐量**的即時資料處理
      3. **實務應用**：日誌分析、即時監控、金融交易處理
 246. ★★ S3 Object Lambda 核心概念 - 動態資料轉換解決方案
-     1. **核心功能**：**動態資料轉換，無需建立副本**，在 S3 GET 請求時即時處理資料
+     1. **核心功能**：動態資料轉換，無需建立副本，在 S3 **GET 請求時即時處理資料**
      2. **運作流程**：請求先到 **S3 Object Lambda Access Point** → 觸發 **Lambda function** 處理資料 → 回傳轉換後的結果
      3. **Lambda 可取得**：Bucket name、Object key（檔案路徑）、請求參數⭐️
-247. ★ S3 Object Lambda 典型使用場景
+247. ★ S3 Object Lambda 典型使用場景⭐️
      1. **資料保護**：動態遮罩敏感資料（PII redaction）
      2. **格式轉換**：JSON → CSV、圖片縮放/浮水印
      3. **權限控制**：依使用者權限過濾內容
