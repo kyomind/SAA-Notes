@@ -2161,3 +2161,11 @@ IAM Policy 是 JSON 格式，**必要的 key 只有兩個**：
 - **R**esource — 對什麼資源
 
 其他常見但**非必要**的 key：`Principal`（resource-based policy 才需要）、`Condition`（條件式授權）。
+
+## 各元件運作層級比較表
+
+| 層級     | 控制機制                       | 作用範圍                     |
+| -------- | ------------------------------ | ---------------------------- |
+| Subnet   | Network ACL                    | 控制進出該 subnet 的所有流量 |
+| Instance | Security Group                 | 控制進出該 instance 的流量   |
+| VPC      | Route Table + Internet Gateway | 控制路由方向，非直接過濾流量 |

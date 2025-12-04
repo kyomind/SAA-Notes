@@ -2,9 +2,9 @@
 
 1. ★★ **VPC 與 Availability Zone 關係**
    1. VPC **跨越整個 region 的所有 Availability Zone**⭐️
-   2. **每個 subnet 必須完全位於單一 Availability Zone**，無法跨 zone
+   2. **每個 subnet 必須完全位於單一 Availability Zone**⭐️，無法跨 zone
    3. VPC **只存在於單一 region**
-   4. 跨 region 通訊要用 VPC Peering 或 Transit Gateway
+   4. **跨 region 通訊**要用 VPC Peering 或 Transit Gateway
 2. ★★ **Subnet CIDR 配置原則**
    1. **Subnet CIDR 是 VPC CIDR 的子集**
    2. 在不同 Availability Zone 部署 instance 可**保護應用程式免於單點故障**
@@ -15,7 +15,7 @@
    1. **大樓比喻**：VPC = 整棟大樓（region）
    2. **樓層概念**：Availability Zone = 不同樓層（1F、2F、3F）
    3. **房間限制**：Subnet = 每層樓的房間，**房間不能跨樓層**
-5. ★★ **VPC 與 Subnet 抽象層次差異**
+5. ★★ **VPC 與 Subnet 抽象層次差異**⭐️
    1. **VPC 是邏輯網路空間**：虛擬網路定義，只是「IP 範圍配置規則」
    2. **不需實體存在**：可覆蓋整個 region 的所有 AZ
    3. **Subnet 是實際資源部署位置**：真正放置 EC2、RDS 的地方
@@ -34,13 +34,11 @@
    1. **Private subnet = 沒有 public IP 的 subnet**
    2. **EC2 在 private subnet 不能直接綁定 EIP**（綁定後就變成 public）
    3. **對外通訊途徑**：只能透過 NAT Gateway/Instance 做轉發
-10. 👀 **Private Subnet 概念澄清**
-    1. **正確定義**：Private subnet 就是 instance 沒有 public IP
-    2. **常見誤解**：混淆 subnet 類型與 IP 分配的關係
-11. ★ **Network ACL 配置錯誤分析**
+10. (刪除)
+11. ★ **Network ACL 配置錯誤分析**⭐️
     1. **為何錯誤**：題目已指出可連接其他 EC2 instances，表示網路基本連通性正常
     2. **Network ACL 特性**：適合控制**整個 VPC 進出流量**，而非單一 EC2 instance 的流量控制
-12. ★ **AWS Glue Job Bookmark 核心概念**
+12. ★ **AWS Glue Job Bookmark 核心概念**⭐️
     1. **定義**：AWS Glue 的**狀態追蹤機制**，記錄 ETL job 已處理過的資料
     2. **運作原理**：持久化儲存 job 執行狀態（獨立於 job 本身）、追蹤已處理的資料位置/時間戳記
     3. **下次執行機制**：只處理新增的資料，**避免重複處理**

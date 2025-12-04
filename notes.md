@@ -168,3 +168,10 @@
     1. **Expedited retrieval（1-5 分鐘）**：Glacier Flexible Retrieval **獨有**的快速取回選項
     2. **Provisioned Capacity**：專門搭配 Expedited 使用，保證取回容量
     3. **區分其他 Glacier**：Instant Retrieval 是毫秒級（不需 Expedited）、Deep Archive 最快 12 小時（無 Expedited）
+43. ★★ NACL vs Security Group — 作用層級區分（考試陷阱）
+    1. **NACL**：作用於 **Subnet 層級**，控制進出該 subnet 的所有流量
+    2. **Security Group**：作用於 **Instance 層級**，控制進出該 instance 的流量
+    3. **Route Table + IGW**：作用於 VPC 層級，控制**路由方向**，非直接過濾流量
+44. ★ NACL 關聯規則
+    1. **強制關聯**：每個 subnet **必須**關聯一個 NACL（預設使用 default NACL）
+    2. **多對多關係**：不同 subnet 可用不同 NACL；同一 NACL 可關聯多個 subnet
