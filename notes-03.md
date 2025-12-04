@@ -79,26 +79,20 @@
     1. **各元件職責分工**：Config（監控 + 評估）、EventBridge（事件路由）、Lambda（執行修復）
     2. **為何需要三個元件**：Config 無法執行修復、Lambda 需要被觸發才能執行、EventBridge 作為事件橋樑
     3. **考試陷阱識別**：錯誤選項只用 Config + SNS 通知（只是發警報，沒有**自動修復**）
-23. 😇 **考試記憶技巧與關鍵思維**
-    1. **關鍵識別**：題目說 "deactivate and delete" → 需要程式邏輯執行 IAM API → 必須有 Lambda
-    2. **標準模式記憶**：遇到「自動化合規處理」的題目，直接套用**合規自動修復三件套**
-    3. **正確思維**：自動修復 = 檢測（Config）+ 路由（EventBridge）+ 執行（Lambda）
+23. (刪除)
 24. ★★ **合規自動化常見錯誤架構分析**
     1. **錯誤 1：自建 Config Rule**：AWS 已有 **managed rule** `access-keys-rotated` 可直接用，自己寫 custom rule 純粹浪費時間
     2. **錯誤 2：EventBridge Scheduler + Batch**：錯誤架構為 EventBridge Scheduler（每 24 小時）→ AWS Batch（容器化作業）→ 刪除 keys
     3. **用錯工具問題**：**Batch** 是跑**大規模批次運算**的（資料處理、ML training），不是用來執行簡單 API 呼叫⭐️
 25. ★ **AWS Batch 誤用問題分析**
     1. **維護複雜度**：需要設定 compute environment、job queue、job definition → 維護成本高
-    2. **時效性問題**：**定時執行** vs **事件驅動⭐️**，錯過即時性，可能讓違規 key 多存活 24 小時⭐️
+    2. **時效性問題**：**定時執行** vs **事件驅動**，錯過即時性，可能讓違規 key 多存活 24 小時
     3. **成本考量**：Batch 需要 EC2/Fargate 資源，Lambda 只在觸發時計費
-26. 😇 **正確架構的技術優勢**
+26. 😇 **正確架構的技術優勢**⭐️
     1. **即時性**：Config Rule 偵測違規 → EventBridge Rule 監聽事件（毫秒級）→ Lambda 執行刪除
     2. **維護成本**：**Serverless** 架構，Lambda 執行完就結束，無需維護基礎設施
     3. **成本效益**：事件驅動模式，只在需要時執行
-27. 👀 **考試判斷標準與記憶要點**
-    1. **判斷原則**：題目沒說「每天批次處理大量資料」→ **不需要 Batch**；題目說「自動修復」→ 用**事件驅動 + Lambda**，不是定時輪詢
-    2. **AWS Batch 適用場景**：只在**大量運算作業**才划算，簡單任務別碰它
-    3. **架構選擇記憶**：過度設計 + 用錯工具 = 考試陷阱
+27. (刪除)
 28. ★★ SQL Server → Aurora PostgreSQL 資料庫遷移挑戰
     1. **Schema 結構差異**：不同資料庫引擎的表格設計需要轉換
     2. **SQL 語法差異**：T-SQL vs PostgreSQL 語法不相容
@@ -106,21 +100,18 @@
 29. ★★ 資料庫遷移三大工具組合（SCT + DMS + Babelfish）
     1. **AWS SCT（Schema Conversion Tool）**：轉換 schema，把 SQL Server 的表格設計「翻譯」成 PostgreSQL 版本
     2. **AWS DMS（Database Migration Service）**：搬移資料，實際把資料從 A 搬到 B，可持續同步
-    3. **Babelfish for Aurora PostgreSQL**：即時翻譯 SQL 語法，讓程式繼續用 T-SQL，自動轉成 PostgreSQL 能懂的語法⭐️
+    3. **Babelfish for Aurora PostgreSQL**：即時翻譯 SQL 語法，讓程式繼續用 T-SQL(MS-SQL 交易方言)，自動轉成 PostgreSQL 能懂的語法⭐️
 30. 😇 **資料庫遷移常見錯誤組合分析**
     1. **只用 SCT + DMS**：資料庫搬好了，但 app code 會因語法不相容而出錯
     2. **只用 Babelfish**：app 能連接，但缺少 schema 轉換和資料搬移
     3. **完整解法必要性**：三個工具各司其職，缺一不可
-31. 😇 **資料庫遷移記憶技巧（搬家比喻）**
-    1. **SCT**：看新房子格局，規劃東西要怎麼放（schema 規劃）
-    2. **DMS**：搬家公司，實際搬東西（資料搬移）
-    3. **Babelfish**：翻譯機，讓你繼續說中文，對方也能聽懂（語法相容性）
+31. (刪除)
 32. ★★ **資料庫遷移完整解決方案架構**
     1. **資料庫層面（SCT + DMS）**：SCT 轉換表格結構 + DMS 搬移資料
     2. **應用程式層面（Babelfish）**：app 原本的 T-SQL 語法無需修改，Babelfish 負責翻譯
     3. **最小化程式碼修改**：關鍵在於 Babelfish 讓既有程式碼保持不變
 33. ★ **資料庫遷移錯誤選項分析 - AWS AppConfig**
-    1. **實際用途**：管理 app 的 configuration（feature flags、參數設定）
+    1. **實際用途**：管理 app 的 configuration（feature flags、參數設定）⭐️
     2. **錯誤原因**：完全不處理資料庫遷移的核心問題（schema、資料、SQL 相容性）
     3. **考試陷阱**：看到 "configuration" 就以為跟設定有關
 34. ★ **資料庫遷移錯誤選項分析 - Kinesis Data Streams**
@@ -131,14 +122,11 @@
     1. **實際用途**：ETL service，抽取、轉換、載入資料（通常用於 data lake、分析）
     2. **錯誤原因**：是轉換「資料」不是轉換「SQL 語法」、不是用來做 query 翻譯的
     3. **考試陷阱**：看到 "transform" 就以為能轉換 SQL
-36. ★★ **資料庫遷移考試策略與判斷原則**
-    1. **關鍵字識別**："minimize application code modifications" → 必須使用 Babelfish
-    2. **錯誤方案特徵**：需要 code 改動的方案、不處理 SQL 相容性的方案、只處理資料不處理語法的方案
-    3. **標準答案記憶**：資料庫遷移 = **SCT + DMS + Babelfish**（最小化 code 改動）
+36. (刪除)
 37. ★★ **S3 Cross-Region Replication (CRR) 核心概念**
-    1. **定義**：自動將 S3 物件複製到不同 Region 的 bucket
+    1. **定義**：**自動**將 S3 物件複製到不同 Region 的 bucket⭐️
     2. **必備條件**：源和目標 bucket 都要開 **Versioning**、必須是不同 Region、需要 IAM role 授權
-38. ★★ **S3 CRR 複製行為特性**
+38. ★★ **S3 CRR 複製行為特性**⭐️
     1. **會複製**：啟用後的新物件、Metadata、tags、ACL
     2. **不會複製**：舊物件（需手動用 S3 Batch Operations）、Delete markers（預設關閉，可開啟）、複製不會串連（A→B→C，A 的物件不會到 C）
 39. ★★ **S3 CRR 考試判斷標準**
@@ -155,13 +143,13 @@
 43. ★★ **ALB redirect 方案優勢分析**
     1. **技術優勢**：不需額外資源（直接在 ALB 設定）、零程式碼（listener rule 設定即可）、最少維運成本
     2. **考試重點**：符合 "least operational overhead" 要求
-44. ★ **ALB redirect 考試記憶點與錯誤選項**
+44. ★ **ALB redirect 考試記憶點與錯誤選項**⭐️
     1. **正確方案**：Configure listener redirect rule
     2. **錯誤選項**：不需要 EC2 跑 nginx redirect、不需要 Lambda 處理 redirect、不需要 CloudFront（雖然也能做，但題目已有 ALB）
-45. 👀 **ALB listener 配置陷阱與限制**
+45. ALB listener 配置陷阱與限制
     1. **考試陷阱**："Create a new HTTP listener on port 80" 聽起來正確，但如果已有 port 80 listener 就無法新建
-    2. **技術限制**：**同一 port 不能有多個 listener**，需要修改現有 listener 而非新建
-46. ★★ **EKS Autoscaling 雙層架構概念**
+    2. **技術限制**：**同一 port 不能有多個 listener**，需要修改現有 listener 而非新建⭐️
+46. ★★ EKS Autoscaling 雙層架構概念⭐️
     1. **Pod 層**：擴展 Pod 數量，使用 **HPA (Horizontal Pod Autoscaler)**
     2. **Node 層**：擴展 EC2 node 數量，使用 **Cluster Autoscaler** 或 **Karpenter**
 47. ★★ **Cluster Autoscaler 核心功能與整合**
@@ -175,7 +163,7 @@
     1. **功能分工**：**HPA** = 水平擴展 **Pods**、**Cluster Autoscaler** = 擴展 **Nodes**
     2. **關鍵字識別**：題目說 "infrastructure scales" → 選 node 層級解法
 50. ★ EKS Autoscaling 錯誤選項分析 - EC2 Auto Scaling Groups
-    1. **錯誤原因**：能用但 **operational overhead 太高**、需要手動設定 scaling policies
+    1. **錯誤原因**：能用但 **operational overhead 太高**、需要手動設定 scaling policies⭐️
     2. **正確方案優勢**：Cluster Autoscaler 已與 Kubernetes 原生整合，更自動化
 51. ★ **EKS Autoscaling 錯誤選項分析 - CloudWatch alarms alone**
     1. **致命缺陷**：**只監控，不執行 scaling**
@@ -184,7 +172,7 @@
     1. **關鍵字識別**："LEAST operational overhead" → 優先選 Kubernetes 原生工具
     2. **維運成本分析**：Cluster Autoscaler（低，Kubernetes 原生）vs EC2 ASG + custom policies（高，需手動管理）vs CloudWatch alone（無效，不會觸發 scaling）
     3. **考試記憶**：**Kubernetes 原生工具（Cluster Autoscaler, HPA）永遠是最低維運成本的選擇**
-53. ★ **EBS Multi-Attach 功能限制**
+53. ★ **EBS Multi-Attach 功能限制**○
     1. **支援類型限制**：只支援 **Provisioned IOPS**（io1/io2 block express）
     2. **地理位置限制**：只能在**同一個 AZ** 內多個 Instance 共用，不是跨 AZ⭐️
 54. 😇 **EBS 儲存類型選擇記憶要點**
