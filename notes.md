@@ -164,3 +164,7 @@
     - 「**不想存多份副本**」+「**動態轉換**」→ S3 Object Lambda
     - 「**不同使用者看到不同內容**」→ S3 Object Lambda
     - 「**GET 時即時處理**」→ S3 Object Lambda
+42. ★★ Glacier **Flexible Retrieval** 專屬特性 — Expedited & Provisioned Capacity
+    1. **Expedited retrieval（1-5 分鐘）**：Glacier Flexible Retrieval **獨有**的快速取回選項
+    2. **Provisioned Capacity**：專門搭配 Expedited 使用，保證取回容量
+    3. **區分其他 Glacier**：Instant Retrieval 是毫秒級（不需 Expedited）、Deep Archive 最快 12 小時（無 Expedited）

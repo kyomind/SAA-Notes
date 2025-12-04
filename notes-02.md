@@ -1067,7 +1067,7 @@
      3. **權限控制**：依使用者權限過濾內容
 248. ★ S3 Object Lambda vs 標準 Lambda 事件觸發差異
      1. **S3 Event → Lambda**：**物件寫入/刪除時**觸發，用於**後台處理**（轉檔、備份）
-     2. **S3 Object Lambda**：**物件讀取時**觸發，用於**動態轉換回應內容**
+     2. **S3 Object Lambda**：**物件讀取時**觸發，用於**動態轉換回應內容**⭐️
      3. **記憶重點**：Object Lambda 是在「**讀取時**」即時處理，不產生額外儲存成本
 249. 😇 S3 Object Lambda 考試陷阱分析 - metadata vs content 混淆
      1. **常見錯誤選項**：「Use S3 Object Lambda with a Lambda function that processes the data based on object's metadata」
@@ -1096,13 +1096,14 @@
      1. **MSK (Managed Kafka) 適用場景**：需要 **Kafka 生態系統**（connect, streams API）、已有 Kafka 經驗的團隊、需要更細緻的分區控制
      2. **MSK 缺點**：管理負擔較重（cluster sizing, broker 維護）
      3. **Kinesis Data Streams 優勢**：AWS 原生零管理、內建 **Enhanced Fan-out**（每個 consumer 獨立 2MB/s throughput）、更簡單的 scaling
-256. ★★ MSK vs Kinesis 考試判斷技巧
+256. ★★ MSK vs Kinesis 考試判斷技巧⭐️
      1. **關鍵字識別**：題目出現 "**enhanced fan-out**" → 直接排除 MSK，選 **Kinesis**
      2. **記憶口訣**：MSK = 給 **Kafka 老手**用的；Kinesis = 給想**省事的人**用的
 257. ★★ Cost Explorer API vs AWS Budgets 選擇策略
      1. **Cost Explorer API 適用場景**：需要 **程式化存取**（programmatic access）成本資料、內建 **forecast 功能**、AWS 託管服務零維運⭐️
      2. **AWS Budgets 定位**：**監控 + 告警**工具，不是資料存取工具
      3. **考試陷阱**：Budgets 跟成本有關但無法提供 API 資料存取
+     4. Cost Explorer API 無法通知預算超支
 258. ★ Cost Explorer API 考試判斷技巧
      1. **關鍵字識別**：題目出現 "**programmatically access**" + "**forecast usage costs**" → 選 **Cost Explorer API**
      2. **記憶口訣**：需要**拿資料、做分析** → Cost Explorer API；需要**設門檻、發通知** → AWS Budgets
@@ -1115,10 +1116,10 @@
      2. **實作步驟**：來源 Bucket（帳號 A）設定 bucket policy 允許帳號 B 讀取 → 目標帳號（帳號 B）的 IAM user/role 被賦予權限 → 由帳號 B 執行複製動作
      3. **所有權結果**：物件所有者自然是帳號 B
 261. ★ AWS AI/ML 三大文字處理服務
-     1. **Amazon Transcribe**：**語音轉文字**服務，使用 ASR（Automatic Speech Recognition）技術，應用於客服通話轉錄、音頻/視頻字幕生成、內容分析
-     2. **Amazon Translate**：**神經機器翻譯**（Neural Machine Translation, MT）服務，支援多語言間的文字翻譯
-     3. **Amazon Comprehend**：**自然語言處理**（NLP）服務，使用機器學習從文字中提取意義和洞察
-262. ★★ Route 53 Active-Active Failover with Weighted routing policy - 多 Region 高可用架構
+     1. **Amazon Transcribe**：**語音轉文字**服務，使用 ASR（Automatic Speech Recognition）技術，應用於客服通話轉錄、音頻/視頻字幕生成、內容分析→相當於 MacWhisper⭐️
+     2. **Amazon Translate**：支援多語言間的文字翻譯
+     3. **Amazon Comprehend**：**自然語言處理**（NLP）服務，使用機器學習**從文字中提取意義和洞察**⭐️
+262. ★★ Route 53 Active-Active Failover with Weighted routing policy - 多 Region 高可用架構⭐️
      1. **核心需求**：多 Region 部署、所有資源**盡可能同時可用**、自動偵測不健康資源並停止路由
      2. **Active-Active Failover 特性**：所有 Region 資源**同時對外服務**、流量分散到多個 Region 充分利用所有資源
      3. **Weighted routing policy 優勢**：按比例分配流量（如 50% 去 us-east-1, 50% 去 eu-west-1）、**結合健康檢查**自動停止路由到 unhealthy Region、流量自動轉向其他健康 Region
@@ -1130,7 +1131,6 @@
      1. **Weighted Policy**：多活架構流量分散、按比例分配、健康檢查失敗時自動調整權重
      2. **Failover Policy**：主備架構災難恢復、Primary 掛了才切到 Secondary
      3. **考試判斷關鍵字**：「盡可能所有資源可用」→ **Active-Active + Weighted**；「偵測不健康並停止路由」→ **Weighted + Health Check**
-
 265. ★★ Kinesis Data Streams 資料遺失問題 - Retention Period 設定關鍵
      1. **資料遺失根本原因**：Kinesis Data Streams 預設 **retention period = 24 小時**，consumer 超過 24 小時沒讀取資料就被**自動刪除**⭐️
      2. **Retention Period 範圍**：最短 24 小時（預設）、最長 8760 小時（365 天），可根據業務需求調整（如 7 天、30 天）
@@ -1139,10 +1139,11 @@
      1. **實務判斷三步驟**：Consumer 處理速度夠快嗎？Consumer 有中斷或 lag 嗎？Retention period 設定多久？
      2. **考試陷阱識別**：題目說「資料莫名消失」→ ❌ 不是系統 bug、✅ 是 **Retention period 太短**導致資料過期被刪除
      3. **核心記憶**：**Kinesis 不是永久儲存，只是暫存緩衝**，超過保留期自動清理是正常設計
-267. ★★ S3 Glacier Expedited Retrieval + Provisioned Capacity - 快速資料取回解決方案
+267. ★★ S3 Glacier Expedited Retrieval + Provisioned Capacity - 快速資料取回解決方案⭐️
      1. **Expedited Retrieval 特性**：**1-5 分鐘內取回**資料，符合緊急存取需求（如 15 分鐘內）
      2. **Provisioned Capacity 保證機制**：購買預留容量保證 **Expedited 隨時可用**，提供 **150 MB/s** 穩定速度
      3. **組合效果**：兩者搭配確保「**任何時候都能在 15 分鐘內拿到資料**」，Standard 取回（3-5 小時）無法滿足緊急需求
+     4. 這裡的 storage class 是 S3 Glacier Flexible Retrieval。
 268. ★ S3 Glacier 取回方式錯誤選項分析 - 常見考試陷阱
      1. **Standard Retrieval 限制**：3-5 小時取回時間，不符合 15 分鐘緊急需求
      2. **Bulk Retrieval 雙重問題**：5-12 小時取回時間且**不支援 Provisioned Capacity**，無法保證可用性
@@ -1151,9 +1152,8 @@
      1. **Provisioned Capacity 適用限制**：**只適用於 Expedited Retrieval**，其他取回方式無法使用
      2. **Range vs Speed 概念區分**：**Range retrieval ≠ Faster retrieval**，取回範圍與速度是不同概念
      3. **需求拆解技巧**：「任何時候」+「15 分鐘內」= 必須購買 **Provisioned Capacity 保證 Expedited 可用**
-
 270. ★★ Fargate 雙平台支援能力 - ECS 和 EKS 統一運算引擎
-     1. **重要更新**：Fargate 從 **2019 年開始支援 EKS**，不只是 ECS 專用
+     1. **重要更新**：Fargate 從 **2019 年開始支援 EKS**，不只是 ECS 專用⭐️
      2. **核心定位**：**Fargate 是運算引擎**，不是編排工具，可搭配 **ECS** 或 **EKS** 使用
      3. **考試判斷**：題目說 "Kubernetes" → 只能選 EKS；題目說 "不想管 server" → Fargate 是最佳選擇
 271. ★ ECS on Fargate vs EKS on Fargate 部署流程差異
@@ -1163,14 +1163,14 @@
      1. **核心功能**：指定哪個 **namespace** 的 Pod 要用 Fargate、哪些 **label selector** 符合的 Pod 要用 Fargate
      2. **調度邏輯**：符合條件的 Pod → Fargate 自動接手；不符合的 Pod → 還是跑在 EC2 node groups
      3. **配置範例**：設定 namespace: production + labels: app: banking-platform，只有符合條件的 Pod 使用 Fargate
-273. 😇 EKS on Fargate 考試重點總結
+273. 😇 EKS on Fargate 考試重點總結⭐️
      1. **核心組合**：**EKS on Fargate** = 用 Kubernetes 編排 + Fargate 無伺服器運算
      2. **技能要求**：使用 EKS on Fargate **需要懂 K8s** 概念和配置
      3. **記憶要點**：Fargate 不限於 ECS，也完全支援 EKS 環境
 274. ★★ S3 事件通知配置 - ObjectRemoved:Delete vs DeleteMarkerCreated 選擇關鍵
      1. **需求拆解**：Track new objects added → `s3:ObjectCreated:*`；Track removed ones → `s3:ObjectRemoved:Delete`；Track versioned object permanently deleted → `s3:ObjectRemoved:Delete`
      2. **關鍵判斷**：題目說 **"permanently deleted"** 是關鍵字，必須選擇 `Delete`（真刪除）而非 `DeleteMarkerCreated`（軟刪除）
-275. ★ S3 刪除事件類型對比 - Delete vs DeleteMarkerCreated 差異
+275. ★ S3 刪除事件類型對比 - Delete vs DeleteMarkerCreated 差異⭐️
      1. **Delete 事件**：捕捉永久刪除操作，包含刪除特定版本的真實刪除行為
      2. **DeleteMarkerCreated 事件**：只捕捉軟刪除操作，即建立 delete marker 的行為
      3. **使用場景**：permanently deleted → `Delete`；soft delete → `DeleteMarkerCreated`；兩種都要 → `s3:ObjectRemoved:*`
@@ -1181,12 +1181,12 @@
 277. ★★ AWS Storage Gateway File Gateway 選型考點 - 混合雲檔案儲存解決方案
      1. **核心定位**：**File Gateway = NFS/SMB 介面 + S3 儲存**，提供標準檔案協定存取 S3 的橋樑
      2. **關鍵字識別**：**standard file storage protocols**（標準檔案協定）+ **quick recovery**（快速恢復）+ **on-premises → AWS** 混合雲架構
-     3. **運作機制**：前端（on-premises 系統看到普通的網路硬碟 NFS/SMB）+ 後端（資料實際存在 S3，便宜、耐用、11個9可靠性）
+     3. **運作機制**：前端（on-premises 系統看到**普通的網路硬碟** NFS/SMB）+ 後端（資料**實際存在 S3**，便宜、耐用、11個9可靠性）⭐️
 278. ★ File Gateway vs 其他 AWS 儲存服務考試陷阱分析
      1. **❌ S3 直接存取**：需要改程式用 AWS SDK，不符合 "standard file protocols" 需求
      2. **❌ Volume Gateway**：雖然也能存檔，但使用 iSCSI（block 層級），不是 file protocols
      3. **❌ EFS**：雖然支援 NFS，但題目要求 "store in S3"，File Gateway 才是連接橋樑
-279. 😇 File Gateway 考試記憶技巧與判斷要點
+279. 😇 File Gateway 考試記憶技巧與判斷要點⭐️
      1. **概念類比**：**File Gateway = 檔案系統的雲端延伸**，像 NAS 硬碟空間不夠直接「插」一個 S3 當擴充儲存
      2. **無感體驗**：on-premises 系統無感知，繼續用原本的 NFS/SMB 存檔，資料悄悄存到 S3
      3. **考試公式**：看到 "**file protocols**" + "**S3**" → 直接選 **File Gateway**
