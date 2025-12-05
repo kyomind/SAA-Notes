@@ -1851,6 +1851,17 @@ Expedited 有容量限制，高需求時可能失敗。如果需要**保證 Expe
 
 答案：**S3 Intelligent-Tiering**（不是 Standard-IA）
 
+## Glacier Flexible Retrieval vs Glacier Deep Archive 比較表
+
+| 比較項目                 | Glacier Flexible Retrieval | Glacier Deep Archive |
+| ------------------------ | -------------------------- | -------------------- |
+| **Expedited**            | 1-5 分鐘                   | ❌ 沒有這個選項       |
+| **Standard**             | 3-5 小時                   | 12 小時              |
+| **Bulk**                 | 5-12 小時                  | 48 小時              |
+| **Provisioned Capacity** | ✅ 可搭配 Expedited         | ❌ 不適用             |
+
+所以當題目出現「15 分鐘內取回」或「Expedited + Provisioned Capacity」，答案一定是 **Glacier Flexible Retrieval**，不可能是 Deep Archive。
+
 ## Aurora 核心優勢
 
 | 特性          | 數據                                     |
