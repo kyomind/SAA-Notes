@@ -356,54 +356,62 @@
     1. **加密流程**：檔案用 Data Key 加密 → Data Key 用 Master Key(KMS) 加密 → 兩者都存在 S3
     2. **技術原理**：KMS 單次只能加密 4KB，Data Key 負責大檔案加密（效能好），KMS 只加密 Data Key（安全性高）
     3. **儲存結構**：S3 同時存放加密檔案（大）和加密的 Data Key（小）
-99. ★★ **S3 加密方案選擇考試判斷標準**
+99. ★★ **S3 加密方案選擇考試判斷標準**⭐️
     1. **選 SSE-KMS 關鍵字**：Envelope encryption、Key rotation、**Audit trail**、Compliance requirements、Customer managed keys
-    2. **不選 SSE-KMS 場景**：Lowest cost（SSE-S3 更便宜）、Simplest solution（SSE-S3 更簡單）、You manage keys outside AWS（SSE-C）
+    2. **不選 SSE-KMS 場景**：
+       - Lowest cost → SSE-S3 更便宜
+       - Simplest solution → SSE-S3 更簡單
+       - You manage keys outside AWS → SSE-C
     3. **核心記憶**：題目要求 **envelope encryption + 自動金鑰輪替 + 審計追蹤** 三條件 → 只有 SSE-KMS 符合
 100. ★★ **Envelope Encryption 詳細概念與安全優勢**
      1. **雙層保護架構**：即使 Data Key 被竊取，沒有 KMS Master Key 也無法解密檔案；即使 KMS 被入侵，攻擊者也需要同時取得加密的 Data Key
      2. **效能與安全平衡**：大檔案用對稱加密（Data Key，速度快）；小金鑰用非對稱加密（KMS，安全性高）
      3. **考試記憶技巧**：**信封（Envelope）= 雙層包裝**，內層保護內容物，外層保護信封本身
-101. ★ **Amazon Redshift Spectrum 核心功能**
+101. ★ Amazon Redshift Spectrum 核心功能
      1. **定義**：**擴展 Redshift 查詢能力**，讓 Redshift cluster **直接查詢 S3 中的資料**⭐️
      2. **資料支援**：支援結構化和半結構化資料（JSON、Parquet、ORC、Avro等）
      3. **應用場景**：大規模資料分析，**無需將 S3 資料搬移到 Redshift** 即可執行複雜查詢⭐️
-102. ★★ **S3 資料傳輸費用最佳化策略**
+102. ★★ S3 資料傳輸費用最佳化策略
      1. **免費傳輸規則**：Internet → S3 (upload)、**S3 → EC2 (同 Region)**、S3 → CloudFront
      2. **成本判斷原則**：**跨 Region = 收費，同 Region = 免費**
-     3. **考試公式**：minimize data transfer cost + 處理 S3 資料 → **EC2 same Region as S3**
-103. ★ **處理專有格式檔案的服務選擇**
+     3. **考試公式**：minimize data transfer cost + 處理 S3 資料 → **EC2 same Region as S3**⭐️
+103. ★ 處理專有格式檔案的服務選擇
      1. **必選 EC2 場景**：vendor's proprietary software → 需要運算環境執行 → **EC2 是唯一選擇**
      2. **不適用服務**：Lambda（15 分鐘限制 + 記憶體不足）、Glue（不支援 proprietary format）、本地處理（傳輸費用爆炸）
      3. **核心考點**：特殊軟體需求 + 成本最佳化 → 選擇同 Region 的 EC2
-104. ★ **AWS Health Dashboard 服務差異比較**
+104. ★ AWS **Health Dashboard** 服務差異比較⭐️
      1. **Personal Health Dashboard**：監控**你的 AWS 資源狀態**，針對特定帳號/資源，適用於「監控你的 EC2」場景
      2. **Service Health Dashboard**：監控**AWS 服務整體狀態**，區域/全球性事件，適用於「看 AWS 是否當機」場景
      3. **記憶口訣**：
         - Personal = 個人的 = 你的資源
         - Service = 服務的 = AWS 整體
-105. ★★ **AWS DataSync 核心定位與功能**
-     1. **服務定位**：**資料搬運專用服務**，專門處理 on-premises ↔ AWS 的大量資料傳輸
+105. ★★ AWS DataSync 核心定位與功能
+     1. **服務定位**：**資料搬運專用服務**，專門處理 on-premises ↔ AWS 的大量資料傳輸⭐️
      2. **技術優勢**：全託管服務（無需自己寫 script 或購買商業軟體）、自動加速線上資料傳輸到 AWS 儲存服務
      3. **架構組件**：在 on-premises 部署 **DataSync Agent**（加速資料傳輸）、透過 **Direct Connect service endpoint** 連接 AWS 服務
-106. ★★ **DataSync + Direct Connect 私有連線架構**
+106. ★★ DataSync + Direct Connect 私有連線架構
      1. **標準架構流程**：On-premises DataSync Agent → AWS Direct Connect（專線）→ Direct Connect service endpoint → AWS 儲存服務（S3/EFS/FSx）
      2. **核心優勢**：**私有連線**（不經過公網）、自動化傳輸管理、加速大量資料搬移
      3. **程式化連接要求**：使用 **Direct Connect service endpoint** 進行 AWS 服務的程式化連接
-107. ★★ **DataSync 連接端點與傳輸方向限制**
-     1. **來源端支援**：On-premises（NFS/SMB/自建物件儲存）、AWS 內部（S3/EFS/FSx）、Snowcone（內建 agent）
-     2. **目標端限制**：只能是 AWS 儲存服務（**S3/EFS/FSx**）
-     3. **傳輸方向**：**單向往 AWS 推送**，不支援 AWS → On-premises
-     4. **不支援服務**：RDS/DynamoDB（非檔案系統）、直接連接 Glacier（需先到 S3）
-108. ★★ **EBS io1 Queue Length 配置策略**
+107. ★★ DataSync 連接端點與傳輸方向限制⭐️
+     1. **來源端支援**：
+        - On-premises → NFS/SMB/自建物件儲存
+        - AWS 內部 → S3/EFS/FSx
+        - Snowcone → 內建 agent
+     2. **目標端限制**：**只能**是 AWS **儲存服務**（**S3/EFS/FSx**）
+     3. **傳輸方向**：**單向往 AWS** 推送，不支援 AWS → On-premises
+     4. **不支援服務**：
+        - RDS/DynamoDB → 非檔案系統
+        - 直接連接 Glacier → 需先到 S3
+108. ★★ EBS io1 Queue Length 配置策略
      1. **Transaction-intensive 場景**：低延遲需求 → **低 queue length** + 高 IOPS
      2. **Throughput-intensive 場景**：高吞吐量需求 → 高 queue length
      3. **考試判斷**：看到 "transaction-intensive" / "low-latency" → 選低 queue length
-109. ★★ **EBS io1 IOPS 計算公式**
+109. ★★ EBS io1 IOPS 計算公式
      1. **計算公式**：最大 IOPS = Volume 大小(GiB) × 50
      2. **範例計算**：10 GiB → 最多 500 IOPS
-     3. **記憶技巧**：io1 = **50:1 固定比率**
-110. ★★ **ACM vs ACM Private CA 憑證類型選擇**
+     3. **記憶技巧**：io1 = **50:1 固定比率**⭐️
+110. ★★ ACM vs ACM Private CA 憑證類型選擇
      1. **ACM (AWS Certificate Manager)**：Public certificate（公開信任）、對外服務使用、免費且自動更新
      2. **ACM Private CA**：Private certificate（僅內部信任）、企業內部 PKI、需額外付費
      3. **考試判斷**："publicly trusted" → ACM；"internal authentication" / "private PKI" → ACM Private CA
@@ -411,24 +419,23 @@
      1. **ACM 簽發證書**：免費、自動更新、只用於 AWS 服務、**不能匯出私鑰**⭐️可以自簽！本身就是一個 CA
      2. **導入第三方證書**：需手動更新、可用於任何地方、保留原 ARN
      3. **考試判斷**："issue certificate" → ACM 簽發；"import from third-party CA" → 導入外部；"export private key" → 不能用 ACM 簽發的
-112. ★★ **CloudWatch Agent + Parameter Store 監控架構**
+112. ★★ CloudWatch Agent + Parameter Store 監控架構⭐️
      1. **CloudWatch 預設不監控 memory**：只監控 CPU、Network、Disk performance
      2. **監控 memory 需求**：安裝 CloudWatch Agent → 讀取 Parameter Store 配置 → 發送 custom metric
      3. **考試判斷**："memory usage" + Auto Scaling → 必須用 CloudWatch Agent + Parameter Store
-113. ★★ **EC2 Instance Metadata 服務核心概念**
-     1. **定義**：EC2 提供的特殊端點 `169.254.169.254`，讓 instance 查詢自己的資訊（IP、Instance ID、IAM credentials 等）
-     2. **核心優勢**：無需安裝工具、無需設定權限、即時反映狀態、完全免費
+113. ★★ EC2 Instance Metadata 服務核心概念
+     1. **定義**：EC2 提供的特殊端點 `169.254.169.254`，讓 instance 查詢自己的資訊（IP、Instance ID、IAM credentials 等）⭐️
+     2. **核心優勢**：無需安裝工具、無需設定權限、即時反映狀態、完全免費。網址：`http://169.254.169.254/latest/meta-data/`
      3. **考試判斷**："running instance 內取得自己的資訊" → Instance Metadata
 114. 😇 **EC2 Instance Metadata 可查詢資訊類型**
      1. **網路資訊**：Public/Private IP
      2. **身份資訊**：Instance ID、Security Groups、IAM Role credentials
-**VPC 陷阱**: VPC 本身免費,但別被誤導 — VPC 內的服務該收多少還是收多少。
 115. ★ **AWS 會計費的項目**
      1. **Running EC2 Instance**：只要在運行就計費（按小時）
      2. **EBS Volumes**：無論 EC2 是否運行都計費（按儲存容量）
 116. ★ **AWS 不計費的項目**
      1. **Stopped EC2 Instance**：停止後不計算運算費用
-     2. **VPC 本身**：建立和使用 VPC 免費（但 VPC 內的資源如 EC2、NAT Gateway 等仍照常計費）
+     2. **VPC 本身**：建立和使用 VPC 免費（但 VPC 內的資源如 EC2、NAT Gateway 等仍照常計費）⭐️
      3. **Public Data Set**：AWS 提供的公開資料集免費
 117. ★★ **EC2 計費核心原則與陷阱**
      1. **計費區間**：**Boot 開始 → Terminate 結束**
@@ -442,9 +449,9 @@
      1. **Athena**：**ad-hoc 查詢**，直接掃 S3，最省事
      2. **Redshift**：需要載入資料，適合持續性分析
      3. **EMR**：需要管理叢集，適合複雜大數據處理
-120. ★ **Athena 考試判斷標準**
+120. ★ **Athena 考試判斷標準**⭐️
      1. **關鍵字識別**：看到「分析 S3 資料」+「SQL 查詢」→ **Athena**
-     2. **核心記憶**：**Athena = S3 + SQL**
+     2. **核心記憶**：Athena = S3 + SQL
 121. ★★ **CloudWatch Agent + Logs Insights** 日誌收集分析架構
      1. **標準流程**：⭐️
         - 在所有 EC2 安裝 **unified CloudWatch agent** 收集 logs
@@ -473,28 +480,35 @@
      1. **定義**：下載者付費，而非 bucket owner 付費
      2. **計費分工**：Bucket owner 只付 **storage** 費用、Requester 付 **request + data transfer** 費用
      3. **適用場景**：分享大型 dataset（zip codes、地理資料、爬蟲數據等），避免 owner 被下載流量吃垮
-125. ★★ **Requester Pays 重要特性與技術要求**
+125. ★★ **Requester Pays 重要特性與技術要求**⭐️
      1. **自動禁用匿名存取**：啟用後必須驗證身份才能收費（這是 feature 不是 bug，因為要知道跟誰收錢）
      2. **API 要求**：必須在 header 加 `x-amz-request-payer`
      3. **計費對象**：若 requester 用 IAM role，該 role 所屬 account 被收費
-126. ★★ **Requester Pays 考試判斷與關鍵字識別**
+126. ★★ **Requester Pays 考試判斷與關鍵字識別**⭐️
      1. **題目關鍵字組合**："share data" + "lower transfer costs" + "disable anonymous access" → **Requester Pays 一次滿足三個需求**
-     2. **錯誤選項陷阱**：Cross-Region Replication（反而增加成本）、S3 Transfer Acceleration（加速但不降成本）、Pre-signed URL（無法轉嫁流量費用）
+     2. **錯誤選項陷阱**：
+        - Cross-Region Replication → 反而增加成本
+        - S3 Transfer Acceleration → 加速但不降成本
+        - Pre-signed URL → 無法轉嫁流量費用
 127. ★ **Requester Pays 錯誤方案分析 - CRR**
      1. **為什麼錯**：複製本身產生 **request fee + inter-region transfer fee**、相當於你先付一次流量費把資料搬到歐洲、**反而更貴**
      2. **記憶技巧**：CRR = 主動搬家，你付搬家費
 128. ★ **Requester Pays 錯誤方案分析 - Cross-Account Access**
      1. **為什麼錯**：只是開權限讓對方下載、**流量費還是 bucket owner 付**、沒解決成本問題
      2. **記憶技巧**：Cross-account = 開門讓人拿，你付運費
-129. ★★ **SQS Standard Queue 重複訊息根本問題**
+129. ★★ SQS **Standard** Queue **重複訊息**根本問題⭐️
      1. **核心問題**：Standard Queue 的 **at-least-once delivery** 特性會造成重複訊息，這跟 visibility timeout 無關
      2. **架構特性**：Standard Queue 就是會重複，這是設計特性，不是 bug
-     3. **錯誤認知**：調整 Visibility Timeout 無法防止 Standard Queue 本身產生重複訊息、無法保證訊息不會被發送兩次到 queue 裡
-130. ★★ **FIFO Queue 解決重複訊息的核心機制**
-     1. **Message Deduplication（去重）**：5 分鐘內相同的 `MessageDeduplicationId` 只會被接受一次、自動過濾重複訊息
+     3. **錯誤認知**：
+        - 調整 Visibility Timeout 無法防止 Standard Queue 本身產生重複訊息
+        - 無法保證訊息不會被發送兩次到 queue 裡
+130. ★★ FIFO Queue **解決重複訊息**的核心機制⭐️
+     1. **Message Deduplication（去重）**：
+        - 5 分鐘內相同的 `MessageDeduplicationId` 只會被接受一次
+        - 自動過濾重複訊息
      2. **Exactly-once Processing（恰好一次處理）**：確保每個訊息只被消費一次，這才是解決「訂單被處理兩次」的關鍵
      3. **從根本解決**：FIFO Queue 從根本上保證 exactly-once delivery
-131. ★ **Visibility Timeout 功能定位與限制**
+131. ★ **Visibility Timeout 功能定位與限制**⭐️
      1. **實際功能**：讓訊息在被某個 consumer 處理時「暫時隱藏」
      2. **類比理解**：Visibility Timeout = 「這個訂單我先處理，其他人別碰」，但如果系統本來就會產生兩張一模一樣的訂單，調整這個參數根本沒用
      3. **核心限制**：只是處理「同一訊息被多個 consumer 同時處理」的問題，不是解決「重複訊息」的問題
@@ -502,7 +516,7 @@
      1. **必選 FIFO 場景**：看到「重複處理」、「duplicate messages」問題
      2. **判斷邏輯**：如果「順序」很重要 → **必選 FIFO Queue**、如果只是「不能重複」→ **優先選 FIFO Queue**
      3. **核心記憶**：Standard Queue 架構問題不是參數調整可以解決的，需要 FIFO Queue 從根本解決
-133. ★★ **ARN 結構解析與 Resource ID 識別**
+133. ★★ **ARN 結構解析與 Resource ID 識別**○
      1. **ARN 標準結構**：`arn:aws:service:region:account-id:resource-type/resource-id`
      2. **結構拆解範例**：`arn:aws:ds:us-east-1:123456789012:directory/d-1234567890`
         - Partition: `aws`
