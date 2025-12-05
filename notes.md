@@ -175,3 +175,11 @@
 44. ★ NACL 關聯規則
     1. **強制關聯**：每個 subnet **必須**關聯一個 NACL（預設使用 default NACL）
     2. **多對多關係**：不同 subnet 可用不同 NACL；同一 NACL 可關聯多個 subnet
+45. ★★ DynamoDB Global Table 核心定位 — Active-Active 全球部署
+    1. **本質**：**active-active 多區域架構**，DR 只是附帶效果
+    2. **主要用途**：降低全球用戶延遲（歐洲用戶打歐洲 table）、流量分散（各區域獨立承載）
+    3. **流量承載力**：線性擴展，開 3 個區域 ≈ 3 倍寫入吞吐上限（假設流量分散）
+46. ★★ DynamoDB Global Table 考試關鍵字與陷阱
+    1. **典型題目**：「服務全球用戶 + 低延遲存取 + 災難復原能力」→ **DynamoDB Global Table**
+    2. **排除情境**：題目強調 **strong consistency**（強一致性）→ Global Table 不適合（它是最終一致）
+    3. **對比選擇**：需要 **relational data + 跨區域** → **Aurora Global Database**

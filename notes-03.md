@@ -174,15 +174,15 @@
     3. **考試記憶**：**Kubernetes 原生工具（Cluster Autoscaler, HPA）永遠是最低維運成本的選擇**
 53. ★ **EBS Multi-Attach 功能限制**○
     1. **支援類型限制**：只支援 **Provisioned IOPS**（io1/io2 block express）
-    2. **地理位置限制**：只能在**同一個 AZ** 內多個 Instance 共用，不是跨 AZ⭐️
+    2. **地理位置限制**：只能在**同一個 AZ** 內多個 Instance 共用，**不能跨 AZ**⭐
 54. 😇 **EBS 儲存類型選擇記憶要點**
     1. **成本最低**：Magnetic（或新世代的 Cold HDD sc1 / Throughput Optimized HDD st1）
     2. **IOPS 要求高**：Provisioned IOPS
     3. **通用場景**：General Purpose SSD
-55. ★★ **DynamoDB Global Table 跨區域災難復原核心概念**
+55. ★★ **DynamoDB Global Table** 跨區域災難復原核心概念⭐️
     1. **定義**：跨區域 DR 的標準解決方案
     2. **多主架構 (multi-master)**：每個區域都能讀寫，變更會自動同步到所有其他區域
-    3. **最終一致性**：各區域間的同步是異步的，會達到最終一致
+    3. **最終一致性**：各區域間的同步是異步的，會達到**最終一致**
     4. **衝突解決**：使用 "**last writer wins**" 策略解決衝突
     5. **技術特性**：毫秒級延遲、保持應用狀態
 56. ★★ **Route 53 DNS Failover 自動切換機制**
