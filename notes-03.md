@@ -172,7 +172,7 @@
     1. **關鍵字識別**："LEAST operational overhead" → 優先選 Kubernetes 原生工具
     2. **維運成本分析**：Cluster Autoscaler（低，Kubernetes 原生）vs EC2 ASG + custom policies（高，需手動管理）vs CloudWatch alone（無效，不會觸發 scaling）
     3. **考試記憶**：**Kubernetes 原生工具（Cluster Autoscaler, HPA）永遠是最低維運成本的選擇**
-53. ★ **EBS Multi-Attach 功能限制**○
+53. ★ **EBS Multi-Attach 功能限制**
     1. **支援類型限制**：只支援 **Provisioned IOPS**（io1/io2 block express）
     2. **地理位置限制**：只能在**同一個 AZ** 內多個 Instance 共用，**不能跨 AZ**⭐
 54. 😇 **EBS 儲存類型選擇記憶要點**
@@ -297,15 +297,15 @@
 81. 😇 **API Gateway 憑證配置記憶技巧**
     1. **Regional = 就地取材**：API 在哪憑證就在哪、不繞 CloudFront 直達目標、如在台北開店向台北市政府申請執照
     2. **Edge-Optimized = 全球配送**：憑證統一放 us-east-1（CloudFront 總部）、透過 CloudFront 分發全球、如做全球生意去總公司辦證照
-82. ★ **Regional API Gateway 考試重點與陷阱**○
+82. ★ **Regional API Gateway 考試重點與陷阱**
     1. **核心規則**：**Regional API 的 ACM 憑證必須同 Region**（死規則）
     2. **題目難點**：混合了 API Gateway、自訂網域、SSL 憑證、DNS 設定概念
     3. **判斷原則**：考的是「細節規定」而非「架構判斷」
 83. ★★ **API Gateway Private Certificate 錯誤選項分析**
-    1. **Private Certificate (ACM PCA) 錯誤原因**：只能用於內部網路，不能對外公開、題目要求 public internet 的 HTTPS 連線 → 必須用 **Public Certificate**
+    1. **Private Certificate (ACM PCA) 錯誤原因**：只能用於內部網路，不能對外公開、題目要求 public internet 的 HTTPS 連線 → 必須用 **Public Certificate**⭐️
     2. **類比理解**：Private Certificate = 公司內部員工證（辦公室內使用）、Public Certificate = 政府核發營業執照（對外營業）
-84. ★★ **EFA vs ENA 高效能運算網路選擇**
-    1. **EFA (Elastic Fabric Adapter)**：**OS-bypass** 技術、直接與網路硬體溝通、適合 HPC、ML training、MPI、NCCL 應用
+84. ★★ **EFA vs ENA 高效能運算網路選擇**⭐️
+    1. **EFA (Elastic Fabric Adapter)**：**OS-bypass** 技術、直接與網路硬體溝通、適合 **HPC、ML training**、MPI、NCCL 應用
     2. **ENA (Elastic Network Adapter)**：一般高速網卡、需經過作業系統處理封包、適合標準網路應用
     3. **技術差異**：EFA = ENA + OS-bypass 功能，延遲更低、吞吐量更高
 85. ★★ **EFA 應用場景與考試關鍵字**
@@ -313,7 +313,7 @@
     2. **典型應用**：自動駕駛 AI 訓練、基因定序分析、氣象模擬、財務風險建模、大量 EC2 實例互傳資料場景
     3. **考試判斷**：看到 HPC + OS-bypass → 直接選 EFA
 86. 😇 **EFA 技術特性與限制**
-    1. **支援平台**：只支援 **Linux**，Windows 上 EFA 等於只有 ENA 功能
+    1. **支援平台**：只支援 **Linux**，Windows 上 EFA 等於只有 ENA 功能⭐️Windows 上只能用 ENA
     2. **包含關係**：**EFA 包含 ENA**，可執行所有 ENA 功能
     3. **記憶技巧**：ENA = 高速公路、EFA = 高速公路 + 專用快車道（OS-bypass）
 87. ★ **AWS Systems Manager Fleet Manager 核心功能**
@@ -321,10 +321,10 @@
     2. **適用範圍**：支援 AWS 雲端和 on-premises 的 nodes/EC2 instances
     3. **功能定位**：Systems Manager 眾多功能中的其中一項管理工具
 88. ★ **AWS RAM 錯誤選項分析 - 軟體授權管理**
-    1. **實際用途**：**跨 AWS 帳戶安全共享資源**，在 AWS Organizations 內共享資源
+    1. **實際用途**：**跨 AWS 帳戶安全共享資源**，在 AWS Organizations 內共享資源（如 VPC 子網、License Manager 授權）⭐️重點是**共享**，而不是管理
     2. **考試陷阱**：看到 "Resource Access Manager" 可能誤以為能管理所有類型資源
 89. ★ AWS Certificate Manager：**配置、管理和部署 SSL 憑證**
-90. ★★ **AWS License Manager 核心概念與 BYOL 場景**
+90. ★★ **AWS License Manager 核心概念與 BYOL 場景**⭐️
     1. **定義**：專門處理 **BYOL (Bring Your Own License)** 場景，將現有授權帶到 AWS 雲端使用
     2. **核心功能**：追蹤授權使用（例如 50 個 Windows Server 授權，綁定 CPU 數量）、阻擋超額使用（授權用完就不能再開 EC2）、通知機制（授權快用完要發警告）
 91. ★★ **DynamoDB Auto Scaling 自動容量調整機制**
@@ -334,10 +334,10 @@
 92. ★★ **DynamoDB Streams + Lambda 觸發機制核心概念**
     1. **定義**：DynamoDB Streams 是變更日誌機制，記錄所有數據修改事件（新增/更新/刪除），可觸發 Lambda 自動執行特定動作
     2. **工作流程**：DynamoDB 表格更新 → DynamoDB Streams 記錄變更 → Lambda 被自動觸發 → 執行你定義的邏輯
-93. ★★ **DynamoDB Streams + Lambda 考試重點機制**
+93. ★★ **DynamoDB Streams + Lambda 考試重點機制**⭐️
     1. **觸發方式**：**同步輪詢** (Lambda 主動 poll Streams，不是 push 模式)
     2. **處理特性**：**批次處理**（可一次處理多筆變更記錄）、**保證順序**（同一個 partition key 的變更順序保證）
-94. ★★ **DynamoDB Streams + Lambda 方案選擇考試判斷**
+94. ★★ **DynamoDB Streams + Lambda 方案選擇考試判斷**⭐️
     1. **關鍵字識別**：題目強調 "**minimal configuration change**" → 優先選擇 Streams + Lambda
     2. **技術優勢**：只需啟用 Streams + 綁定 Lambda（兩步驟）、無需額外基礎設施、Serverless 自動擴展
     3. **考試陷阱**：相比之下，用 CloudWatch Events 需要更多設定
@@ -349,9 +349,9 @@
     1. **服務本身免費**：CloudFormation 不收費
     2. **資源照常計費**：透過 CloudFormation 建立的資源按正常費率收費
 97. ★★ **S3 + SSE-KMS 加密方案核心優勢**⭐️
-    1. **Envelope Encryption 支援**：只有 SSE-KMS 提供標準的 envelope encryption 實作
-    2. **自動金鑰輪替**：KMS 支援每年自動輪替，SSE-S3 無法控制，SSE-C 需自行管理
-    3. **完整審計追蹤**：KMS 完整整合 CloudTrail，可追蹤誰用了金鑰、什麼時候用、執行什麼操作
+    1. **Envelope Encryption 支援**：只有 SSE-KMS 提供標準的 **envelope encryption** 實作
+    2. **自動金鑰輪替**：KMS 支援**每年自動輪替**，SSE-S3 無法控制，SSE-C 需自行管理
+    3. **完整審計追蹤**：KMS 完整整合 **CloudTrail**，可追蹤誰用了金鑰、什麼時候用、執行什麼操作
 98. ★★ **Envelope Encryption 運作機制解析**
     1. **加密流程**：檔案用 Data Key 加密 → Data Key 用 Master Key(KMS) 加密 → 兩者都存在 S3
     2. **技術原理**：KMS 單次只能加密 4KB，Data Key 負責大檔案加密（效能好），KMS 只加密 Data Key（安全性高）

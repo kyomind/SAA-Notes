@@ -183,3 +183,10 @@
     1. **典型題目**：「服務全球用戶 + 低延遲存取 + 災難復原能力」→ **DynamoDB Global Table**
     2. **排除情境**：題目強調 **strong consistency**（強一致性）→ Global Table 不適合（它是最終一致）
     3. **對比選擇**：需要 **relational data + 跨區域** → **Aurora Global Database**
+47. 😇 ElastiCache 核心概念與引擎選擇
+    1. **核心用途**：資料庫查詢結果快取、Session 存儲
+    2. **Redis**：需要**持久化**、複雜資料結構、Pub/Sub → 選它
+    3. **Memcached**：純快取、**多執行緒**、簡單 key-value → 選它
+48. 😇 ElastiCache 考試判斷
+    1. **典型關鍵字**：「減少資料庫負載」「加速讀取」「Session 共享」→ **ElastiCache**
+    2. **考試深度**：不考配置細節、不考 Redis Cluster 分片機制，主要考「什麼時候該用」
