@@ -423,14 +423,14 @@
      1. **網路資訊**：Public/Private IP
      2. **身份資訊**：Instance ID、Security Groups、IAM Role credentials
 **VPC 陷阱**: VPC 本身免費,但別被誤導 — VPC 內的服務該收多少還是收多少。
-1. ★ **AWS 會計費的項目**
+115. ★ **AWS 會計費的項目**
      1. **Running EC2 Instance**：只要在運行就計費（按小時）
      2. **EBS Volumes**：無論 EC2 是否運行都計費（按儲存容量）
-2. ★ **AWS 不計費的項目**
+116. ★ **AWS 不計費的項目**
      1. **Stopped EC2 Instance**：停止後不計算運算費用
      2. **VPC 本身**：建立和使用 VPC 免費（但 VPC 內的資源如 EC2、NAT Gateway 等仍照常計費）
      3. **Public Data Set**：AWS 提供的公開資料集免費
-3. ★★ **EC2 計費核心原則與陷阱**
+117. ★★ **EC2 計費核心原則與陷阱**
      1. **計費區間**：**Boot 開始 → Terminate 結束**
      2. **Stop 狀態**：Stop 不計算運算費用，但 **EBS 持續計費**
      3. **Terminate 狀態**：才完全停止計費（EBS 也會刪除）
