@@ -191,10 +191,7 @@
 57. 😇 **Well-Architected Tool 最佳實踐檢查服務**
     1. **功能**：自動掃描你的架構、給出改善建議
     2. **成本**：**免費服務**
-58. ★★ **跨區域 DR 三要素核心架構**
-    1. **資料同步**：DynamoDB Global Table / S3 CRR / RDS Read Replica
-    2. **架構複製**：ASG + ALB 複製到次區域
-    3. **流量切換**：Route 53 Failover
+58. (刪除)
 59. ★★ **DynamoDB Global Secondary Index (GSI) vs Global Table 考試陷阱**
     1. **GSI 誤用問題**：GSI = 同一張表的額外查詢索引，**只存在於同一個 region**
     2. **Global Table 正確用途**：跨 region 的資料複製，**多主架構同步**
@@ -203,15 +200,21 @@
     1. **Well-Architected Tool**：檢查架構設計、給出最佳實踐建議、**免費服務**
     2. **Compute Optimizer**：優化資源規格（EC2 type、EBS size、Lambda memory），**只管資源規格不管架構設計**
     3. **考試判斷技巧**：題目要求 "架構最佳實踐" → Well-Architected Tool；題目要求 "省錢、調規格" → Compute Optimizer
-61. ★★ **Predictive Scaling 核心機制與特性**
-    1. **運作原理**：使用 ML 分析 CloudWatch 歷史數據、**提前啟動** capacity 而非被動反應、持續學習預測更準確
-    2. **適用場景**：規律性流量高峰（每天、每週固定時間）、應用啟動慢（容器/服務需要時間 warm up）、成本優化需求（避免 over-provision）
+61. ★★ **Predictive Scaling** 核心機制與特性
+    1. **運作原理**
+       - 使用 ML 分析 CloudWatch 歷史數據
+       - **提前啟動** capacity 而非被動反應
+       - 持續學習預測更準確
+    2. **適用場景**
+       - **規律性**流量高峰（每天、每週固定時間）
+       - 應用啟動慢（容器/服務需要時間 warm up）
+       - 成本優化需求（避免 over-provision）
 62. ★★ **Auto Scaling 策略考試判斷標準**
     1. **Predictive Scaling 關鍵字**：predictable/regular pattern、long initialization time
     2. **Dynamic Scaling 關鍵字**：sudden/unpredictable spike、threshold-based triggers
     3. **Scheduled Scaling 關鍵字**：specific time schedule、定時排程
 63. ★★ **Dynamic vs Predictive Scaling 核心差異分析**
-    1. **Dynamic Scaling（反應式）**：CPU 到 threshold → 才開始加機器 → 等機器啟動 → 流量已經來了 → 結果：用戶體驗差 + 可能過載
+    1. **Dynamic Scaling（反應式）**：CPU 到 threshold → 才開始加機器 → 等機器啟動 → 流量已經來了 → 結果：用戶體驗差 + 可能過載⭐️
     2. **Predictive Scaling（預測式）**：看歷史數據 → 知道流量何時來 → **提前**準備好 capacity → 結果：流量來時已經 ready
 64. ★ **Auto Scaling 考試陷阱與判斷技巧**
     1. **常見陷阱**：題目說 "based on **historical** data" → 容易誤以為是 dynamic scaling
@@ -219,17 +222,17 @@
     3. **判斷口訣**：看到 "forecasted/in advance/before peak" → Predictive；看到 "threshold/when CPU reaches" → Dynamic
 65. ★★ **SSL/TLS 憑證匯入位置選擇**
     1. **AWS Certificate Manager (ACM)**：首選方案，Region 支援時優先使用
-    2. **IAM Certificate Store**：備用方案，Region 不支援 ACM 時使用
-    3. **CLI 操作**：兩者皆可使用
+    2. **IAM Certificate Store**：備用方案，Region 不支援 ACM 時使用⭐️這東西已經比較少見
+    3. 用 CLI 操作時，兩者皆可使用
 66. ★ **SSL/TLS 憑證管理考試重點**
     1. **憑證匯入特性**：**第三方憑證**可匯入 ACM/IAM、**ACM 自己簽發**的憑證不能匯出
-    2. **服務整合**：ALB/CloudFront 都支援從 ACM/IAM 載入憑證
+    2. **服務整合**：ALB/CloudFront 都支援從 ACM/IAM 載入憑證⭐️
     3. **實務建議**：優先用 ACM，有自動 renewal 提醒、整合更好
 67. ★★ **CloudFront vs ACM/IAM 憑證管理差異**
-    1. **CloudFront 限制**：憑證綁定單一 distribution、**不能匯出**重用於 EC2/ELB、不是憑證「儲存」位置
+    1. **CloudFront 限制**：憑證綁定單一 distribution、**不能匯出**重用於 EC2/ELB、**不是**憑證「儲存」位置
     2. **ACM/IAM 定位**：憑證**管理/儲存**中心
     3. **CloudFront 定位**：憑證**使用**端點
-68. ★ **SSL 憑證考試關鍵字判斷技巧**
+68. ★ **SSL 憑證考試關鍵字判斷技巧**⭐️
     1. **儲存管理類**：題目問 "import/store" → 選 ACM/IAM
     2. **使用部署類**：題目問 "use/attach" → 選 ALB/CloudFront
     3. **記憶類比**：ACM 是倉庫，CloudFront 是使用憑證的服務
@@ -246,7 +249,7 @@
     2. **設計本質**：**過度配置 (over-provisioning)** 來換取高可用性
     3. **考試重點**：能算出「最剛好」的數字，平衡成本與容錯能力
 72. ★★ **AWS MGN (Application Migration Service) 核心定義**
-    1. **服務定位**：**Lift-and-shift 遷移的標準解法**，用於將 VM workloads 搬到 AWS
+    1. **服務定位**：**Lift-and-shift 遷移的標準解法**⭐️，用於將 VM workloads 搬到 AWS。記住「**MGN = 遷移 = lift-and-shift**」就夠了
     2. **關鍵字識別**：
        - lift-and-shift（不改應用直接搬）
        - minimize downtime（需要持續同步）
@@ -272,11 +275,11 @@
     3. **考試陷阱**：名稱有 "Migration" 相關字眼，但只是評估工具
 76. ★ **AWS DataSync 錯誤選項分析**
     1. **實際用途**：資料傳輸，**不是 VM 遷移**
-    2. **適用場景**：檔案系統、物件儲存的資料搬移（例如：NFS → EFS、S3，或 on-premises 檔案伺服器 → FSx）
+    2. **適用場景**：**檔案系統、物件儲存**的資料搬移（例如：NFS → EFS、S3，或 on-premises 檔案伺服器 → FSx）
     3. **功能限制**：不處理 VM、OS、應用程式
     4. **考試陷阱**：看到 "sync"、"replication" 就誤選
 77. ★★ **AWS Replication Agent 在 MGN 中的核心地位**
-    1. **必要步驟**：在每台 source VM 上安裝 **AWS Replication Agent** 是遷移的第一步
+    1. **必要步驟**：在每台 source VM 上安裝 **AWS Replication Agent** 是遷移的第一步⭐️
     2. **技術原理**：沒有 Agent 就無法同步資料，這是 AWS MGN 的核心架構
     3. **類比理解**：Agent 就像在你的 VM 裝一個「搬家工人」，負責持續把東西搬到 AWS
 78. 😇 **AWS MGN 遷移流程三階段詳解**
@@ -287,14 +290,14 @@
     1. **ACM 憑證必須在同一個 Region**：API Gateway 在 us-east-2 → ACM 憑證也要在 us-east-2（Regional API 硬性規定）⭐️
     2. **建立 API Gateway Domain Name**：把自訂網域綁定 ACM 憑證，API Gateway 提供實際網域名稱（如 `d-xxx.execute-api.us-east-2.amazonaws.com`）
     3. **Route 53 建立 Alias Record**：讓自訂網域指向 API Gateway 的網域名稱
-80. ★★ **Regional vs Edge-Optimized API Gateway 差異比較**
-    1. **Regional API**：ACM 憑證同一個 Region、不使用 CloudFront、適合區域內客戶端（EC2、Lambda）
-    2. **Edge-Optimized API**：ACM 憑證必須在 `us-east-1`、自動建立 CloudFront、適合全球客戶端⭐️
+80. ★★ **Regional vs Edge-Optimized API Gateway 差異比較**⭐️
+    1. **Regional API**：ACM 憑證**同一個 Region**、可自行搭配 CloudFront（更有彈性）、適合區域內客戶端或需要自訂 CDN 設定的場景
+    2. **Edge-Optimized API**：ACM 憑證必須在 `us-east-1`、自動建立 AWS 託管的 CloudFront（無法自訂）、適合快速部署全球 API
     3. **考試判斷關鍵**：題目說 "serve clients in the same AWS Region" → 選 Regional 設定
 81. 😇 **API Gateway 憑證配置記憶技巧**
     1. **Regional = 就地取材**：API 在哪憑證就在哪、不繞 CloudFront 直達目標、如在台北開店向台北市政府申請執照
     2. **Edge-Optimized = 全球配送**：憑證統一放 us-east-1（CloudFront 總部）、透過 CloudFront 分發全球、如做全球生意去總公司辦證照
-82. ★ **Regional API Gateway 考試重點與陷阱**
+82. ★ **Regional API Gateway 考試重點與陷阱**○
     1. **核心規則**：**Regional API 的 ACM 憑證必須同 Region**（死規則）
     2. **題目難點**：混合了 API Gateway、自訂網域、SSL 憑證、DNS 設定概念
     3. **判斷原則**：考的是「細節規定」而非「架構判斷」
@@ -420,14 +423,14 @@
      1. **網路資訊**：Public/Private IP
      2. **身份資訊**：Instance ID、Security Groups、IAM Role credentials
 **VPC 陷阱**: VPC 本身免費,但別被誤導 — VPC 內的服務該收多少還是收多少。
-115. ★ **AWS 會計費的項目**
+1. ★ **AWS 會計費的項目**
      1. **Running EC2 Instance**：只要在運行就計費（按小時）
      2. **EBS Volumes**：無論 EC2 是否運行都計費（按儲存容量）
-116. ★ **AWS 不計費的項目**
+2. ★ **AWS 不計費的項目**
      1. **Stopped EC2 Instance**：停止後不計算運算費用
      2. **VPC 本身**：建立和使用 VPC 免費（但 VPC 內的資源如 EC2、NAT Gateway 等仍照常計費）
      3. **Public Data Set**：AWS 提供的公開資料集免費
-117. ★★ **EC2 計費核心原則與陷阱**
+3. ★★ **EC2 計費核心原則與陷阱**
      1. **計費區間**：**Boot 開始 → Terminate 結束**
      2. **Stop 狀態**：Stop 不計算運算費用，但 **EBS 持續計費**
      3. **Terminate 狀態**：才完全停止計費（EBS 也會刪除）
