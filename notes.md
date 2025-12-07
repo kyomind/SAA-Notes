@@ -202,3 +202,13 @@
     1. **選 Object Lock**：資料在 S3（只是 storage class 選 Glacier）、保護特定幾個檔案、題目沒提 Vault
     2. **選 Vault Lock**：題目明確出現「Vault」或強調「**原生 Glacier 服務**」
     3. **記憶點**：Vault 是原生 Glacier 的東西，這題型不高頻但出現就是送分題
+52. ★★ Security Group vs NACL — 來源/目標表示法差異
+    1. **共同支援**：CIDR block（`10.0.1.0/24`）、單一 IP（`10.0.1.5/32`）
+    2. **Security Group 獨有**：可引用**另一個 Security Group ID**（`sg-0abc1234`）、**Prefix List**（`pl-xxx`）
+    3. **NACL 限制**：純網路層（Layer 3/4），**只認 CIDR**，不認識 Security Group
+53. ★★ Security Group 引用 SG — 動態環境的最佳實踐
+    1. **用法**：Inbound Rule 的 Source 填 `sg-frontend-12345`，代表該 SG 內的所有資源都放行
+    2. **優勢**：Auto Scaling 環境中 EC2 IP 動態變化，**只要屬於該 SG 就能通過**，無需維護 IP 清單
+54. ★ Security Group vs NACL — 考試判斷點
+    1. **動態擴展的 EC2 互相通訊**：答案用 **Security Group 引用 Security Group**
+    2. **阻擋特定 IP 網段**：兩者都行，但 **NACL 可以做 Deny**（SG 只能 Allow）

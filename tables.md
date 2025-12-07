@@ -2197,3 +2197,12 @@ Client → TCP connect → TLS handshake（server 不知道要用哪張憑證）
 有 SNI：
 Client → TCP connect → TLS handshake + hostname → server 選對憑證 → HTTP request
 ```
+
+## Security Group vs NACL 來源/目標表示法比較表
+
+| 來源/目標表示法              | Security Group               | NACL            |
+| ---------------------------- | ---------------------------- | --------------- |
+| **CIDR block**               | ✅ `10.0.1.0/24`              | ✅ `10.0.1.0/24` |
+| **單一 IP**                  | ✅ `10.0.1.5/32`              | ✅ `10.0.1.5/32` |
+| **另一個 Security Group ID** | ✅ `sg-0abc1234`              | ❌ 不支援        |
+| **Prefix List**              | ✅ `pl-xxx`（如 S3 endpoint） | ❌ 不支援        |
