@@ -672,7 +672,7 @@
      1. **記憶口訣**：要出網但不給人打進來 → **Private + NAT GW + IGW**
      2. **架構順序**：EC2 (Private) → NAT GW (Public) → IGW → Internet
      3. **關鍵字識別**：看到「主動連外」+「不被外界存取」→ NAT Gateway 架構
-170. ★★ **VPC Subnet 類型配置與路由設定**○
+170. ★★ **VPC Subnet 類型配置與路由設定**
      1. **Public Subnet 配置**
         - Route Table 設定 `0.0.0.0/0 → Internet Gateway`
         - 放置 **NAT Gateway**（綁定 Elastic IP）
@@ -702,7 +702,7 @@
      1. **Preventive**：直接**阻止違規操作**（例如禁止關閉 CloudTrail）
      2. **Detective**：持續**監控並標記違規行為**
      3. **核心概念**：如「公司規章制度」，套用在 **OU 層級**，OU 底下所有帳戶都受約束
-177. ★ **Control Tower vs Organizations 考試對比**
+177. ★ Control Tower vs Organizations 考試對比⭐️
      1. **AWS Organizations**：僅為「帳戶容器」，缺乏完整治理機制和儀表板
      2. **AWS Control Tower**：完整的多帳戶治理解決方案，包含監控面板
      3. **考試判別**：多帳戶管理 + 集中治理 + 合規監控 → **Control Tower**
@@ -710,24 +710,24 @@
      1. **IAM 密碼政策檢查**：使用 `IAM_PASSWORD_POLICY` 規則自動檢測密碼政策是否符合要求
      2. **持續記錄**：資源配置變更的持續監控
      3. **自動評估**：配置是否符合預設規則的自動判斷
-179. ★★ **AWS Config 三大核心能力**
-     1. **持續記錄**：資源配置變更的完整追蹤
-     2. **自動評估**：配置是否符合規則的自動檢查
-     3. **合規報告**：集中呈現違規項目的儀表板
-180. ★ **Config vs 其他服務考試對比**
+179. ★★ AWS Config 三大核心能力⭐️
+     1. **持續記錄**：資源配置變更的**完整追蹤**
+     2. **自動評估**：配置是否符合規則的**自動檢查**
+     3. **合規報告**：集中呈現**違規項目**的**儀表板**
+180. ★ Config vs 其他服務考試對比
      1. **AWS Config**：檢查資源配置是否合規 ✅
      2. **CloudWatch**：監控指標、日誌 ❌（不檢查配置合規）
      3. **IAM Policy**：控制權限 ❌（無法強制密碼長度）
-181. 😇 **Config 企業實務應用場景**
+181. 😇 Config 企業實務應用場景
      1. **多帳戶整合**：與 Organizations 整合，跨多帳戶收集合規資料
      2. **集中管理**：統一在 master account 查看儀表板
      3. **記憶點**：看到「**自動檢查配置是否合規**」→ **AWS Config**
-182. ★★ **AWS Config 限制：無法阻止不合規操作**
-     1. **Config 性質**：**Detective（偵測型）** 控制，只能事後檢查並標記違規
+182. ★★ AWS Config 限制：無法阻止不合規操作
+     1. **Config 性質**：**Detective（偵測型）** 控制，只能事後檢查並標記違規⭐️
      2. **無法即時阻止**：不能在用戶改密碼時阻止不合規的密碼
      3. **功能定位**：持續監控和報告，非預防性控制
 183. ★ **預防 vs 偵測型控制對比**
-     1. **IAM Password Policy**：**Preventive（預防型）**，在帳戶層級強制密碼規則
+     1. **IAM Password Policy**：**Preventive（預防型）**，在帳戶層級強制密碼規則⭐️
      2. **AWS Config**：**Detective（偵測型）**，持續驗證政策沒被改掉
      3. **最佳實務**：兩者搭配使用，預防 + 持續監控
 184. ★★ **Redshift Cross-Region Snapshot Copy** 核心機制與災難復原
@@ -736,47 +736,49 @@
      3. **DR 場景標準問法**：如何在另一個 region 快速恢復 Redshift？ → **Cross-region snapshot copy**
 185. ★★ **Redshift vs 其他服務跨 Region 機制比較**
      1. **RDS**：Automated backup 只能同 region，需用 read replica 或手動 copy snapshot
-     2. **Redshift**：內建 cross-region snapshot copy 功能
+     2. **Redshift**：內建 cross-region snapshot copy 功能⭐️但需手動啟用
      3. **S3**：Cross-Region Replication (CRR)
 186. ★ **Redshift Cross-Region Snapshot Copy 考試關鍵字與限制**
      1. **關鍵字識別**："copy Redshift data to another region"、"disaster recovery for data warehouse" → Cross-region snapshot
      2. **技術限制**：只複製 snapshot（不是即時同步），要從 snapshot restore 才能用（不是 active-active），會產生跨 region 數據傳輸費用
-187. ★★ **RDS Stop vs Snapshot + Terminate 成本策略差異**
-     1. **Stop instance 問題**：仍收 **storage 費用**（EBS volumes 持續計費）、7 天自動重啟限制（AWS 政策）、省不了多少（storage 是大頭成本之一）
-     2. **Snapshot 循環優勢**：Snapshot 通常比原始 volume 小（壓縮 + incremental）、Terminated 後不付 instance 也不付 storage、只在使用日付完整費用
-188. ★ **RDS 成本優化考試陷阱與判斷要點**
+187. ★★ RDS Stop vs Snapshot + Terminate 成本策略差異
+     1. **Stop instance 問題**：
+        - 仍收 **storage 費用**（EBS volumes 持續計費）
+        - 7 天自動重啟限制（AWS 政策）
+        - 省不了多少（storage 是大頭成本之一）
+     2. **Snapshot 循環優勢**：
+        - Snapshot 通常比原始 volume 小（壓縮 + incremental）
+        - Terminated 後不付 instance 也不付 storage
+        - 只在使用日付完整費用
+188. ★ RDS 成本優化考試陷阱與判斷要點
      1. **常見陷阱**：題目用「stop」當干擾選項，測試是否知道 **Stop ≠ 完全不收費**
      2. **正確判斷**：間歇性工作負載用 **snapshot pattern** 更划算
-
-189. ★★ **CloudWatch Logs 觸發 EC2 Action 自動化流程**
-     1. **核心流程**：CloudWatch Logs (文字) → Metric Filter (關鍵字匹配) → Custom Metric (數值) → Alarm (觸發) → EC2 Action (執行)
+189. ★★ CloudWatch Logs 觸發 EC2 Action 自動化流程
+     1. **核心流程**：CloudWatch Logs (文字) → Metric Filter (關鍵字匹配) → Custom Metric (數值) → Alarm (觸發) → EC2 Action (執行)⭐️
      2. **關鍵角色**：Logs 本身是「啞巴」，必須透過 **Metric Filter** 轉換成 Metric 才能觸發 Alarm
      3. **應用場景**：監控 Application Error（如 "Database connection timeout"）並自動重啟 EC2
-190. ★ **CloudWatch Alarm 的 EC2 Action 功能**⭐️
+190. ★ CloudWatch Alarm 的 **EC2 Action** 功能⭐️
      1. **內建動作**：支援 **Reboot**、Stop、Terminate、Recover 四種動作
      2. **運作機制**：Alarm 進入 `ALARM` 狀態時，自動呼叫 EC2 API（如 `RebootInstances`），**無需 Lambda 或 SNS**⭐️
      3. **考試判斷**：題目問「最簡單/原生」的自動重啟解法 → **CloudWatch Alarm EC2 Action**
-191. 😇 **CloudWatch EC2 Action 限制與實務**
-     1. **帳號限制**：只能操作 **同一個 AWS 帳號** 的 EC2
-     2. **實務建議**：這是 **Reactive (被動)** 作法，治標不治本；更可靠的做法是 Auto Scaling + Health Check
-     3. **多重動作**：一個 Alarm 可以設定多個 Action（例如：重啟 EC2 + 發送 SNS 通知）
+191. (刪除)
 192. ★★ **Textract + Comprehend Medical 醫療文件處理組合**
-     1. **解題流程**：Amazon Textract（從 PDF 提取文字 OCR）→ Amazon Comprehend Medical（識別醫療敏感資訊 PHI）
+     1. **解題流程**：Amazon Textract（從 PDF 提取**文字 OCR**）→ Amazon Comprehend Medical（識別醫療敏感資訊 PHI）⭐️
      2. **技術整合**：S3 存 PDF 報告 → Textract 轉文字 → Comprehend Medical 偵測 PHI → HIPAA 合規處理
      3. **方案優勢**：兩者都是 API call（Lambda 直接呼叫無需重構）、Comprehend Medical 原生支援 HIPAA、最小改動實現合規
 193. 😇 **Textract + Comprehend Medical 考試重點**
      1. **服務定位**：Textract = PDF/圖片文字提取標準答案、Comprehend Medical = AWS 唯一針對醫療文本的 NLP 服務
      2. **關鍵字識別**：看到 HIPAA + PHI + 醫療文件 → 選 Comprehend Medical
      3. **考試記憶**：醫療場景的文件處理必然是這兩個服務的組合
-194. ★★ **AWS 託管服務整合核心概念：Function 中呼叫兩個 API**
+194. ★★ AWS 託管服務整合核心概念：Function 中呼叫兩個 API
      1. **整合實作**：在 Lambda function 中使用 AWS SDK 直接呼叫 **Textract API** 和 **Comprehend Medical API**
      2. **「minimal changes」原理**：AWS 託管服務整合就是 API call，只需在現有程式碼中加幾行呼叫
      3. **考試判斷**：看到「integrate」+ 託管服務 → 選擇 API 整合而非複雜部署方案
-195. ★★ **IAM Identity Center 多帳戶統一身分管理核心概念**
+195. ★★ IAM Identity Center 多帳戶統一身分管理核心概念
      1. **考試重點**：**統一身分管理 + 最小權限原則**的實作方式
-     2. **標準答案**：**IAM Identity Center + Permission Sets** 是現代企業多帳戶架構的正確解法
+     2. **標準答案**：**IAM Identity Center + Permission Sets** 是現代企業多帳戶架構的正確解法⭐️
      3. **核心優勢**：集中管理（一個地方管理所有團隊權限）、Permission Sets（預先定義的政策集合）、最小操作負擔（無需逐一設定 IAM policies）
-196. ★★ **IAM Identity Center 架構設計與權限指派機制**
+196. ★★ IAM Identity Center 架構設計與權限指派機制⭐️講得很好
      1. **Groups 組織結構**：依團隊建立（Data Science Team、Engineering Team、Compliance Team）
      2. **Permission Sets 權限模板**：依職責建立（AuroraReadOnly、EFSDataAccess、ComplianceAudit）
      3. **指派機制**：Team Groups 綁定對應 Permission Sets，系統自動產生對應 IAM roles
@@ -784,33 +786,33 @@
      1. **重複設定問題**：每個 AWS Account 都要重複設定相同權限
      2. **維護複雜度**：修改權限要改多個地方，無法跨 Account 統一管理
      3. **管理成本**：人力成本高，容易出錯
-198. ★★ **IAM Identity Center 三大核心優勢與現代架構最佳實務**
+198. ★★ IAM Identity Center 三大核心優勢與現代架構最佳實務⭐️
      1. **Single Sign-On**：一次登入，存取所有 AWS accounts
      2. **Permission Sets**：預先打包好的權限集合，直接套用
      3. **Central Management**：跨 Organizations 集中管理
      4. **考試判別**：現代 AWS 多帳號架構最佳實務，傳統單一 Account 的 IAM 管理已不適用企業級場景
-199. ★★ **AWS Transit Gateway 集中式網路管理核心概念**
+199. ★★ AWS Transit Gateway 集中式網路管理核心概念
      1. **考試重點**：**集中式網路管理**，解決大量 VPC 互連的管理複雜度
      2. **傳統痛點**：VPC Peering（N 個 VPC 需要 N(N-1)/2 條連線管理地獄）、VPN（每個 VPC 都要建立獨立 VPN 重複工作）、跨 Region 無法統一管理
      3. **核心架構**：**Hub-and-Spoke 模型**，每個 Region 建立一個 TGW，用 **TGW Peering** 串接跨 Region
-200. ★★ **Transit Gateway 四大核心優勢**
+200. ★★ Transit Gateway 四大核心優勢⭐️
      1. **單點連接**：每個 VPC/VPN 只需連到 TGW，不用管其他 VPC
      2. **自動路由**：新增 VPC 時自動可達所有網路
-     3. **跨 Region 支援**：TGW Peering 支援跨 Region 互連
+     3. **跨 Region 支援**：TGW Peering 支援跨 Region 互連⭐️
      4. **高擴展性**：支援數千個 VPC 連接
-201. ★ **Transit Gateway Regional Service 限制與配置要求**
+201. ★ Transit Gateway Regional Service 限制與配置要求
      1. **Regional 限制**：每個 Region 需要獨立的 TGW
-     2. **跨 Region 方案**：必須用 **TGW Peering Connection**
+     2. **跨 Region 方案**：必須用 **TGW Peering Connection**⭐️
      3. **Peering 規則**：只能連接不同 Region 的 TGW
-202. ★★ **Transit Gateway vs VPC Peering 考試判斷標準**
+202. ★★ Transit Gateway vs VPC Peering 考試判斷標準
      1. **選 Transit Gateway 關鍵字**：大量 VPC 互連、VPN 集中管理、跨 Region 網路、"centrally manage"、"hub and spoke"
      2. **VPC Peering 適用場景**：點對點連接，適合少量 VPC
      3. **Transit Gateway 適用場景**：中心化管理，適合大規模網路架構
 203. ★★ **Direct Connect Gateway 錯誤選項分析與考試陷阱**
      1. **錯誤選項設計**：巧妙混合三個概念混淆考生（Direct Connect Gateway + Public Virtual Interface + LAG）
-     2. **核心錯誤**：Direct Connect Gateway **不支援 Public Virtual Interface**，只能建立 **Private Virtual Interface**
+     2. **核心錯誤**：Direct Connect Gateway **不支援 Public Virtual Interface**(Public VIF)，只能建立 **Private Virtual Interface**⭐️
      3. **Public VIF 用途**：存取 AWS 公開服務（S3、DynamoDB），**不適合 VPC 互連**
-204. 😇 **LAG (Link Aggregation Group) 功能定位與場景無關性**
+204. 😇 LAG (Link Aggregation Group) 功能定位與場景無關性○
      1. **LAG 實際用途**：把多條 Direct Connect 連線綁成一條，**增加頻寬**
      2. **場景不符**：題目要解決「**連接拓撲**」問題，不是頻寬問題
      3. **考試陷阱**：LAG 在此場景完全無關，純屬混淆選項

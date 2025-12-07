@@ -212,3 +212,22 @@
 54. ★ Security Group vs NACL — 考試判斷點
     1. **動態擴展的 EC2 互相通訊**：答案用 **Security Group 引用 Security Group**
     2. **阻擋特定 IP 網段**：兩者都行，但 **NACL 可以做 Deny**（SG 只能 Allow）
+55. 😇 RDS 底層架構 — 運算與儲存分離
+    1. **本質**：RDS 跑在 **AWS 管理的 EC2 instance** 上，使用者看不到也摸不到
+    2. **架構**：RDS Instance（運算層）↔ EBS Volume（儲存層），資料**本來就存在 EBS 上**
+56. ★★ RDS Stop vs Terminate — 費用差異
+    1. **Running**：Instance 收費 + EBS 收費
+    2. **Stopped**：Instance **不收費**，EBS **繼續收費**
+    3. **Terminated**：兩者都消失（除非有 snapshot）
+    4. **關鍵點**：Stop 只是停止運算，**儲存費用持續計費**
+57. ★★ RDS 省錢策略 — Snapshot + Terminate
+    1. **操作流程**：建立 Snapshot（備份到 S3）→ Terminate RDS（刪除 instance + EBS）→ 需要時從 Snapshot 還原
+    2. **費用邏輯**：只付 Snapshot 儲存費（通常比 EBS 便宜很多）
+58. ★★ RDS 成本優化考試記憶點
+    - **RDS Stop ≠ 省 storage 費**
+    - **長期不用** → Snapshot + Terminate 最省
+    - **短期不用（< 7 天）** → Stop 可接受
+59. 😇 RDS 費用組成 — 你付的錢包含什麼
+    - **EC2 運算費用**（instance 費用）
+    - **EBS 儲存費用**（storage 費用）
+    - **管理費**（AWS 幫你維運的成本）
