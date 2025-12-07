@@ -516,16 +516,17 @@
      1. **必選 FIFO 場景**：看到「重複處理」、「duplicate messages」問題
      2. **判斷邏輯**：如果「順序」很重要 → **必選 FIFO Queue**、如果只是「不能重複」→ **優先選 FIFO Queue**
      3. **核心記憶**：Standard Queue 架構問題不是參數調整可以解決的，需要 FIFO Queue 從根本解決
-133. ★★ **ARN 結構解析與 Resource ID 識別**○
+133. ★★ ARN 結構解析與 Resource ID 識別
      1. **ARN 標準結構**：`arn:aws:service:region:account-id:resource-type/resource-id`
      2. **結構拆解範例**：`arn:aws:ds:us-east-1:123456789012:directory/d-1234567890`
         - Partition: `aws`
         - Service: `ds` (Directory Service)
         - Region: `us-east-1`
         - Account ID: `123456789012`
+        - Resource Type: `directory`
         - Resource ID: `d-1234567890` (Directory ID)
-     3. **核心記憶**：**ARN 從左到右越來越具體，最右邊就是 Resource ID**
-134. ★ **ARN 考試常見陷阱與錯誤選項**
+     3. **核心記憶**：ARN **從左到右越來越具體**，最右邊就是 Resource ID⭐️
+134. ★ ARN 考試常見陷阱與錯誤選項
      1. **Statement ID (Sid) 混淆**：`DirectoryTutorialsDojo1234` 是 Policy 內的自訂標籤，不是 Directory ID 或 Directory name
      2. **Account ID 誤選**：`987654321012` 是 12 位數字的帳號 ID，位於 ARN 中間位置
      3. **Directory ID 格式**：正確格式通常是 `d-xxxxxxxxxx`
@@ -533,7 +534,7 @@
      1. **識別原則**：看 ARN 最後一段 = Resource ID
      2. **格式記憶**：Directory ID (`d-xxx`)、Account ID (12位數字)、Sid (自訂標籤)
      3. **考試重點**：題目在考你識別 ARN 各個部分的能力
-136. ★★ **IAM Policy 核心結構與組成元素**
+136. ★★ IAM Policy 核心結構與組成元素
      1. **基本結構**：`Version` (Policy 語法版本，固定值 `2012-10-17`) + `Statement` (權限規則陣列)
      2. **Statement 核心元素**：`Sid` (Statement ID，可選識別標籤)、`Effect` (Allow/Deny)、`Action` (允許的操作)、`Resource` (資源範圍 ARN)
      3. **Policy 定義**：定義 AWS 資源的存取權限
@@ -542,26 +543,26 @@
      2. **Statement 2 範例**：Effect: Allow、Action: `ec2:*` (EC2 所有操作)、Resource: `*` (所有資源) → **可對任何 EC2 實例做任何事**
      3. **萬用字元 `*`**：代表「全部」，用於 Action 或 Resource
 138. ★★ **IAM Policy 考試重點與判斷原則**
-     1. **Effect 優先權**：`Deny` 優先權**高於** `Allow`
+     1. **Effect 優先權**：`Deny` 優先權高於 `Allow`⭐️
      2. **Action 格式**：服務前綴 + 操作（例如 `s3:GetObject`、`ec2:*`）
-     3. **Resource 指定**：使用 ARN 格式指定資源範圍，`*` 表示所有資源
-139. ★ **IAM Policy 實務判斷標準與最佳實踐**
+     3. **Resource 指定**：使用 ARN 格式指定資源範圍，或用 `*` 表示所有資源⭐️
+139. ★ IAM Policy 實務判斷標準與最佳實踐⭐️
      1. **Action 配置**：寬鬆 (`*` 所有操作) vs 嚴謹 (明確列出操作)
      2. **Resource 配置**：寬鬆 (`*` 所有資源) vs 嚴謹 (指定特定 ARN)
      3. **Effect 配置**：Allow (允許) vs Deny (明確禁止)
-140. 👀 **IAM Policy 考試陷阱與特殊情況**
+140. 👀 IAM Policy 考試陷阱與特殊情況
      1. **`Resource: "*"` 警覺點**：通常不是最佳實踐
      2. **例外情況**：某些 EC2 API 不支援資源級權限，此時 `Resource: "*"` 是唯一選項
      3. **考試判斷**：需要判斷是否為服務限制導致的必要配置
-141. ★★ **S3 Bucket 公開讀取權限設定方法**
+141. ★★ S3 Bucket **公開讀取**權限設定方法⭐️
      1. **方法一：上傳時設定 ACL**：在 **S3 Console** 上傳物件時，直接授予 public read access（適合個別物件）
      2. **方法二：Bucket Policy**：設定 bucket policy 讓所有物件預設為 public read（適合整個 bucket）
      3. **考試判斷**：題目要求「所有物件都能被公開讀取」→ 兩種方法都正確
-142. ★★ **Glacier Vault Lock 核心概念與合規保護**
+142. ★★ Glacier Vault Lock 核心概念與合規保護⭐️
      1. **定義**：提供 **immutable（不可變更）** 的刪除保護機制，鎖定後無法修改
      2. **用途**：合規要求（如保留期限）、強制保留期（例如保留 5 年才能刪除）
      3. **關鍵字識別**：題目出現「保留 X 年才能刪除」→ 需要 **Vault Lock**
-143. ★★ **Glacier Vault Lock vs Vault Access Policy 差異比較**
+143. ★★ Glacier Vault Lock vs Vault Access Policy 差異比較
      1. **Vault Lock**：immutable（鎖定後不可改）、可強制保留期、用於合規要求
      2. **Vault Access Policy**：可隨時修改、無法強制保留期、用於一般權限控制
      3. **考試判斷**：**合規 + 保留期限** = Vault Lock

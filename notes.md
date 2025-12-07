@@ -190,3 +190,15 @@
 48. 😇 ElastiCache 考試判斷
     1. **典型關鍵字**：「減少資料庫負載」「加速讀取」「Session 共享」→ **ElastiCache**
     2. **考試深度**：不考配置細節、不考 Redis Cluster 分片機制，主要考「什麼時候該用」
+49. ★ Glacier Vault Lock 考試關鍵字觸發
+    - **「Glacier Vault」** 直接提到
+    - **「archive」**（歸檔）+ **合規保留 N 年**
+    - **「WORM compliance」** + **Glacier**
+    - **「legal hold」** + **長期歸檔資料**
+50. 😇 Glacier Vault Lock 典型題目句型
+    - "The company must ensure that archived data in Glacier **cannot be deleted for 7 years** to meet regulatory compliance..."
+    - "...need to implement a **write-once-read-many (WORM)** policy on their **Glacier vault**..."
+51. ★ Vault Lock vs Object Lock 判斷 — 何時不是 Vault Lock
+    1. **選 Object Lock**：資料在 S3（只是 storage class 選 Glacier）、保護特定幾個檔案、題目沒提 Vault
+    2. **選 Vault Lock**：題目明確出現「Vault」或強調「**原生 Glacier 服務**」
+    3. **記憶點**：Vault 是原生 Glacier 的東西，這題型不高頻但出現就是送分題
