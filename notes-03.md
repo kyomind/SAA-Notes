@@ -576,95 +576,97 @@
 146. ★★ **Instance Store 核心特性與資料持久性**
      1. 資料存在**實體主機的本地磁碟**
      2. Instance 終止 → 資料**永久消失**
-     3. **無法 Stop**，只能 Terminate
+     3. **無法 Stop**，只能 Terminate⭐️因為stop很可能會換實體主機，換主機資料就沒了，所以只能terminate
      4. 適合暫存、可重建的資料（如 cache、buffer、臨時運算）
 147. ★★ **Instance Store 終止後資料處理考試陷阱**
      1. ✅ **正確答案**：自動刪除（資料永久消失）
      2. ❌ **錯誤選項 1**：保留在 S3（錯，只有 AMI template 在 S3）
      3. ❌ **錯誤選項 2**：可恢復（錯，資料永久消失無法恢復）
-148. 😇 **Instance Store 考試記憶口訣**
-     1. **核心記憶**：Instance Store = 臨時儲存，關機就沒了
-     2. **類比理解**：實體主機的硬碟，機器關了資料就不見
-     3. **考試判斷**：題目問「終止後資料如何」→ 選「自動刪除」
+148. (刪除)
 149. ★★ **SSE-S3 加密方案識別與特徵**
      1. **判斷依據**：Header 是 `x-amz-server-side-encryption`（沒有指定 KMS）
      2. **管理特性**：S3 自動管理密鑰、自動輪替
      3. **方案定位**：最簡單的加密方式
-150. ★ **SSE-KMS vs SSE-S3 header 差異比較**
-     1. **SSE-KMS header**：`x-amz-server-side-encryption:aws:kms` 並需指定 KMS key ID
-     2. **SSE-S3 header**：`x-amz-server-side-encryption`（無需額外參數）
+150. ★ SSE-KMS vs SSE-S3 header 鍵值差異比較
+     1. **SSE-KMS header**：(鍵:值)`x-amz-server-side-encryption:aws:kms` 並需指定 KMS key ID
+     2. **SSE-S3 header**：(鍵:值)`x-amz-server-side-encryption:AES256`（無需額外參數）⭐️
      3. **考試判斷**：看 header 格式判斷加密方式
-151. ★★ **Storage Gateway 類型選擇核心差異**
+151. ★★ Storage Gateway 類型選擇核心差異
      1. **Volume Gateway (iSCSI)**：協定 iSCSI、作為**虛擬硬碟**掛載、適用於資料庫和需要格式化檔案系統的應用
      2. **File Gateway (NFS/SMB)**：協定 NFS/SMB、作為**網路共享資料夾**、適用於檔案伺服器和檔案存取應用
      3. **核心記憶**：Volume Gateway 給需要「硬碟」的程式，File Gateway 給需要「資料夾」的程式⭐️
-152. ★ **Storage Gateway 應用場景判斷標準**
+152. ★ Storage Gateway 應用場景判斷標準⭐️
      1. **Volume Gateway 場景**：PostgreSQL 需要儲存空間（資料庫需要掛載虛擬硬碟）
      2. **File Gateway 場景**：多台伺服器共享文件（NFS 本來就是給多台共享用）
      3. **考試判斷關鍵字**：Database/Block Storage/iSCSI → Volume Gateway；File Share/NFS/SMB/共享資料夾 → File Gateway
-153. ★★ **Elastic IP (EIP) 綁定對象核心概念**
-     1. **可綁定對象**：只能綁定在 **EC2 的 ENI** 或 **NAT Gateway** 上
+153. ★★ Elastic IP (EIP) **綁定對象**核心概念
+     1. **可綁定對象**：只能綁定在 **EC2 的 ENI** 或 **NAT Gateway** 上⭐️還有 Network Load Balancer 也可以綁
      2. **不能綁定對象**：Internet Gateway (IGW) 不需要也不能綁定 EIP
      3. **IGW 角色定位**：是路由器概念，負責 route table 中的 `0.0.0.0/0 → IGW` 轉送，不是 endpoint
 154. 😇 **IGW vs NAT Gateway vs EIP 記憶比喻**
      1. **IGW**：像家社區的大門（本身沒有門牌地址，只是出口）
      2. **EIP**：像家門號（綁在 NAT 或 EC2）
      3. **NAT Gateway**：像家裡的 WiFi Router（對外只有一個公網 IP）
-155. ★★ **NAT Gateway 連接 Internet 的完整架構流程**
+155. ★★ NAT Gateway 連接 Internet 的完整架構流程
      1. **核心流程**：Private Subnet EC2 (預設路由 0.0.0.0/0 → NAT Gateway) → NAT Gateway → Internet Gateway (IGW) → Internet
      2. **關鍵事實**：NAT Gateway **不會直接連 Internet**，必須透過 IGW 中繼⭐️
-     3. **位置要求**：NAT Gateway 須位於 **公有子網（Public Subnet）**，才能透過 IGW 出站
-156. ★ **NAT Gateway 的 Route Table 配置規則**
-     1. **私有子網配置**：只需在 Private Subnet Route Table 填 `0.0.0.0/0 → NAT Gateway (nat-xxxx)`
+     3. **位置要求**：NAT Gateway 須位於 **公有子網（Public Subnet）**，才能透過 IGW 出站⭐️
+156. ★ NAT Gateway 的 **Route Table** 配置規則
+     1. **私有子網配置**：只需在 Private Subnet Route Table 填 `0.0.0.0/0 → NAT Gateway (nat-xxxx)`⭐️
      2. **NAT Gateway 自動轉送**：NAT Gateway 背後的「去 Internet 的路由」是 AWS 內建的，**不需手動設定**
-     3. **內建行為**：NAT Gateway 會自動將出站流量遞送到 IGW
-157. ★★ **NAT Gateway 考試陷阱與常見錯誤**
+     3. **內建行為**：NAT Gateway 會**自動**將出站流量遞送到 IGW
+157. ★★ NAT Gateway 考試陷阱與常見錯誤
      1. **陷阱 1：混淆路由責任**：誤以為 NAT Gateway 直接 NAT 後就能出網（錯），實際上沒有 IGW 它根本出不了 VPC
-     2. **陷阱 2：私有子網指向 IGW**：私有子網的 Route Table 指向 NAT Gateway，**不是指向 IGW**
+     2. **陷阱 2：私有子網指向 IGW**：私有子網的 Route Table 指向 NAT Gateway，**不是指向 IGW**⭐️
      3. **考試公式**：**私有子網 → NAT Gateway → IGW → Internet**（題目會直接考這個順序）
 158. 😇 **NAT Gateway 快速記憶法與實務理解**
      1. **記憶口訣**：NAT Gateway 是公有子網的服務，用 **EIP + IGW** 幫私有子網連外
      2. **簡化版**：NAT 站在公有子網，IGW 是它的門⭐️
      3. **架構理解**：NAT Gateway 只負責 NAT 轉換，不負責出 VPC，IGW 才負責對外連接
-159. ★★ **Route Table 四種 Target 快速判別（必背）**
+159. ★★ Route Table 四種 Target 快速判別（必背）
      1. **igw-xxxx → 公網**：Internet Gateway，對外連接
      2. **nat-xxxx → 私有網出公網**：NAT Gateway，私有子網存取公網
      3. **vpce-xxxx → S3/DynamoDB**：Gateway Endpoint，VPC 內安全存取 AWS 服務
      4. **tgw-xxxx → Transit Gateway**：跨 VPC / 混合網路連接
-160. ★★ **VPC 與 Subnet 的層級劃分（Region vs AZ）**
+160. ★★ VPC 與 Subnet 的層級劃分（Region vs AZ）⭐️
      1. **VPC 層級**：**Region 級別**（建立時選定一個 region，無法跨 region）
      2. **Subnet 層級**：**AZ 級別**（建立時必須指定一個 AZ，無法跨 AZ）
-161. ★ **Multi-AZ 架構的基礎設計**
-     1. 一個 VPC 可以有**多個 subnet 分散在不同 AZ**（這就是 Multi-AZ 架構的基礎）
+161. ★ Multi-AZ 架構的網路基礎
+     1. 一個 VPC 可以有**多個 subnet 分散在不同 AZ**（這就是 Multi-AZ 架構的基礎）⭐️
      2. 每個 subnet 只能屬於**一個 AZ**，但一個 AZ 可以有多個 subnet
-162. ★★ **跨 AZ 高可用部署的考試陷阱**
+162. ★★ 跨 AZ 高可用部署的考試陷阱
      1. **常見錯誤**：建立多個 VPC 來實現跨 AZ 高可用
      2. **正確答案**：在多個 AZ 的 subnet 部署 EC2（在同一個 VPC 內）
-     3. **記憶要點**：高可用需要的是跨 AZ 的 subnet，而不是多個 VPC
-163. ★★ **Kinesis Data Streams 選擇原因：訊息佇列的順序性與可靠性**
-     1. **不能遺失**：資料會**持久化儲存**（預設 24 小時，最長 365 天）⭐️
-     2. **不能重複**：每筆資料有**唯一的 Sequence Number**⭐️
-     3. **順序保證**：同一個 **shard 內的資料嚴格按順序處理**⭐️
-164. ★ **Kinesis Data Streams 核心概念與架構**
+     3. **記憶要點**：高可用需要的是跨 AZ 的 subnet，而不是多個 VPC⭐️
+163. ★★ Kinesis Data Streams 選擇原因：訊息佇列的順序性與可靠性⭐️這三個元素都非常強力且重要
+     1. **不能遺失**：資料會**持久化儲存**（預設 24 小時，最長 365 天）
+     2. **不能重複**：每筆資料有**唯一的 Sequence Number**
+     3. **順序保證**：同一個 **shard 內的資料嚴格按順序處理**
+164. ★ Kinesis Data Streams 核心概念與架構
      1. **基本流程**：訊息 → Kinesis Data Streams (多個 shards) → EMR 消費
      2. **Shard**：Kinesis 的基本單位，每個 shard 保證順序
      3. **Partition Key**：決定訊息分配到哪個 shard
      4. **Sequence Number**：Kinesis 自動分配，確保順序
-165. ★ **Amazon Data Firehose 為何不適合順序保證場景**
+165. ★ Amazon Data Firehose 為何**不適合順序保證**場景
      1. **設計目的**：Firehose 主要用於**將實時流數據傳遞到數據湖、數據倉庫、分析服務**⭐️
      2. **可靠性保證**：確保**可靠的數據傳遞**，但**不保證消息的順序性**
      3. **考試判別**：需要嚴格的順序保證 → Kinesis；只需可靠傳遞 → Firehose
-166. ★★ **NAT Gateway 核心概念與架構需求**
+166. ★★ NAT Gateway 核心概念與架構需求
      1. **核心目的**：讓 **Private Subnet 的 EC2 能出網但不被外界直接存取**
      2. **標準答案**：Deploy a NAT Gateway in a public subnet, and add a route from the private subnet to the NAT Gateway
      3. **安全原則**：Internet 只能看到 NAT Gateway 的 Public IP，Private EC2 只能主動連出去，不能被動被打進來
-167. ★★ **NAT Gateway 完整架構流程與配置要求**
+167. ★★ NAT Gateway 完整架構流程與配置要求
      1. **架構流程**：Private EC2 → NAT Gateway（Public Subnet）→ Internet Gateway → Internet
-     2. **NAT Gateway 必要條件**：必須放在 **Public Subnet**、必須綁定 **Elastic IP (EIP)**
+     2. NAT Gateway 必要條件⭐️
+        - 必須放在 **Public Subnet**
+        - 必須綁定 **Elastic IP (EIP)**
      3. **Private Subnet 路由配置**：Route Table 設定 `0.0.0.0/0 → NAT Gateway`
-168. ★ **NAT Gateway 技術限制與費用考量**
+168. ★ NAT Gateway 技術限制與費用考量
      1. **協定支援**：只支援 **IPv4**（IPv6 場景需使用 **Egress-only Internet Gateway**）
-     2. **費用結構**：每小時固定費用 + Data Processing 費用 + EC2 Data Transfer 費用
+     2. **費用結構**
+        - 每小時固定費用
+        - Data Processing 費用
+        - EC2 Data Transfer 費用
      3. **考試對比**：題目常拿費用來比較「NAT Instance vs NAT Gateway」
 169. 😇 **NAT Gateway 考試記憶技巧與判斷要點**
      1. **記憶口訣**：要出網但不給人打進來 → **Private + NAT GW + IGW**
