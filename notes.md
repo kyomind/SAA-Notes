@@ -254,3 +254,27 @@
 65. 😇 EIP + ENI 考試關鍵字
     1. **題目特徵**：「maintain the same IP address after instance failure」、「move IP to another instance」
     2. **正確理解**：EIP 綁在 ENI 上，因此可以快速切換到另一台 EC2
+66. ★★ FSx for Windows vs File Gateway — 核心差異對比
+    1. **FSx for Windows**：雲端原生的 Windows 檔案系統，解決 EC2 需要高效能、AD 整合的共享儲存
+    2. **File Gateway**：地端到雲端的橋接器，解決 On-premises 想無縫存取 S3
+    3. **本質區別**：FSx 是純雲端儲存服務；File Gateway 是混合雲橋接方案
+67. ★★ FSx for Windows vs File Gateway — 考試判斷關鍵字
+    1. **選 FSx for Windows**：題目只提到 **EC2**、**Windows workloads**、需要 **Active Directory 整合**、強調**高效能** IOPS/throughput、**純雲端架構**
+    2. **選 File Gateway**：題目出現 **on-premises**、**hybrid**、**data center**、需要讓地端應用「**看起來像本地檔案系統**」但實際存到 S3、強調**成本效益**（後端是 S3）、**遷移過渡期**場景
+68. 😇 FSx for Windows vs File Gateway — 後端工程師視角
+    1. **FSx for Windows**：在 AWS 開了一台專門跑 Windows File Server 的高效能 NAS
+    2. **File Gateway**：在公司機房放了一個 proxy，讓舊系統以為在讀本地檔案，其實是讀 S3
+    3. **競爭對手差異**：FSx 競爭的是 EFS（Linux）、自建 File Server；File Gateway 競爭的是 VPN + 直連 S3、DataSync
+69. 😇 ALB Access Logs + CloudWatch Application Insights — 考試標準答案組合
+    1. **實務常見度**：ALB Access Logs → S3（標配）；CloudWatch Application Insights（較少見，知名度低）
+    2. **考試關鍵字**：題目強調 **"least operational overhead"**、**"minimal configuration"**、**"AWS-native solution"** → Application Insights 的自動配置特性成為正確答案
+    3. **定位**：記住這個組合是為了考試，解決低維護的流量監控 + 自動異常分析
+70. 😇 CloudWatch Application Insights 在實務上的替代方案
+    1. **傳統三件套**：CloudWatch Metrics + Alarms + Dashboards（大多數工程師習慣用）
+    2. **第三方工具**：Datadog、New Relic、Grafana（功能更強、生態系更好）
+    3. **容器環境**：ECS/EKS 通常直接用 Container Insights（更針對容器場景）
+    4. **實務常見**：ALB Logs + Athena 查詢、CloudWatch Metrics + Alarms、observability 平台
+71. ★★ NAT Gateway 高可用架構 — 每個 AZ 獨立部署
+    1. **核心原則**：NAT Gateway 是 **AZ-bound 資源**，只存在於一個 AZ 內，無法跨 AZ 服務
+    2. **唯一正確做法**：每個 AZ 部署獨立的 NAT Gateway（不是選擇，是必須）
+    3. **跨 AZ 使用的問題**：違反高可用原則（AZ-A 掛了，AZ-B 的 private subnet 也斷網）、跨 AZ 流量收費

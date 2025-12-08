@@ -925,89 +925,88 @@
      2. **Default VPC vs 自建 VPC 差異**
         - Default VPC：預設開啟兩項 DNS 設定
         - 自建 VPC：預設關閉（需手動啟用）
-232. ★ VPC DNS 設定功能解析與啟用方法○
+232. ★ VPC DNS 設定功能解析與啟用方法⭐️
      1. **DNS resolution 功能**：讓 EC2 可以透過 AWS DNS server 解析域名
      2. **DNS hostnames 功能**：讓 EC2 獲得 public DNS hostname
-     3. **啟用方法**：到 VPC 設定中手動啟用這兩個選項
-233. 😇 **VPC DNS 設定考試判斷技巧與常見陷阱**
+     3. **啟用方法**：到 **VPC 設定**中手動啟用這兩個選項
+233. 😇 VPC DNS 設定考試判斷技巧與常見陷阱
      1. **考試關鍵字組合**：「新建的 VPC」+ 「沒有 DNS hostname」→ 直接想到 DNS 設定問題
      2. **實務陷阱**：很多人第一次自建 VPC 會踩的坑
      3. **最佳實務**：生產環境建 VPC 時，在一開始就啟用這兩個設定
-234. ★★ **Amazon EFS 作業系統支援限制**
+234. ★★ Amazon EFS 作業系統支援限制
      1. **核心限制**：EFS 只能處理 **Linux 工作負載**，不支援 Windows
      2. **考試判斷**：看到 **Windows EC2 instance** → 直接排除 EFS 選項
      3. **Windows 儲存方案**：應選擇 **EBS volumes** 或 **FSx for Windows File Server**
-235. ★★ **Windows EC2 共享檔案系統最佳選擇核心考點**
+235. ★★ Windows EC2 共享檔案系統最佳選擇核心考點⭐️
      1. **決定性因素**：題目出現 **Active Directory 整合需求** → 只能選 **FSx for Windows File Server**
      2. **技術要求組合**：Windows EC2 + SMB 協定 + 高效能 + AD 整合 → **FSx Windows 是標準解**
      3. **考試記憶**：看到 `.NET`、`Windows EC2`、`Active Directory` → 直接選 **FSx for Windows File Server**
-236. ★★ **FSx for Windows File Server vs File Gateway 差異比較**
+236. ★★ FSx for Windows File Server vs File Gateway 差異比較
      1. **AD 整合支援**：FSx Windows（**原生支援 AD**）vs File Gateway（**不支援 AD 整合**）
      2. **效能規格**：FSx Windows（tens of GB/s + millions IOPS）vs File Gateway（混合雲導向，效能有限）
      3. **適用場景**：FSx Windows（純 EC2 高效能）vs File Gateway（on-premises ↔ S3 混合雲）
-237. ★ **Windows 共享檔案系統服務選擇判斷表**
+237. ★ Windows 共享檔案系統服務選擇判斷表
      1. **Windows EC2 + AD 整合**：**FSx for Windows File Server**（唯一選項）
      2. **Windows EC2 + 基本共享**：FSx Windows 或 File Gateway
      3. **混合雲檔案同步**：File Gateway（主要用途）
-238. 😇 **FSx for Windows File Server 技術特性與優勢**
+238. 😇 FSx for Windows File Server 技術特性與優勢
      1. **協定支援**：原生 **SMB 協定**，Windows 檔案共享標準
      2. **管理模式**：**完全託管服務**，符合雲端最佳實踐
      3. **效能保證**：可達 **tens of GB/s throughput** + **millions IOPS**，滿足高效能需求
-239. ★★ **VPC Peering 跨 Region 連線核心機制**
+239. ★★ VPC Peering 跨 Region 連線核心機制
      1. **關鍵特性**：**VPC Peering 在跨 Region 時自動加密**，流量走 AWS 內網，不經公網
      2. **標準實作**
         - 建立 VPC Peering Connection (Ohio ↔ N.Virginia)
-        - 修改 Route Table 加路由規則指向對方 VPC CIDR
-240. ★★ **VPC Peering 路由設定必要性與技術原理**
+        - 修改 Route Table 加路由規則**指向對方 VPC CIDR**
+240. ★★ VPC Peering 路由設定必要性與技術原理⭐️
      1. **常見錯誤**：以為建立 Peering 就結束了，實際上只是「開通道路」，EC2 不知道怎麼走
      2. **路由配置要求**
-        - 在各自 subnet 的 route table 加上目的地對方 VPC CIDR
+        - 在各自 subnet 的 route table 加上目的地**對方 VPC CIDR**
         - Target 設為 Peering Connection ID (pcx-xxxxx)
      3. **核心記憶**：**Peering = 開道路，Route Table = 裝導航**，兩個都要設定才能通
-241. ★ **VPC Peering 考試錯誤選項分析**
+241. ★ VPC Peering 考試錯誤選項分析
      - **用 VPN**：多此一舉，Peering 更簡單
      - **用 Transit Gateway**：功能過剩，成本較高
      - **只改 Security Group**：沒路由還是不通
-242. ★★ **VPC Endpoint 使用限制與適用範圍**
-     1. **核心限制**：VPC Endpoint **只能用於同 Region 內連接 AWS 服務**（如 S3、DynamoDB），不支援跨 Region 或 VPC 間通訊
+242. ★★ VPC Endpoint 使用限制與適用範圍
+     1. **核心限制**：VPC Endpoint **只能用於同 Region 內連接 AWS 服務**（如 S3、DynamoDB），不支援跨 Region 或 VPC 間通訊⭐️
      2. **真正用途**
         - 讓 EC2 私密連接 AWS 服務（不經 Internet Gateway）
         - 分兩類：Gateway Endpoint（S3/DynamoDB）和 Interface Endpoint（其他服務）
-     3. **技術原理**：Endpoint 本質是在你的 VPC 內建立一個「服務入口」，只作用於該 VPC 所在 Region 的 AWS 服務
-243. ★ **VPC 連線方案考試判斷技巧**
+     3. **技術原理**：Endpoint 本質是在你的 VPC 內建立一個「服務入口」，只作用於**該 VPC 所在 Region** 的 AWS 服務
+243. ★ VPC 連線方案考試判斷技巧
      1. **考試陷阱**：題目說「private connection」時，容易誤選 VPC Endpoint
      2. **正確判斷標準**
         - EC2 ↔ EC2 → 用 **Peering**
         - EC2 ↔ AWS 服務 → 用 **Endpoint**
-244. ★★ **VPC Endpoint 成本差異與選擇策略**
+244. ★★ VPC Endpoint 成本差異與選擇策略
      1. **Gateway VPC Endpoint**：**免費**，適用於 S3 和 DynamoDB
      2. **Interface VPC Endpoint**：**付費**（hourly usage + data processing charges），適用於其他 AWS 服務
      3. **考試判斷**：題目要求「most cost-effective solution」且涉及 S3 → 選 **Gateway VPC Endpoint**
-245. 😇 **Route 53 Weighted Routing 權重設定機制**
+245. 😇 Route 53 Weighted Routing 權重設定機制
      1. **權重指定方式**：**完全人為手動指定**，在建立 record 時手動設定 weight 數值（**0-255**）
      2. **設定位置**：Route 53 Console → Record → Routing policy 選 Weighted → 輸入 Weight 值
      3. **動態調整**：可隨時修改 weight 改變流量分配比例，**無需停機**
-246. 😇 Route 53 Weighted Routing 等比例分配設定
+246. 😇 Route 53 Weighted Routing 等比例分配設定⭐️
      1. **1:1 分配方法**：兩台都設 **weight=1** 即可實現等比例
      2. **數值彈性**：50/50、100/100 都可以，**只要兩個數字相同就是 1:1**
-
-247. ★★ **IAM Policy + Resource Tags 精細權限控管機制**
+247. ★★ IAM Policy + Resource Tags 精細權限控管機制
      1. **核心做法**：打 Tag 區分環境（UAT 機器 `Environment=UAT`、Production 機器 `Environment=Production`）
      2. **IAM Policy 條件設定**：使用 `StringEquals` 條件限制只能操作特定 tag 的資源
      3. **權限隔離優勢**：**Tag + IAM Condition** 最靈活，一個 Account 就能精細控管
-248. ★★ **AWS RAM 誤區澄清與正確用途定位**
-     1. **AWS RAM 真正用途**：**跨 Account 或 Organization 內共享資源**（如 Transit Gateway、Subnets、License Manager）
-     2. **不適用原因**：RAM 是跨帳號共享工具，**不是權限控管工具**，無法直接限制 EC2 操作權限
+248. ★★ AWS RAM 誤區澄清與正確用途定位⭐️
+     1. AWS RAM 真正用途：**跨 Account 或 Organization 內共享資源**（如 Transit Gateway、Subnets、License Manager）
+     2. **不適用原因**：RAM 是**跨帳號共享**工具，**不是權限控管工具**，無法直接限制 EC2 操作權限
      3. **考試陷阱識別**：看到「access control」就選 RAM → **錯誤**，正確解法是 **Tags + IAM Policy Condition**
-249. ★★ **Private Subnet EC2 透過 NAT Gateway 存取 S3 的流量路徑**
+249. ★★ Private Subnet EC2 透過 NAT Gateway 存取 S3 的流量路徑⭐️
     1. **標準流程**：EC2 (private subnet) → NAT Gateway (public subnet) → Internet Gateway → **公網** → S3 (公開端點 s3.amazonaws.com)
     2. **重要觀念**：即使 EC2 和 S3 在**同一個 region**，透過 NAT Gateway 存取 S3 時流量會**離開你的 VPC** 經過公網
     3. **費用影響**：**依然收費**，因為經過 NAT Gateway 的 data processing 費用
-250. ★★ **VPC Endpoint 最佳化 S3 存取的核心優勢**
-    1. **流量路徑**：EC2 (private subnet) → S3 VPC Endpoint → S3 (直接透過 AWS 內網)
+250. ★★ VPC Endpoint 最佳化 S3 存取的核心優勢
+    1. **流量路徑**：EC2 (private subnet) → S3 VPC Endpoint → S3 (直接透過 AWS 內網)⭐️少了一大段公網路徑
     2. **核心優勢**：流量**完全不離開 AWS 網路**、不經過公網、**免費且更安全**
     3. **考試重點**：這就是題目要求**成本最佳化**的核心原因
-251. ★★ **ALB Access Logs vs CloudWatch Application Insights 流量監控組合**
+251. ★★ ALB Access Logs + CloudWatch Application Insights 流量監控組合⭐️
      1. **ALB Access Logs**：捕捉 **HTTP 請求詳細資訊**（IP、latency、request path）、自動寫入 S3、零維護負擔
      2. **CloudWatch Application Insights**：分析流量模式、**troubleshooting ECS 應用**、自動配置監控、自動分析異常
      3. **核心優勢**：**LEAST amount of overhead** 的監控解決方案組合
@@ -1019,60 +1018,54 @@
      1. **題目要求**：「HTTP 請求詳細資訊、Client IP、網路延遲」
      2. **錯誤選項**：CloudTrail → 只記錄「有人修改 ALB 設定」這類**管理操作**⭐️
      3. **正確選項**：ALB Access Logs → 記錄每個 **HTTP request 的完整資訊**⭐️
-254. 😇 **CloudTrail vs Access Logs 記憶技巧與考試判斷**
-     1. **記憶口訣**：CloudTrail = 管理層面的「誰做了什麼」、Access Logs = 應用層面的「用戶請求了什麼」
-     2. **考試判斷**：CloudTrail Lake 也只能查 **API events**，跟應用流量無關
-     3. **核心區分**：管理操作監控 vs 應用流量監控
-255. ★ **AWS 三大監控服務快速區分法**
+254. (刪除)
+255. ★ AWS 三大監控服務快速區分法⭐️
      1. **CloudTrail**：「誰」對 AWS 資源做了「什麼操作」（**管理員視角**）
      2. **CloudWatch**：監控資源運作狀態、metrics、logs（**營運視角**）
      3. **Access Logs**：記錄終端用戶的實際請求（**用戶視角**）
-256. 😇 **監控服務記憶口訣與視角區分**
-     1. **CloudTrail**：**內部人員的管理操作**（AWS 資源變更稽核）
-     2. **Access Logs**：**外部用戶的應用請求**（實際流量分析）
-     3. **理解技巧**：從不同角色視角記憶各服務用途
-
-257. ★★ S3 Transfer Acceleration + Multipart Upload 組合應用核心概念——僅用於大檔案加速**上傳** S3
+256. (刪除)
+257. ★★ S3 Transfer Acceleration + Multipart Upload 組合應用核心概念⭐️
      1. **Transfer Acceleration 特性**
         - 利用 CloudFront edge locations 加速遠距離傳輸
         - 適合跨國跨大陸資料傳輸
         - 透過 **AWS 骨幹網路傳輸比公網快 50-500%**
+        - 對**上傳和下載**都有效
      2. **Multipart Upload 特性**
         - 將大檔案切分成多個部分平行上傳
         - **單一檔案超過 100MB 建議使用，超過 5GB 必須使用**
         - 失敗可重傳單一部分不用整個檔案重來
-258. ★★ **Egress-only IGW 路由設定必要性與配置要求**
-     1. **核心要求**：雖然 **Egress-only IGW 掛在 VPC level**，但必須在 **Private Subnet 的 route table** 手動加路由規則
-     2. **路由配置**：目的地 `::/0`（所有 IPv6）→ Target: `eigw-xxxxx`（Egress-only IGW）
+        - 只對**上傳**有效
+258. ★★ Egress-only IGW 路由設定必要性與配置要求
+     1. **核心要求**：雖然 **Egress-only IGW 掛在 VPC level**，但必須在 **Private Subnet 的 route table** 手動加路由規則⭐️
+     2. **路由表配置**：Destination `::/0`（所有 IPv6）→ Target: `eigw-xxxxx`（Egress-only IGW）
      3. **架構理解**：掛在 VPC ≠ 自動生效，**route table 一定要設定**
-        - VPC 層級掛載只是建立 Gateway
+        - VPC 層級掛載**只是建立 Gateway**
         - Route Table 設定才是實際生效的關鍵
         - 兩步驟缺一不可
-259. 😇 **IGW vs Egress-only IGW 路由設定類比**
+259. 😇 IGW vs Egress-only IGW 路由設定類比
      1. **Internet Gateway**：掛 VPC level，但 **Public Subnet** 要加路由 `0.0.0.0/0 → igw-xxx`
      2. **Egress-only IGW**：掛 VPC level，但 **Private Subnet** 要加路由 `::/0 → eigw-xxx`
      3. **記憶技巧**：兩者都需要在對應 subnet 的 route table 手動設定路由
         - Gateway 掛載 = 提供能力
         - Route Table = 實際使用
         - 類比：裝了門但不裝把手，還是推不開門
-260. ★★ **NAT Gateway Multi-AZ 部署的路由設定陷阱**
+260. ★★ NAT Gateway Multi-AZ 部署的路由設定陷阱
      1. **常見錯誤**：誤將路由設定在 **Public Subnet**（沒意義，Public Subnet 本來就能直接上網）⭐️
      2. **正確原則**：**NAT Gateway 放置位置**在 Public Subnet，**Route Table 設定位置**在 Private Subnet⭐️
         - NAT Gateway 本身需要公網 IP（Elastic IP）才能對外連線
         - Private Subnet 透過路由指向 NAT Gateway 來實現出網
         - 架構邏輯：Private → NAT GW → IGW → Internet
-     3. **核心記憶**：Private 要上網 → 查自己 subnet 的 route table → 找到同 AZ 的 NAT Gateway
+     3. **核心記憶**：Private 要上網 → 查自己 subnet 的 route table → 找到**同 AZ** 的 NAT Gateway
         - 位置：NAT GW 在 Public，路由在 Private
         - 邏輯：誰要出網，誰設定路由
-        - 錯誤：在 Public 設路由完全沒用
-261. ★★ **Multi-AZ NAT Gateway 標準架構與高可用設計**
+261. ★★ Multi-AZ NAT Gateway 標準架構與高可用設計⭐️
      1. **AZ-A 配置**：Public Subnet A → NAT Gateway A，Private Subnet A route: `0.0.0.0/0 → NAT Gateway A`
      2. **AZ-B 配置**：Public Subnet B → NAT Gateway B，Private Subnet B route: `0.0.0.0/0 → NAT Gateway B`
      3. **高可用優勢**：每個 AZ 獨立運作，一個掛了不影響其他 AZ
         - 每個 AZ 自成一套完整架構
         - 故障隔離：AZ-A 掛了不影響 AZ-B
-        - 成本考量：需要建立多個 NAT Gateway
-262. ★★ RDS Event Subscription 主要監控 db 實例層級事件，無法監控資料變化
+        - 成本考量：**需要建立多個 NAT Gateway**
+262. ★★ RDS Event Subscription 主要監控 db 實例層級事件，無法監控資料變化○
      1. **RDS Event Subscription 限制**：只能監控 **DB 實例層級的事件**（實例啟動/停止/重啟、備份完成、故障轉移、參數群組變更）⭐️
      2. **核心問題**：**完全無法監控資料變化**（row-level changes），無法得知「哪一筆車輛資料被刪除」
      3. **考試關鍵字識別**：看到「資料庫資料變化觸發後續處理」→ 排除 RDS event subscription
