@@ -1065,35 +1065,32 @@
         - 每個 AZ 自成一套完整架構
         - 故障隔離：AZ-A 掛了不影響 AZ-B
         - 成本考量：**需要建立多個 NAT Gateway**
-262. ★★ RDS Event Subscription 主要監控 db 實例層級事件，無法監控資料變化○
+262. ★★ RDS Event Subscription 主要監控 db 實例層級事件，無法監控資料變化
      1. **RDS Event Subscription 限制**：只能監控 **DB 實例層級的事件**（實例啟動/停止/重啟、備份完成、故障轉移、參數群組變更）⭐️
      2. **核心問題**：**完全無法監控資料變化**（row-level changes），無法得知「哪一筆車輛資料被刪除」
      3. **考試關鍵字識別**：看到「資料庫資料變化觸發後續處理」→ 排除 RDS event subscription
-263. ★★ **Aurora Native Function 直接觸發 Lambda 核心優勢**
+263. ★★ **Aurora Native Function** 直接觸發 Lambda 核心優勢
      1. **即時資料捕捉**：刪除發生時立即觸發（row-level trigger）
      2. 可監控特定操作：`INSERT`、`UPDATE`、`DELETE`⭐️
      3. **完整資料傳遞**：可把被刪除的車輛完整資訊傳給 Lambda
      4. **精確控制**：可只在特定操作（DELETE）時觸發
-264. ★★ **Aurora Native Function 服務定位與技術實作**
+264. ★★ Aurora Native Function 服務定位與技術實作
      1. **服務定位**：**Aurora MySQL/PostgreSQL 的原生功能**，不是獨立服務
      2. **呼叫方式**：提供 Native Function 和 Stored Procedure 兩種方式
      3. **技術整合**：直接在 SQL 語法中呼叫 Lambda 函式
      4. **考試關鍵字**：「database 資料變化要觸發處理」→ 首選 **Aurora + Lambda integration**
      5. **服務支援範圍**：只有 **Aurora MySQL/PostgreSQL** 支援，一般 RDS 沒有此功能
      6. **架構優勢**：資料變化即時觸發，無需額外的 polling 機制
-265. ★★ **SAML Federation 核心架構與流程**
+265. ★★ SAML Federation 核心架構與流程
      1. **問題解決**：on-premises AD 帳號直接存取 AWS 資源，無需在 AWS 重建帳號
      2. **技術組合**：AD FS + SAML 2.0 + AWS STS，透過信任關係建立身份聯邦
      3. **運作流程**：使用者 → AD FS 登入 → 取得 SAML assertion → 換取 AWS temporary credentials → 存取 AWS 資源
-266. ★★ **DynamoDB Streams 資料變化監控核心機制**
+266. ★★ DynamoDB Streams 資料變化監控核心機制⭐️
      1. **監控範圍**：記錄 **INSERT、MODIFY、REMOVE** 三種資料變更事件
      2. **資料保留**：Stream 資料保留 **24 小時**
      3. **觸發用途**：Lambda 後續處理、稽核紀錄、跨 region 複製
-267. ★ **DynamoDB Streams View Type 選擇**
-     1. **KEYS_ONLY**：只記錄 primary key（最小資料量）
-     2. **NEW_AND_OLD_IMAGES**：記錄變更前後完整資料（稽核常用）
-     3. **考試重點**：依據後續處理需求選擇適當的 view type
-268. ★★ **Lambda vs Glue 大檔案處理選擇標準**
+267. (刪除)
+268. ★★ Lambda vs Glue 大檔案處理選擇標準
      1. **Lambda 限制**：執行時間最多 15 分鐘、記憶體最多 10GB，**不適合 ETL 工作負載**⭐️
      2. **AWS Glue 優勢**：專為 ETL 設計、TB 級資料處理、自動擴展、無時間限制
      3. **考試判斷**：看到「大量資料轉換」或「ETL」→ **AWS Glue**
@@ -1101,27 +1098,27 @@
      1. **Lambda**：輕量快速事件處理、微服務架構、API 後端
      2. **AWS Glue**：大規模資料轉換、ETL pipeline、資料湖處理
      3. **核心記憶**：Lambda = 事件處理，Glue = 資料轉換
-270. ★★ **ElastiCache Redis AUTH 認證機制核心要求**
+270. ★★ ElastiCache Redis AUTH 認證機制核心要求
      1. **必要參數組合**：`--auth-token` + `--transit-encryption-enabled` **兩個參數缺一不可**
      2. **安全設計邏輯**：AWS 強制 AUTH token 必須搭配 TLS 加密，避免密碼明文傳輸
-     3. **考試關鍵字識別**：看到「require password before Redis commands」→ **Redis AUTH**
-271. ★ **Redis AUTH vs IAM Authentication 差異對比**
+     3. **考試關鍵字識別**：看到「require password before Redis **commands**」→ **Redis AUTH**
+271. ★ Redis AUTH vs IAM Authentication 差異對比⭐️
      1. **Redis AUTH**：**long-lived credentials**、Redis 內建機制、適用於 Redis protocol
      2. **IAM Authentication**：短期憑證（12 小時過期）、適用於 AWS API、**不適用於 Redis 命令執行**
-     3. **考試判斷**：Redis 命令認證 → AUTH token，AWS API 操作 → IAM
+     3. **考試判斷**：Redis **命令認證** → AUTH token，AWS API 操作 → IAM
 272. 😇 **ElastiCache Redis AUTH 實務應用**
      1. **應用連線**：所有 client 連線都須帶 auth-token
      2. **命令執行**：包括 MULTI/EXEC 等 Redis 命令都需先通過認證
      3. **核心記憶**：類似 PostgreSQL 設密碼，只是 Redis 的實作方式
-273. ★★ **EKS etcd 資料庫層級加密核心概念**
+273. ★★ EKS etcd 資料庫層級加密核心概念⭐️
      1. **核心問題**：Kubernetes Secrets 在 etcd 預設是**明文儲存**，有安全風險
      2. **解決方案**：**EKS + KMS encryption** 在資料寫入 etcd **之前**就加密
      3. **考試關鍵字**：看到「encrypt data within etcd」→ **KMS encryption for EKS**
-274. ★ **EKS KMS vs Secrets Manager 用途差異**
+274. ★ EKS KMS vs Secrets Manager 用途差異
      1. **KMS encryption**：加密 **etcd 資料庫本身**，防止 etcd backup 洩露
      2. **Secrets Manager**：**外部密碼管理服務**，無法加密 etcd 內部資料
      3. **核心區分**：etcd 加密 vs 密碼管理，兩者可搭配使用但目的不同
-275. 😇 **EKS etcd 加密架構理解**
+275. 😇 EKS etcd 加密架構理解
      1. **資料流程**：應用程式 → Kubernetes Secret → etcd 資料庫（需加密此階段）
      2. **實務意義**：即使攻擊者取得 etcd backup 也無法讀取 secrets
      3. **記憶技巧**：etcd = K8s 後端資料庫，KMS = 資料庫檔案加密
