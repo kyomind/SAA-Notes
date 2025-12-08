@@ -278,3 +278,35 @@
     1. **核心原則**：NAT Gateway 是 **AZ-bound 資源**，只存在於一個 AZ 內，無法跨 AZ 服務
     2. **唯一正確做法**：每個 AZ 部署獨立的 NAT Gateway（不是選擇，是必須）
     3. **跨 AZ 使用的問題**：違反高可用原則（AZ-A 掛了，AZ-B 的 private subnet 也斷網）、跨 AZ 流量收費
+72. ★★ IAM Role 本質 — 給任何需要臨時權限的實體
+    1. **適用對象**：AWS 服務（EC2、Lambda 存取 S3）、外部使用者（透過 federation 登入的企業員工）、跨帳號存取（Account A 存取 Account B）、應用程式（使用 AssumeRole 取得臨時憑證）
+    2. **核心概念**：IAM Role 是**權限容器**，不限於 AWS 服務專用⭐️
+73. ★★ Federation 場景下的 IAM Role 運作機制
+    1. **場景**：企業員工在 AD 裡，想登入 AWS Console，但沒有 IAM User
+    2. **運作流程**：員工用 AD 帳號驗證身份（AD Connector 負責）→ AD Group 對應到特定 IAM Role（如 `AD-DevOps-Group` → `IAM-DevOps-Role`）→ 員工登入後 **Assume** 這個 Role，獲得臨時權限
+    3. **核心解答**：AWS 透過 **Role** 知道員工權限，Role 是外部身份進入 AWS 後的權限載體
+74. ★ IAM User vs IAM Role (Federation) — 管理成本對比
+    1. **IAM User**：要在 AWS 另外建帳號、密碼要另外管理、人員異動要兩邊改
+    2. **IAM Role (Federation)**：用現有 AD 帳號、Single Sign-On、AD 改了就生效
+    3. **選擇邏輯**：企業內部員工 + 已有 AD/LDAP → Federation + Role；外部協力廠商、少量用戶 → IAM User
+75. ★★ Lambda 同步調用服務 — HTTP 協議的本質需求
+    1. **API Gateway**：使用者發 HTTP request，瀏覽器等待 response（request-response 模式）
+    2. **ALB**：同上，HTTP 協議本身就是同步通訊
+    3. **核心邏輯**：打 API 查訂單狀態，如果回應「之後再告訴你」是不合理的，使用者**需要立即答案**
+76. ★ Lambda 非同步調用服務 — Fire and Forget 模式
+    1. **S3**：檔案上傳完就結束，後續縮圖、轉檔是**背景工作**
+    2. **SNS**：發通知本來就是「fire and forget」，發出去就不管
+    3. **EventBridge**：事件驅動架構，觸發就走，不期待回應
+    4. **核心邏輯**：呼叫者**不在乎即時結果**，Lambda 可以慢慢處理
+77. ★★ ALB 原生支援 Lambda 作為 Target — Serverless HTTP 處理
+    1. **推出時間**：AWS 在 2018 年加入此功能
+    2. **架構優勢**：傳統 ALB → EC2（要管 server、流量低也付費）vs ALB → Lambda（Serverless、按需付費）
+    3. **用途**：將部分 API endpoints 用 Lambda 處理，不用全部跑在 EC2 上
+78. ★ ALB + Lambda 運作原理 — HTTP 與 Lambda Event 的自動轉換
+    1. **流程**：User Request → ALB 收到 HTTP request → 轉成 JSON event 格式，invoke Lambda（同步）→ Lambda 回傳 response → ALB 轉成 HTTP response
+    2. **ALB 的角色**：自動處理 **HTTP ↔ Lambda event 的轉換**
+    3. **Lambda handler 格式**：收到的 event 包含 headers、body、path、method 等；回傳格式須含 statusCode 和 body
+79. ★★ ALB vs API Gateway — Lambda HTTP 場景選擇
+    1. **ALB + Lambda**：便宜（ALB 時數計費）、單純 HTTP 路由、適合高流量 + 簡單路由
+    2. **API Gateway + Lambda**：較貴（per request）、有 throttling、API key、caching、適合需要 API 管理功能
+    3. **考試記憶點**：看到「**cost-effective + Lambda + HTTP traffic**」→ 優先選 **ALB**
