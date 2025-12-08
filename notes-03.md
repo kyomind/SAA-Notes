@@ -812,7 +812,7 @@
      1. **錯誤選項設計**：巧妙混合三個概念混淆考生（Direct Connect Gateway + Public Virtual Interface + LAG）
      2. **核心錯誤**：Direct Connect Gateway **不支援 Public Virtual Interface**(Public VIF)，只能建立 **Private Virtual Interface**⭐️
      3. **Public VIF 用途**：存取 AWS 公開服務（S3、DynamoDB），**不適合 VPC 互連**
-204. 😇 LAG (Link Aggregation Group) 功能定位與場景無關性○
+204. 😇 LAG (Link Aggregation Group) 功能定位與場景無關性
      1. **LAG 實際用途**：把多條 Direct Connect 連線綁成一條，**增加頻寬**
      2. **場景不符**：題目要解決「**連接拓撲**」問題，不是頻寬問題
      3. **考試陷阱**：LAG 在此場景完全無關，純屬混淆選項
@@ -820,7 +820,7 @@
      1. **主要用途**：**on-premises → AWS** 的私有連線
      2. **跨 Region 能力**：可連多個 Region 的 VPC，但不適合大規模 VPC 間互連
      3. **VPN 整合限制**：無法處理 VPN connections 的集中管理
-206. ★★ **Direct Connect vs Transit Gateway 考試對比表**
+206. ★★ Direct Connect vs Transit Gateway 考試對比⭐️
      1. **用途對比**：Direct Connect（On-premises 專線）vs Transit Gateway（VPC/VPN 集中管理）
      2. **跨 Region 支援**：Direct Connect（透過 DX Gateway）vs Transit Gateway（透過 TGW Peering）
      3. **整合能力**：Direct Connect（不支援 VPN 整合、間接支援 VPC 互連）vs Transit Gateway（原生支援 VPN、原生支援 VPC 互連）
@@ -828,14 +828,14 @@
      1. **混淆選項特徵**：提到不相關的技術細節（如本題的 LAG）通常是混淆選項
      2. **核心判斷**：題目問「**網路拓撲架構**」，不是「**連線頻寬優化**」
      3. **記憶要點**：Focus on 題目真正要解決的問題類型
-208. ★★ **AWS Direct Connect 專用私有網路專線核心特性**
+208. ★★ AWS Direct Connect 專用私有網路重點⭐️
      1. **不走公網**：從企業機房直接拉專線到 AWS
-     2. **固定頻寬**：1Gbps 或 10Gbps 固定頻寬選項
+     2. **固定頻寬**：**1Gbps 或 10Gbps** 固定頻寬選項
      3. **穩定延遲**：比 VPN over Internet 延遲更穩定
-     4. **安全性**：流量不經過公共網路，完全私有連線
-209. ★★ **AWS VPN CloudHub 多站點互連核心概念**
-     1. **服務定位**：讓多個 on-premises 站點透過 **AWS 當中繼站互連**
-     2. **架構特性**：基於 VPN 的 **hub-and-spoke** 架構，使用同一個 **Virtual Private Gateway**
+     4. **安全性**：流量不經過公共網路，**完全私有**連線
+209. ★★ AWS VPN CloudHub 多站點互連核心概念
+     1. **服務定位**：讓多個 on-premises 站點透過 **AWS 當中繼站互連**⭐️
+     2. **架構特性**：**基於 VPN** 的 **hub-and-spoke** 架構，使用同一個 **Virtual Private Gateway**(VGW)⭐️必定基於 VPN
      3. **流量路徑**：Branch A ↔ Branch B 流量會經過 AWS（AWS 作為中繼點）
      4. **成本優勢**：低成本的多站點互連方案
 210. ★ **VPN CloudHub 適用場景與限制**
@@ -846,15 +846,17 @@
      1. **VPN CloudHub**：只能連 VPN，基於 VGW，功能較簡單
      2. **Transit Gateway**：可連 VPC + VPN，功能更強大，支援更複雜網路拓撲
      3. **選擇依據**：簡單多站點 VPN 互連選 CloudHub，複雜混合網路選 Transit Gateway
-212. ★★ **S3 強制加密的 Bucket Policy 實作機制**
+212. ★★ S3 **強制加密的 Bucket Policy** 實作機制⭐️
      1. **核心問題**：S3 加密是**物件層級**設定，每個物件上傳時可選擇是否加密
      2. **強制方案**：用 **Bucket Policy 擋掉不符合條件的上傳請求**
      3. **實作方式**：Policy 設定 `"Effect": "Deny"` + `"StringNotEquals": {"s3:x-amz-server-side-encryption": "AES256"}` 拒絕沒帶正確 header 的上傳
-213. ★★ **S3 加密方案選擇與金鑰自動輪替對比**
-     1. **SSE-S3**：AWS 管理、內建自動輪替（不可關閉）、**免費**
-     2. **SSE-KMS (AWS managed)**：AWS 管理、每年自動輪替、部分免費
-     3. **SSE-KMS (Customer managed)**：你管理、預設關閉需手動啟用、**付費**
-     4. **考試判斷**：題目要求**金鑰每年自動輪替**且未提及精細控制 → **SSE-S3 最佳解**
+213. ★★ S3 加密方案選擇與金鑰自動輪替對比
+     1. **SSE-S3**：AWS 完全管理、內建自動輪替（不可關閉、週期不公開）、**免費**
+     2. **SSE-KMS (AWS managed key)**：AWS 管理、約每年自動輪替（**無法自訂週期**）、部分免費
+     3. **SSE-KMS (Customer managed key)**：你管理、自動輪替預設關閉，啟用後可設定 90~2560 天、**付費**⭐️
+     4. **考試判斷**：
+        - 題目要求**金鑰自動輪替**且未提及稽核、權限控制 → **SSE-S3 最佳解**
+        - 若強調 compliance 可稽核或細粒度權限控制 → **SSE-KMS**
 214. ★ **SSE-S3 vs SSE-KMS 考試選擇標準**
      1. **選 SSE-KMS 關鍵字**：自訂金鑰權限、精細控制、Customer managed keys、Compliance requirements
      2. **選 SSE-S3 場景**：最低成本、最簡單方案、自動輪替需求、**無特殊控制要求**
@@ -863,19 +865,22 @@
      1. **SDK 實作**：PUT 請求帶 `ServerSideEncryption: 'AES256'` 參數
      2. **Fail-safe 設計**：設定 Bucket Policy 後，忘記帶參數的上傳直接失敗（403 Forbidden）
      3. **開發原則**：寧願上傳失敗，也不存不加密的檔案
-216. ★★ **SSE-S3 金鑰輪替機制與限制**
+216. ★★ **SSE-S3** 金鑰輪替機制與限制
      1. **管理方式**：金鑰由 **AWS 完全管理**，用戶無法介入
      2. **輪替特性**：**自動輪替是內建機制**，無法調整頻率或關閉
      3. **控制需求**：想**控制輪替頻率**必須使用 **Customer-managed KMS key**⭐️
-217. ★★ **Custom Identity Broker 核心概念與應用場景**
+217. ★★ Custom Identity Broker 核心概念與應用場景
      1. **應用場景**：企業用 **LDAP 管理員工身份**，但 **LDAP 不支援 SAML 2.0**（無法直接跟 AWS IAM 整合）、員工需要存取 AWS 資源、不想在 AWS 重建一套身份系統
-     2. **解決方案**：寫一個中介程式（**Identity Broker**）當翻譯機
+     2. **解決方案**：寫一個中介程式（**Identity Broker**）當翻譯機⭐️
+        - 員工用 LDAP 驗證身份
+        - Broker 確認身份後呼叫 STS 取得臨時憑證
+        - 員工用臨時憑證存取 AWS
      3. **考試判斷標準**：遇到「既有身份系統不支援 SAML，但要整合 AWS」→ 想到 **Custom Identity Broker + STS**
 218. ★★ **Custom Identity Broker 運作流程與技術架構**
      1. **標準流程**：員工 → LDAP 驗證 → Identity Broker → STS API → 取得臨時憑證 → 存取 AWS
-     2. **詳細步驟**：員工透過公司內網登入（LDAP 驗證）、Identity Broker 確認員工身份後呼叫 STS 的 `AssumeRole` 或 `GetFederationToken`、STS 回傳臨時憑證（Access Key + Secret Key + Session Token）、員工拿這組臨時憑證存取 AWS 資源
+     2. **詳細步驟**：員工透過公司內網登入（LDAP 驗證）、Identity Broker 確認員工身份後呼叫 STS 的 `AssumeRole` 或 `GetFederationToken`、STS 回傳臨時憑證（Access Key + Secret Key + Session Token）、員工拿這組臨時憑證存取 AWS 資源⭐️
      3. **核心服務**：**STS (Security Token Service)** 專門發放有時效性的臨時憑證（15 分鐘到 12 小時）
-219. ★ **Custom Identity Broker 錯誤選項分析 - IAM Policy 引用 LDAP**
+219. ★ Custom Identity Broker 錯誤選項分析 - IAM Policy 引用 LDAP
      1. **錯誤原因**：IAM Policy 只能定義「誰可以做什麼」，**無法解決「如何驗證 LDAP 使用者身份」的問題**
      2. **技術限制**：需要驗證機制（SAML/STS/Custom Broker）才能把 LDAP 身份轉成 AWS 認得的憑證
      3. **核心問題**：缺乏身份驗證橋接機制
@@ -887,50 +892,40 @@
      1. **運維成本問題**：手動管理每個員工的 IAM 憑證，運維成本太高
      2. **同步問題**：LDAP 更新 → 手動更新 AWS 憑證，容易出錯且不即時
      3. **根本問題**：根本沒解決「驗證 LDAP 身份」的核心問題
-222. ★★ **SAML 支援與否的架構選擇差異**
-     1. **支援 SAML 2.0 場景**：如果支援 SAML 2.0，就用 **IAM Identity Center**（前身是 AWS SSO）直接整合，不需要寫 Custom Identity Broker
-     2. **不支援 SAML 場景**：必須使用 **Custom Identity Broker + STS** 的自行開發方案
-     3. **考試判斷核心**：有 SAML → IAM Identity Center；無 SAML → Custom Identity Broker + STS
-223. ★ **支援 SAML 2.0 的標準架構流程**
-     1. **架構流程**：員工 → LDAP (SAML IdP) → IAM Identity Center → AWS 資源
-     2. **技術特性**：透過 **SAML 聯合身份驗證 (Federation)**、IAM Identity Center 自動處理 **SAML 斷言 (Assertion)**
-     3. **實作優勢**：**零程式碼，純設定**即可完成整合
+222. ★★ SAML 支援與否的架構選擇差異
+     1. **支援 SAML 2.0 場景**：⭐️
+        - **單帳戶/簡單需求**：IAM SAML Identity Provider + AssumeRoleWithSAML
+        - **多帳戶/企業級 SSO**：IAM Identity Center（前身 AWS SSO）
+     2. **不支援 SAML 場景**：必須使用 **Custom Identity Broker + STS** 自行開發
+     3. **考試判斷核心**：
+        - 有 SAML + 多帳戶/SSO 關鍵字 → **IAM Identity Center**
+        - 有 SAML + 單純 federated access → **IAM SAML provider**
+        - 無 SAML（如 LDAP only）→ **Custom Identity Broker + STS**
+223. (刪除)
 224. ★★ **Security Group Tier-to-Tier 通訊最佳實務**
      1. **核心原則**：Database tier inbound 必須**限制在 Application tier 的 Security Group**
      2. **安全問題**：開放 `0.0.0.0/0` 讓任何人都能打到資料庫埠（如 1433）完全違反 least privilege
-     3. **AWS 最佳實務**：允許來自「某個 Security Group」的流量，而不是特定 IP 或任何來源
+     3. **AWS 最佳實務**：允許來自「**某個 Security Group**」的流量，而不是特定 IP 或任何來源⭐️這是 SG 才有的特殊來源設定方式
 225. ★★ **Security Group 引用機制核心優勢**
      1. **動態 IP 適應**：Auto Scaling Group 的 EC2 會動態換 IP，無法寫死特定 IP
      2. **SG 引用最佳實作**：`DB-SG inbound: MS SQL 1433 → source = App-SG`
      3. **精準安全控制**：完全限制只有 App tier 可以連 DB，實現 **tier-to-tier communication**
-226. ★ **Security Group 錯誤來源類型分析**
-     1. **不正確選項**：`0.0.0.0/0`（任何來源）、固定 IP、NACL ID、EC2 instance ID
-     2. **正確作法**：使用 **Security Group ID** 作為 source
-     3. **考試標準答案**："change the Source to the security group ID attached to the application tier"
-227. ★★ **Security Group vs NACL 基礎知識定位**
-     1. **考試陷阱**：題目會提供大量 SG/NACL 基礎概念作為背景知識
-     2. **實際考點**：真正考的是 **Database SG inbound 限制到 App tier SG** 這個最佳實務
-     3. **核心記憶**：Database SG inbound = Application SG，永遠不要開 IP 尤其不要 `0.0.0.0/0`
-228. ★★ **Security Group 流量方向快速判斷法**
-     1. **核心問題**：「**誰要連誰？**」（最重要的判斷依據）
-     2. **流量分析範例**：App tier（EC2 ASG）→ DB（MS SQL 1433）
-     3. **規則設定原則**：流入誰，就改誰的 inbound
-229. 😇 **Security Group 規則配置實務要點**
-     1. **目標識別**：DB 接收 1433 埠流量 → 改 **DB Security Group inbound**
-     2. **來源設定**：Source 填入 **App tier 的 Security Group ID**
-     3. **記憶技巧**：接收方設定 inbound，來源方提供 Security Group ID
+226. (刪除)
+227. (刪除)
+228. (刪除)
+229. (刪除)
 230. ★ **Security Group 錯誤選項分析：AnyCast IP 陷阱**
      1. **錯誤選項**："change the Source to the static AnyCast IP address attached to the application tier"
      2. **錯誤原因**：AnyCast IP 主要用於 **AWS Global Accelerator**，不適用於 Security Group 配置⭐️
      3. **考試陷阱**：混淆不同 AWS 服務的 IP 類型用途
-231. ★★ **VPC DNS 設定核心概念與必要條件**
+231. ★★ VPC DNS 設定核心概念與必要條件
      1. **EC2 獲得 public DNS hostname 的雙重條件**
         - VPC 層級：開啟 DNS resolution 和 DNS hostnames
         - Instance 層級：有 public IPv4 address
      2. **Default VPC vs 自建 VPC 差異**
         - Default VPC：預設開啟兩項 DNS 設定
         - 自建 VPC：預設關閉（需手動啟用）
-232. ★ **VPC DNS 設定功能解析與啟用方法**
+232. ★ VPC DNS 設定功能解析與啟用方法○
      1. **DNS resolution 功能**：讓 EC2 可以透過 AWS DNS server 解析域名
      2. **DNS hostnames 功能**：讓 EC2 獲得 public DNS hostname
      3. **啟用方法**：到 VPC 設定中手動啟用這兩個選項

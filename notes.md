@@ -231,3 +231,26 @@
     - **EC2 運算費用**（instance 費用）
     - **EBS 儲存費用**（storage 費用）
     - **管理費**（AWS 幫你維運的成本）
+60. ★ Virtual Private Gateway (VGW) 核心概念
+    1. **定義**：AWS VPC 端用來建立 VPN 連線的閘道器，是 VPC 的 VPN 出口
+    2. **架構角色**：On-Premises (Customer Gateway) ──VPN 連線── VGW ──你的 VPC
+    3. **對照關係**：CGW (Customer Gateway) 代表公司端的 VPN 設備/路由器；VGW 代表 AWS 端的 VPN 進入點，attach 到 VPC 上
+61. 😇 Virtual Private Gateway 的限制
+    1. **單一綁定**：一個 VGW 只能 attach 到一個 VPC
+    2. **不支援 transitive routing**：A↔VGW↔B 架構中，A 和 B 無法直接通訊
+    3. **擴展性受限**：較早期設計，複雜網路拓撲需求應改用 Transit Gateway (TGW)
+62. ★★ VGW vs Transit Gateway 考試場景選擇
+    1. **選 VGW**：單一 VPC + 單一/少數 Site-to-Site VPN
+    2. **選 Transit Gateway**：多 VPC 互連 + 多個 VPN
+    3. **選 VPN CloudHub**：多分公司要互連、低成本（基於 VGW）
+63. ★★ EIP 與 ENI 的關聯關係 — 技術架構
+    1. **底層事實**：EIP 實際關聯到 **ENI (Elastic Network Interface)**，非直接關聯到 EC2 instance
+    2. **架構層級**：EIP → ENI → EC2
+    3. **Console 簡化**：每個 EC2 預設有 primary ENI，Console 讓你看起來像直接附到 EC2 上
+64. ★ EIP + ENI 架構的應用場景
+    1. **多 ENI 場景**：EC2 有多張 ENI 時，可對不同 ENI 分別綁不同 EIP
+    2. **Failover 設計**：把 ENI（連同 EIP）從故障 EC2 detach，attach 到備援 EC2，**IP 不變**
+    3. **高可用架構核心**：EIP 跟著 ENI 走，不是跟著 instance 走
+65. 😇 EIP + ENI 考試關鍵字
+    1. **題目特徵**：「maintain the same IP address after instance failure」、「move IP to another instance」
+    2. **正確理解**：EIP 綁在 ENI 上，因此可以快速切換到另一台 EC2
