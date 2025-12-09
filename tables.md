@@ -2206,3 +2206,55 @@ Client → TCP connect → TLS handshake + hostname → server 選對憑證 → 
 | **單一 IP**                  | ✅ `10.0.1.5/32`              | ✅ `10.0.1.5/32` |
 | **另一個 Security Group ID** | ✅ `sg-0abc1234`              | ❌ 不支援        |
 | **Prefix List**              | ✅ `pl-xxx`（如 S3 endpoint） | ❌ 不支援        |
+
+你的筆記完全正確，我來補充一個關鍵觀念：
+
+## DynamoDB Provisioned + Auto Scaling vs On-Demand
+
+PS：On-Demand 大約貴 2.5 到 3 倍
+
+| 特性           | Provisioned + Auto Scaling | On-Demand                |
+| -------------- | -------------------------- | ------------------------ |
+| **擴展速度**   | 分鐘級（需要時間調整）     | 即時（毫秒級回應）       |
+| **擴展上限**   | 受限於設定的 max RCU/WCU   | 幾乎無上限（帳號配額內） |
+| **Spike 處理** | ❌ 來不及擴展會被 throttle  | ✅ 瞬間流量也能吸收       |
+| **成本**       | 較低（可預測基準線）       | 較高（但省心）           |
+| **適用場景**   | 流量可預測、有規律波動     | 流量不可預測、突發性高   |
+
+**考試關鍵判斷**：
+
+- 題目說「unpredictable traffic」「sudden spikes」→ **On-Demand**
+- 題目說「predictable workload」「cost optimization」→ **Provisioned + Auto Scaling**
+
+Provisioned 的 Auto Scaling 本質上還是「**事後反應**」，它看到 CloudWatch metrics 超標才開始調整；On-Demand 則是「**隨到隨服務**」，根本不存在調整延遲的問題。
+
+## Direct Connect 本身 vs. VIF 的差異
+
+**Direct Connect (DX)** 確實是私有專線——它是你的 data center 到 AWS 的**實體連線**，不走公網。
+
+但這條私有專線上，你要**存取什麼東西**，由 VIF 類型決定：
+
+| VIF 類型        | 存取目標                                     | 流量路徑                  |
+| --------------- | -------------------------------------------- | ------------------------- |
+| **Private VIF** | VPC 內的私有資源（EC2、RDS 等）              | DX → VPC（透過 VGW/DXGW） |
+| **Public VIF**  | AWS 公開服務端點（S3、DynamoDB、EC2 API 等） | DX → AWS 公開服務區域     |
+| **Transit VIF** | 透過 Transit Gateway 連多個 VPC              | DX → TGW → 多個 VPC       |
+
+## 關鍵理解
+
+**Public VIF 的「Public」不是指走公網**，而是指存取的目標是 AWS 的 public endpoints。⭐️
+
+舉例：S3 的 endpoint `s3.amazonaws.com` 是公開的，但透過 **DX + Public VIF** 存取時：
+
+- 流量走的是你的**私有專線**⭐️
+- 不經過 Internet
+- 延遲更低、更穩定
+
+這跟直接從 Internet 存取 S3 完全不同。
+
+## 考試重點
+
+題目說要從 on-premises「私有地」存取 S3，有兩種常見解法：
+
+1. **DX + Public VIF** — 走專線到 S3 public endpoint
+2. **DX + Private VIF + VPC Endpoint (Gateway)** — 走專線進 VPC，再透過 VPC endpoint 到 S3

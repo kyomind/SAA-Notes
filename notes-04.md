@@ -307,12 +307,12 @@
     1. **主要功能**：管理使用者目錄，例如 **Microsoft Active Directory**
     2. **服務限制**：**不適合**直接用於多帳戶身份驗證目的
     3. **記憶要點**：Directory Service = 管理目錄，不是多帳戶認證解決方案
-66. ★★ **多帳戶身份認證解決方案**：IAM Identity Center + AD Connector 組合○
+66. ★★ **多帳戶身份認證解決方案**：IAM Identity Center + AD Connector 組合
     1. **關鍵字識別**："existing directory service" → 已有 AD/LDAP；"user authentication" → SSO 需求
     2. **正確答案組合**：**IAM Identity Center**（舊名 AWS SSO）負責中央化管理多帳號存取 + **AD Connector** 連接現有 AD（不用複製用戶到 AWS）
     3. **考試重點**：多帳戶環境下的身份管理，優先考慮現有身份來源整合
 67. ★★ **Route 53 + S3 靜態網站**：前置條件配置
-    1. **必要條件一**：**S3 bucket 名稱**必須與網域名稱完全相同（如 `www.example.com` bucket 對應 `www.example.com` 網域）
+    1. **必要條件一**：**S3 bucket 名稱**必須與網域名稱完全相同（如 `www.example.com` bucket 對應 `www.example.com` 網域）⭐️
     2. **必要條件二**：S3 bucket 必須**啟用靜態網站託管功能**（開啟 "Static website hosting" + 設定 index document）
     3. **常見錯誤**：S3 bucket **不需要**與 hosted zone 在同一個 region（Route 53 是全球服務）
     4. **記憶技巧**：「**名稱對應 + 靜態開關**」- 這兩個是必要條件，region 不重要
@@ -322,12 +322,12 @@
     3. **考試重點**：備份解決方案要考慮**成本效益**，選擇最便宜的合適選項
 69. ★ **SNS Fan-out 架構錯誤選項分析**：單一 topic vs 多 topic 設計
     1. **錯誤想法**：為每種訊息類型建立獨立的 SNS topic + 對應的 SQS queue
-    2. **正確架構**：**單一 SNS topic** + **多個 SQS queue** + **Filter Policy** 實現訊息分流
+    2. **正確架構**：**單一 SNS topic** + **多個 SQS queue** + **Filter Policy** 實現訊息分流⭐️
     3. **Filter Policy 機制**：在 SQS subscription 設定過濾條件，只接收符合條件的訊息，避免所有 subscriber 收到全部訊息
     4. 沒有過濾的話，就是典型的 fan-out 架構——所有 subscriber 都會收到所有訊息
 70. ★★ **ECS 容器編排服務定位**：AWS 特色的容器管理解決方案
     1. **核心定位**：AWS 原生容器編排服務，深度整合 AWS 生態系統
-    2. **與競爭對手對比**
+    2. **與競爭對手對比**⭐️
        - **Kubernetes (EKS)**：業界標準但複雜
        - **ECS**：AWS 簡化版但整合性強
        - **Docker Swarm**：已式微不考
@@ -337,13 +337,13 @@
     3. **配置管理整合**：原生支援 Secrets Manager/Parameter Store
     4. **網路整合**：直接整合 ALB/NLB Target Groups、VPC/Security Groups
 72. ★★ **ECS vs EKS 管理模式差異**
-    1. **ECS 優勢**：AWS 全管控制平面，使用者只需管理 tasks
-    2. **EKS 限制**：需要管理 Kubernetes control plane 或付費給 EKS
-    3. **學習曲線**：ECS 平緩，EKS 需要 Kubernetes 專業知識
+    1. **ECS 優勢**：AWS 全託管 Control Plane 且免費，使用者只需管理 Tasks
+    2. **EKS 特性**：Control Plane 由 AWS 託管但需付費（$0.10/hr），仍需具備 Kubernetes 知識管理 Worker Nodes
+    3. **選擇依據**：無 K8s 經驗選 ECS；已有 K8s 投資或需跨雲可攜性選 EKS
 73. ★★ **ECS 兩種運行模式選擇**
     1. **EC2 Launch Type**：使用者管理底層 EC2 實例，適合需要控制底層資源
     2. **Fargate**：完全 serverless，連 EC2 都不用管，適合簡化營運
-74. ★★ **容器服務考試選擇邏輯**
+74. ★★ 容器服務考試選擇邏輯⭐️
     1. **ECS 適用關鍵字**："AWS-native"、"tight AWS integration"
     2. **EKS 適用關鍵字**："Kubernetes workloads"、"migrate from on-premises K8s"
     3. **Fargate 適用關鍵字**："serverless containers"、"no cluster management"
@@ -356,7 +356,7 @@
     2. **資料一致性風險**：pod 重啟可能遺失資料，無法保證資料安全性
     3. **備份/恢復困難**：需自己實作備份機制，缺乏自動化保護
     4. **效能不穩定**：容器 I/O 效能不如實體機/VM，影響資料庫效能
-77. ★★ **AWS 容器與資料庫最佳實踐分離原則**
+77. ★★ **AWS 容器與資料庫最佳實踐分離原則**⭐️
     1. **Container (ECS/EKS)**：專門運行**無狀態服務**（應用程式、API、微服務）
     2. **Managed Service**：專門處理**有狀態資源**（RDS、Aurora、ElastiCache）
     3. **關鍵優勢**：各司其職，容器負責運算，託管服務負責資料持久化
@@ -367,11 +367,11 @@
 79. ★★ DynamoDB 計費模式選擇
     1. **On-Demand 模式**：按實際請求付費、自動擴展、無需容量規劃（**純 serverless**）
     2. **Provisioned Capacity 模式**：預設 **RCU/WCU**、可啟用 Auto Scaling、成本可預測
-80. ★★ DynamoDB RCU/WCU 考試重點
+80. ★★ DynamoDB RCU/WCU 考試重點⭐️
     1. **限定關係**：RCU/WCU **只和 Provisioned Capacity** 有關
     2. **考試規律**：題目提到 RCU/WCU，答案必是 **Provisioned Capacity**
     3. **On-Demand 特性**：無需設定容量單位，按實際用量計費
-81. ★★ CloudHSM 密鑰恢復限制
+81. ★★ CloudHSM 密鑰恢復限制⭐️
     1. **AWS 無法恢復密鑰**：遺失 HSM 憑證 = 密鑰永久遺失
     2. **考試陷阱**：題目問「如何恢復？」→ 答案：**無法恢復**
 82. ★★ CloudHSM 生產環境部署要求
@@ -382,24 +382,21 @@
     1. **Private VIF**：存取 **VPC 內部私有資源**
     2. **Public VIF**：存取 **AWS 公開服務**（S3、DynamoDB 等）
     3. **考試關鍵字判斷**："on-premises to VPC" + "dedicated connection" → **Direct Connect + Private VIF**
-84. ★ Direct Connect VIF 使用場景記憶技巧
+84. ★ Direct Connect VIF 使用場景記憶技巧⭐️
     1. **Private VIF = VPC 內部**：EC2、RDS、內部應用程式
-    2. **Public VIF = AWS 公開服務**：S3、DynamoDB、公開 API
+    2. **Public VIF = AWS 公開服務**：S3、DynamoDB、公開 API(此時仍是走私有連線)
     3. **關鍵差別**：Private VIF 訪問 **VPC 內部**，Public VIF 訪問 **AWS 公開服務**
 85. ★★ **ENA vs EFA** HPC 網路需求與考試陷阱
     1. **題目關鍵**：HPC 高效能運算的網路需求 + **Windows servers**
     2. **真正考點**：ENA vs EFA 的差異，以及 **Windows 的限制**
-    3. **邏輯推演**：題目要求「higher bandwidth + higher PPS + lower latency」→ 直覺想到 EFA（因為 HPC 場景）→ **但關鍵字是 Windows servers** → EFA 的 OS-bypass 功能不支援 Windows → 只能退而求其次選 ENA
+    3. **邏輯推演**：題目要求「higher bandwidth + higher PPS + lower latency」→ 直覺想到 EFA（因為 HPC 場景）→ **但關鍵字是 Windows servers** → EFA 的 **OS-bypass 功能不支援 Windows** → 只能退而求其次選 ENA⭐️
 86. ★★ **ENA vs EFA 技術差異**表格比較
     1. **ENA**：支援 Windows + Linux、核心優勢 SR-IOV 最高 100 Gbps、適用一般 HPC 大頻寬需求
     2. **EFA**：**僅 Linux**、核心優勢 ENA + OS-bypass、適用極致低延遲（MPI、ML）
 87. ★ **ENA vs EFA 選擇邏輯**與記憶技巧
     1. **記憶口訣**：**EFA = ENA + OS-bypass = Linux Only**
     2. **判斷規則**：Windows → 直接排除 EFA，選 ENA；Linux + HPC/ML → 考慮 EFA；一般高頻寬需求 → ENA 就夠
-88. ★★ **SAA 典型陷阱設計**：情境 + 限制條件組合題
-    1. **陷阱設計**：AWS 故意在 HPC 情境下放 **Windows**，讓你以為要選「最強的 EFA」，但實際上 Windows 根本用不了 EFA 的核心功能（OS-bypass）
-    2. **考試重點**：看似完美的高階方案，但藏了一個限制條件讓它不可行
-    3. **應對策略**：看到 HPC 不要反射性選 EFA → 先檢查 OS；Windows 在 AWS 的限制比 Linux 多 → 遇到 Windows 要多留意
+88. (刪除)
 89. ★★ **Kinesis Data Streams** 實時日誌處理架構解決方案
     1. **題目關鍵**：實時分析 + 多來源日誌合併 + 12 小時內數據回溯
     2. **核心需求分析**：需要 streaming 服務 + 接收多個 stream + 短期數據保留
@@ -407,15 +404,15 @@
     1. **實時數據攝取和處理**：支援高吞吐量數據流
     2. **數據保留特性**：預設保留數據 **24 小時**（可延長到 365 天）
     3. **多消費者支援**：支援多消費者同時讀取同一份數據
-    4. **數據重播功能**：可以「重播」過去 12 小時的數據做驗證
+    4. **數據重播功能**：可以「**重播**」過去 12 小時的數據做驗證⭐️
 91. ★★ **Storage Gateway Cached vs Stored Volumes** 存取模式選擇
     1. **題目關鍵**：low latency access to **frequently accessed data subsets** locally
-    2. **Cached Volumes 優勢**：只有**熱點資料**快取在本地，適合部分資料集的低延遲存取
-    3. **Stored Volumes 限制**：需要低延遲存取**整個資料集**，不適合只存取部分資料的場景
-92. ★★ **CloudTrail** AWS API 操作記錄與審計服務
+    2. **Cached Volumes 優勢**：只有**熱點資料**快取在**本地**，適合部分資料集的低延遲存取⭐️
+    3. **Stored Volumes 限制**：需要低延遲存取**整個**資料集，不適合只存取部分資料的場景
+92. ★★ **CloudTrail** AWS API 操作記錄與審計服務⭐️
     1. **服務定位**：專門記錄 **AWS API 呼叫歷史**
     2. **記錄範圍**：誰做了什麼操作、何時做的、對哪個資源操作、操作結果
-93. ★ **CloudTrail 加密機制**：預設安全保護配置
+93. ★ **CloudTrail 加密機制**：預設安全保護配置○
     1. **預設加密**：**S3 SSE 加密**（免費）
     2. **進階加密**：**AWS KMS 加密**（更嚴格的金鑰管理）
     3. **考試重點**：CloudTrail **預設就有加密**，不需要額外設定
