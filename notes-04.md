@@ -419,41 +419,32 @@
 94. 😇 **CloudTrail 進階功能**：日誌檔案管理與通知設定
     1. **儲存管理**：可在 S3 bucket 中長期儲存日誌檔案、定義 **S3 lifecycle 規則**自動封存或刪除日誌檔案
     2. **通知機制**：設定 **Amazon SNS 通知**，在日誌檔案傳送和驗證時接收通知
-95. ★★ **Security Groups vs NACL** SSH 連線配置差異
+95. ★★ **Security Groups vs NACL** SSH 連線配置差異⭐️
     1. **Security Groups**：只需設定 **Inbound Rule** 允許 SSH 流量（**stateful**）
     2. **NACL**：需設定 **Inbound 和 Outbound Rules** 都允許 SSH 流量（**stateless**）
 96. ★ **Storage Gateway Cached Volumes** 混合雲儲存最佳化解決方案
     1. **資料儲存架構**：主要資料存放在 **Amazon S3**，僅在 on-premises 保留 **熱點資料快取**
     2. **成本優勢**：大幅節省主要儲存成本、最小化 on-premises 儲存擴展需求
     3. **效能保證**：對**常用資料子集**保持**低延遲存取**，適合部分資料集的高頻存取場景
-97. 😇 **AppSync Pipeline Resolvers** 多資料來源聚合解決方案
-    1. **服務定位**：**託管式 GraphQL API 服務**，適合需要聚合多個 DynamoDB tables 的資料
-    2. **核心優勢**：**單次 API 呼叫**讀取多個資料來源、**伺服器端資料聚合**、避免多次往返網路延遲
-    3. **考試關鍵字**："retrieve from multiple DynamoDB tables" + "single API call" + "serverless data aggregation" → AppSync Pipeline Resolvers
-    4. **支援資料來源**：DynamoDB（最常見）、RDS/Aurora、Lambda（自訂邏輯）、HTTP endpoints、OpenSearch、EventBridge
-    5. **Pipeline 混合使用**：可在單次 GraphQL request 中組合多種資料來源（如：DynamoDB 讀取 → Lambda 處理 → Aurora 寫入），題目聚焦 **DynamoDB** 因其 **serverless + NoSQL** 的典型組合特性
+97. (刪除)
 98. ★★ **Route 53 Alias A Record vs CNAME Alias** Zone Apex 限制解析
     1. **CNAME 的 DNS 限制**：根據 RFC 規範，Zone Apex 不能有 CNAME，因為 CNAME 會「獨佔」該名稱，與必須存在的 SOA、NS 記錄衝突
-    2. **Route 53 Alias 的解法**：AWS 發明了 Alias Record，它「看起來」像 A Record，但背後會自動解析目標（如 ALB）的 IP，這繞過了 CNAME 的限制
+    2. **Route 53 Alias 的解法**：AWS 發明了 **Alias Record**，它「看起來」像 A Record，但背後會自動解析目標（如 ALB）的 IP，這繞過了 CNAME 的限制
     3. **ALB 沒有固定 IP**：不能直接用傳統 A Record 指定 IP，必須用 Alias 讓 Route 53 動態解析
 99. ★ **Zone Apex DNS 考試記憶點**：Load Balancer 指向規則
     1. **考試核心規則**：**Zone Apex + Load Balancer = A Record Alias**
-    2. **關鍵字識別**：看到「apex」或「裸域名」指向 ALB/NLB/CloudFront → 答案就是 **Alias A Record**，永遠不會是 CNAME
+    2. **關鍵字識別**：看到「apex」或「裸域名」指向 ALB/NLB/CloudFront → 答案就是 **Alias A Record**，永遠不會是 CNAME⭐️
 100. 😇 **Alias A Record 實際設定步驟**：Route 53 Console 操作細節
      1. **Name（記錄名稱）**：`tutorialsdojo.com`（空白或 `@`，取決於 DNS 介面）
      2. **Type**：A
      3. **Alias**：Yes
      4. **Alias Target（值）**：`elbtutorialsdojo123.us-east-1.elb.amazonaws.com`
-101. 👀 **Route 53 Alias Target 選擇機制**：Console 便利功能
-     1. **界面操作**：不會看到 IP，而是選擇 ALB 的 DNS name
-     2. **下拉選單**：Route 53 Console 裡會有下拉選單讓你直接選 AWS 資源（ALB、CloudFront、S3 等），不用手打
-     3. **背後運作**：Route 53 會在背後把這個 DNS name 解析成當下的 IP 回給查詢者
+101. (刪除)
 102. ★★ **Auto Scaling Cooldown Period** 抖動問題解決方案
      1. **問題情境**：Auto Scaling 在短時間內反覆 scale up/down（抖動），導致不穩定或成本浪費
      2. **解決方案**：延長 **cooldown period** + 提高 **CloudWatch 觸發閾值**
      3. **考試判斷點**：看到「頻繁 scaling」、「抖動」、「scale up/down 太快」→ 想到 cooldown period 太短
      4. **雙重調整策略**：提高 CloudWatch threshold 讓指標不要太敏感，兩者搭配才能穩定 scaling 行為
-
 103. 👀 **AWS Service Quotas 監控架構**：事件驅動的配額檢查解決方案
      1. **核心流程**：Trusted Advisor (檢查配額) → EventBridge (捕捉事件) → SNS (發通知)
      2. **Lambda 角色**：每 24 小時定期 refresh Trusted Advisor 的配額檢查數據（因為不是即時更新）
@@ -471,7 +462,7 @@
      1. **出現機率**：極低，1-2 題最多
      2. **判斷關鍵字**：「5G」、「ultra-low latency」+「mobile network」、「edge of telecom network」
      3. **應對策略**：知道它存在、記住關鍵字就夠了，考試 CP 值太低
-107. ★★ **Storage Gateway Hardware Appliance** 混合雲存儲解決方案
+107. ★★ **Storage Gateway Hardware Appliance** 混合雲存儲解決方案⭐️
      1. **適用場景**：on-premises 環境需要 **NFS 存儲**並備份到雲端
      2. **關鍵限制**：dedicated physical server + **不使用虛擬化** → 只能選 **Hardware Appliance**
      3. **服務定位**：AWS 賣的**實體 1U 伺服器**，預裝 Storage Gateway 軟體
@@ -485,12 +476,12 @@
      3. **需要 iSCSI block storage** → **Volume Gateway**
      4. **需要備份磁帶** → **Tape Gateway**
 110. ★ **Storage Gateway 架構運作流程**
-     1. **混合雲橋接器**：讓 on-premises 環境透過標準協定存取 AWS 雲端存儲
-     2. **資料流向**：Application Server → NFS → Storage Gateway Hardware Appliance → 自動同步 → Amazon S3
+     1. **混合雲橋接器**：讓 on-premises 環境**透過標準協定**存取 AWS 雲端存儲
+     2. **資料流向**：Application Server → NFS → Storage Gateway Hardware Appliance → 自動同步 → Amazon S3⭐️
      3. **效能優化**：常用資料在本地快取，提供低延遲存取
-111. ★★ **File Gateway vs Volume Gateway** 協定差異解析
+111. ★★ File Gateway vs Volume Gateway **協定差異**解析⭐️
      1. **File Gateway**：**NFS/SMB 協定**，檔案存取，資料存到 S3
-     2. **Volume Gateway**：**iSCSI 協定**，Block storage，像掛載硬碟
+     2. **Volume Gateway**：**iSCSI 協定**，Block storage，像**掛載硬碟**
      3. **Tape Gateway**：**iSCSI-VTL 協定**，模擬磁帶庫，備份用
 112. ★★ **NFS vs iSCSI** 協定層級差異
      1. **NFS 特性**：網路共享資料夾，存取的是「**檔案**」
@@ -500,10 +491,10 @@
      1. **關鍵字對應**：看到 **NFS/SMB** → 只有 **File Gateway**
      2. **陷阱識別**：題目要求 **NFS protocol**，Volume Gateway 只支援 **iSCSI**
      3. **記憶技巧**：協定決定 Gateway 類型，別被其他選項混淆
-114. ★★ **SQS 重複處理常見原因**
+114. ★★ **SQS 重複處理常見原因**⭐️但只是「可能性」
      1. **Visibility Timeout 太短**：Consumer 還沒處理完，訊息就重新出現在 queue 中（最常見）
      2. **Consumer 未刪除訊息**：處理完但忘記呼叫 **DeleteMessage**
-     3. **At-Least-Once Delivery 特性**：Standard Queue 本身設計就不保證 exactly-once
+     3. **At-Least-Once Delivery 特性**：Standard Queue 本身設計就不保證 exactly-once(這裡的本質是訊息實際上有多條重複，其餘情況是同一條訊息被重複處理)
      4. **Consumer 處理失敗**：crash 或 exception 後訊息沒被刪除，重新進入 queue
 115. 題目問「如何防止重複處理」，答案通常是：
      1. 使用 FIFO Queue（有 exactly-once processing）
@@ -511,12 +502,12 @@
      3. FIFO 犧牲吞吐量換取 exactly-once 和順序保證
 116. ★ **File Gateway 部署位置**：為什麼畫在 On-Prem
      1. **核心原因**：File Gateway 本體是部署在使用者環境的 **Appliance（VM 或硬體）**，必須靠近應用程式才能提供**低延遲的 NFS/SMB 存取**
-     2. **運作原理**：Server 以為在存 NAS → File Gateway 將寫入動作轉成 **S3 API** 上傳到 AWS
+     2. **運作原理**：Server 以為在存 NAS⭐️ → File Gateway 將寫入動作轉成⭐️ **S3 API** 上傳到 AWS
      3. **架構定位**：AWS 官方白皮書的**標準畫法**，也是 SAA 考題預設的 mental model
 117. ★★ **S3 Access Point – VPC Only** 私有化存取解決方案
      1. **核心概念**：只能從**指定 VPC** 透過 **VPC Endpoint** 存取的 S3 專屬入口
      2. **安全限制**：❌ 不允許 Public Internet、❌ 不允許其他 VPC、✅ 只能從指定 VPC 進入
-     3. **必要條件**：必須搭配 **VPC Endpoint**（Gateway 或 Interface）才能連線
+     3. **必要條件**：必須搭配 **VPC Endpoint**（Gateway 或 Interface）才能連線⭐️
 118. ★★ **VPC Only Access Point 考試判斷**
      1. **題目關鍵字**：「S3 必須只能從特定 VPC 存取」+「不能暴露 Public Endpoint」
      2. **標準答案**：**S3 Access Point（VPC Only）+ VPC Endpoint**
@@ -527,13 +518,13 @@
      3. **記憶口訣**：**VPC Only = S3 完全私有化，不再是公共服務**
 120. ★★ **SQS + Auto Scaling** 基於訊息積壓的自動擴展機制
      1. **核心概念**：根據 SQS 隊列的「**訊息積壓程度**」來自動擴展處理訊息的 EC2 實例
-     2. **關鍵指標**：`ApproximateAgeOfOldestMessage` 代表隊列中「**最老的訊息**」等待時間
+     2. **關鍵指標**：`ApproximateAgeOfOldestMessage` 代表隊列中「**最老的訊息**」等待時間⭐️
      3. **指標意義**：數值越大 = 訊息積壓越嚴重 = consumer 處理不過來 = 該擴展了
 121. ★ **SQS + ASG 實作流程**
      1. **建立 AMI**：把現有 EC2 backend 打包成映像檔
      2. **建立 Auto Scaling Group**：用該 AMI 作為 **Launch Template**
      3. **設定 Target Tracking Policy**：追蹤 `ApproximateAgeOfOldestMessage`，超過閾值就擴展
-122. 😇 **SQS + ASG 考試陷阱識別**
+122. 😇 **SQS + ASG 考試陷阱識別**⭐️
      1. **CloudWatch 指標整合**：SQS 的 CloudWatch 指標可以驅動 Auto Scaling
      2. **Target Tracking 彈性**：可以基於「**自訂指標**」，不只是 CPU/Memory
      3. **AMI 前置條件**：要先有 AMI 才能建 ASG（題目會拿來當選項陷阱）
@@ -541,10 +532,10 @@
      1. **核心概念**：AWS WAF 規則可以組合使用，實現「**封鎖某國但允許特定 IP**」的彈性邏輯
      2. **共同功能**：兩者都能封鎖整個國家⭐️
      3. **WAF 獨有優勢**：允許例外 IP（白名單）、可與其他條件組合、請求會到達 WAF 層處理
-     4. **Geo Restriction 限制**：被封鎖國家的請求**直接擋掉**，不轉發到 WAF
+     4. **Geo Restriction 限制**：被封鎖國家的請求**直接擋掉**，不轉發到 WAF⭐️
 124. ★★ **CloudFront Geo Restriction 考試陷阱**
      1. **致命缺點**：被封鎖國家的請求**根本不會轉發到 WAF**，無法在 WAF 層「開後門」給特定 IP
-     2. **正確做法**：全部交給 **AWS WAF** 處理（規則 1：Allow IP Set 白名單優先 → 規則 2：Block 特定國家）
+     2. **正確做法**：**全部**交給 **AWS WAF** 處理（規則 1：Allow IP Set 白名單優先 → 規則 2：Block 特定國家）⭐️
      3. **規則順序**：WAF 按**優先級評估**，先 match 到 allow 的 IP 就放行，不會再被後面的 geo block 擋掉
 125. ★ **Geo Restriction 選擇記憶技巧**
      1. **判斷原則**：要「有原則又有例外」→ 用 **WAF**，別用 CloudFront Geo Restriction
@@ -557,13 +548,13 @@
      2. **關鍵限制**：無法做 **Deep Packet Inspection**，不是即時檢查封包的服務
      3. **考試判斷**：看到「**inspect traffic**」→ 選能即時檢查封包的服務（如 Network Firewall），不是 Network Access Analyzer
 128. ★ **EBS Snapshot** 非同步快照機制
-     1. **建立過程特性**：Snapshot 是**非同步**操作，建立期間 volume 仍可正常讀寫使用
+     1. **建立過程特性**：Snapshot 是**非同步**操作，建立期間 volume **仍可正常讀寫使用**⭐️
      2. **Lazy Loading 機制**：從 snapshot 建立新 volume 時可**立即使用**，資料在背景從 S3 慢慢載入
 129. ★★ **VPC 層級架構**：EC2 與 Subnet 的強制關係
-     1. **核心限制**：EC2 **必須放在 Subnet** 裡，無法直接連上 VPC
-     2. **層級關係**：**VPC → Subnet → EC2**（強制的架構設計）
-     3. **Subnet 功能**：定義 **IP 範圍**、**路由規則**、**NACL**，是 EC2 取得網路連線的基礎
-130. ★★ **快速封鎖攻擊 IP** 解決方案：NACL vs Bastion Host 考試陷阱
+     1. **核心限制**：EC2 **必須放在 Subnet** 裡，無法直接連上 VPC⭐️
+     2. **層級關係**：**VPC → Subnet → EC2**（強制的架構設計）⭐️
+     3. **Subnet 角色**：定義 **IP 範圍（CIDR）**，並**關聯** Route Table 與 NACL，決定內部資源的網路行為
+130. ★★ **快速封鎖攻擊 IP** 解決方案：NACL vs Bastion Host 考試陷阱○
      1. **正確答案**：**NACL** 設定 deny rule 擋掉特定 IP，**立即生效**
      2. **考試陷阱**：**Bastion Host** 是安全存取內部資源的**跳板機**，跟封鎖攻擊 IP 完全無關
      3. **關鍵字識別**：題目強調「**quickest way**」→ NACL 是正解
