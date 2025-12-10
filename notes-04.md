@@ -726,22 +726,19 @@
      1. **問題背景**：Expedited 在**高需求時可能失敗**（capacity 不夠）
      2. **解決方案**：購買 provisioned capacity = **保證** expedited 隨時可用
      3. **效能規格**：支援最高 **150 MB/s** throughput
-174. ★★ **Glacier 考試關鍵字組合**判斷技巧○
+174. ★★ **Glacier 考試關鍵字組合**判斷技巧
      1. **Expedited 關鍵字**：「under 15 minutes」→ 選 Expedited
      2. **Provisioned Capacity 關鍵字**：「under all circumstances」+「retrieval capacity available when needed」→ 選 Provisioned Capacity
      3. **考試陷阱**：兩者要**一起選**才能滿足「任何時候都能在 15 分鐘內取回」的合規要求
 175. ★★ **Subnet 與 AZ 的對應關係**
      1. **核心規則**：每個 Subnet 只對應**一個** Availability Zone
-     2. **不可變性**：建立時必須指定 AZ，**之後無法更改**
+     2. **不可變性**：建立時必須指定 AZ，**之後無法更改**⭐️
      3. **設計意義**：這是 AWS 高可用架構的基礎設計
 176. ★ **Subnet 的預設 Route Table 行為**
      1. **自動關聯**：新建的 Subnet 會自動連結到 VPC 的 **main route table**
      2. **最佳實踐**：main route table 應保持**私有**（不加 IGW route）⭐️
      3. **安全考量**：避免新 Subnet 意外暴露到公網
-177. ★ **AWS Glue Job Bookmark** 增量處理機制
-     1. **功能**：追蹤 ETL job 上次處理到哪裡，下次只處理**新資料**
-     2. **效益**：不重複處理舊資料，減少執行時間與成本
-     3. **考試關鍵字**：「incremental processing」、「avoid reprocessing」、「only new data」→ 選 **Job Bookmark**
+177. (刪除)
 178. ★★ **Lambda Container Image Support** 規格與選型
      1. **支援規格**：最大 **10 GB** image size、ephemeral storage **512 MB ~ 10 GB**、timeout 上限 **15 分鐘**
      2. **識別關鍵字**：「Docker image + serverless + fully managed」→ 優先選 **Lambda Container Image**
@@ -753,7 +750,7 @@
      1. **問題背景**：Stop/Start EC2 時 RAM 清空，應用需重新載入狀態，導致啟動慢
      2. **解決方案**：Hibernate 將 RAM 保存到 **root EBS volume**，Resume 時秒級恢復
      3. **考試關鍵字**：「takes several minutes to become operational」、「long initialization」、「preserve in-memory state」→ 選 **Hibernation**
-180. ★ **EC2 Hibernation** 限制條件
+180. ★ **EC2 Hibernation** 限制條件⭐️
      1. **儲存要求**：Root volume 必須是 **encrypted EBS**
      2. **容量限制**：RAM 上限 **150 GB**、最長 hibernate 時間 **60 天**
      3. **與 Stop 差異**：Stop 清空 RAM（恢復慢）；Hibernate 保存 RAM 到 EBS（秒級恢復）
@@ -767,7 +764,7 @@
         - **Public IP 改變**（除非用 Elastic IP）
         - **Instance store data 遺失**
         - RAM 清空
-     2. **不會改變**
+     2. **不會改變**⭐️
         - **Private IP**（同 VPC subnet 內保持不變）
         - Elastic IP（如果有綁定）
         - **EBS 資料**（持久化儲存）
@@ -782,14 +779,14 @@
         - AWS Budgets：設定警報用，無法查詢預測數據
         - CUR：需自己用 Athena 分析，維運負擔高
         - Billing Dashboard：無 API
-185. ★ **Cost Explorer vs AWS Budgets** 功能定位差異
+185. ★ **Cost Explorer vs AWS Budgets** 功能定位差異⭐️
      1. **Cost Explorer**：**查詢與分析**成本資料，可程式化取得預測結果
      2. **AWS Budgets**：設定預算 + 觸發**警報/動作**，預測僅供內部判斷是否超預算
      3. **關鍵差異**：Budgets **無法透過 API 取出預測數字**
      4. **記憶口訣**：Budgets = 守門員（警報）；Cost Explorer = 分析師（查詢 + 報表）
 186. ★★ **Aurora Provisioned → Serverless 遷移**：DMS 解決方案
      1. **核心問題**：Provisioned 和 Serverless 是**不同叢集類型**，**無法原地轉換**
-     2. **DMS 優勢**：支援 **CDC（持續複寫）**，遷移期間來源資料庫可繼續運作、**最小化停機時間**
+     2. **DMS 優勢**：支援 **CDC（持續複寫）**，遷移期間來源資料庫可繼續運作、**最小化停機時間**⭐️
      3. **考試關鍵字**：**minimize downtime** + 遷移到不同叢集類型 → 選 **DMS**
 187. ★ **Aurora 遷移方案比較**：DMS vs 快照還原
      1. **快照還原問題**：全程停機（數十分鐘到數小時）、快照期間新資料會遺失
@@ -799,12 +796,12 @@
      1. **核心差異**：Public IP 停止 EC2 就釋放（重開機 IP 會變）；**EIP 主動釋放前一直保留**
      2. **費用陷阱**：EIP **閒置要收費**（沒掛到 EC2 上），AWS 鼓勵不要囤積 IP
      3. **使用場景**：DNS 指向固定 IP、白名單給第三方、故障時快速切換到備援 EC2
-189. ★★ **S3 物件公開讀取**：兩種實現層級
+189. ★★ **S3 物件公開讀取**：兩種實現層級⭐️
      1. **Bucket Policy**：整個 bucket 的所有物件（含未來上傳的）→ 適用**靜態網站 hosting**
      2. **上傳時個別設定**：僅該單一物件 → 適用**部分物件需要公開**
      3. **考試判斷**：題目問「如何讓物件公開讀取」→ 兩種方法都可能是正確答案，看作用範圍需求
 190. ★★ **Glacier Vault Lock** 合規性資料保留解決方案
-     1. **核心概念**：設定 **WORM（Write Once Read Many）** 政策，鎖定後**任何人都無法刪除或修改**（含 root 帳號）
+     1. **核心概念**：設定 **WORM（Write Once Read Many）** 政策，鎖定後**任何人都無法刪除或修改**（含 root 帳號）⭐️
      2. **考試關鍵字**：**compliance**、**regulatory**、**mandates**、**cannot be deleted**、**immutable**、**retain for X years** → 選 **Glacier Vault Lock**
      3. **干擾選項排除**：
         - S3 Object Lock：也可做 WORM，但 Glacier 更符合長期歸檔成本效益
@@ -814,7 +811,7 @@
      1. **Vault Lock 適用**：強調**不可提前刪除**的合規需求（SEC、FINRA 等法規）
      2. **普通 Glacier 適用**：只需長期保存，沒有強制不可刪除的要求
      3. **記憶口訣**：看到 **mandates + cannot be deleted** → Vault Lock；只是長期保存 → 普通 Glacier + Lifecycle
-192. ★★ **Custom Identity Broker + STS** 非 SAML 身份整合解決方案
+192. ★★ **Custom Identity Broker + STS** 非 SAML 身份整合解決方案⭐️
      1. **適用情境**：地端身份存儲（LDAP）**不支援 SAML** 時的 Federation 方案
      2. **架構流程**：用戶 → 自訂 Identity Broker → 驗證 LDAP → 呼叫 **STS AssumeRole** → 取得臨時憑證 → 存取 AWS
      3. **考試判斷**：題目說 **"not compatible with SAML"** → 排除 AWS SSO、SAML Federation，選 **Custom Identity Broker + STS**
@@ -822,7 +819,7 @@
      1. **支援 SAML**：用 **AWS SSO** 或 **SAML Federation**（簡單、標準）
      2. **不支援 SAML**：用 **Custom Identity Broker + STS**（需自己開發中間層）
      3. **干擾選項排除**：直接用 IAM Users（不是 Federation）、Cognito User Pools（用於應用程式用戶，非企業 LDAP 整合）
-194. ★★ **EKS 兩層擴展機制**：HPA vs Cluster Autoscaler
+194. ★★ **EKS 兩層擴展機制**：HPA vs Cluster Autoscaler⭐️
      1. **應用層（Pods）**：**Horizontal Pod Autoscaler (HPA)** 根據 CPU/Memory 調整 Pod 數量
      2. **基礎設施層（Nodes）**：**Cluster Autoscaler** 根據 Pending Pods 調整 Node 數量
      3. **考試判斷**：題目說 **"infrastructure"** 或 **"nodes"** → 選 **Cluster Autoscaler**
@@ -838,26 +835,26 @@
      2. **考試現況**：目前以 **Cluster Autoscaler** 為標準答案，Karpenter 實務越來越普及
 197. ★★ **Redshift 跨區域災難復原（DR）策略**
      1. **關鍵情境**：當題目出現 "AWS region outage"，整個區域掛掉時，備份必須在另一個 Region
-     2. **正確答案**：**Enable Cross-Region Snapshots Copy**
+     2. **正確答案**：**Enable Cross-Region Snapshots Copy**⭐️
      3. **運作流程**：Redshift Cluster (us-east-1) → Snapshot 儲存至 S3 (us-east-1) → Cross-Region Copy 啟用 → Snapshot 複製到 S3 (us-west-2) → 災難發生時從 Snapshot 還原新 Cluster (us-west-2)
-198. ★★ **API Gateway Custom Domain + ACM 憑證的區域要求**
-     1. **Edge-Optimized API Gateway**：ACM 憑證必須在 **us-east-1**（底層走 CloudFront，控制平面在 us-east-1）
+198. ★★ **API Gateway Custom Domain + ACM 憑證的區域要求**⭐️
+     1. **Edge-Optimized API Gateway**：ACM 憑證必須在 `us-east-1`（底層走 CloudFront，控制平面在 `us-east-1`）
      2. **Regional API Gateway**：ACM 憑證必須在 **API Gateway 同一個 Region**（無 CloudFront 中介，自己處理 TLS）
      3. **記憶口訣**：Edge 走 CloudFront → us-east-1；Regional 不繞路 → 同 Region
 199. ★ **Regional API Gateway Custom Domain 設定流程**
      1. 在 **API Gateway 所在 Region** 用 ACM 申請憑證（例如 us-east-2）
      2. 在 API Gateway 建立 Regional Custom Domain Name，綁定該憑證
      3. 在 Route 53 建立 **Alias Record** 指向 API Gateway domain name
-200. 😇 **常考的 us-east-1 限定服務**
+200. 😇 **常考的 `us-east-1` 限定服務**⭐️
      - **CloudFront + ACM**：CloudFront 是全球服務，控制平面在 us-east-1
      - **Edge-Optimized API Gateway**：底層用 CloudFront
      - **IAM（全球服務）**：設定存在 us-east-1（但不用特別指定）
-201. ★★ **自動化檢查 IAM 密碼政策的合規性**
+201. ★★ 自動化檢查 **IAM 密碼政策的合規性**⭐️
      1. **正確答案**：**AWS Config**
      2. **關鍵字辨識**："automatically check and evaluate" + "compliance" → AWS Config 核心功能
-     3. **運作流程**：AWS Config 持續監控 → 偵測 IAM Password Policy 設定 → 比對 Config Rule（如 minimum length >= 12）→ 標記 **Compliant / Non-Compliant** → 可觸發通知或修復動作
+     3. **運作流程**：AWS Config **持續監控** → 偵測 IAM Password Policy 設定 → 比對 Config Rule（如 minimum length >= 12）→ 標記 **Compliant / Non-Compliant** → 可觸發通知或修復動作
 202. ★★ **S3 資料傳輸費用原則**
-     1. **成本規則**：同 Region 免費、跨 Region 收費、出 Internet 最貴
+     1. **成本規則**：同 Region 免費、跨 Region 收費、出 Internet 最貴⭐️
      2. **最佳實踐**：處理大量 S3 資料時，將 EC2 部署在與 S3 **相同 Region**（上傳下載皆免費）
      3. **考試關鍵字**：看到 "minimize data transfer costs" + S3 → 確保運算資源與 S3 同 Region
 203. ★★ **S3 Requester Pays 功能**
@@ -867,15 +864,9 @@
 204. 😇 **Requester Pays vs CRR 的差異**
      1. **Requester Pays**：傳輸費由 requester 付，適合**省錢分享資料**
      2. **CRR（Cross-Region Replication）**：傳輸費由 bucket owner 付，適合 **DR 或降低延遲**，不是省錢方案
-205. ★ **Babelfish for Aurora PostgreSQL**
-     1. **用途**：讓 Aurora PostgreSQL 能直接理解 **T-SQL 語法和 TDS 協定**（port 1433），專為 **SQL Server 遷移**設計
-     2. **優勢**：應用程式幾乎不用改程式碼，只需換連線字串
-     3. **考試關鍵字**：看到 "SQL Server 遷 Aurora PostgreSQL" + "minimize code changes" → **Babelfish**
-206. 😇 **資料庫遷移方案比較**
-     - **MySQL/PostgreSQL → Aurora**：原生相容，可直接遷移
-     - **SQL Server → Aurora PostgreSQL**：使用 **Babelfish**
-     - **Oracle → Aurora**：需 SCT + DMS 並修改程式碼（無相容層）
-207. 😇 **S3 Glacier 不適合即時處理**
+205. (刪除)
+206. (刪除)
+207. 😇 S3 Glacier **不適合**即時處理⭐️
      1. **定位**：S3 Glacier 僅用於**資料歸檔（data archive）**，不適合需要即時存取的場景
      2. **錯誤選項辨識**：看到 "Glacier + 即時處理應用程式日誌" → 排除此選項
 208. ★ **Envelope Encryption 原理**
@@ -894,14 +885,14 @@
      1. **選 Control Tower**：Landing zone、多帳戶**治理/合規**、Guardrails、Account Factory、**Compliance Dashboard**⭐️
      2. **選 Organizations**：只需帳戶組織結構 + SCP（較少見）
      3. **排除陷阱**：**Personal Health Dashboard** 是顯示 AWS 服務健康狀態的工具（某區域 EC2 有問題），**跟帳戶合規監控完全無關**
-212. ★★ **DynamoDB Streams** 變更偵測與 Lambda 整合
+212. ★★ **DynamoDB Streams** 變更偵測與 Lambda 整合⭐️
      1. **雙重角色**：變更日誌（記錄 INSERT/UPDATE/DELETE 及前後值，**保留 24 小時**）+ **Lambda 原生事件來源**
      2. **運作機制**：透過 **Event Source Mapping**，Lambda 服務自動輪詢 stream，有新記錄就觸發，不需自己寫輪詢邏輯
      3. **考試關鍵字**：看到「detect DynamoDB changes → trigger Lambda」→ 選 **DynamoDB Streams**
-213. ★ **Kinesis Data Firehose 不適合有序處理場景**
+213. ★ Kinesis Data Firehose **不適合有序處理場景**⭐️
      1. **設計定位**：專為**即時串流資料投遞**設計，目標是 data lakes、data stores、analytics services
      2. **核心限制**：保證**可靠投遞**，但**不保證訊息順序**
-     3. **考試陷阱**：題目要求「ordered message processing」→ 排除 Firehose，選 **SQS FIFO** 或 **Kinesis Data Streams**
+     3. **考試陷阱**：題目要求「**ordered** message processing」→ 排除 Firehose，選 **SQS FIFO** 或 **Kinesis Data Streams**
 214. ★ **AWS Personal Health Dashboard** 帳戶級別健康監控
      1. **功能定位**：顯示影響**你帳戶資源**的 AWS 事件（非全域公告）
      2. **與 Service Health Dashboard 差異**：Service Health 是**全域公告**（所有用戶可見）；Personal Health 是**針對你的資源**
@@ -909,9 +900,9 @@
 215. ★★ **S3 容災層級選擇**：單一 AZ vs 整個 Region 故障
      1. **單一 AZ 故障**：❌ 不需額外設定，S3 Standard **預設跨 3 個 AZ** 複製
      2. **整個 Region 故障**：✅ 需啟用 **Cross-Region Replication (CRR)**，手動設定
-     3. **考試關鍵字**：看到「**regional service failure**」→ 答案直接選 **CRR**
+     3. **考試關鍵字**：看到「**regional service failure**」→ 答案直接選 **CRR**⭐️
 216. ★★ **Redshift Spectrum** 直接查詢 S3 資料解決方案
-     1. **核心概念**：讓 Redshift 直接用 SQL 查詢放在 S3 的資料，**不需先載入**
+     1. **核心概念**：讓 Redshift 直接用 SQL 查詢放在 S3 的資料，**不需先載入**⭐️
      2. **適用情境**：TB/PB 級資料全載入成本太高、冷熱分離（熱資料 Redshift、冷資料 S3）、資料湖整合（S3 既有資料不想搬動）
      3. **運作方式**：Redshift Cluster → Spectrum Layer（**獨立運算資源**）→ S3 資料，不佔用 cluster 資源
 217. ★★ **Redshift Spectrum vs Athena** 考試判斷技巧
@@ -922,7 +913,7 @@
      1. **核心差異**：Redshift（本體）❌ 必須先 COPY/載入資料到 cluster；Redshift Spectrum ✅ 可直接查 S3
      2. **選項陷阱**：題目只寫「**Amazon Redshift**」而非「**Redshift Spectrum**」時，預設指 Redshift cluster 本身，資料需先載入
      3. **關鍵字判斷**：看到「query data **in S3**」、「**without moving**」、「**in place**」→ 選 Athena 或 Redshift Spectrum，排除單純 Redshift
-219. ★★ **AWS MGN（Application Migration Service）** Lift-and-shift VM 遷移解決方案
+219. ★★ **AWS MGN（Application Migration Service）** Lift-and-shift VM 遷移解決方案⭐️
      1. **核心定位**：直接複製整台 VM（OS + 應用 + 設定原封不動），支援 Linux/Windows
      2. **最小化停機原理**：**持續複製**（continuous replication）→ cutover 只需同步最後一小段差異 → 停機時間僅**幾分鐘**
      3. **運作流程**：安裝 Replication Agent → 持續複製到 AWS Staging Area → Launch Test Instance 驗證 → Cutover 到 Production
@@ -939,7 +930,7 @@
      1. **AWS Certificate Manager (ACM)**：首選方案，可與 ALB/CloudFront/API Gateway 整合⭐️
      2. **IAM Certificate Store**：ACM 不支援的 Region 或特殊用途時使用
      3. **考試關鍵字**：看到「**third-party CA certificate**」+「**import**」→ 答案為 **ACM** 或 **IAM certificate store**
-223. ★★ **EBS io1/io2 IOPS 計算規則**
+223. ★★ **EBS io1/io2 IOPS 計算規則**⭐️
      1. **計算公式**：最大 IOPS = **容量 (GiB) × 50**
      2. **範例計算**：10 GiB io1 → 10 × 50 = **500 IOPS**（此 volume size 的上限）
      3. **考試重點**：IOPS 受限於 volume size，想要更高 IOPS 需增加容量或使用更大的 volume
@@ -954,7 +945,7 @@
      1. **Compute Optimizer**：分析 EC2/EBS/Lambda **資源配置是否過大或過小**，幫你省錢或提升效能
      2. **Well-Architected Tool**：檢查**架構設計**是否符合 AWS best practices
      3. **考試陷阱**：Compute Optimizer 只管「**資源大小優化**」，不管架構設計
-227. ★★ **IAM Identity Center vs Control Tower + SCPs** 使用場景差異
+227. ★★ **IAM Identity Center vs Control Tower + SCPs** 使用場景差異○
      1. **IAM Identity Center**：管理「**人**」的存取權限，細粒度控制（到特定資源），單帳戶即可運作
      2. **Control Tower + SCPs**：管理「**帳戶**」的權限邊界，粗粒度限制（帳戶層級），需多帳戶架構
      3. **本質區別**：Identity Center = 員工登入後「能」做什麼；SCPs = 整個帳戶「不能」做什麼

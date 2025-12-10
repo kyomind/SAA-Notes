@@ -348,7 +348,7 @@
      2. **主要功能**：專門做 **dashboard** 和報表
      3. **原生整合**：原生連接 Redshift（一鍵設定）
      4. **架構優勢**：Serverless，DevOps 不用管基礎設施
-118. 👀 Glue Job Bookmarks 用來追蹤 ETL job 已經處理過的資料，避免重複處理。
+118. (刪除)
 119. 😇 Kinesis Data Analytics 可以直接讀取 Kinesis Data Streams 的資料，進行即時分析和處理。
 120. ★ AWS Machine Learning 服務列表
      - **Rekognition**：人臉偵測、物體標籤識別、名人辨識
