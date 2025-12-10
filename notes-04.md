@@ -412,7 +412,7 @@
 92. ★★ **CloudTrail** AWS API 操作記錄與審計服務⭐️
     1. **服務定位**：專門記錄 **AWS API 呼叫歷史**
     2. **記錄範圍**：誰做了什麼操作、何時做的、對哪個資源操作、操作結果
-93. ★ **CloudTrail 加密機制**：預設安全保護配置○
+93. ★ **CloudTrail 加密機制**：預設安全保護配置
     1. **預設加密**：**S3 SSE 加密**（免費）
     2. **進階加密**：**AWS KMS 加密**（更嚴格的金鑰管理）
     3. **考試重點**：CloudTrail **預設就有加密**，不需要額外設定
@@ -554,9 +554,9 @@
      1. **核心限制**：EC2 **必須放在 Subnet** 裡，無法直接連上 VPC⭐️
      2. **層級關係**：**VPC → Subnet → EC2**（強制的架構設計）⭐️
      3. **Subnet 角色**：定義 **IP 範圍（CIDR）**，並**關聯** Route Table 與 NACL，決定內部資源的網路行為
-130. ★★ **快速封鎖攻擊 IP** 解決方案：NACL vs Bastion Host 考試陷阱○
+130. ★★ **快速封鎖攻擊 IP** 解決方案：NACL vs Bastion Host 考試陷阱
      1. **正確答案**：**NACL** 設定 deny rule 擋掉特定 IP，**立即生效**
-     2. **考試陷阱**：**Bastion Host** 是安全存取內部資源的**跳板機**，跟封鎖攻擊 IP 完全無關
+     2. **考試陷阱**：**Bastion Host** 是安全存取內部資源的**跳板機**，跟封鎖攻擊 IP 完全無關⭐️
      3. **關鍵字識別**：題目強調「**quickest way**」→ NACL 是正解
 131. ★ **IP 封鎖工具選擇邏輯**：NACL vs Security Group vs WAF
      1. **Security Group**：處理 **instance 層級**的 IP 過濾（無法設定 deny rule）
@@ -567,48 +567,43 @@
      2. **長期黑名單管理**：**WAF + IP Set** 更好維護（可集中管理、支援自動化更新）
 133. ★★ **AWS Systems Manager Run Command** 無 SSH/RDP 遠端執行解決方案
      1. **核心優勢**：**不需要開 SSH/RDP port**，透過 **SSM Agent** 直接在 EC2 上執行指令或腳本
-     2. **必要前提**：EC2 instance 要安裝 **SSM Agent** + 附加對應的 **IAM Role**（AmazonSSMManagedInstanceCore）
+     2. **必要前提**：EC2 instance 要安裝 **SSM Agent** + 附加對應的 **IAM Role**（AmazonSSMManagedInstanceCore）⭐️
      3. **安全優勢**：減少攻擊面（不暴露 22/3389 port）、集中管理、有完整的執行紀錄
 134. ★ **SQS Message Retention Period** 訊息保留期限設定
-     1. **預設與上限**：預設 **4 天**，最長可調到 **14 天**
+     1. **預設與上限**：預設 **4 天**，最長可調到 **14 天**⭐️
      2. **問題場景**：consumer 處理頻率低於保留期限（如每週一次），訊息會在被處理前**自動刪除**
      3. **解決方案**：使用 **SetQueueAttributes** API 延長 retention period
 135. ★★ **EFS** 大規模 Linux 共享儲存解決方案
      1. **題目關鍵字**：**rapidly changing data** + **多台 Linux servers** 共用
      2. **EFS 適用原因**：**共享檔案系統**，專為多 instance 同時存取設計，支援 **NFS 協定**
      3. **排除其他選項**：EBS 只能掛**單一 instance**、S3 不適合頻繁覆寫、EBS snapshot 不適合頻繁變動的資料
-136. ★★ **混合雲虛擬桌面三件套**：VPN + Directory Services + WorkSpaces
+136. ★★ **混合雲虛擬桌面三件套**：VPN + Directory Services + WorkSpaces⭐️
      1. **VPN Connection**：建立 on-premises ↔ AWS VPC 的**安全通道**
      2. **AWS Directory Services**：讓 AWS 資源能用既有的 **Active Directory 驗證**（AD Connector 或 Managed AD with trust）
      3. **Amazon WorkSpaces**：AWS 託管的**虛擬桌面服務**（DaaS）
-137. ★ **混合雲虛擬桌面考試判斷技巧**
-     1. **關鍵字識別**：「on-premises Active Directory」→ **Directory Services**、「virtual desktops」→ **WorkSpaces**、「communicate with on-premises」→ **VPN** 或 **Direct Connect**
-     2. **錯誤選項排除**：ClassicLink（過時的 EC2-Classic 功能）、IAM（無法整合 AD）、S3（儲存服務，與虛擬桌面無關）
-138. ★★ **VPN 吞吐量擴展**：Transit Gateway + ECMP 解決方案
+137. (刪除)
+138. ★★ **VPN 吞吐量擴展**：Transit Gateway + ECMP 解決方案⭐️
      1. **硬限制**：單一 VPN tunnel 上限 **1.25 Gbps**，無法突破
      2. **解決方案**：透過 **Transit Gateway** 啟用 **ECMP（Equal Cost Multi-Path）**，建立多條 VPN tunnels
      3. **頻寬計算**：流量平均分配到各 tunnel，總吞吐量 = **1.25 Gbps × tunnel 數量**
-139. ★★ **VGW vs Transit Gateway** VPN 架構差異
-     1. **VGW（Virtual Private Gateway）**：❌ 不支援 ECMP，卡在 1.25 Gbps
-     2. **Transit Gateway**：✅ 支援 ECMP，可水平擴展頻寬
-     3. **考試記憶點**：「VPN 慢 + 要擴展吞吐量」→ **Transit Gateway + ECMP + 多條 VPN tunnels**
+139. (刪除)
 140. ★ **VPN 2 條 Tunnels 的真正用途**：高可用性而非頻寬加倍
      1. **Active/Passive 架構**：一條 active，一條 standby，流量**不會同時走兩條**
      2. **實際頻寬**：仍是 **1.25 Gbps**（不是 2.5 Gbps）
      3. **ECMP 差異**：Transit Gateway + ECMP 才是 **Active/Active**，頻寬才能疊加
      4. **記憶口訣**：VGW 的 2 tunnels = **備援用**；TGW + ECMP = **聚合用**
-141. ★★ **ALB + IP Target Type** 混合雲負載平衡解決方案
+141. ★★ **ALB + IP Target Type** 混合雲負載平衡解決方案⭐️
      1. **核心概念**：ALB 可透過 **IP target type** 導向 on-premises 服務
-     2. **Target Type 差異**：**instance** 只能指向 AWS EC2；**ip** 可指向任何可路由 IP（含 on-premises）
+     2. **Target Type 差異**：**Instance Type** 只能指向 AWS EC2；**IP** 可指向任何可路由 IP（含 on-premises）
      3. **必要條件**：需有 **Direct Connect 或 VPN** 連接 VPC 與 on-premises
 142. ★ **ALB 混合雲架構**：Weighted Target Groups 應用
      1. **架構範例**：用戶 → ALB → Weighted Target Groups（50% AWS EC2 + 50% On-premises IP）
      2. **關鍵限制**：Target Group 必須用 **IP type**（不能用 instance type）+ 網路必須連通
      3. **考試記憶**：**ALB + IP target type + Direct Connect/VPN** = 混合雲負載平衡
-143. ★★ **S3 Prefix 效能限制** 現代化效能規格
+143. ★★ **S3 Prefix 效能限制** 現代化效能規格⭐️
      1. **效能上限**：每個 prefix 支援 **3,500 PUT/POST/DELETE** + **5,500 GET/HEAD** per second
      2. **歷史背景**：2018 年前需用隨機 prefix 分散請求，現在 AWS 已自動處理
-     3. **考試判斷**：請求量在上限內 → **Do nothing**；超過 → 多 prefix 分散或加 CloudFront
+     3. **考試判斷**：請求量在上限內 → **Do nothing**；超過 → **多 prefix 分散**或加 CloudFront（讀取場景）
 144. ★ **S3 效能擴展方案**：超過 Prefix 限制的處理方式
      1. **多 prefix 分散**：將物件分到不同 prefix（如 `/images/01/`、`/images/02/`），每個各享獨立額度，效能 = **N 倍**
      2. **CloudFront 快取**：適合 **GET 請求為主**，減少直接打 S3
@@ -617,7 +612,7 @@
      1. **題目關鍵字識別**：HPC（高效能運算）、tightly-coupled node-to-node communication、low-latency network、跨多個 AZ 卻遇到延遲問題
      2. **問題根源**：**AZ 之間有網路延遲**，HPC 需要極低延遲的節點間通訊
      3. **解決方案**：Cluster Placement Group 把 EC2 instances 放在**同一個 AZ 的同一個底層硬體機架**，提供最低網路延遲
-146. ★ **Cluster Placement Group 考試陷阱識別**
+146. ★ **Cluster Placement Group 考試陷阱識別**⭐️
      1. **干擾選項**：Enhanced Networking、EFA（Elastic Fabric Adapter）可能同時出現
      2. **判斷優先級**：EFA 是加分項提升效能，但 **Placement Group 才是解決「跨 AZ 延遲」的根本方案**
      3. **記憶口訣**：HPC + 延遲問題 → **先考慮 Cluster Placement Group**，再考慮 EFA 加速
@@ -625,7 +620,7 @@
      1. **核心概念**：S3 物件的擁有者是**上傳者的帳戶**，不是 bucket 擁有者
      2. **問題場景**：Account A 把物件複製到 Account B 的 bucket，物件擁有者仍是 Account A → Account B 無法完全控制自己 bucket 裡的物件
      3. **解法**：讓 **Account B 自己執行複製動作**
-148. ★ **S3 跨帳戶複製設定步驟**
+148. ★ S3 跨帳戶複製設定步驟
      1. **Step 1**：Account A 的 source bucket 加上 **bucket policy**，允許 Account B 讀取
      2. **Step 2**：Account B 建立 **IAM policy**，授權其 user/role 執行跨帳戶複製
      3. **Step 3**：由 Account B 的 IAM user/role 執行複製 → 複製後物件擁有者即為 Account B
@@ -633,8 +628,8 @@
      1. **服務定位**：託管的 **GraphQL API** 服務，主打 **real-time synchronization**（即時同步）
      2. **適用場景**：協作型應用（多人同時編輯、即時更新）、mobile/web app 即時資料同步⭐️
      3. **考試判斷**：題目提到 **real-time + collaborative + mobile/web app** → 想到 AppSync
-150. ★ **AppSync 資料來源整合**
-     1. **DynamoDB**：即時資料存取（最常見組合）
+150. ★ AppSync 資料來源整合⭐️
+     1. **DynamoDB**：即時資料存取（**最常見**組合）
      2. **Lambda**：自訂商業邏輯
      3. **OpenSearch**：搜尋查詢
      4. **RDS（Aurora）**：關聯式資料
@@ -643,29 +638,29 @@
      1. **API Gateway + Lambda**：也能實作即時功能，但需自己處理 WebSocket 連線管理
      2. **AppSync 優勢**：**內建即時訂閱功能**（Subscriptions），更直接、更少開發工作
 152. ★★ **IAM Group 不能作為 Policy Principal** 核心限制
-     1. **核心概念**：**Group 不能作為 Policy 的 Principal**
-     2. **可當 Principal**：IAM User ✅（可被驗證身份）、IAM Role ✅（可被驗證身份）
+     1. **核心概念**：Group 不能作為 Policy 的 Principal
+     2. **可當 Principal**：IAM User ✅（可被驗證身份）、IAM Role ✅（可被驗證身份）⭐️
      3. **不可當 Principal**：IAM Group ❌（只是權限集合，不是身份實體）
 153. ★★ **IAM Group 限制的實務意義**
      1. **Resource-based policy 限制**：S3 bucket policy 不能寫 `"Principal": "arn:aws:iam::123456789:group/Developers"`
-     2. **正確做法**：要授權給一群人 → 用 **identity-based policy 附加到 Group**
-154. ★ **IAM Group 權限設定正確流程**
+     2. **正確做法**：要授權給一群人 → 用 **identity-based policy 附加到 Group**⭐️
+154. ★ IAM Group 權限設定正確流程⭐️
      1. **Step 1**：每個部門建一個 IAM Group
      2. **Step 2**：建立要求 MFA + 最小權限的 IAM Policy
      3. **Step 3**：把 Policy **attach 到 Group**（不是把 Group 放進 Principal）
 155. ★★ **Auto Scaling AMI 變更流程**：Launch Template 是關鍵
      1. **核心概念**：ASG 本身不定義「要啟動什麼樣的 EC2」，只負責「何時擴展、縮減幾台」
      2. **EC2 規格定義位置**：**Launch Template** 包含 AMI ID、Instance type、Security groups、Key pair、User data 等
-     3. **AMI 變更步驟**：建立新的 Launch Template（或新版本）→ 更新 ASG 指向新的 Launch Template
+     3. **AMI 變更步驟**：建立新的 Launch Template（或新版本）→ 更新 ASG 指向新的 Launch Template⭐️
 156. ★★ CloudFormation **CreationPolicy + cfn-signal** 初始化驗證機制
      1. **用途**：確保 EC2 內的軟體安裝配置完成後，CloudFormation 才視為資源建立成功
      2. **運作流程**：CloudFormation 建立 EC2 → EC2 內透過 `cfn-init` 執行安裝腳本 → 安裝完成後 `cfn-signal` 回報成功 → CloudFormation 收到 signal 繼續建下一個資源
-157. ★ **CloudFormation 初始化考試關鍵字判斷**
+157. ★ **CloudFormation 初始化考試關鍵字判斷**⭐️
      1. **CreationPolicy + cfn-signal**：題目提到 "ensure components are properly running"、軟體層驗證
      2. **DependsOn**：只管**資源建立順序**，不管軟體層是否就緒
      3. **記憶口訣**：DependsOn = 順序控制；CreationPolicy = **完成度驗證**
 158. ★★ **RDS 備份保留期限**：自動備份 vs AWS Backup
-     1. **RDS 自動備份**：最長 **35 天**
+     1. **RDS 自動備份**：最長 **35 天**⭐️
      2. **AWS Backup**：**無上限**（可設數年）
      3. **考試判斷**：超過 35 天 → 必須用 **AWS Backup**
 159. ★ **RDS 35 天限制的設計原因**
@@ -675,18 +670,18 @@
 160. ★★ **NACL Outbound Ephemeral Port** 為什麼需要開放
      1. **核心概念**：NACL 是 **stateless**，不記得「這是回應剛才進來的連線」
      2. **連線流程**：`Client:52000 → EC2:443`（Inbound）→ `EC2:443 → Client:52000`（Outbound 回程）⭐️
-     3. **問題根源**：回程封包的 destination port 是 client 的 ephemeral port，NACL 若沒開放會被擋掉
+     3. **問題根源**：回程封包的 destination port 是 **client 的 ephemeral port**，NACL 若沒開放會被擋掉
 161. ★★ **NACL Ephemeral Port 設定規則**
      1. **Inbound rule**：管 port 443（伺服器接收請求）
-     2. **Outbound rule**：管 port **32768-65535**（回程給 client 的 ephemeral port）⭐️
+     2. **Outbound rule**：管 port **32768-65535**（回程給 client 的 ephemeral port）
      3. 回程流量的 destination port 是 client 的 ephemeral port，不是 443
-     4. **為何開整個範圍**：client OS 隨機選 port，無法預測具體數值，需放行整個 ephemeral port range
+     4. **為何開整個範圍**：client OS 隨機選 port，無法預測具體數值，需放行整個 ephemeral port range⭐️
 162. ★★ **RDS Storage Auto Scaling** 容量自動擴展解決方案
      1. **核心結論**：容量不夠 → **開啟 Storage Auto Scaling**，不是手動增加
      2. **Auto Scaling 優勢**：自動監控、按需擴展、**零停機**、無額外費用
      3. **手動增加問題**：需預測用量、可能 over-provision 浪費錢
-163. ★ **RDS Storage Auto Scaling 考試關鍵字**
-     1. **zero downtime**：不影響服務
+163. ★ RDS Storage Auto Scaling 考試關鍵字
+     1. **zero downtime**：不影響服務⭐️
      2. **set maximum storage limit**：只需設上限，其餘自動處理⭐️
      3. **no additional cost**：只付實際使用的 storage
 164. ★ **RDS Storage 考試判斷邏輯**
@@ -707,9 +702,9 @@
      3. **考試判斷**：Lambda 存取 KMS 加密資源失敗 → 檢查 **execution role + key policy** 兩邊權限
 168. ★★ **MongoDB 遷移選擇**：DocumentDB vs DynamoDB
      1. **DocumentDB 優勢**：與 MongoDB **API 相容**，幾乎不改 code
-     2. **DynamoDB 問題**：雖支援 JSON-like 資料，但 API 完全不同（GetItem/Query vs MQL），遷移**必須改寫程式碼**
+     2. **DynamoDB 問題**：雖支援 JSON-like 資料，但 **API 完全不同**（GetItem/Query vs MQL），遷移**必須改寫**程式碼⭐️
      3. **考試判斷**：看到「**minimal code changes**」+ MongoDB → 選 **DocumentDB**
-169. ★★ **Storage Gateway 類型與 S3 直接存取**
+169. ★★ Storage Gateway 類型與 **S3 直接存取**⭐️
      1. **核心重點**：Volume Gateway 的資料**不能直接用 S3 API 存取**，要直接存取 S3 請用 **File Gateway**
      2. **File Gateway**：資料呈現為 S3 objects（NFS/SMB 介面）→ ✅ 可直接存取
      3. **Volume Gateway**：資料呈現為 EBS snapshots（iSCSI 介面）→ ❌ 不可直接存取
@@ -723,7 +718,7 @@
      2. **錯誤做法**：對 100 個 user 各別 attach policy → 管理噩夢 ❌
      3. **正確做法**：建 Group → 把 user 加進去 → policy attach 到 Group ✅
      4. **考試關鍵字**：「大量 IAM users」+「相同權限」→ 答案一定是 **IAM Group**
-172. ★★ **Glacier Retrieval** 取回速度選項
+172. ★★ **Glacier Flexible Retrieval** 取回速度選項
      1. **Expedited**：1-5 分鐘，緊急需求（符合 < 15 min）
      2. **Standard**：3-5 小時，一般取回
      3. **Bulk**：5-12 小時，大量、非緊急
@@ -731,7 +726,7 @@
      1. **問題背景**：Expedited 在**高需求時可能失敗**（capacity 不夠）
      2. **解決方案**：購買 provisioned capacity = **保證** expedited 隨時可用
      3. **效能規格**：支援最高 **150 MB/s** throughput
-174. ★★ **Glacier 考試關鍵字組合**判斷技巧
+174. ★★ **Glacier 考試關鍵字組合**判斷技巧○
      1. **Expedited 關鍵字**：「under 15 minutes」→ 選 Expedited
      2. **Provisioned Capacity 關鍵字**：「under all circumstances」+「retrieval capacity available when needed」→ 選 Provisioned Capacity
      3. **考試陷阱**：兩者要**一起選**才能滿足「任何時候都能在 15 分鐘內取回」的合規要求

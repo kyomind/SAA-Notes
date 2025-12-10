@@ -326,3 +326,36 @@ Hardware Appliance 就是給那些「沒有虛擬化基礎設施」或「不想�
     1. **不精確說法**：「Subnet 功能：定義路由規則、NACL」
     2. **精確說法**：Subnet **關聯** Route Table 和 NACL，這些規則決定了 Subnet 內資源的網路行為
     3. **考試應用**：題目問「在哪裡設定 Route Table」→ 答案是 **VPC 層級建立，然後關聯到 Subnet**
+84. ★★ VGW (Virtual Private Gateway) 核心定位與用途⭐️
+    1. **定義**：VPC 的對外連接閘道，**專門用來連接 AWS 以外的網路（地端機房或其他雲端）**
+    2. **連接方式**：Site-to-Site VPN（透過 IPsec VPN 連接地端到 AWS VPC）、Direct Connect（透過專線連接，更穩定、更低延遲、更貴）
+85. ★ VGW 常見應用場景
+    1. **Hybrid Cloud 架構**：公司有自己的機房，部分服務上 AWS，兩邊網路需要互通
+    2. **資料庫遷移過渡期**：地端 DB 還沒搬完，AWS 上的應用需要連回去
+    3. **合規需求**：敏感資料必須留在地端，但其他服務使用 AWS
+86. ★★ VGW 考試重點與限制⭐️
+    1. **觸發關鍵字**：題目出現 **Site-to-Site VPN** 或 **Direct Connect** → 一定會有 VGW
+    2. **架構限制**：VGW **attach 到 VPC**，一個 VPC 只能 attach 一個 VGW
+    3. **擴展方案**：要連接**多個 VPC 到地端**，考慮用 **Transit Gateway** 取代多個 VGW（更好管理）
+87. ★★ RDS 自動備份 vs AWS Backup — 定位與職責分離
+    1. **RDS 自動備份定位**：短期 operational recovery（誤刪資料、回滾錯誤部署、point-in-time recovery），保留期最長 **35 天**
+    2. **AWS Backup 定位**：長期 archive / compliance（法規合規如金融業 7 年、災難復原、審計需求），保留期**無上限**
+    3. **設計理念**：RDS 保持簡單專注資料庫本身；AWS Backup 統一管理所有 AWS 資源的備份策略
+88. ★★ RDS 35 天硬性限制的架構原因
+    1. **非成本考量**：若是成本問題，AWS 可以讓你付更多錢延長天數，但選擇**硬性限制 35 天**是刻意的架構決策
+    2. **職責分離原則**：RDS 不該承擔長期備份管理的複雜度（跨區域複製策略、合規性報告、多服務統一管理、生命週期自動化）
+    3. **正確分工**：這些長期備份需求是 **AWS Backup 的專長**，讓 RDS 處理反而是錯誤的職責分配
+89. ★★ RDS 備份考試判斷 — 35 天是關鍵門檻
+    1. **觸發關鍵字**：題目出現「**超過 35 天**」的備份需求 → 答案必定指向 **AWS Backup**
+    2. **記憶點**：35 天是 RDS 自動備份的硬性上限，無法突破
+90. ★★ Glacier Provisioned Capacity — 只為 Expedited 存在
+    1. **核心答案**：**Standard 不需要買 Provisioned Capacity**，AWS 保證 capacity 充足不會失敗
+    2. **Expedited 需求場景**：資源有限，高峰期可能「搶不到」導致請求失敗，Provisioned Capacity 等於「預約專屬插隊通道」
+    3. **Bulk 不需要**：本來就是低優先級排隊處理，不存在「搶不到」的問題
+91. ★ Glacier Provisioned Capacity 運作邏輯
+    1. **Expedited 的插隊特性**：1-5 分鐘取回需要 AWS 立刻調動資源，當很多人同時插隊時資源不夠就會拒絕請求
+    2. **Provisioned Capacity 保證**：預約後不管多少人在搶，你的 Expedited 請求一定會被處理
+    3. **Standard/Bulk 保證**：排隊處理機制，AWS 會在 3-5 小時或 5-12 小時內消化完
+92. ★★ Glacier Provisioned Capacity 考試判斷
+    1. **觸發關鍵字**：「**保證**緊急取回」、「**確保** Expedited 可用」→ **Provisioned Capacity**
+    2. **排除情境**：單純問 Standard/Bulk 取回 → 不會出現 Provisioned Capacity 選項
