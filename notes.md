@@ -70,12 +70,12 @@
 17. ★ EBS 加密的區域性限制
     1. **KMS 綁定**：EBS 加密使用 KMS，Key 綁定 Region
     2. **跨區複製**：Snapshot 跨 Region 複製時，需在目標 Region **重新加密**
-18. ★★ EBS Encryption 考題陷阱
+18. ★★ EBS Encryption 考題陷阱⭐️
     1. **題目問**：如何確保 EBS 資料在傳輸過程中的安全？
     2. **陷阱選項**：設定 Security Group、使用 VPN
     3. **正確答案**：啟用 EBS Encryption（**自動處理 in-transit 加密**）
     4. **記憶點**：EBS Encryption = **at-rest + in-transit 都包了**
-19. ★★ Step Scaling vs Target Tracking Scaling — 關鍵判斷
+19. ★★ Step Scaling vs Target Tracking Scaling — 關鍵判斷⭐️
     1. **Step Scaling**：**你自己指定** scaling metrics 和 threshold values
     2. **Target Tracking**：**AWS 幫你調**，只需設定目標值（如 CPU 維持 50%）
     3. **考試技巧**：看到「specifying the scaling metrics and threshold values」→ **Step Scaling**
@@ -91,9 +91,9 @@
     1. **Karpenter**：宣告式設定、動態選擇 instance type、直接呼叫 EC2 API（速度快）、**運維負擔低**
     2. **Cluster Autoscaler**：需預先定義 ASG、固定 instance type、透過 ASG 間接整合、運維負擔較高
     3. **選擇邏輯**：問 least operational overhead → **Karpenter**；問 native K8s solution → Cluster Autoscaler
-23. ★★ Aurora Failover 機制 — 有無 Replica 決定行為
-    1. **有 Aurora Replica**：CNAME 翻轉指向健康 Replica，Replica 升級為 Primary（**約 30 秒內**）
-    2. **沒有 Replica（單一 instance）**：在同一 AZ 嘗試**重建**新的 DB instance（較慢，best-effort）
+23. ★★ Aurora Failover 機制 — **有無 Replica** 決定行為⭐️
+    1. **有 Aurora Replica**：CNAME 翻轉指向健康 Replica，Replica **自動升級**為 Primary（**約 30 秒內**）
+    2. **沒有 Replica（單一 instance）**：在同一 AZ 嘗試**重建**新的 DB instance（較慢，best-effort，通常需要幾分鐘甚至 10 分鐘）
     3. **考試陷阱**：看到「single Aurora instance」→ 沒有 Replica 可 promote，只能重建
 24. ★ S3 Glacier 成本結構 — 三大費用組成
     1. **Storage**：存放費用（極低，Glacier 的核心賣點）
@@ -113,10 +113,7 @@
 27. ★★ Glacier Instant Retrieval 考試判斷 — 關鍵字組合
     1. **選擇時機**：「**每季存取一次**」或「**一年幾次**」+「**需要立即取回**」或「**毫秒級延遲**」+「**長期保存**」
     2. **對比選擇**：可以等幾小時 → **Glacier Flexible Retrieval**（更便宜）
-28. ★★ Placement Group：Spread vs Partition 核心差異
-    1. **Spread**：隔離單位為**單一硬體（機器）**，每台硬體嚴格放 **1 個 instance**
-    2. **Partition**：隔離單位為**機架（Rack）**，同一 partition 內可能共用硬體
-    3. **關鍵限制**：Spread 每個 AZ **最多 7 個 instances**；Partition 每個 AZ **最多 7 個 partitions**
+28. (刪除)
 29. ★ Spread Placement Group — 極端隔離但規模受限
     1. **用途**：少量但極關鍵的 instances（如 7 台 database replica）
     2. **保證**：每個 instance 在**獨立實體硬體**上，任一硬體故障只影響 1 個 instance
@@ -125,7 +122,7 @@
     1. **用途**：大規模分散式系統（如 100 節點 Cassandra cluster）
     2. **運作方式**：節點分散到不同 partition，每個 partition 對應不同機架
     3. **故障影響**：整個機架斷電只損失約 1/7 節點，分散式系統的 replication 可處理
-31. ★★ Placement Group 考試選擇技巧
+31. ★★ Placement Group 考試選擇技巧⭐️
     1. **選 Spread**：少量關鍵 instances、需要**最高隔離等級**
     2. **選 Partition**：看到 **HDFS、Cassandra、Kafka** 等分散式系統關鍵字
     3. **選擇邏輯**：這些系統本身有 partition/replication 概念，天生適合 Partition Placement Group
@@ -310,42 +307,42 @@
     1. **ALB + Lambda**：便宜（ALB 時數計費）、單純 HTTP 路由、適合高流量 + 簡單路由
     2. **API Gateway + Lambda**：較貴（per request）、有 throttling、API key、caching、適合需要 API 管理功能
 Hardware Appliance 就是給那些「沒有虛擬化基礎設施」或「不想自己搞」的客戶一個懶人方案。
-80. ★ Storage Gateway VM 部署位置 — On-Premises 虛擬化架構
+1. ★ Storage Gateway VM 部署位置 — On-Premises 虛擬化架構
     1. **部署位置**：VM 部署在**你自己的 on-premises 伺服器上**（不是在 AWS）
     2. **架構層級**：實體伺服器 → hypervisor（VMware ESXi、Hyper-V、KVM）→ VM（安裝 Storage Gateway 軟體）
     3. **簡單類比**：就像在公司機房的實體機上開一台 VM 跑 application，只是這台 VM 跑的是 AWS Storage Gateway
-81. 😇 Storage Gateway 部署方式對比 — VM vs Hardware Appliance
+2. 😇 Storage Gateway 部署方式對比 — VM vs Hardware Appliance
     1. **VM 方式**：自己的實體機 + hypervisor + 自己建 VM
     2. **Hardware Appliance**：直接跟 AWS 買一台預裝好的實體機，插電就用
     3. **選擇邏輯**：Hardware Appliance 是給「沒有虛擬化基礎設施」或「不想自己搞」的客戶的懶人方案
-82. ★★ Route Table 與 NACL 的層級歸屬 — VPC 資源但關聯 Subnet
+3. ★★ Route Table 與 NACL 的層級歸屬 — VPC 資源但關聯 Subnet
     1. **定義層級**：Route Table 和 NACL 都是 **VPC 層級的資源**（建立時屬於某個 VPC）
     2. **作用層級**：它們的**作用對象是 Subnet**（綁定到 Subnet 才生效）
     3. **強制關聯**：每個 Subnet **必須**關聯一個 Route Table（沒指定就用 Main Route Table）和一個 NACL（沒指定就用 Default NACL）
-83. ★ Route Table 與 NACL 的精確描述 — 考試陷阱
+4. ★ Route Table 與 NACL 的精確描述 — 考試陷阱
     1. **不精確說法**：「Subnet 功能：定義路由規則、NACL」
     2. **精確說法**：Subnet **關聯** Route Table 和 NACL，這些規則決定了 Subnet 內資源的網路行為
     3. **考試應用**：題目問「在哪裡設定 Route Table」→ 答案是 **VPC 層級建立，然後關聯到 Subnet**
-84. ★★ VGW (Virtual Private Gateway) 核心定位與用途⭐️
+5. ★★ VGW (Virtual Private Gateway) 核心定位與用途⭐️
     1. **定義**：VPC 的對外連接閘道，**專門用來連接 AWS 以外的網路（地端機房或其他雲端）**
     2. **連接方式**：Site-to-Site VPN（透過 IPsec VPN 連接地端到 AWS VPC）、Direct Connect（透過專線連接，更穩定、更低延遲、更貴）
-85. ★ VGW 常見應用場景
+6. ★ VGW 常見應用場景
     1. **Hybrid Cloud 架構**：公司有自己的機房，部分服務上 AWS，兩邊網路需要互通
     2. **資料庫遷移過渡期**：地端 DB 還沒搬完，AWS 上的應用需要連回去
     3. **合規需求**：敏感資料必須留在地端，但其他服務使用 AWS
-86. ★★ VGW 考試重點與限制⭐️
+7. ★★ VGW 考試重點與限制⭐️
     1. **觸發關鍵字**：題目出現 **Site-to-Site VPN** 或 **Direct Connect** → 一定會有 VGW
     2. **架構限制**：VGW **attach 到 VPC**，一個 VPC 只能 attach 一個 VGW
     3. **擴展方案**：要連接**多個 VPC 到地端**，考慮用 **Transit Gateway** 取代多個 VGW（更好管理）
-87. ★★ RDS 自動備份 vs AWS Backup — 定位與職責分離
+8. ★★ RDS 自動備份 vs AWS Backup — 定位與職責分離
     1. **RDS 自動備份定位**：短期 operational recovery（誤刪資料、回滾錯誤部署、point-in-time recovery），保留期最長 **35 天**
     2. **AWS Backup 定位**：長期 archive / compliance（法規合規如金融業 7 年、災難復原、審計需求），保留期**無上限**
     3. **設計理念**：RDS 保持簡單專注資料庫本身；AWS Backup 統一管理所有 AWS 資源的備份策略
-88. ★★ RDS 35 天硬性限制的架構原因
+9. ★★ RDS 35 天硬性限制的架構原因
     1. **非成本考量**：若是成本問題，AWS 可以讓你付更多錢延長天數，但選擇**硬性限制 35 天**是刻意的架構決策
     2. **職責分離原則**：RDS 不該承擔長期備份管理的複雜度（跨區域複製策略、合規性報告、多服務統一管理、生命週期自動化）
     3. **正確分工**：這些長期備份需求是 **AWS Backup 的專長**，讓 RDS 處理反而是錯誤的職責分配
-89. ★★ RDS 備份考試判斷 — 35 天是關鍵門檻
+10. ★★ RDS 備份考試判斷 — 35 天是關鍵門檻
     1. **觸發關鍵字**：題目出現「**超過 35 天**」的備份需求 → 答案必定指向 **AWS Backup**
     2. **記憶點**：35 天是 RDS 自動備份的硬性上限，無法突破
 90. ★★ Glacier Provisioned Capacity — 只為 Expedited 存在
@@ -375,3 +372,14 @@ Hardware Appliance 就是給那些「沒有虛擬化基礎設施」或「不想�
     2. **IAM 端設定**：建立 Policy 授權哪些 user/role 可以連哪個 DB instance 的哪個 DB user，定義「誰」可以對「哪個 RDS」產生 token
     3. **DB 內部設定**：還是要建立對應的 database user，只是認證方式改成 IAM（不是給密碼）
     4. **記憶點**：三層都要到位才能用
+97. ★★ EKS 雙層擴展觸發機制 — HPA 與 Karpenter 協同運作⭐️
+    1. **觸發順序**：流量增加 → HPA 偵測 CPU/Memory 超過閾值 → HPA 增加 Pod replicas → Kubernetes Scheduler 嘗試調度新 Pods
+    2. **分岔判斷**：現有 Nodes 資源足夠 → Pods 成功調度，結束；資源不足 → Pods 進入 **Pending 狀態** → Karpenter 偵測並啟動新 Nodes
+    3. **關鍵原則**：現有 Nodes 資源還撐得住時，**只會觸發 HPA**，Karpenter 不會動作
+98. ★ HPA vs Karpenter 觸發條件精確對比
+    1. **HPA 觸發條件**：Pod 的 CPU/Memory 超過設定閾值（負載在閾值內則不觸發）
+    2. **Karpenter 觸發條件**：有 Pods 處於 **Pending 狀態**（因資源不足無法調度）（所有 Pods 都能順利調度則不觸發）
+    3. **簡單記法**：HPA 管「要不要加 Pod」，Karpenter 管「有沒有地方放 Pod」
+99. 😇 EKS 自動擴展架構特性 — 按需觸發的兩層設計
+    1. **運作模式**：兩層架構按需觸發，不是每次都兩層一起動
+    2. **常見情況**：大部分時候只有 HPA 在運作，Karpenter 只在真正需要更多運算資源時才介入
