@@ -2258,3 +2258,12 @@ Provisioned 的 Auto Scaling 本質上還是「**事後反應**」，它看到 C
 
 1. **DX + Public VIF** — 走專線到 S3 public endpoint
 2. **DX + Private VIF + VPC Endpoint (Gateway)** — 走專線進 VPC，再透過 VPC endpoint 到 S3
+
+## AWS 網路元件關聯層級比較表
+
+| 元件                  | 關聯層級                     | 功能              |
+| --------------------- | ---------------------------- | ----------------- |
+| **IGW / NAT Gateway** | VPC（但需 Route Table 指向） | 出入口            |
+| **Route Table**       | Subnet                       | 路由方向          |
+| **NACL**              | Subnet                       | 過濾（Stateless） |
+| **Security Group**    | Instance (ENI)               | 過濾（Stateful）  |

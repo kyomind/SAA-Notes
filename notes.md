@@ -123,9 +123,9 @@
     2. **運作方式**：節點分散到不同 partition，每個 partition 對應不同機架
     3. **故障影響**：整個機架斷電只損失約 1/7 節點，分散式系統的 replication 可處理
 31. ★★ Placement Group 考試選擇技巧⭐️
-    1. **選 Spread**：少量關鍵 instances、需要**最高隔離等級**
-    2. **選 Partition**：看到 **HDFS、Cassandra、Kafka** 等分散式系統關鍵字
-    3. **選擇邏輯**：這些系統本身有 partition/replication 概念，天生適合 Partition Placement Group
+    1. **Cluster PG**：需要超低延遲、高頻寬連線（HPC、高效能運算）
+    2. **Spread PG**：少量關鍵 instance 需極端隔離（DB replica）
+    3. **Partition PG**：大規模分散式系統需機架級隔離（Cassandra、Hadoop）
 32. ★★ ASG Cooldown vs Warm-up — 核心差異
     1. **Cooldown**：scaling 動作後，**整個 ASG 暫停決策**（預設 300 秒），等指標穩定
     2. **Warm-up**：新 instance 在熱身期間內，**其指標不納入 ASG 平均計算**
@@ -139,9 +139,14 @@
 35. ★★ ASG Cooldown vs Warm-up 考試判斷
     1. **調 Cooldown**：題目說「scaling 太頻繁」「震盪」「oscillation」
     2. **調 Warm-up**：題目說「新 instance 啟動時指標異常」「bootstrap 期間」
-36. ★★ Aurora Reader Endpoint 行為 — 有無 Replica 的差異
-    1. **有 Replicas**：自動負載均衡到所有 Replicas
-    2. **沒有 Replicas**：**退回連接到 Primary instance**（技術上不會報錯，但無讀寫分離效果）
+36. ★★ Aurora Endpoints — Cluster 自動建立，應用程式決定怎麼用
+    1. **這兩種 Endpoint（全部自動建立）**：
+       - **Cluster Endpoint (Writer)**：永遠指向 Primary，用於寫入
+       - **Reader Endpoint**：自動負載均衡到所有 Replicas，用於讀取
+    2. **Reader Endpoint 行為差異**：
+       - 有 Replicas → 流量分散到 Replicas
+       - 沒 Replicas → 退回連接 Primary（不會報錯，但無讀寫分離效果）
+    3. **實務重點**：Endpoints 自動存在，但**應用程式要主動區分讀寫連線**才有效果⭐️
 37. 😇 Aurora Reader Endpoint 最佳實踐
     1. **架構擴展性**：一開始就把讀取邏輯指向 Reader Endpoint，日後加 Replicas 時**零程式碼修改**
     2. **考試重點**：問「如何實現 Aurora 讀取負載均衡」→ 答案永遠是 **Reader Endpoint**
@@ -153,7 +158,7 @@
     1. **內部身分**（你帳戶的 IAM User）：直接指派 Policy 或加入 Group
     2. **外部身分**（不在你帳戶內）：透過 Assume Role 取得臨時權限
     3. **考試關鍵字**：看到「跨帳戶」「Federation」「SSO」「第三方登入」→ 想到 **IAM Role + STS**
-40. ★ S3 Object Lambda — 即時攔截處理 S3 GET 請求
+40. ★ S3 Object Lambda — 即時攔截處理 S3 GET 請求⭐️
     1. **本質**：在 GET 請求和回傳之間插入 Lambda 做即時處理（**攔截器模式**）
     2. **運作流程**：Client → S3 Object Lambda Access Point → Lambda 處理 → 轉換後的檔案
     3. **典型場景**：同一份資料不同角色看不同內容（遮蔽 PII）、動態調整圖片大小、動態加浮水印
@@ -165,20 +170,21 @@
     1. **Expedited retrieval（1-5 分鐘）**：Glacier Flexible Retrieval **獨有**的快速取回選項
     2. **Provisioned Capacity**：專門搭配 Expedited 使用，保證取回容量
     3. **區分其他 Glacier**：Instant Retrieval 是毫秒級（不需 Expedited）、Deep Archive 最快 12 小時（無 Expedited）
-43. ★★ NACL vs Security Group — 作用層級區分（考試陷阱）
-    1. **NACL**：作用於 **Subnet 層級**，控制進出該 subnet 的所有流量
-    2. **Security Group**：作用於 **Instance 層級**，控制進出該 instance 的流量
-    3. **Route Table + IGW**：作用於 VPC 層級，控制**路由方向**，非直接過濾流量
+43. ★★ NACL vs Security Group vs Route Table — 作用層級區分⭐️
+    1. **Route Table**：關聯於 **Subnet 層級**，決定流量「往哪走」（路由方向）
+    2. **NACL**：作用於 **Subnet 層級**，決定流量「能不能進出」（Allow/Deny）
+    3. **Security Group**：作用於 **Instance 層級**（ENI），決定流量「能不能到達 instance」
+    4. **IGW**：存在於 **VPC 層級**，但要透過 Route Table 設定才會被使用
 44. ★ NACL 關聯規則
     1. **強制關聯**：每個 subnet **必須**關聯一個 NACL（預設使用 default NACL）
     2. **多對多關係**：不同 subnet 可用不同 NACL；同一 NACL 可關聯多個 subnet
-45. ★★ DynamoDB Global Table 核心定位 — Active-Active 全球部署
+45. ★★ DynamoDB Global Table 核心定位 — Active-Active 全球部署⭐️
     1. **本質**：**active-active 多區域架構**，DR 只是附帶效果
-    2. **主要用途**：降低全球用戶延遲（歐洲用戶打歐洲 table）、流量分散（各區域獨立承載）
+    2. **主要用途**：**降低**全球用戶**延遲**（歐洲用戶打歐洲 table）、**流量分散**（各區域獨立承載）⭐️
     3. **流量承載力**：線性擴展，開 3 個區域 ≈ 3 倍寫入吞吐上限（假設流量分散）
 46. ★★ DynamoDB Global Table 考試關鍵字與陷阱
     1. **典型題目**：「服務全球用戶 + 低延遲存取 + 災難復原能力」→ **DynamoDB Global Table**
-    2. **排除情境**：題目強調 **strong consistency**（強一致性）→ Global Table 不適合（它是最終一致）
+    2. **排除情境**：題目強調 **strong consistency**（強一致性）→ Global Table 不適合（它是**最終一致**）⭐️
     3. **對比選擇**：需要 **relational data + 跨區域** → **Aurora Global Database**
 47. 😇 ElastiCache 核心概念與引擎選擇
     1. **核心用途**：資料庫查詢結果快取、Session 存儲
@@ -192,16 +198,14 @@
     - **「archive」**（歸檔）+ **合規保留 N 年**
     - **「WORM compliance」** + **Glacier**
     - **「legal hold」** + **長期歸檔資料**
-50. 😇 Glacier Vault Lock 典型題目句型
-    - "The company must ensure that archived data in Glacier **cannot be deleted for 7 years** to meet regulatory compliance..."
-    - "...need to implement a **write-once-read-many (WORM)** policy on their **Glacier vault**..."
+50. (刪除)
 51. ★ Vault Lock vs Object Lock 判斷 — 何時不是 Vault Lock
     1. **選 Object Lock**：資料在 S3（只是 storage class 選 Glacier）、保護特定幾個檔案、題目沒提 Vault
     2. **選 Vault Lock**：題目明確出現「Vault」或強調「**原生 Glacier 服務**」
     3. **記憶點**：Vault 是原生 Glacier 的東西，這題型不高頻但出現就是送分題
 52. ★★ Security Group vs NACL — 來源/目標表示法差異
     1. **共同支援**：CIDR block（`10.0.1.0/24`）、單一 IP（`10.0.1.5/32`）
-    2. **Security Group 獨有**：可引用**另一個 Security Group ID**（`sg-0abc1234`）、**Prefix List**（`pl-xxx`）
+    2. **Security Group 獨有**：可引用**另一個 Security Group ID**（`sg-0abc1234`）、**Prefix List**（`pl-xxx`）⭐️
     3. **NACL 限制**：純網路層（Layer 3/4），**只認 CIDR**，不認識 Security Group
 53. ★★ Security Group 引用 SG — 動態環境的最佳實踐
     1. **用法**：Inbound Rule 的 Source 填 `sg-frontend-12345`，代表該 SG 內的所有資源都放行
@@ -209,17 +213,17 @@
 54. ★ Security Group vs NACL — 考試判斷點
     1. **動態擴展的 EC2 互相通訊**：答案用 **Security Group 引用 Security Group**
     2. **阻擋特定 IP 網段**：兩者都行，但 **NACL 可以做 Deny**（SG 只能 Allow）
-55. 😇 RDS 底層架構 — 運算與儲存分離
+55. 😇 RDS 底層架構 — 運算與儲存分離⭐️
     1. **本質**：RDS 跑在 **AWS 管理的 EC2 instance** 上，使用者看不到也摸不到
     2. **架構**：RDS Instance（運算層）↔ EBS Volume（儲存層），資料**本來就存在 EBS 上**
-56. ★★ RDS Stop vs Terminate — 費用差異
+56. ★★ **RDS** Stop vs Terminate — 費用差異
     1. **Running**：Instance 收費 + EBS 收費
-    2. **Stopped**：Instance **不收費**，EBS **繼續收費**
+    2. **Stopped**：Instance **不收費**，EBS **繼續收費**⭐️而且只能停 7 天
     3. **Terminated**：兩者都消失（除非有 snapshot）
     4. **關鍵點**：Stop 只是停止運算，**儲存費用持續計費**
 57. ★★ RDS 省錢策略 — Snapshot + Terminate
     1. **操作流程**：建立 Snapshot（備份到 S3）→ Terminate RDS（刪除 instance + EBS）→ 需要時從 Snapshot 還原
-    2. **費用邏輯**：只付 Snapshot 儲存費（通常比 EBS 便宜很多）
+    2. **費用邏輯**：只付 Snapshot 儲存費（通常**比 EBS 便宜很多**）
 58. ★★ RDS 成本優化考試記憶點
     - **RDS Stop ≠ 省 storage 費**
     - **長期不用** → Snapshot + Terminate 最省
@@ -230,9 +234,11 @@
     - **管理費**（AWS 幫你維運的成本）
 60. ★ Virtual Private Gateway (VGW) 核心概念
     1. **定義**：AWS VPC 端用來建立 VPN 連線的閘道器，是 VPC 的 VPN 出口
-    2. **架構角色**：On-Premises (Customer Gateway) ──VPN 連線── VGW ──你的 VPC
-    3. **對照關係**：CGW (Customer Gateway) 代表公司端的 VPN 設備/路由器；VGW 代表 AWS 端的 VPN 進入點，attach 到 VPC 上
-61. 😇 Virtual Private Gateway 的限制
+    2. **架構角色**：On-Premises (**Customer Gateway**) ──VPN 連線── VGW ──你的 VPC
+    3. **對照關係**：
+       - **CGW (Customer Gateway)**：代表公司端的 VPN 設備/路由器
+       - **VGW**：代表 AWS 端的 VPN 進入點，**attach 到 VPC 上**⭐️
+61. 😇 Virtual Private Gateway 的限制○
     1. **單一綁定**：一個 VGW 只能 attach 到一個 VPC
     2. **不支援 transitive routing**：A↔VGW↔B 架構中，A 和 B 無法直接通訊
     3. **擴展性受限**：較早期設計，複雜網路拓撲需求應改用 Transit Gateway (TGW)
@@ -382,3 +388,26 @@
 99. 😇 EKS 自動擴展架構特性 — 按需觸發的兩層設計
     1. **運作模式**：兩層架構按需觸發，不是每次都兩層一起動
     2. **常見情況**：大部分時候只有 HPA 在運作，Karpenter 只在真正需要更多運算資源時才介入
+100. ★★ Aurora 讀寫分離 (Read/Write Splitting) 核心概念
+    1. **寫入操作**：INSERT/UPDATE/DELETE → Cluster Endpoint (Primary)
+    2. **讀取操作**：SELECT → Reader Endpoint (Replicas)
+    3. **關鍵原則**：應用程式決定連線目標，Endpoint 不會自動分流
+101. ★ Aurora 讀寫分離的架構優勢
+    1. **不分離問題**：所有流量打 Primary、Primary 容易變瓶頸、加 Replica 也沒用
+    2. **讀寫分離效益**：讀取分散到多個 Replicas、Primary 專心處理寫入、Replica 越多讀取承載力越高
+102. 😇 Aurora 讀寫分離的實務特性
+    1. **讀多寫少架構**：大多數應用程式是讀多寫少（80-90% 讀取），把讀取流量導向 Reader Endpoint 效益非常明顯
+    2. **程式碼主導**：Replica 不會自己發揮作用，是程式碼決定要不要利用它
+103. ★ Prefix List 核心概念 — CIDR 的群組化管理
+    1. **定義**：一組 CIDR 的集合，可以重複使用、統一管理
+    2. **核心價值**：集中維護、減少重複設定
+104. 😇 Prefix List 的實務價值 — 統一管理多個 CIDR
+    1. **沒有 Prefix List**：10 個 Security Group 都要手動加相同的 3 條 CIDR 規則，改一個 IP 要改 10 次
+    2. **有 Prefix List**：建立一個 Prefix List 包含這 3 個 CIDR，10 個 SG 都引用它，之後新增/移除 IP 只改一處全部自動生效
+105. ★ Prefix List 兩種類型
+    1. **Customer-managed**：你自己建立維護的（公司 IP 白名單、合作夥伴 IP 等）
+    2. **AWS-managed**：AWS 維護的服務 IP 範圍（S3、DynamoDB 等服務的 IP，常用於 VPC Endpoint 路由）
+106. ★★ Prefix List 考試重點 — 使用範圍限制
+    1. **可用於**：Security Group、Route Table
+    2. **不可用於**：NACL（NACL 只認純 CIDR）
+    3. **經典場景**：VPC Endpoint 的 Route Table 會自動引用 AWS-managed Prefix List（指向 S3/DynamoDB 的 IP 範圍）
