@@ -238,18 +238,18 @@
     3. **對照關係**：
        - **CGW (Customer Gateway)**：代表公司端的 VPN 設備/路由器
        - **VGW**：代表 AWS 端的 VPN 進入點，**attach 到 VPC 上**⭐️
-61. 😇 Virtual Private Gateway 的限制○
+61. 😇 Virtual Private Gateway 的限制
     1. **單一綁定**：一個 VGW 只能 attach 到一個 VPC
     2. **不支援 transitive routing**：A↔VGW↔B 架構中，A 和 B 無法直接通訊
     3. **擴展性受限**：較早期設計，複雜網路拓撲需求應改用 Transit Gateway (TGW)
-62. ★★ VGW vs Transit Gateway 考試場景選擇
+62. ★★ VGW vs Transit Gateway 考試場景選擇⭐️
     1. **選 VGW**：單一 VPC + 單一/少數 Site-to-Site VPN
     2. **選 Transit Gateway**：多 VPC 互連 + 多個 VPN
-    3. **選 VPN CloudHub**：多分公司要互連、低成本（基於 VGW）
+    3. **選 VPN CloudHub**：多分公司要互連、低成本（**基於 VGW**）
 63. ★★ EIP 與 ENI 的關聯關係 — 技術架構
-    1. **底層事實**：EIP 實際關聯到 **ENI (Elastic Network Interface)**，非直接關聯到 EC2 instance
+    1. **底層事實**：EIP 實際關聯到 **ENI (Elastic Network Interface)**，非直接關聯到 EC2 instance⭐️
     2. **架構層級**：EIP → ENI → EC2
-    3. **Console 簡化**：每個 EC2 預設有 primary ENI，Console 讓你看起來像直接附到 EC2 上
+    3. **Console 簡化**：每個 EC2 預設有 **primary ENI**，Console 讓你看起來像直接附到 EC2 上
 64. ★ EIP + ENI 架構的應用場景
     1. **多 ENI 場景**：EC2 有多張 ENI 時，可對不同 ENI 分別綁不同 EIP
     2. **Failover 設計**：把 ENI（連同 EIP）從故障 EC2 detach，attach 到備援 EC2，**IP 不變**
@@ -277,14 +277,18 @@
     2. **第三方工具**：Datadog、New Relic、Grafana（功能更強、生態系更好）
     3. **容器環境**：ECS/EKS 通常直接用 Container Insights（更針對容器場景）
     4. **實務常見**：ALB Logs + Athena 查詢、CloudWatch Metrics + Alarms、observability 平台
-71. ★★ NAT Gateway 高可用架構 — 每個 AZ 獨立部署
+71. ★★ NAT Gateway 高可用架構 — 每個 AZ 獨立部署⭐️
     1. **核心原則**：NAT Gateway 是 **AZ-bound 資源**，只存在於一個 AZ 內，無法跨 AZ 服務
-    2. **唯一正確做法**：每個 AZ 部署獨立的 NAT Gateway（不是選擇，是必須）
+    2. **唯一正確做法**：每個 AZ 部署獨立的 NAT Gateway，並在該 AZ 的 private subnet Route Table 指向本 AZ 的 NAT Gateway
     3. **跨 AZ 使用的問題**：違反高可用原則（AZ-A 掛了，AZ-B 的 private subnet 也斷網）、跨 AZ 流量收費
 72. ★★ IAM Role 本質 — 給任何需要臨時權限的實體
-    1. **適用對象**：AWS 服務（EC2、Lambda 存取 S3）、外部使用者（透過 federation 登入的企業員工）、跨帳號存取（Account A 存取 Account B）、應用程式（使用 AssumeRole 取得臨時憑證）
+    1. **適用對象**：
+       - AWS 服務（EC2、Lambda 存取 S3）
+       - 外部使用者（透過 federation 登入的企業員工）
+       - 跨帳號存取（Account A 存取 Account B）
+       - 應用程式（使用 AssumeRole 取得臨時憑證）
     2. **核心概念**：IAM Role 是**權限容器**，不限於 AWS 服務專用⭐️
-73. ★★ Federation 場景下的 IAM Role 運作機制
+73. ★★ Federation 場景下的 IAM Role 運作機制⭐️
     1. **場景**：企業員工在 AD 裡，想登入 AWS Console，但沒有 IAM User
     2. **運作流程**：員工用 AD 帳號驗證身份（AD Connector 負責）→ AD Group 對應到特定 IAM Role（如 `AD-DevOps-Group` → `IAM-DevOps-Role`）→ 員工登入後 **Assume** 這個 Role，獲得臨時權限
     3. **核心解答**：AWS 透過 **Role** 知道員工權限，Role 是外部身份進入 AWS 後的權限載體
@@ -301,7 +305,7 @@
     2. **SNS**：發通知本來就是「fire and forget」，發出去就不管
     3. **EventBridge**：事件驅動架構，觸發就走，不期待回應
     4. **核心邏輯**：呼叫者**不在乎即時結果**，Lambda 可以慢慢處理
-77. ★★ ALB 原生支援 Lambda 作為 Target — Serverless HTTP 處理
+77. ★★ ALB 原生支援 Lambda 作為 Target — Serverless HTTP 處理⭐️
     1. **推出時間**：AWS 在 2018 年加入此功能
     2. **架構優勢**：傳統 ALB → EC2（要管 server、流量低也付費）vs ALB → Lambda（Serverless、按需付費）
     3. **用途**：將部分 API endpoints 用 Lambda 處理，不用全部跑在 EC2 上
@@ -322,7 +326,7 @@
     3. **選擇邏輯**：Hardware Appliance 是給「沒有虛擬化基礎設施」或「不想自己搞」的客戶的懶人方案
 82. ★★ Route Table 與 NACL 的層級歸屬 — VPC 資源但關聯 Subnet
     1. **定義層級**：Route Table 和 NACL 都是 **VPC 層級的資源**（建立時屬於某個 VPC）
-    2. **作用層級**：它們的**作用對象是 Subnet**（綁定到 Subnet 才生效）
+    2. **作用層級**：它們的**作用對象是 Subnet**（綁定到 Subnet 才生效）⭐️
     3. **強制關聯**：每個 Subnet **必須**關聯一個 Route Table（沒指定就用 Main Route Table）和一個 NACL（沒指定就用 Default NACL）
 83. ★ Route Table 與 NACL 的精確描述 — 考試陷阱
     1. **不精確說法**：「Subnet 功能：定義路由規則、NACL」
@@ -330,13 +334,15 @@
     3. **考試應用**：題目問「在哪裡設定 Route Table」→ 答案是 **VPC 層級建立，然後關聯到 Subnet**
 84. ★★ VGW (Virtual Private Gateway) 核心定位與用途⭐️
     1. **定義**：VPC 的對外連接閘道，**專門用來連接 AWS 以外的網路（地端機房或其他雲端）**
-    2. **連接方式**：Site-to-Site VPN（透過 IPsec VPN 連接地端到 AWS VPC）、Direct Connect（透過專線連接，更穩定、更低延遲、更貴）
+    2. **連接方式**：
+       - Site-to-Site VPN（透過 IPsec VPN 連接地端到 AWS VPC）
+       - Direct Connect（透過專線連接，更穩定、更低延遲、更貴）
 85. ★ VGW 常見應用場景
     1. **Hybrid Cloud 架構**：公司有自己的機房，部分服務上 AWS，兩邊網路需要互通
     2. **資料庫遷移過渡期**：地端 DB 還沒搬完，AWS 上的應用需要連回去
     3. **合規需求**：敏感資料必須留在地端，但其他服務使用 AWS
 86. ★★ VGW 考試重點與限制⭐️
-    1. **觸發關鍵字**：題目出現 **Site-to-Site VPN** 或 **Direct Connect** → 一定會有 VGW
+    1. **觸發關鍵字**：題目出現 **Site-to-Site VPN** 或 **Direct Connect** → **一定**會有 VGW
     2. **架構限制**：VGW **attach 到 VPC**，一個 VPC 只能 attach 一個 VGW
     3. **擴展方案**：要連接**多個 VPC 到地端**，考慮用 **Transit Gateway** 取代多個 VGW（更好管理）
 87. ★★ RDS 自動備份 vs AWS Backup — 定位與職責分離
@@ -347,10 +353,11 @@
     1. **非成本考量**：若是成本問題，AWS 可以讓你付更多錢延長天數，但選擇**硬性限制 35 天**是刻意的架構決策
     2. **職責分離原則**：RDS 不該承擔長期備份管理的複雜度（跨區域複製策略、合規性報告、多服務統一管理、生命週期自動化）
     3. **正確分工**：這些長期備份需求是 **AWS Backup 的專長**，讓 RDS 處理反而是錯誤的職責分配
-89. ★★ RDS 備份考試判斷 — 35 天是關鍵門檻
-    1. **觸發關鍵字**：題目出現「**超過 35 天**」的備份需求 → 答案必定指向 **AWS Backup**
+89. ★★ RDS 自動備份考試判斷 — 35 天是關鍵門檻⭐️
+    1. **觸發關鍵字**：題目出現「**超過 35 天**」的自動備份需求 → 答案必定指向 **AWS Backup**
     2. **記憶點**：35 天是 RDS 自動備份的硬性上限，無法突破
-90. ★★ Glacier Provisioned Capacity — 只為 Expedited 存在
+    3. **手動備份沒有天數限制**，但題目通常不會問這個
+90. ★★ Glacier Provisioned Capacity — 只為 Expedited 存在⭐️
     1. **核心答案**：**Standard 不需要買 Provisioned Capacity**，AWS 保證 capacity 充足不會失敗
     2. **Expedited 需求場景**：資源有限，高峰期可能「搶不到」導致請求失敗，Provisioned Capacity 等於「預約專屬插隊通道」
     3. **Bulk 不需要**：本來就是低優先級排隊處理，不存在「搶不到」的問題
@@ -361,7 +368,7 @@
 92. ★★ Glacier Provisioned Capacity 考試判斷
     1. **觸發關鍵字**：「**保證**緊急取回」、「**確保** Expedited 可用」→ **Provisioned Capacity**
     2. **排除情境**：單純問 Standard/Bulk 取回 → 不會出現 Provisioned Capacity 選項
-93. ★★ CloudTrail Management Events vs Data Events — 粒度差異
+93. ★★ CloudTrail Management Events vs Data Events — 粒度差異⭐️
     1. **Management Events**：記錄「誰動了 bucket **本身**」（如門禁系統記錄「誰進出大樓」）
     2. **Data Events**：記錄「誰動了 bucket **裡的檔案**」（如監視器記錄「誰拿了哪個包裹」）
     3. **核心差異**：粒度不同，一個管控制平面、一個管資料平面
@@ -411,3 +418,15 @@
     1. **可用於**：Security Group、Route Table
     2. **不可用於**：NACL（NACL 只認純 CIDR）
     3. **經典場景**：VPC Endpoint 的 Route Table 會自動引用 AWS-managed Prefix List（指向 S3/DynamoDB 的 IP 範圍）
+107. ★★ Aurora Replica 不會自動分流流量 — 程式碼主導架構⭐️
+    1. **核心概念**：Replica 不會自己發揮作用，就是在那邊等；如果程式碼全部打 Cluster Endpoint，那些 Replica 就是吃資源、花錢、零貢獻
+    2. **唯一剩下價值**：**failover 備援** — Primary 掛了，Aurora 自動把某個 Replica 升級成新的 Primary
+    3. **關鍵理解**：Replica 的備援功能與「讀寫分離提升效能」是兩回事
+108. ★★ Aurora 常見誤解 — 自動分流迷思
+    1. **誤解**：加了 Replica 效能就會變好 → **實際**：沒打 Reader Endpoint 就沒用
+    2. **誤解**：Aurora 會自動分流 → **實際**：不會，程式要自己決定
+    3. **誤解**：Cluster Endpoint 會 load balance → **實際**：它永遠指向 Primary
+109. ★★ Aurora 讀寫分離考試重點 — 效能未改善的原因分析
+    1. **典型題目**：「加了 Read Replica 但效能沒改善，為什麼？」
+    2. **標準答案**：應用程式**沒有把讀取流量導向 Reader Endpoint**
+    3. **記憶點**：Replica 存在 ≠ 自動分流，必須程式碼主動使用才有效
