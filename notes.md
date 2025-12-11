@@ -465,3 +465,29 @@
     1. **Bursting Mode**：預設模式，根據用量提供暫時性高 IOPS
     2. **Provisioned Mode**：可手動設定 IOPS 以確保效能穩定
     3. **特性差異**：EFS IOPS 是整體動態分配，不像 EBS 有固定數值
+119. ★★ ALB Target Group 核心概念
+    1. **定義**：ALB 將流量導向的後端目標集合
+    2. **支援目標類型**：EC2 實例、IP 地址、Lambda 函數、ECS/EKS 容器服務
+    3. **運作流程**：ALB 接收流量 → 根據路由規則（Host/Path/Header/Query）匹配對應 Target Group → 將流量導向健康的目標
+120. ★★ ALB 流量無法導向後端 — 考試陷阱題⭐️
+    1. **典型題目**：ALB 沒辦法將流量導向後端
+    2. **排查重點**：檢查 **Target Group 未設定**或**健康檢查失敗**
+121. ★ DNS 與 ALB 整合
+    1. **自動 DNS**：ALB 建立後會自動生成 AWS 提供的 DNS 名稱（例如：`my-alb-123456.us-east-1.elb.amazonaws.com`）
+    2. **自訂網域**：需在 Route 53 或 DNS 管理平台建立 **CNAME** 記錄指向 ALB DNS 名稱
+122. 😇 Route 53 Alias Record 與 ALB 整合優勢
+    1. **優勢**：效能更佳且不產生額外 DNS 查詢成本
+    2. **對比 CNAME**：Alias Record 是 Route 53 的特殊功能，可直接指向 ALB
+123. ★★ Auto Scaling Group (ASG) 核心概念
+    1. **定義**：根據系統負載自動調整 **EC2 實例數量**的自動化機制
+    2. **核心功能**：根據流量自動增加或減少伺服器數量、確保系統在高峰時維持效能、低谷時節省成本
+    3. **整合特性**：可與 **CloudWatch** 整合以根據監控指標觸發縮放
+124. ★★ VPC 規劃考點 — 四大核心限制
+    1. **CIDR 範圍**：VPC CIDR 必須在 `/16` 到 `/28`
+    2. **可用 IP 計算**：每個 Subnet 實際可用 IP = 總數 - 5
+    3. **Peering 限制**：VPC Peering 時，兩邊 CIDR 不能重疊
+    4. **CIDR 區塊上限**：一個 VPC 最多可有 5 個 CIDR 區塊
+125. ★ Amazon SNS 核心概念
+    1. **定義**：**發佈/訂閱型（Pub/Sub）通知服務**
+    2. **典型場景**：**一對多通知廣播**，例如一個系統事件需要通知多個接收者（email、SMS、SQS queue、Lambda 等）
+    3. **考試記憶點**：SNS 是用來廣播通知，一對多推送

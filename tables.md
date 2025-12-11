@@ -2267,3 +2267,32 @@ Provisioned 的 Auto Scaling 本質上還是「**事後反應**」，它看到 C
 | **Route Table**       | Subnet                       | 路由方向          |
 | **NACL**              | Subnet                       | 過濾（Stateless） |
 | **Security Group**    | Instance (ENI)               | 過濾（Stateful）  |
+
+## AWS VPC CIDR 限制
+
+| 項目     | 限制                |
+| -------- | ------------------- |
+| 最大     | /16（65,536 個 IP） |
+| 最小     | /28（16 個 IP）     |
+| 必須使用 | 私有 IP 範圍        |
+
+> **考試重點**：VPC CIDR 必須在 `/16` 到 `/28` 之間
+
+### 為什麼最小是 /28？
+
+- /28 = 16 個 IP
+- AWS 保留 5 個 IP
+- **實際可用 = 11 個 IP**
+- 這是 AWS 認為「能正常運作的最小網路」
+
+## S3 進階功能對應表
+
+| 考題需求                 | 選用服務                                   |
+| ------------------------ | ------------------------------------------ |
+| 分析所有 S3 儲存趨勢     | S3 Storage Lens                            |
+| 單一 bucket 存取模式分析 | S3 Analytics                               |
+| 臨時授權下載檔案         | Pre-Signed URL                             |
+| 記錄誰存取了 bucket      | S3 Access Logs                             |
+| 上傳後自動執行程式       | S3 + Lambda                                |
+| 多部門存取共用資料       | S3 Access Point                            |
+| 防止誤刪除物件           | Object Lock (Governance Mode / Legal Hold) |
