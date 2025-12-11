@@ -306,43 +306,42 @@
 79. ★★ ALB vs API Gateway — Lambda HTTP 場景選擇
     1. **ALB + Lambda**：便宜（ALB 時數計費）、單純 HTTP 路由、適合高流量 + 簡單路由
     2. **API Gateway + Lambda**：較貴（per request）、有 throttling、API key、caching、適合需要 API 管理功能
-Hardware Appliance 就是給那些「沒有虛擬化基礎設施」或「不想自己搞」的客戶一個懶人方案。
-1. ★ Storage Gateway VM 部署位置 — On-Premises 虛擬化架構
+80. ★ Storage Gateway VM 部署位置 — On-Premises 虛擬化架構
     1. **部署位置**：VM 部署在**你自己的 on-premises 伺服器上**（不是在 AWS）
     2. **架構層級**：實體伺服器 → hypervisor（VMware ESXi、Hyper-V、KVM）→ VM（安裝 Storage Gateway 軟體）
     3. **簡單類比**：就像在公司機房的實體機上開一台 VM 跑 application，只是這台 VM 跑的是 AWS Storage Gateway
-2. 😇 Storage Gateway 部署方式對比 — VM vs Hardware Appliance
+81. 😇 Storage Gateway 部署方式對比 — VM vs Hardware Appliance
     1. **VM 方式**：自己的實體機 + hypervisor + 自己建 VM
     2. **Hardware Appliance**：直接跟 AWS 買一台預裝好的實體機，插電就用
     3. **選擇邏輯**：Hardware Appliance 是給「沒有虛擬化基礎設施」或「不想自己搞」的客戶的懶人方案
-3. ★★ Route Table 與 NACL 的層級歸屬 — VPC 資源但關聯 Subnet
+82. ★★ Route Table 與 NACL 的層級歸屬 — VPC 資源但關聯 Subnet
     1. **定義層級**：Route Table 和 NACL 都是 **VPC 層級的資源**（建立時屬於某個 VPC）
     2. **作用層級**：它們的**作用對象是 Subnet**（綁定到 Subnet 才生效）
     3. **強制關聯**：每個 Subnet **必須**關聯一個 Route Table（沒指定就用 Main Route Table）和一個 NACL（沒指定就用 Default NACL）
-4. ★ Route Table 與 NACL 的精確描述 — 考試陷阱
+83. ★ Route Table 與 NACL 的精確描述 — 考試陷阱
     1. **不精確說法**：「Subnet 功能：定義路由規則、NACL」
     2. **精確說法**：Subnet **關聯** Route Table 和 NACL，這些規則決定了 Subnet 內資源的網路行為
     3. **考試應用**：題目問「在哪裡設定 Route Table」→ 答案是 **VPC 層級建立，然後關聯到 Subnet**
-5. ★★ VGW (Virtual Private Gateway) 核心定位與用途⭐️
+84. ★★ VGW (Virtual Private Gateway) 核心定位與用途⭐️
     1. **定義**：VPC 的對外連接閘道，**專門用來連接 AWS 以外的網路（地端機房或其他雲端）**
     2. **連接方式**：Site-to-Site VPN（透過 IPsec VPN 連接地端到 AWS VPC）、Direct Connect（透過專線連接，更穩定、更低延遲、更貴）
-6. ★ VGW 常見應用場景
+85. ★ VGW 常見應用場景
     1. **Hybrid Cloud 架構**：公司有自己的機房，部分服務上 AWS，兩邊網路需要互通
     2. **資料庫遷移過渡期**：地端 DB 還沒搬完，AWS 上的應用需要連回去
     3. **合規需求**：敏感資料必須留在地端，但其他服務使用 AWS
-7. ★★ VGW 考試重點與限制⭐️
+86. ★★ VGW 考試重點與限制⭐️
     1. **觸發關鍵字**：題目出現 **Site-to-Site VPN** 或 **Direct Connect** → 一定會有 VGW
     2. **架構限制**：VGW **attach 到 VPC**，一個 VPC 只能 attach 一個 VGW
     3. **擴展方案**：要連接**多個 VPC 到地端**，考慮用 **Transit Gateway** 取代多個 VGW（更好管理）
-8. ★★ RDS 自動備份 vs AWS Backup — 定位與職責分離
+87. ★★ RDS 自動備份 vs AWS Backup — 定位與職責分離
     1. **RDS 自動備份定位**：短期 operational recovery（誤刪資料、回滾錯誤部署、point-in-time recovery），保留期最長 **35 天**
     2. **AWS Backup 定位**：長期 archive / compliance（法規合規如金融業 7 年、災難復原、審計需求），保留期**無上限**
     3. **設計理念**：RDS 保持簡單專注資料庫本身；AWS Backup 統一管理所有 AWS 資源的備份策略
-9. ★★ RDS 35 天硬性限制的架構原因
+88. ★★ RDS 35 天硬性限制的架構原因
     1. **非成本考量**：若是成本問題，AWS 可以讓你付更多錢延長天數，但選擇**硬性限制 35 天**是刻意的架構決策
     2. **職責分離原則**：RDS 不該承擔長期備份管理的複雜度（跨區域複製策略、合規性報告、多服務統一管理、生命週期自動化）
     3. **正確分工**：這些長期備份需求是 **AWS Backup 的專長**，讓 RDS 處理反而是錯誤的職責分配
-10. ★★ RDS 備份考試判斷 — 35 天是關鍵門檻
+89. ★★ RDS 備份考試判斷 — 35 天是關鍵門檻
     1. **觸發關鍵字**：題目出現「**超過 35 天**」的備份需求 → 答案必定指向 **AWS Backup**
     2. **記憶點**：35 天是 RDS 自動備份的硬性上限，無法突破
 90. ★★ Glacier Provisioned Capacity — 只為 Expedited 存在
