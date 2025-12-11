@@ -51,7 +51,7 @@
 | **RCU (Read Capacity Unit)**   | 每秒支援一個 4KB 的強一致性讀取，或兩個最終一致性讀取 |
 | **WCU (Write Capacity Unit)**  | 每秒支援一個 1KB 的寫入                |
 | **DAX (DynamoDB Accelerator)** | 快取層，提供微秒級延遲的讀取，減少 RCU 使用      |
-
+○
 > 📘 **考試提醒**：
 >
 > * 遇到「高讀取頻率、低延遲需求」題目，答案傾向是 **DAX**。
