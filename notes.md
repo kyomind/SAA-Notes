@@ -426,7 +426,42 @@
     1. **誤解**：加了 Replica 效能就會變好 → **實際**：沒打 Reader Endpoint 就沒用
     2. **誤解**：Aurora 會自動分流 → **實際**：不會，程式要自己決定
     3. **誤解**：Cluster Endpoint 會 load balance → **實際**：它永遠指向 Primary
-109. ★★ Aurora 讀寫分離考試重點 — 效能未改善的原因分析
+109. ★★ Aurora 讀寫分離考試重點 — 效能未改善的原因分析○
     1. **典型題目**：「加了 Read Replica 但效能沒改善，為什麼？」
     2. **標準答案**：應用程式**沒有把讀取流量導向 Reader Endpoint**
     3. **記憶點**：Replica 存在 ≠ 自動分流，必須程式碼主動使用才有效
+110. ★ AWS Region 與 Global Service 區分
+    1. **大部分服務**：Region 級別（資源建立在特定 Region）
+    2. **Global Service（需記住）**：IAM（身份與權限管理）、Route 53（DNS）、CloudFront（CDN）
+    3. **考試重點**：記住這三個 Global Service
+111. ★ ENI (Elastic Network Interface) 核心概念與功能
+    1. **定義**：EC2 的**虛擬網卡**，提供網路連接能力
+    2. **主要功能**：允許 EC2 有**多張網卡**（多 ENI）、分流內外部流量、在實例間移動 IP（換網卡）
+112. ★★ ENI 的 AZ 限制 — 考試陷阱
+    1. **核心限制**：ENI **綁定在單一 AZ**，無法跨 AZ 使用
+    2. **考試場景**：題目提到多 AZ、跨區 → 要重新配置 ENI（不能直接搬移）
+    3. **記憶點**：ENI 是 AZ-bound 資源，與 NAT Gateway 類似
+113. ★★ EBS Snapshot 跨 Region 備份 — 手動操作流程
+    1. **同一 Region**：可跨 AZ 建立備援架構
+    2. **跨 Region 備份**：要**手動複製 Snapshot** 到其他 Region，再重建 Volume
+    3. **考試陷阱**：EBS Snapshot **不會自動跨 Region 備份**，需手動操作
+114. ★★ EBS Multi-Attach 特性與限制
+    1. **支援卷類型**：僅限 **io1 / io2**（高效能 IOPS 類型）
+    2. **掛載上限**：最多可同時掛載 **16 台 EC2**
+    3. **AZ 限制**：必須在**相同 AZ** 內
+115. ★★ EBS vs EFS 跨 AZ 共享資料 — 考試判斷
+    1. **EBS 限制**：無法跨 AZ 掛載
+    2. **考試陷阱題型**：「跨 AZ 多台 EC2 同時共享資料」→ 應選 **EFS**（不是 EBS）
+    3. **記憶點**：EBS 是單 AZ 資源，需要跨 AZ 共享就用 EFS
+116. ★★ EFS (Elastic File System) 核心特性
+    1. **本質**：AWS 提供的**全託管 NFS (Network File System)**
+    2. **自動擴展容量**：無需預先設定大小，根據使用量自動調整
+    3. **多 AZ 高可用性**：支援跨 AZ 訪問
+    4. **多實例同時掛載**：可同時掛載上百台 EC2
+117. ★★ EFS 考試關鍵字識別
+    1. **觸發關鍵字**：「跨 AZ」、「多台 EC2 同時存取」、「自動擴展」→ 選 **EFS**
+    2. **對比 EBS**：EBS 需預先設定大小、單 AZ、單一 EC2（除了 Multi-Attach）
+118. 😇 EFS IOPS 效能模式
+    1. **Bursting Mode**：預設模式，根據用量提供暫時性高 IOPS
+    2. **Provisioned Mode**：可手動設定 IOPS 以確保效能穩定
+    3. **特性差異**：EFS IOPS 是整體動態分配，不像 EBS 有固定數值
