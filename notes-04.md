@@ -945,17 +945,17 @@
      1. **Compute Optimizer**：分析 EC2/EBS/Lambda **資源配置是否過大或過小**，幫你省錢或提升效能
      2. **Well-Architected Tool**：檢查**架構設計**是否符合 AWS best practices
      3. **考試陷阱**：Compute Optimizer 只管「**資源大小優化**」，不管架構設計
-227. ★★ **IAM Identity Center vs Control Tower + SCPs** 使用場景差異○
+227. ★★ **IAM Identity Center vs Control Tower + SCPs** 使用場景差異⭐️
      1. **IAM Identity Center**：管理「**人**」的存取權限，細粒度控制（到特定資源），單帳戶即可運作
      2. **Control Tower + SCPs**：管理「**帳戶**」的權限邊界，粗粒度限制（帳戶層級），需多帳戶架構
      3. **本質區別**：Identity Center = 員工登入後「能」做什麼；SCPs = 整個帳戶「不能」做什麼
-228. ★★ **IAM Identity Center + Permission Sets** 集中式存取管理
+228. ★★ **IAM Identity Center + Permission Sets** 集中式存取管理⭐️
      1. **Permission Sets**：預定義的權限模板，可針對特定服務（如 Aurora、EFS）設定細粒度存取
      2. **Groups**：按團隊分組（data science、engineering、compliance），每個 group 只綁定需要的 permission set
      3. **優勢**：單一地方管理所有人員權限，符合**最小權限原則**，**低管理負擔**
-229. ★★ **SCP 的本質**：只能「禁止」，不能「授予」
+229. ★★ **SCP 的本質**：只能「**禁止**」，不能「授予」
      1. **IAM Policy vs SCP**：IAM Policy = 授予權限（給你鑰匙）；SCP = 設定權限天花板（鎖住某些門，連有鑰匙也開不了）
-     2. **SCP 用途**：Guardrail（護欄），說「整個帳戶/OU 裡的任何人都**不能**做 X」
+     2. **SCP 用途**：Guardrail（護欄），說「整個帳戶/OU 裡的任何人都**不能**做 X」⭐️
      3. **SCP 應用範例**：禁止關閉 CloudTrail、禁止離開 Organization、禁止在特定 Region 建立資源
 230. ★★ **SCP vs IAM Policy 考試判斷技巧**
      1. **選 IAM Policy**：題目問「**grant access**」→ 不是 SCP 的工作，SCP 無法授予權限
@@ -964,7 +964,7 @@
 231. ★★ **Instance Store vs EBS 效能差異**：物理距離決定效能
      1. **架構差異**：Instance Store = EC2 直接焊在主機板上的 NVMe SSD（本地硬碟）；EBS = EC2 ← 網路 ← EBS 儲存伺服器（網路儲存）
      2. **效能比較**：Instance Store (I3en) 最大 **200 萬+ IOPS / 16 GB/s / 微秒級延遲**；EBS io2 Block Express 最大 **25.6 萬 IOPS / 4 GB/s / 亞毫秒延遲**
-     3. **核心原因**：Instance Store 資料不用跑網路，EBS 再快也有網路延遲，差距是**數量級**的
+     3. **核心原因**：Instance Store 資料不用跑網路，EBS 再快也有網路延遲，差距是**數量級**的⭐️
 232. ★★ **Instance Store 使用代價與適用場景**
      1. **資料持久性風險**：EC2 停止 → 資料消失、EC2 硬體故障 → 資料消失、無法 detach 移到別台
      2. **適用場景**：資料可丟失、或有複寫機制（如 NoSQL 自動複寫）

@@ -2,7 +2,7 @@
 
 1. ★ **TCP Health Check** 僅支援 Network Load Balancer 和 Classic Load Balancer，ALB 不支援 TCP health check
    1. ALB 只支援 HTTP/HTTPS health check
-2. ★★ DataSync vs Storage Gateway — 「遷移」vs「整合」
+2. ★★ DataSync vs Storage Gateway — 「**遷移**」vs「**整合**」⭐️
    1. **DataSync**：一次性或定期的資料**遷移/搬遷**（關鍵詞：migrate, move, transfer, accelerate）
    2. **Storage Gateway**：混合雲**持續整合**，讓地端像在用雲端（關鍵詞：hybrid, integrate, on-premises access）
    3. **判斷技巧**：題目說 "immediately move" → DataSync；題目說「地端需持續存取雲端」→ Storage Gateway
@@ -13,7 +13,7 @@
    4. **保留機制**：Retention Period（保留期限）或 Legal Hold（法律保留）
 4. ★★ CloudTrail Data Events vs Management Events
    1. **Management Events**：控制平面操作（CreateBucket, DeleteBucket 等），**預設啟用**
-   2. **Data Events**：資料平面操作（GetObject, PutObject 等），**預設不啟用，需手動開啟**
+   2. **Data Events**：資料平面操作（GetObject, PutObject 等），**預設不啟用，需手動開啟**⭐️
    3. **考試重點**：題目要「物件層級稽核」→ 必須啟用 Data Events
 5. 😇 DataSync vs Storage Gateway 都能搬資料，差異在「搬完之後」
    1. **DataSync**：搬完就結束，任務導向（一次性遷移或定期同步備份）
@@ -24,14 +24,14 @@
    3. **多資料源整合**：可同時串接 DynamoDB、Lambda、HTTP APIs 等
    4. **即時訂閱**：內建 WebSocket 支援 Pub/Sub
 7. ★★ AWS Batch vs Lambda — 運算密集型任務的正確選擇
-   1. **Lambda 硬限制**：最大執行 15 分鐘、記憶體 10 GB、最多 6 vCPU
+   1. **Lambda 硬限制**：最大執行 15 分鐘、記憶體 10 GB、最多 6 vCPU⭐️
    2. **結論**：Lambda 為「短暫、輕量、事件驅動」設計，不適合重型運算
-8. ★★ AWS Batch 核心概念
+8. ★★ AWS Batch 核心概念⭐️
    1. **本質**：批次運算任務的編排服務，自動開 EC2、分配任務、跑完關機
    2. **平行執行**：定義多個 jobs，Batch 自動分散到多台 EC2
    3. **資源彈性**：可指定 EC2 instance type（如 `r5.8xlarge` 有 32 vCPU + 256 GB RAM）
    4. **最少維運**：不用自己管 EC2 lifecycle、job queue、失敗重試
-9. ★ AWS Batch 選擇時機 — 關鍵字組合
+9. ★ AWS Batch 選擇時機 — 關鍵字組合⭐️
    - **Batch processing / 批次處理**
    - **HPC / 高效能運算 / simulation**
    - **長時間運算**（超過 15 分鐘）
@@ -359,3 +359,19 @@ Hardware Appliance 就是給那些「沒有虛擬化基礎設施」或「不想�
 92. ★★ Glacier Provisioned Capacity 考試判斷
     1. **觸發關鍵字**：「**保證**緊急取回」、「**確保** Expedited 可用」→ **Provisioned Capacity**
     2. **排除情境**：單純問 Standard/Bulk 取回 → 不會出現 Provisioned Capacity 選項
+93. ★★ CloudTrail Management Events vs Data Events — 粒度差異
+    1. **Management Events**：記錄「誰動了 bucket **本身**」（如門禁系統記錄「誰進出大樓」）
+    2. **Data Events**：記錄「誰動了 bucket **裡的檔案**」（如監視器記錄「誰拿了哪個包裹」）
+    3. **核心差異**：粒度不同，一個管控制平面、一個管資料平面
+94. ★ CloudTrail Data Events 預設不啟用的原因
+    1. **日誌量爆炸**：一個 bucket 可能每秒幾千次 GetObject/PutObject
+    2. **費用爆炸**：CloudTrail 按事件數收費，全記錄成本極高
+    3. **設計邏輯**：AWS 讓你自己決定是否承擔這個成本
+95. ★★ CloudTrail Events 考試關鍵字辨識
+    1. **Management Events 觸發詞**：「誰刪了 bucket」「誰改了 bucket policy」→ **預設就有**
+    2. **Data Events 觸發詞**：「誰下載了某個檔案」「追蹤物件存取」→ **要手動開啟**
+96. ★ IAM Database Authentication 完整設定流程 — 三層配置
+    1. **RDS 端設定**：啟用 IAM Database Authentication 功能（建立或修改 DB instance 時勾選），讓 RDS 接受 token 認證
+    2. **IAM 端設定**：建立 Policy 授權哪些 user/role 可以連哪個 DB instance 的哪個 DB user，定義「誰」可以對「哪個 RDS」產生 token
+    3. **DB 內部設定**：還是要建立對應的 database user，只是認證方式改成 IAM（不是給密碼）
+    4. **記憶點**：三層都要到位才能用
