@@ -838,7 +838,7 @@
      1. **錯誤做法**：CloudFront 直接指向 S3 website endpoint（無法使用 OAI，安全性差）
      2. **正確做法**：CloudFront 指向 S3 REST endpoint + 使用 OAI（安全且標準）
      3. **OAI 說明**：Origin Access Identity，讓 CloudFront 安全存取**私有 S3**，防止直接存取
-257. ★★ CloudFront Origin Group 的 Failover 機制
+257. ★★ CloudFront Origin Group 的 Failover 機制⭐️
      1. **定義**：**Origin Group** = 1 個 primary origin + 1 個 secondary origin
      2. **用途**：**高可用性設計**，不是負載分散
      3. **觸發條件**：當 primary 失敗（**5xx 錯誤**）時，自動切換到 secondary
@@ -856,7 +856,7 @@
 261. ★ Amazon Inspector **用於 EC2 主機漏洞掃描**⭐️概念類似 GitHub 上的 Dependabot
      1. **核心用途**：檢測 **OS vulnerabilities**（作業系統漏洞）**within EC2 instances**（EC2 內部）
      2. **特性**：支援 **定期掃描**（weekly）、提供 **concrete recommendations**（具體建議）
-262. ★ AWS 安全服務的角色分工
+262. ★ AWS 安全服務的角色分工⭐️
      1. **Inspector**：掃「漏洞」（系統有什麼弱點）
      2. **GuardDuty**：抓「入侵」（有人在搞鬼嗎）
      3. **Shield**：擋 DDoS 攻擊
@@ -873,7 +873,7 @@
      2. **"zero-trust"** → 客戶端加密
      3. **"application must encrypt before storing"** → 應用程式層加密
      4. **"database layer should never see plaintext"** → 資料庫層看不到明文
-266. ★★ Amazon Macie 敏感資料偵測服務
+266. ★★ Amazon Macie 敏感資料偵測服務⭐️
      1. **核心功能**：使用 ML **自動發現敏感資料**（PII、財務資料等）
      2. **典型應用**：掃描 **S3 bucket** 安全性問題、提供 bucket 清單（未加密、公開、跨帳號共享）
      3. **服務範圍**：**S3 專用服務**，只能掃描 S3 bucket 中的資料
@@ -914,7 +914,7 @@
 277. ★★ Edge-Optimized API Gateway 的 ACM 證書位置限制
      1. **必要條件**：Edge-Optimized API Gateway 的 ACM 證書 **必須在 us-east-1**⭐️
      2. **原因與記憶**：API Gateway 背後使用 CloudFront，而 CloudFront 的證書只能來自 us-east-1（AWS 硬性規定）→ **CloudFront 或 Edge-Optimized 服務 = ACM 證書必須在 us-east-1**（與 API Gateway 所在 region 無關）
-278. ★★ CloudFront Signed URLs/Cookies 付費內容授權方案
+278. ★★ CloudFront Signed URLs/Cookies 付費內容授權方案⭐️
      1. **題目判斷**：看到「付費內容」、「限制存取」、「授權用戶」→ **Signed URLs/Cookies**
      2. **單一檔案下載**：使用 **Signed URLs**
      3. **整個網站會員區**：使用 **Signed Cookies**
@@ -1131,7 +1131,7 @@
      1. **運作**：用 **IAM token** 取代密碼，**15 分鐘有效**（AWS Signature V4）
      2. **優勢**：無需存密碼、IAM 集中管理、自動輪替、可混用傳統認證
      3. 這是 RDS、Aurora 的一項附加功能
-336. ★ IAM DB Authentication 考試判斷
+336. ★ IAM DB Authentication 考試判斷⭐️
      1. **選擇**：題目強調「不要在 DB 存密碼」或「集中管理 DB 存取」
      2. **不適用**：長時間連線（token 過期）、非 AWS 環境、不支援的 DB 引擎
 337. ★★ AWS Direct Connect（DX）

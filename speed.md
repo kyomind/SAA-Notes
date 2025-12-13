@@ -178,3 +178,154 @@
     1. **核心定位**：為「彈性、高速、無需管理基礎架構」而設計，適合高流量應用
     2. **On-Demand 模式**：不需預先配置容量、按請求次數與資料大小計費、**單位成本高但彈性高**
     3. **Provisioned 模式**：手動配置 Read/Write Capacity Units (RCUs/WCUs)、適合流量穩定、**成本較低但需管理容量**
+- ★★ **Lake Formation**：**跨帳號資料湖查詢**解決方案⭐️
+    1. **題目關鍵**：跨帳號查詢 + 基於角色的存取控制
+    2. **解決問題**：集中管理多帳號 S3 資料（不需移動資料）、統一權限管理（table/column 層級）、自動整合 AWS Glue 做資料目錄、最小化營運成本
+- ★★ **企業級身份整合**：AD Connector + IAM Roles 解決方案⭐️
+    1. **題目關鍵**：已有 AD (Active Directory) + 需要 federation(聯合身份驗證) + 角色已在 AD 的 group 中定義
+    2. **正確架構**：Corporate AD (已有 groups & users) → AD Connector (橋接) → IAM Roles (權限對應) → AWS Console Access
+- ★★ **IAM Groups vs AD Groups** 核心差異
+    1. **IAM Groups**：AWS 內部的權限分組機制（給 IAM Users 用）
+    2. **AD Groups**：企業 Active Directory 中的群組（已有權限管理）
+    3. **錯誤迷思**：選 IAM Groups 等於在 AWS 重新建群組，違反 federation 精神，造成權限管理雙軌制⭐️
+- ★ DDoS 防護選擇邏輯⭐️
+    1. **WAF 適用**：單純**應用層**攻擊、成本考量、filter HTTP traffic
+    2. **Shield Advanced 適用**：嚴重 DDoS、高價值系統、需專家支援、series of attacks
+    3. **關鍵字觸發**：fortify/series of attacks → Shield Advanced
+- ★ Auto Scaling 選擇邏輯⭐️
+    1. **Scheduled Scaling**：時間點觸發(cron)、固定規律(上班時間)、設定簡單
+    2. **Predictive Scaling**：ML 預測流量、不規則波動、需歷史數據
+    3. **關鍵判斷**：8:50 先開機器 → 9:00 用戶來時已 ready（Scheduled 優勢）
+- ★★ **Predictive Scaling 致命限制**：**異質**實例容量計算錯誤⭐️
+    1. **核心問題**：假設**實例同質化**(homogenous)，題目說 different instance types and sizes → 會算錯容量
+    2. **錯誤邏輯**：預測需要 100 單位容量，當前 10 台機器 → 誤以為每台 10 單位 → 建議擴展數量不準
+    3. **實例場景**：5台 t3.large (各4單位) + 5台 t3.xlarge (各12單位) = 80單位，但 Predictive 誤判為每台8單位
+- ★★ **Aurora Auto Scaling vs Global Database** 選擇邏輯⭐️
+    1. **Auto Scaling 適用**：**單一區域**讀取擴展、突發流量處理、read replica 跟不上流量
+    2. **Global Database 適用**：跨區域災難復原、全球用戶低延遲讀取、多區域部署
+    3. **關鍵判斷**：題目有提「全球用戶」、「跨區域」、「災難復原」嗎？**沒有** → Auto Scaling
+    4. Hence, the correct answer is: Use automatic scaling for the Aurora read replica using Aurora Auto Scaling.
+- 😇 **Aurora 讀取擴展的完整選項**比較⭐️
+    1. **Aurora Auto Scaling**：自動管理 read replica 數量、基於 CPU/連線數等指標（最適合突發流量）
+    2. **手動增加 read replica**：最多 **15** 個 read replica、無法應對突發流量
+    3. **Aurora Global Database**：跨區域複製、適合全球業務
+    4. **Aurora Serverless v2**：連 writer 也能自動擴展、適合不可預測的極端波動
+- ★★ **MGN (Migration Service) vs Managed Services** 選擇原則
+    1. **MGN 適合場景**：大規模批次遷移（數百台 VM）、遷移後逐步現代化、沒有對應 AWS 託管服務⭐️
+    2. **本題不適用原因**：只有 1 個資料庫 + 1 個應用、Oracle 有 RDS 版本、.NET 有 Beanstalk
+    3. **考試核心**：偏好 **managed service over self-managed**，除非題目明確限制
+- ★★ **AWS Transfer Family** 檔案傳輸服務核心概念
+    1. **服務定位**：**託管的檔案傳輸服務**⭐️
+       - 支援協定：SFTP、FTPS、FTP、AS2
+       - 後端儲存：S3 或 EFS
+       - 無需管理伺服器
+    2. **題目關鍵字識別**：快速判斷是否使用 Transfer Family
+       - existing SFTP clients
+       - third-party partners upload files
+       - legacy file transfer workflow
+       - minimal changes to existing process
+       - B2B file exchange
+    3. **核心優勢**：保留舊有傳輸方式 + 搬到雲端儲存
+       - 不用改客戶端程式
+       - 不用自己管 SFTP server
+       - 檔案自動進 S3
+- ★ **FSx 系列選擇陷阱與記憶技巧**
+    1. **考試陷阱識別**：看到 "Windows" + "high performance" 需求，別被 "Windows File Server" 名字誤導
+    2. **判斷關鍵字**："trading application" + "block storage" → 需要 **iSCSI 協定** → 只有 **FSx for NetApp ONTAP**
+    3. **服務定位記憶**：FSx for Windows = **檔案共享專用**（SharePoint、Home Directories）；FSx for NetApp ONTAP = **全功能儲存**（檔案 + 區塊）
+- ★★ **共享存取陷阱**：跨平台儲存選擇邏輯
+    1. **錯誤判斷**："共享存取" ≠ 一定是 EFS
+    2. **正確選擇**：**Windows** → FSx for Windows；**Linux** → EFS
+    3. **跨 AZ 區塊儲存**：只有 **FSx for NetApp ONTAP** 支援⭐️
+    4. **EBS 限制**：**不支援跨 AZ** 共享
+- 😇 **儲存類型記憶口訣**
+    1. **Block**：資料庫⭐️/交易系統 = **iSCSI**
+    2. **File**：檔案共享/使用者目錄 = **SMB/NFS**
+    3. **Object**：其它都能用 = **S3**
+- ★★ **IAM DB Authentication** EC2 安全連接 RDS 解決方案
+    1. **題目關鍵**：如何讓 EC2 安全地連接 RDS
+    2. **核心概念**：用 **IAM role** 取代傳統的帳號密碼登入資料庫
+    3. **傳統方式問題**：EC2 → (username/password) → RDS ❌ 密碼外洩風險
+    4. **IAM 方式優勢**：EC2 → (temporary token from IAM role) → RDS ✅ 無需管理密碼
+- ★ IAM DB Authentication 三大優勢⭐️
+    1. **加密傳輸**：強制使用 **SSL/TLS**
+    2. **集中管理**：用 IAM 統一控制誰能存取資料庫，不用在每個 RDS instance 上管理帳密
+    3. **EC2 無需密碼**：直接用 EC2 的 **instance profile** 拿 token，**15 分鐘有效期**後自動失效
+- ★★ **IAM DB Authentication 設定流程**：RDS 功能配置要點
+    1. **服務歸屬**：**RDS 的功能**，不是 EC2 的功能
+    2. **RDS 端設定**：RDS Console → Database → Modify → 勾選 "Password and IAM database authentication"
+    3. **EC2 端權限**：IAM role 需要 **rds-db:connect** 權限，指向特定 RDS resource ARN
+    4. **資料庫內部**：建立對應的 IAM user (如: `CREATE USER iam_user; GRANT rds_iam TO iam_user;`)
+- ★ IAM DB Authentication 完整流程
+    1. **步驟一**：RDS 啟用 IAM Authentication（在 RDS console）⭐️
+    2. **步驟二**：EC2 附加 IAM role（有 rds-db:connect 權限，在 IAM console）⭐️
+    3. **步驟三**：在資料庫內建立 IAM user（用 SQL）
+    4. **步驟四**：程式用 boto3 拿 token 連線（在 code 中）
+- ★★ **S3 Access Points**：**多應用權限管理**解決方案⭐️
+    1. **問題場景**：一個 S3 bucket 被多個應用/團隊共用，每個都需要不同權限，bucket policy 會變得超複雜
+    2. **解決方案**：Access Point = bucket 的**命名入口**，每個入口有自己的權限政策
+    3. **架構設計**
+       - Application A → Access Point A (read-only)
+       - Application B → Access Point B (write)
+       - Application C → Access Point C (VPC-only)
+       - 所有 Access Points → Same S3 Bucket
+- ★ S3 **VPC-only** Access Points 內網安全存取
+    1. **用途**：強制流量只能從特定 VPC 進來，不走公網
+    2. **關鍵字**："restrict S3 access to private network" / "VPC endpoint"
+    3. **考試重點**：內部應用安全存取 S3 的首選方案
+- ★★ **EventBridge** 關鍵字識別與考試重點⭐️
+    1. **典型關鍵字**："when X happens, do Y"、"automatically trigger"、"event-driven"
+    2. **常考場景**
+       - S3 事件觸發 Lambda/ECS/Step Functions
+       - 定時任務 (cron 排程)
+       - 跨服務整合 (EC2 狀態變化 → SNS 通知)
+- ★★ **EventBridge vs S3 Event Notification** 目標服務差異
+    1. **S3 Event Notification**：只能觸發 **Lambda/SQS/SNS**（限制較多）⭐️
+    2. **EventBridge**：可觸發**更多目標服務** (ECS/Step Functions/跨帳號...)
+    3. **關鍵記憶**：題目要觸發 **ECS task** → 用 EventBridge，不是 S3 Event Notification
+- ★★ **KMS Custom Key Store + CloudHSM** 完全掌控加密金鑰解決方案
+    1. **題目關鍵需求**
+       - **完全控制金鑰** (full control over encryption keys)
+       - **立即移除金鑰** (immediately remove key material from KMS)
+       - **獨立稽核** (audit independently of CloudTrail)
+    2. **一般 KMS 的限制**：金鑰存在 AWS 的 HSM 中（多租戶共享）、刪除金鑰有 7-30 天等待期、稽核只能靠 CloudTrail
+- ★★ Custom Key Store 核心架構與運作原理⭐️
+    1. **架構設計**：KMS Custom Key Store → 關聯你自己的 CloudHSM cluster → 金鑰材料「只」存在你的 HSM 中 → 直接控制 HSM 可立即移除金鑰
+    2. **實際運作流程**
+       - 創建 KMS key 時，金鑰材料生成在「你的 CloudHSM」
+       - 金鑰永不以明文離開你的 HSM
+       - 所有加密操作都在你的 HSM 上執行
+       - 可直接管理 CloudHSM → 立即刪除金鑰
+- ★ Custom Key Store 考試判斷關鍵字⭐️
+    1. **觸發關鍵字**
+       - "full control over keys"
+       - "immediately remove"（不是 schedule deletion）
+       - "audit independently"（不只靠 CloudTrail）
+    2. **其他識別詞**
+       - "dedicated HSM"
+       - "single-tenant"
+       - "compliance" + "hardware control"
+- ★★ **Aurora Global Database** 跨區域資料庫複製解決方案⭐️
+    1. **技術特性**：使用 **storage-based 技術**實現 < 1 秒的資料同步延遲
+    2. **災難恢復優勢**：**RPO < 1 秒**（幾乎零資料遺失）、**RTO < 1 分鐘**（快速故障切換）
+    3. **適用場景**：全球化應用需要各地低延遲讀取、對區域級災難 (region-wide outage) 有嚴格容錯要求
+    4. **考試關鍵字**："global"、"cross-region DR"、"RTO/RPO 極致要求"
+- ★★ **題目陷阱分析**：Control Tower vs RAM 選擇邏輯
+    1. **題目關鍵字**："centrally manages" + "share resources"
+    2. **核心差別**：Control Tower 負責**管理帳戶本身**，但不負責**共享具體資源**
+    3. **判斷原則**：題目明確提到要共享 Transit Gateway、License Manager、Route 53 Resolver 規則 → 這正是 **RAM 的專屬功能**⭐️
+    4. **類比記憶**：Control Tower 像是「帳戶管理員」，RAM 才是「資源共享平台」
+- ★★ **Federation + STS** 身份轉換機制⭐️
+    1. **Federation Proxy/Identity Provider + STS**：**目的**將企業 AD/LDAP 身份轉換成 AWS 臨時憑證
+    2. **運作流程**：使用者登入 AD → Identity Provider 驗證 → **STS 發放臨時 token**
+    3. **關鍵優勢**：STS (Security Token Service) 產生**臨時憑證**，避免建立大量 IAM user
+- ★★ **IAM Role + Policy** 權限控制機制
+    1. **IAM Role**：定義 STS 臨時憑證要扮演的角色
+    2. **IAM Policy**：限制每個使用者只能存取自己的 folder
+    3. **動態權限**：Policy 使用 `${aws:username}` 變數動態對應資料夾
+- ★ **Federation 雙元件設計**原理與記憶技巧
+    1. **為什麼需要兩個元件**：單獨 STS **只能產生臨時憑證**，但沒定義**權限範圍** → 需要 IAM **Role + Policy** 告訴 AWS「這個臨時憑證能做什麼」⭐️
+    2. **記憶口訣**
+       - **企業現有帳號系統 + AWS** → Federation + STS
+       - **限制個別使用者權限** → IAM Role + Policy with variables
+       - **大量使用者** → 絕對不是建立 1200 個 IAM user
