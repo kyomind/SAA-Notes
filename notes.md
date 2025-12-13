@@ -426,11 +426,11 @@
     1. **誤解**：加了 Replica 效能就會變好 → **實際**：沒打 Reader Endpoint 就沒用
     2. **誤解**：Aurora 會自動分流 → **實際**：不會，程式要自己決定
     3. **誤解**：Cluster Endpoint 會 load balance → **實際**：它永遠指向 Primary
-109. ★★ Aurora 讀寫分離考試重點 — 效能未改善的原因分析○
+109. ★★ Aurora 讀寫分離考試重點 — 效能未改善的原因分析⭐️
     1. **典型題目**：「加了 Read Replica 但效能沒改善，為什麼？」
     2. **標準答案**：應用程式**沒有把讀取流量導向 Reader Endpoint**
     3. **記憶點**：Replica 存在 ≠ 自動分流，必須程式碼主動使用才有效
-110. ★ AWS Region 與 Global Service 區分
+110. ★ AWS Region 與 Global Service 區分⭐️
     1. **大部分服務**：Region 級別（資源建立在特定 Region）
     2. **Global Service（需記住）**：IAM（身份與權限管理）、Route 53（DNS）、CloudFront（CDN）
     3. **考試重點**：記住這三個 Global Service
@@ -448,7 +448,7 @@
 114. ★★ EBS Multi-Attach 特性與限制
     1. **支援卷類型**：僅限 **io1 / io2**（高效能 IOPS 類型）
     2. **掛載上限**：最多可同時掛載 **16 台 EC2**
-    3. **AZ 限制**：必須在**相同 AZ** 內
+    3. **AZ 限制**：必須在**相同 AZ** 內⭐️
 115. ★★ EBS vs EFS 跨 AZ 共享資料 — 考試判斷
     1. **EBS 限制**：無法跨 AZ 掛載
     2. **考試陷阱題型**：「跨 AZ 多台 EC2 同時共享資料」→ 應選 **EFS**（不是 EBS）
@@ -472,9 +472,11 @@
 120. ★★ ALB 流量無法導向後端 — 考試陷阱題⭐️
     1. **典型題目**：ALB 沒辦法將流量導向後端
     2. **排查重點**：檢查 **Target Group 未設定**或**健康檢查失敗**
-121. ★ DNS 與 ALB 整合
+121. ★ DNS 與 ALB 整合⭐️需要把自訂網域指向 ALB 的 DNS 名稱
     1. **自動 DNS**：ALB 建立後會自動生成 AWS 提供的 DNS 名稱（例如：`my-alb-123456.us-east-1.elb.amazonaws.com`）
-    2. **自訂網域**：需在 Route 53 或 DNS 管理平台建立 **CNAME** 記錄指向 ALB DNS 名稱
+    2. **自訂網域**：
+       - **Subdomain**（如 `www.example.com`）：CNAME 或 Alias 皆可
+       - **Root domain**（如 `example.com`）：**必須用 Route 53 Alias**（A record type）
 122. 😇 Route 53 Alias Record 與 ALB 整合優勢
     1. **優勢**：效能更佳且不產生額外 DNS 查詢成本
     2. **對比 CNAME**：Alias Record 是 Route 53 的特殊功能，可直接指向 ALB
@@ -509,7 +511,7 @@
     1. **EBS**：僅限單一 EC2，**不適用 ECS 多容器共享**
     2. **EFS**：**適合 ECS 與 Fargate 容器共享資料**，支援多點掛載
     3. **考試記憶點**：看到 ECS + 持久化 → 選 **EFS**
-131. ★ DynamoDB 定價模式對比
+131. ★ DynamoDB 定價模式對比⭐️
     1. **核心定位**：為「彈性、高速、無需管理基礎架構」而設計，適合高流量應用
     2. **On-Demand 模式**：不需預先配置容量、按請求次數與資料大小計費、**單位成本高但彈性高**
     3. **Provisioned 模式**：手動配置 Read/Write Capacity Units (RCUs/WCUs)、適合流量穩定、**成本較低但需管理容量**
