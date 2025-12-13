@@ -1,11 +1,11 @@
 # Speed Notes for SAA
 
-1. ★★ EC2 Auto Scaling 的伸縮範圍**預設是整個 region**
+1. ★★ EC2 Auto Scaling 的伸縮範圍**預設是整個 region**⭐️
    1. 預設跨 AZ
    2. 可以設定成單一 AZ，但省不了多少錢
    3. 數據傳輸：跨 AZ 有費用（約 $0.01/GB），但通常佔比很小
    4. 不能跨 region
-2. ★★ **ELB 也不能跨 region，只能跨 AZ**
+2. ★★ **ELB 也不能跨 region，只能跨 AZ**⭐️範圍都是整個 region
    1. 可以回想一下 **cross-zone balancing** 的概念
    2. 跨 Region 需要用 Route 53 + 多個 Regional ELB
 3. 👀 A subnet is a **range** of IP addresses in your VPC.
@@ -37,10 +37,10 @@
     3. Simple Scaling
     4. Scheduled Scaling
 12. ★ DynamoDB 的 RCU 和 WCU 是完全獨立的，可以各自調整，互不影響
-13. ★★ Hot Key 問題不是總容量不夠，而是**單一 partition 被打爆**
+13. ★★ Hot Key 問題不是總容量不夠，而是**單一 partition 被打爆**⭐️
     - 增加 RCU 只是增加總容量，但熱門商品還是集中在同一個 partition
     - **花大錢解決不了問題**
-14. ★ DAX 的缺點（考試也會考）
+14. ★ DAX 的缺點（考試也會考）⭐️
     - **只支援 DynamoDB**，不能用在 RDS、Aurora
     - **最終一致性**（Eventually Consistent），快取可能有**延遲**
     - **成本**：DAX 節點要另外收費（但比暴力增加 RCU 便宜）
@@ -56,7 +56,7 @@
 19. ★★ An **Edge-Optimized API Gateway** is **best for geographically distributed clients.**
     1. API requests are routed to the **nearest CloudFront Edge Location** which improves latency.
     2. The API Gateway still lives in **one** AWS Region.
-    3. 這是預設選項，而且自動整合 CloudFront⭐️
+    3. 這是預設選項，而且自動整合 CloudFront⭐️此時的憑證只能去 `us-east-1` 建立
 20. ★ 目的關鍵需求：在 CloudFront Edge Locations 執行認證
     1. 不要打回 Origin
     2. 降低延遲——**用戶在哪裡，認證就在哪裡執行**
@@ -112,8 +112,8 @@
 42. ★★ 好例子：用 userId 當 partition key（**high-cardinality**）
     - 請求平均分散到 4 個 partition
     - 每個 partition 都在工作 → 完整利用 1000 RCU
-43. ★★ **High-cardinality** attributes（高基數屬性）：
-    1. 意思：有很多不同值的欄位
+43. ★★ **High-cardinality** attributes（高基數屬性）：⭐️
+    1. 意思：有很多**不同值**的欄位
     2. 例子：userId、orderId、timestamp + randomId
     3. 反例：status（只有 active/inactive）、gender、country
 44. ★ 延伸知識（考試會考）
@@ -126,7 +126,7 @@
     2. 運作流程：EC2 (private subnet) → VPC route table (自動更新 DynamoDB CIDR) → Gateway Endpoint → DynamoDB (走 AWS 內網)⭐️
 47. ★★ Gateway Endpoint vs Interface Endpoint 比較⭐️
     1. **Gateway Endpoint**：路由層級，**改 route table，免費**
-    2. **Interface Endpoint**：網路層級，加 ENI，要錢
+    2. **Interface Endpoint**：網路層級，**加 ENI**，要錢
 48. ★ DynamoDB Streams 處理敏感資料的考試判斷標準
     1. **適合用途**：複製、備份、ETL、通知 ✅
     2. **不適合用途**：資料驗證、匿名化 ❌（太晚了）
@@ -157,7 +157,7 @@
     2. **運作流程**：CloudFront 在全球 **Edge Location** 快取 S3 檔案，用戶從最近的節點下載，大幅降低延遲
 58. ★★ 創建 Global Table 的**前置條件**：啟用 DynamoDB Streams
     1. 必須開啟 **Streams** 功能才能建立 Global Table
-    2. **Global Table 需要透過 Streams 來捕捉資料變更，並複製到其他 region。**
+    2. **Global Table 需要透過 Streams 來捕捉資料變更，並複製到其他 region。**⭐️
 59. ★ Kinesis Data Streams 的選擇優勢
     1. **天生為串流設計**：資料持續流入，多個應用程式可同時消費
     2. **Replay 功能**：保留資料 24 小時到 365 天，可重新讀取
@@ -181,7 +181,7 @@
     1. **新建 EBS volume**：自動加密
     2. **Snapshot 複製**：從未加密 snapshot 複製時新 snapshot 會被加密
     3. **Launch instance**：掛載的 EBS 也會自動加密
-66. ★ 既有 EBS volume **無法直接加密**
+66. ★ **既有** EBS volume **無法直接加密**⭐️
     1. **限制**：舊 volume 無法直接加密
     2. **唯一作法**：建立 snapshot → 複製 snapshot（選擇加密）→ 從加密 snapshot 建立新 volume
 67. 👀 EBS 只支援**對稱加密 key**（symmetric key）
@@ -214,11 +214,11 @@
     2. **AWS-managed 特點**：自動管理、免維護
     3. **Customer-managed 特點**：可控 rotation、權限、audit log
 77. (刪除)
-78. ★ 自動化 EBS snapshot 管理：Amazon Data Lifecycle Manager (DLM)
+78. ★ 自動化 EBS snapshot 管理：Amazon Data Lifecycle Manager (DLM)⭐️
     1. **自動建立 snapshot**：定期備份
     2. **自動刪除過期 snapshot**：省成本
     3. **設定保留政策**：合規需求
-79. 😇 Aurora Global Database 與 DynamoDB Global Tables 的全球複製方案
+79. 😇 Aurora Global Database 與 DynamoDB Global Tables 的全球複製方案⭐️
     1. **功能相同**：都能做到全球資料的複製和同步
     2. **基礎限制**：本身都是**以 Region 為基礎**，只是有全球同步的選項
     3. **應用場景**：考試遇到需要全球資料同步的需求，可考慮這兩個服務
@@ -295,7 +295,7 @@
      1. **ALB 支援 gRPC**：可以處理 gRPC 協定的應用程式
      2. **NLB 不支援 gRPC**：只能處理純 TCP/UDP 流量
      3. **考試陷阱**：題目會用「UDP」、「TCP」、「Layer 4」等字眼誘導你選 NLB，但**若涉及 gRPC 必須選 ALB**
-101. ★★ ELB Cross-Zone Load Balancing 的運作機制
+101. ★★ ELB Cross-Zone Load Balancing 的運作機制⭐️
      1. **基本概念**：Load balancer nodes 負責將客戶端請求分發到已註冊的 targets
      2. **啟用 Cross-Zone**：每個 load balancer node 會將流量分散到**所有啟用 AZ** 中的已註冊 targets
      3. **停用 Cross-Zone**：每個 load balancer node 只會將流量分散到**同一 AZ** 內的已註冊 targets
@@ -303,7 +303,7 @@
      1. **適合啟用場景**：各 AZ 的 EC2 數量差異很大（如 2 vs 8 的分布）、需要確保所有機器負載一致、使用 ALB（免費）
      2. **考試重點**：理解不同 AZ 間實例數量不均時的流量分配策略
 103. ★ WAF (Web Application Firewall) 的核心功能
-     1. **防護層級**：專門**保護應用層**（Layer 7）流量，阻擋惡意 HTTP/HTTPS 請求
+     1. **防護層級**：專門**保護應用層**（Layer 7）流量，阻擋惡意 HTTP/HTTPS 請求⭐️
      2. **開發者類比**：就像在 API 前面加一層 middleware，根據規則決定請求能否進入
 104. 😇 AWS Firewall Manager 的定位與功能
      1. **服務定位**：中央管理工具，用來在多個帳號/多個資源上統一部署和管理 WAF/Shield 規則
@@ -313,7 +313,7 @@
      2. **儲存系統**：分散式、容錯、自我修復的儲存系統，自動擴展至 128TB
      3. **高可用架構**：最多 15 個低延遲讀副本、支援 3 個 AZ 複製
      4. **備份與復原**：可用時間點復原、**持續備份到 S3**
-106. 😇 Amazon Neptune 是一個快速、可靠、完全管理的**圖形資料庫服務**，適合打造**社交網路、推薦引擎和詐欺偵測**應用程式。
+106. 😇 Amazon Neptune 是一個快速、可靠、完全管理的**圖形資料庫服務**，適合打造**社交網路、推薦引擎和詐欺偵測**應用程式⭐️
 107. 😇 Amazon DocumentDB 是一個完全管理的**文件資料庫服務**，與 MongoDB 相容，適合用於內容管理、目錄和即時分析等應用場景。
 108. 👀 Amazon S3 is indeed a key-value store! (where the key is the full path of the object in the bucket)
 109. ★ Amazon Redshift 的核心特性與應用場景
@@ -325,7 +325,7 @@
      1. **範圍**：同一 Region
      2. **切換方式**：自動切換
      3. **架構**：多個可用區域 (Multi-AZ)
-111. ★★ 災難恢復 (DR - Disaster Recovery) 的特性
+111. ★★ 災難恢復 (DR - Disaster Recovery) 的特性⭐️
      1. **範圍**：跨 Region
      2. **復原方式**：手動或自動復原
      3. **備份工具**：快照 (Snapshot) / 備份 (Backup)
@@ -338,7 +338,7 @@
 115. ★ AWS Glue 的核心功能
      1. **定位**：完全管理的 ETL (Extract, Transform, Load) 服務
      2. **主要特性**：可在幾次點擊內建立、執行和監控 ETL 工作，無需自行維護伺服器
-116. ★ Amazon EMR (Elastic MapReduce) 的核心特性
+116. ★ Amazon EMR (Elastic MapReduce) 的核心特性⭐️
      1. **原生支援框架**：Spark、Hive、Presto、Hadoop
      2. **服務特點**：Managed Service，AWS 幫你管底層叢集
      3. **成本效益**：用完即關，成本可控
@@ -351,17 +351,17 @@
 118. (刪除)
 119. 😇 Kinesis Data Analytics 可以直接讀取 Kinesis Data Streams 的資料，進行即時分析和處理。
 120. ★ AWS Machine Learning 服務列表
-     - **Rekognition**：人臉偵測、物體標籤識別、名人辨識
-     - **Transcribe**：音訊轉文字（例如字幕生成）
-     - **Polly**：文字轉語音
+     - **Rekognition**：人臉偵測、物體標籤識別、名人辨識⭐️
+     - **Transcribe**：音訊轉文字（例如字幕生成）⭐️
+     - **Polly**：文字轉語音⭐️
      - **Translate**：多語言翻譯
-     - **Lex**：建構對話式機器人（Chatbots）
+     - **Lex**：建構對話式機器人（Chatbots）⭐️
      - **Connect**：雲端聯絡中心
-     - **Comprehend**：自然語言處理 (NLP)
+     - **Comprehend**：自然語言處理 (NLP)⭐️
      - **SageMaker**：適合每位開發者和資料科學家的機器學習平台
      - **Kendra**：ML 驅動的搜尋引擎
      - **Personalize**：實時個性化推薦
-     - **Textract**：文件中的文字和資料偵測
+     - **Textract**：文件中的文字和資料偵測⭐️
 121. 😇 Amazon Lex 整合 ASR (語音轉文字) 和 NLU (**意圖辨識**) 於一個服務，適合建構對話機器人
 122. 👀 Amazon Polly 的進階語音控制功能
      1. **Pronunciation Lexicons (發音字典)**：自訂特定詞彙發音（例：EC2 → 讀成 Elastic Compute Cloud）
@@ -401,12 +401,12 @@
      1. **錯誤觀念**：EBS 會跨 region 複製 ❌
      2. **正確觀念**：EBS volume 綁定單一 AZ，在該 AZ 內自動做冗餘備份（高可用性）✅
 134. ★★ EBS 可用性與複製特性總結
-     1. **基本綁定**：EBS 綁定單一 AZ，不跨 AZ、不跨 region
+     1. **基本綁定**：EBS **綁定單一 AZ**，不跨 AZ、不跨 region
      2. **跨域保護**：要跨 AZ/region 保護資料 → 需手動建 snapshot 並複製⭐️
-135. ★ EBS 線上修改支援與限制
+135. ★ EBS 線上修改支援與限制⭐️
      1. **可修改項目**：Volume size（只能增加）、Volume type、IOPS / throughput
-     2. **修改特性**：無需停機，但修改後需等 6 小時才能再次修改
-     3. **考試重點**：EBS 支援熱修改，不用停機
+     2. **修改特性**：**無需停機**，但修改後需等 6 小時才能再次修改
+     3. **考試重點**：EBS 支援熱修改，**不用停機**
 136. ★★ EBS SSD 系列
      1. **gp3/gp2 (General Purpose)**：通用型，CP 值最高，預設選項
      2. **io2/io1 (Provisioned IOPS)**：需要穩定高 IOPS 的場景（**資料庫**）
@@ -425,7 +425,7 @@
      1. **有身份**：可以被識別 ✅
      2. **沒有權限**：不能做任何事 ❌
      3. **沒有憑證**：無法驗證身份 ❌
-142. ★★ 透過 CLI/API 呼叫 AWS 的兩個必要步驟
+142. ★★ 透過 CLI/API 呼叫 AWS 的兩個必要步驟⭐️
      1. **Access Key**：讓程式能用這組 Key 證明「我是這個 User」（**驗證**）
      2. **IAM Policy**：賦予權限，允許存取 S3、DynamoDB、Lambda 等服務（**授權**）
 143. ★ S3 存取控制方案的選擇建議
@@ -441,7 +441,7 @@
 146. ★ GuardDuty 威脅偵測與判斷標準
      1. **選題關鍵詞**：出現「malicious」、「suspicious」、「threat」→ 選 GuardDuty
      2. **服務定位**：跨服務威脅偵測（S3、EC2、IAM、CloudTrail）
-147. ★ CloudTrail 與 GuardDuty 的核心差異
+147. ★ CloudTrail 與 GuardDuty 的核心差異⭐️
      1. **CloudTrail 的用途**：記錄 **API 呼叫**（稽核、合規、事後調查）
      2. **GuardDuty 的用途**：分析行為模式進行**即時威脅偵測**
      3. **定位區別**：CloudTrail 只是「**錄影機**」，記錄誰做了什麼，但**不會主動**告訴你「這是惡意行為」
@@ -498,13 +498,13 @@
      1. **同步（Synchronous）**：呼叫者等待結果，例如 API Gateway → Lambda
      2. **非同步（Asynchronous）**：呼叫後不等結果，例如 S3 事件 → Lambda
      3. **重點**：呼叫類型由**事件源**決定，無法人為改變；但   透過 SDK/CLI 呼叫時，可指定 InvocationType
-163. ★ Kinesis Data Streams 與 Lambda 的特殊運作機制
+163. ★ Kinesis Data Streams 與 Lambda 的特殊運作機制⭐️
      1. **運作方式**：Lambda **主動 poll（輪詢）** Kinesis stream
      2. Stream 特性：資料持續流入，沒有「事件發生」的明確時間點，無法 push
      3. 有「Stream」字眼的服務 = Poll 模型
      4. **自動功能**：批次處理記錄、管理 checkpoint（進度追蹤）、自動處理 retry
-164. ★★ Stream-based 服務的 Lambda 整合模式
-     1. **常見服務**：DynamoDB Streams、**SQS**、Kinesis Data Streams
+164. ★★ Stream-based 服務的 Lambda 整合模式⭐️
+     1. **常見服務**：DynamoDB Streams(透過 Event Source Mapping)、**SQS**、Kinesis Data Streams
      2. **核心特點**：都是 Lambda **主動 poll**，而非被動接收
      3. DynamoDB Streams 可以直接推送給 Lambda，但**底層仍是 poll 機制**
      4. **考試陷阱**：很多人誤以為 Kinesis 是「推送」給 Lambda，實際上是 Lambda 去「拉取」
@@ -512,7 +512,7 @@
      1. **Stream-based 服務**：= Lambda poll（主動拉取）
      2. **Event-based 服務**：= 推送給 Lambda（S3、SNS）
      3. **應用影響**：會直接影響架構設計中的權限配置和錯誤處理策略
-166. ★ Lambda@Edge = **在 CloudFront 的 edge location 執行 Lambda**
+166. ★ Lambda@Edge = **在 CloudFront 的 edge location 執行 Lambda**⭐️
      1. **核心優勢**：在離用戶最近的地方處理請求，大幅降低延遲
 167. (刪除)
 168. ★ Lambda@Edge 的實務應用範例：動態圖片格式轉換
@@ -547,7 +547,7 @@
 175. ★ ENI（Elastic Network Interface）的定義與作用
      1. **定義**：ENI = 虛擬網卡
      2. **Lambda 在 VPC 內的運作機制**：AWS 自動建立 ENI 連接 VPC
-     3. **資源消耗**：每個 subnet/security group 組合需要 ENI，ENI 消耗 subnet 的 IP⭐️
+     3. **資源消耗**：每個 subnet/security group 組合需要 ENI，ENI **消耗 subnet 的 IP**⭐️
 176. ★ EC2ThrottledException 的發生原因與解決方案
      1. **發生原因**：Subnet IP 不足、ENI 配額達上限、Lambda 快速 scale 時建立 ENI 太慢
      2. **解決方案**：確保 subnet 有足夠 IP（至少保留幾十個）、用 `/24` 或更大的 CIDR、Lambda 會重用 ENI，不是每次執行都建新的
@@ -606,10 +606,10 @@
      2. **SQL Server**：使用 **rds.force_ssl** parameter 進行設定
      3. **Oracle**：透過 **option group** 進行設定
 195. ★★ S3 Transfer Acceleration + Multipart Upload
-     1. **Transfer Acceleration**：全球邊緣節點加速跨地區傳輸，速度提升 50-500%⭐️僅加速**跨區域上傳**
+     1. **Transfer Acceleration**：全球邊緣節點加速跨地區傳輸，速度提升 50-500%
      2. **Multipart Upload**：大檔案平行上傳，失敗可單獨重傳部分
      3. **組合應用**：跨區域 + 大量資料上傳時同時使用
-196. ★ S3 防誤刪：Versioning + MFA Delete
+196. ★ S3 防誤刪：Versioning + MFA Delete⭐️
      1. **Versioning**：保留歷史版本、刪除只標記 delete marker、可復原
      2. **MFA Delete**：需 MFA 才能改變 versioning 狀態和永久刪除版本
      3. **組合用途**：基本防護用 Versioning，強化防護加上 MFA Delete
