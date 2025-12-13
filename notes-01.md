@@ -645,7 +645,7 @@
 205. 👀 IAM Condition Key：aws:**RequestedRegion** 的用途
      1. **功能定義**：限制 **API 呼叫的目標區域**
      2. **應用場景**：例如限制使用者只能在特定 Region 建立或修改資源
-206. ★★ EventBridge 權限組態的核心邏輯⭐️有點複雜
+206. ★★ EventBridge 權限組態的核心邏輯
      1. **權限判斷原則**：根據目標服務的**呼叫模式**決定 Policy 類型
      2. **Lambda 作為目標**：Lambda 支援 **Resource-Based Policy**，所以在 Lambda 上設定「允許 EventBridge 呼叫我」
      3. **Kinesis 作為目標**：Kinesis **不支援 Resource-Based Policy**，所以 EventBridge 需要 IAM Role 擁有「寫入 Kinesis」權限
@@ -677,7 +677,7 @@
      1. **SNS + SQS (Fan-out pattern)**：一個訊息廣播給多個 queue，各自獨立處理
      2. **SNS + Lambda**：事件驅動架構，自動觸發多個 Lambda
      3. **CloudWatch Alarm → SNS → Email/SMS**：監控告警通知
-215. ★★ SNS Fan-out Pattern（重要考點）
+215. ★★ SNS Fan-out Pattern（重要考點）⭐️
      1. **定義**：SNS Topic 發布 1 則訊息 → **複製並推送給多個端點**
      2. **典型架構**：
         - SQS Queue 1（訂單處理）
@@ -706,7 +706,7 @@
      3. **適用場景**：高吞吐量需求
      4. **缺點**：容易產生**空請求**（訊息未到時仍回傳），浪費成本
 221. ★★ SQS Long Polling（成本優化模式）
-     1. **ReceiveMessageWaitTimeSeconds**：> 0（最高 **20** 秒）⭐️
+     1. **ReceiveMessageWaitTimeSeconds**：> 0（最高 **20** 秒）⭐️0 秒就是預設的 Short Polling
      2. **運作方式**：**等待訊息到達才回應**，如期間沒訊息就 hold 著
      3. **適用場景**：降低成本、減少空請求
      4. **優勢**：**減少 API 呼叫次數**，伺服器負擔更輕
@@ -714,7 +714,7 @@
 223. Encryption in transit vs Encryption at rest
      1. **Encryption in transit(in-flight)**：資料在傳輸過程中加密（SSL/TLS）
      2. **Encryption at rest**：資料**靜止存放**時加密（AES-256、KMS）
-224. API Gateway 有三種 Endpoint 類型：建立時必須選擇，沒有預設值
+224. API Gateway 有三種 Endpoint 類型：建立時必須選擇，沒有預設值⭐️
      1. **Regional endpoint**：部署在特定區域，適合內部或區域性應用。適合特定區域用戶
      2. **Edge-optimized endpoint**：使用 CloudFront 全球加速，適合公開 API。適合全球用戶
      3. **Private endpoint**：只能在 VPC 內存取，適合內部服務
