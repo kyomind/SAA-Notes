@@ -2249,12 +2249,13 @@ Provisioned 的 Auto Scaling 本質上還是「**事後反應**」，它看到 C
 
 ## AWS 網路元件關聯層級比較表
 
-| 元件                  | 關聯層級                     | 功能              |
-| --------------------- | ---------------------------- | ----------------- |
-| **IGW / NAT Gateway** | VPC（但需 Route Table 指向） | 出入口            |
-| **Route Table**       | Subnet                       | 路由方向          |
-| **NACL**              | Subnet                       | 過濾（Stateless） |
-| **Security Group**    | Instance (ENI)               | 過濾（Stateful）  |
+| 元件               | 關聯層級        | 功能                  |
+| ------------------ | --------------- | --------------------- |
+| **IGW**            | VPC             | 雙向出入口            |
+| **NAT Gateway**    | Subnet          | 單向出口（私網→公網） |
+| **Route Table**    | Subnet          | 路由方向              |
+| **NACL**           | Subnet          | 過濾（Stateless）     |
+| **Security Group** | Instance（ENI） | 過濾（Stateful）      |
 
 ## AWS VPC CIDR 限制
 

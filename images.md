@@ -222,10 +222,6 @@ You can configure any access point to accept requests only from a virtual privat
 
 ![圖 18](https://img.kyomind.tw/img-20251108-105540.png)
 
-## Amazon Data Firehose(原名 Kinesis Data Firehose)
-
-![圖 19](https://img.kyomind.tw/img-20251108-112000.png)
-
 ## AWS Transcribe → AWS Translate → AWS Comprehend
 
 ![圖 20](https://img.kyomind.tw/img-20251108-144632.png)
@@ -297,6 +293,8 @@ You can configure any access point to accept requests only from a virtual privat
 ![圖 28](https://img.kyomind.tw/img-20251125-172013.png)
 
 ## S3 Storage Classes Overview
+
+圖中的「S3 Glacier」對應現在的 Flexible Retrieval，而 Instant Retrieval 是後來新增的，這張圖沒畫進去。
 
 ![圖 31](https://img.kyomind.tw/img-20251125-221248.png)
 
