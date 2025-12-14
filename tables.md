@@ -2284,3 +2284,38 @@ Provisioned 的 Auto Scaling 本質上還是「**事後反應**」，它看到 C
 | 上傳後自動執行程式       | S3 + Lambda                                |
 | 多部門存取共用資料       | S3 Access Point                            |
 | 防止誤刪除物件           | Object Lock (Governance Mode / Legal Hold) |
+
+## Cached Volumes 存取冷資料時發生什麼事
+
+當你讀取不在 cache 裡的資料：
+
+```bash
+[應用程式請求 Block X]
+    ↓
+[Gateway 檢查本地 Cache] → 沒有！
+    ↓
+[從 S3 下載 Block X]  ← 這裡會有延遲
+    ↓
+[寫入本地 Cache + 回傳給應用程式]
+    ↓
+[下次讀取 Block X] → 直接從 Cache 拿，快
+```
+
+**就是一個 cache miss**，跟你寫程式用 Redis 的概念一樣。
+
+## Cached vs Stored 的本質差異
+
+|                  | Cached Volumes        | Stored Volumes         |
+| ---------------- | --------------------- | ---------------------- |
+| **本地存什麼**   | 只有熱資料（cache）   | **完整資料**           |
+| **S3 存什麼**    | 完整資料              | Snapshot（備份用）     |
+| **冷資料存取**   | 有延遲（要從 S3 拉）  | **不存在冷資料問題**   |
+| **本地容量需求** | 小（只需 cache 空間） | 大（要放得下全部資料） |
+| **適用場景**     | 資料量大、常用資料少  | 需要低延遲存取全部資料 |
+
+### 一句話總結
+
+- **Stored Volumes**：本地就是完整的 block storage，S3 只是備份
+- **Cached Volumes**：S3 才是完整資料，本地只是 cache，冷資料讀取會有 **S3 下載延遲**
+
+所以如果你的應用**不能容忍任何讀取延遲**，就要用 Stored Volumes。
