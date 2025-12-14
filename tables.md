@@ -1810,7 +1810,7 @@ Deep Archive **沒有 Expedited**——這是考試陷阱。
 Expedited 有容量限制，高需求時可能失敗。如果需要**保證 Expedited 可用**，要購買 **Provisioned Capacity**（預留容量）。
 
 **記憶口訣：**
-> Glacier 三種速度：**快（分鐘）、標（小時）、慢（半天）**
+> Flexible Retrieval 三種速度：**快（分鐘）、標（小時）、慢（半天）**
 > Deep Archive 只有兩種：**標（半天）、慢（兩天）**
 
 ## S3 Storage Classes Retrieval 費用
