@@ -1681,18 +1681,6 @@ dojo 中出現的就是 AWS Network Firewall。
 | **Customer Gateway (CGW)**        | ✅ 必須       | 你的 on-premises 設備需要公開 IP 讓 AWS 連線 |
 | **Virtual Private Gateway (VGW)** | ❌ 不需要     | AWS 自動處理，你不用管                       |
 
-### Virtual Private Gateway (VGW) 不需要固定 IP
-
-VGW 是 AWS 管理的服務，AWS 會自動分配 IP 給它。                    |
-
-## VPN 運作方式
-
-1. 你在 AWS console 建立 VGW 時，AWS 會自動配置兩個 public IP(兩條 tunnel 用於 HA)
-2. VPN 建立後，AWS 會提供 configuration file 給你
-3. 你用這個 config 設定你的 CGW 設備,裡面會包含 VGW 的 IP
-
-**記憶點**: Customer side 要準備 IP，AWS side 全自動。
-
 ## CloudTrail vs Config 比較
 
 | 特性         | CloudTrail     | Config       |
