@@ -1788,7 +1788,7 @@ Compliance: Non-compliant (violated retention policy)
 
 ## S3 Glacier Retrieval 完整比較
 
-### Glacier（標準）
+### Glacier Flexible Retrieval
 
 | 選項          | 時間      | 成本   | 適用場景           |
 | ------------- | --------- | ------ | ------------------ |
